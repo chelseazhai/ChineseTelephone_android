@@ -17,6 +17,12 @@
     <string name="title_activity_dial_tab_content">DialTabContentActivity</string>
 
     <!-- call record history list activity -->
-    <string name="title_activity_call_record_history_list">CallRecordHistoryListActivity</string>
+    <string name="title_activity_call_record_history_list_tab_content">CallRecordHistoryListActivity</string>
+
+    <!-- topup activity -->
+    <string name="title_activity_topup_tab_content">TopupTabContentActivity</string>
+
+    <!-- setting activity -->
+    <string name="title_activity_setting_tab_content">SettingTabContentActivity</string>
 
 </resources>

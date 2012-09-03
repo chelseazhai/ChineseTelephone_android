@@ -40,7 +40,7 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 		_tabHost.addTab(layout2spec);
 
 		Intent layout3intent = new Intent();
-		layout3intent.setClass(this, CallRecordHistoryListActivity.class);
+		layout3intent.setClass(this, CallRecordHistoryListTabContentActivity.class);
 		TabSpec layout3spec = _tabHost.newTabSpec("layout3");
 		layout3spec.setIndicator("layout3");
 		layout3spec.setContent(layout3intent);

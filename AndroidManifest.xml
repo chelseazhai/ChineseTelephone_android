@@ -48,8 +48,26 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".tab7tabcontent.CallRecordHistoryListActivity"
-            android:label="@string/title_activity_call_record_history_list" >
+            android:name=".tab7tabcontent.CallRecordHistoryListTabContentActivity"
+            android:label="@string/title_activity_call_record_history_list_tab_content" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".tab7tabcontent.TopupTabContentActivity"
+            android:label="@string/title_activity_topup_tab_content" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".tab7tabcontent.SettingTabContentActivity"
+            android:label="@string/title_activity_setting_tab_content" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
