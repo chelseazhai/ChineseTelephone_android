@@ -1,7 +1,7 @@
 <resources>
 
     <!-- application default theme -->
-    <style name="AppTheme" parent="android:Theme.Light" />
+    <style name="AppTheme" parent="android:Theme.Light.NoTitleBar" />
 
     <!-- application activity theme -->
     <style name="AppActivityTheme" parent="android:Theme.Black.NoTitleBar.Fullscreen" />
