@@ -13,13 +13,17 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		// set content view
 		setContentView(R.layout.call_record_history_list_tab_content_activity_layout);
+
+		// set title
+		setTitle(R.string.call_record_history_list_nav_title);
 
 		// test by ares
 		// define list view content
-		String[] listViewContentArr = { "Ares", "Ruby", "Android", "HTC",
-				"SAMSUNG", "IOS", "NOKIA", "SK", "CC", "唐僧", "孙悟空", "猪八戒",
-				"沙悟净", "如来佛祖", "观音老母", "玉皇大帝", "王母娘娘", "嫦娥", "吴刚" };
+		String[] listViewContentArr = { "13770886721", "13456231234",
+				"025-33456789", "18678231456" };
 
 		// packet array to adapter with content
 		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,

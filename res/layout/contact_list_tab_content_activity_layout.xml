@@ -6,7 +6,10 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp" >
 
         <FrameLayout
             android:id="@+id/contact_searchBtn_frameLayout"
@@ -32,7 +35,9 @@
             android:id="@+id/contact_search_editText"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
             android:layout_toLeftOf="@id/contact_searchBtn_frameLayout"
+            android:drawableLeft="@drawable/ic_action_search"
             android:hint="@string/contact_search_editText_hint"
             android:inputType="text" >
 
@@ -43,7 +48,12 @@
     <ListView
         android:id="@+id/contactInAB_listView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:cacheColorHint="@color/clear"
+        android:fadingEdge="none"
+        android:headerDividersEnabled="false"
+        android:listSelector="@color/clear"
+        android:scrollbars="none" >
     </ListView>
 
 </LinearLayout>

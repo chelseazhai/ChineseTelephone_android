@@ -7,22 +7,33 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_chinese_telephone_tab">ChineseTelephoneTabActivity</string>
 
+    <!-- call record history list activity -->
+    <string name="title_activity_call_record_history_list_tab_content">CallRecordHistoryListActivity</string>
+    <string name="call_record_history_list_tab_title">Record</string>
+    <string name="call_record_history_list_nav_title">Call Record</string>
+
+    <!-- dial tab content activity -->
+    <string name="title_activity_dial_tab_content">DialTabContentActivity</string>
+    <string name="dial_tab_title">Dial</string>
+    <string name="dialBtn_imageView_content_description">dial button image view</string>
+
     <!-- contact list tab content activity -->
     <string name="title_activity_contact_list_tab_content">ContactListTabContentActivity</string>
     <string name="contact_search_editText_hint">Search contacts</string>
     <string name="contact_search_confirm_btn_title">Search</string>
     <string name="contact_search_cancel_btn_title">Cancel</string>
-
-    <!-- dial tab content activity -->
-    <string name="title_activity_dial_tab_content">DialTabContentActivity</string>
-
-    <!-- call record history list activity -->
-    <string name="title_activity_call_record_history_list_tab_content">CallRecordHistoryListActivity</string>
+    <string name="contact_list_tab7nav_title">Contacts</string>
 
     <!-- topup activity -->
     <string name="title_activity_topup_tab_content">TopupTabContentActivity</string>
+    <string name="topup_tab_title">Top up</string>
+    <string name="topup_nav_title">Account Top up</string>
+    <string name="topup_tip_textView_text">Top up card number verification</string>
+    <string name="topup_cardNumber_editText_hint">Please input your top up card number</string>
+    <string name="topup_confirm_btn_title">Finish Top up</string>
 
     <!-- setting activity -->
     <string name="title_activity_setting_tab_content">SettingTabContentActivity</string>
+    <string name="setting_tab7nav_title">Setting</string>
 
 </resources>
