@@ -52,16 +52,6 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 								ContactListTabContentActivity.class));
 		_tabHost.addTab(_contactListTabSpec);
 
-		// top up
-		TabSpec _topupTabSpec = _tabHost
-				.newTabSpec("top up tab spec")
-				.setIndicator(
-						getResources().getString(R.string.topup_tab_title))
-				.setContent(
-						new Intent().setClass(this,
-								TopupTabContentActivity.class));
-		_tabHost.addTab(_topupTabSpec);
-
 		// setting
 		TabSpec _settingTabSpec = _tabHost
 				.newTabSpec("setting tab spec")

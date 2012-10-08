@@ -2,14 +2,6 @@
 <resources>
 
     <color name="clear">#00000000</color>
-    <color name="dark_dim_gray">#424242</color>
-    <color name="dim_gray">#565656</color>
-    <color name="light_dim_gray">#696969</color>
-    <color name="gray">#808080</color>
-    <color name="dark_gray">#a3a3a3</color>
-    <color name="light_gray">#d3d3d3</color>
-    <color name="dark_goldenrod">#bfad89</color>
-    <color name="goldenrod">#cfc1b3</color>
-    <color name="dark_wheat">#d0c1b3</color>
+    <color name="gray">#565656</color>
 
 </resources>

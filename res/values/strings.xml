@@ -24,14 +24,6 @@
     <string name="contact_search_cancel_btn_title">Cancel</string>
     <string name="contact_list_tab7nav_title">Contacts</string>
 
-    <!-- topup activity -->
-    <string name="title_activity_topup_tab_content">TopupTabContentActivity</string>
-    <string name="topup_tab_title">Top up</string>
-    <string name="topup_nav_title">Account Top up</string>
-    <string name="topup_tip_textView_text">Top up card number verification</string>
-    <string name="topup_cardNumber_editText_hint">Please input your top up card number</string>
-    <string name="topup_confirm_btn_title">Finish Top up</string>
-
     <!-- setting activity -->
     <string name="title_activity_setting_tab_content">SettingTabContentActivity</string>
     <string name="setting_tab7nav_title">Setting</string>
