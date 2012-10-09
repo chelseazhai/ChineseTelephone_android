@@ -9,9 +9,12 @@
         android:layout_height="80dp"
         android:layout_alignParentTop="true"
         android:background="@drawable/img_dial_phone_textview_bg"
+        android:ellipsize="middle"
         android:gravity="center"
+        android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@android:color/white"
+        android:textSize="48dp"
         android:textStyle="bold" />
 
     <GridView
@@ -53,8 +56,7 @@
             android:layout_marginLeft="0.5dp"
             android:layout_marginRight="0.5dp"
             android:background="@drawable/dial_call_btn_bg"
-            android:contentDescription="@string/dialBtn_imageView_content_description"
-            android:textColor="@android:color/white" />
+            android:contentDescription="@string/dialBtn_imageView_content_description" />
 
         <include
             android:id="@+id/dial_clearDialPhone_functionBtn"
