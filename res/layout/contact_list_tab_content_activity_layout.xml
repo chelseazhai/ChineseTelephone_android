@@ -4,46 +4,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <RelativeLayout
+    <EditText
+        android:id="@+id/contact_search_editText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:paddingTop="5dp" >
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:drawableLeft="@drawable/ic_action_search"
+        android:hint="@string/contact_search_editText_hint"
+        android:inputType="text" >
 
-        <FrameLayout
-            android:id="@+id/contact_searchBtn_frameLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true" >
-
-            <Button
-                android:id="@+id/contact_search_confirm_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/contact_search_confirm_btn_title" />
-
-            <Button
-                android:id="@+id/contact_search_cancel_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/contact_search_cancel_btn_title"
-                android:visibility="gone" />
-        </FrameLayout>
-
-        <EditText
-            android:id="@+id/contact_search_editText"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:layout_toLeftOf="@id/contact_searchBtn_frameLayout"
-            android:drawableLeft="@drawable/ic_action_search"
-            android:hint="@string/contact_search_editText_hint"
-            android:inputType="text" >
-
-            <requestFocus />
-        </EditText>
-    </RelativeLayout>
+        <requestFocus />
+    </EditText>
 
     <FrameLayout
         android:layout_width="fill_parent"

@@ -7,13 +7,16 @@ import java.util.Map;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MotionEvent;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -30,6 +33,9 @@ import com.richitec.commontoolkit.utils.StringUtils;
 public class ContactListTabContentActivity extends NavigationActivity {
 
 	private static final String LOG_TAG = "ContactListTabContentActivity";
+
+	// address book contacts list view
+	private ListView _mABContactsListView;
 
 	// all address book name phonetic sorted contacts detail info list
 	private final List<ContactBean> allNamePhoneticSortedContactsInfoArray = AddressBookManager
@@ -54,15 +60,19 @@ public class ContactListTabContentActivity extends NavigationActivity {
 		_mPresentContactsInABInfoArray = allNamePhoneticSortedContactsInfoArray;
 
 		// init contacts in address book list view
-		ListView _addressBookContactsListView = (ListView) findViewById(R.id.contactInAB_listView);
+		_mABContactsListView = (ListView) findViewById(R.id.contactInAB_listView);
 
 		// set contacts in address book listView adapter
-		_addressBookContactsListView
+		_mABContactsListView
 				.setAdapter(generateInABContactAdapter(_mPresentContactsInABInfoArray));
 		// init address book contacts listView quick alphabet bar and add on
 		// touch listener
-		new ListViewQuickAlphabetBar(_addressBookContactsListView)
+		new ListViewQuickAlphabetBar(_mABContactsListView)
 				.setOnTouchListener(new ContactsInABListViewQuickAlphabetBarOnTouchListener());
+
+		// bind contact search editText text watcher
+		((EditText) findViewById(R.id.contact_search_editText))
+				.addTextChangedListener(new ContactSearchEditTextTextWatcher());
 	}
 
 	@Override
@@ -270,6 +280,55 @@ public class ContactListTabContentActivity extends NavigationActivity {
 			}
 
 			return true;
+		}
+
+	}
+
+	// contact search editText text watcher
+	class ContactSearchEditTextTextWatcher implements TextWatcher {
+
+		@Override
+		public void afterTextChanged(Editable s) {
+			// set contact search status
+			if (null == s || 0 == s.length()) {
+				_mContactSearchStatus = ContactSearchStatus.NONESEARCH;
+			} else if (s.toString().matches("^[0-9]*$")) {
+				_mContactSearchStatus = ContactSearchStatus.SEARCHBYPHONE;
+			} else {
+				_mContactSearchStatus = ContactSearchStatus.SEARCHBYNAME;
+			}
+
+			// update present contacts in address book detail info list
+			switch (_mContactSearchStatus) {
+			case SEARCHBYNAME:
+				_mPresentContactsInABInfoArray = AddressBookManager
+						.getInstance().getContactsByName(s.toString());
+				break;
+
+			case SEARCHBYPHONE:
+				_mPresentContactsInABInfoArray = AddressBookManager
+						.getInstance().getContactsByPhone(s.toString());
+				break;
+
+			case NONESEARCH:
+			default:
+				_mPresentContactsInABInfoArray = allNamePhoneticSortedContactsInfoArray;
+				break;
+			}
+
+			// update contacts in address book listView adapter
+			_mABContactsListView
+					.setAdapter(generateInABContactAdapter(_mPresentContactsInABInfoArray));
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+		}
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before,
+				int count) {
 		}
 
 	}
