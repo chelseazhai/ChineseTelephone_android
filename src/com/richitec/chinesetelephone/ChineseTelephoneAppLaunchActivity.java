@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 
 import com.richitec.chinesetelephone.tab7tabcontent.ChineseTelephoneTabActivity;
 import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
+import com.richitec.commontoolkit.addressbook.AddressBookManager;
 
 public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 
@@ -22,14 +23,7 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 	@Override
 	public void didFinishLaunching() {
 		// traversal address book
-		// AddressBookManager.getInstance().traversalAddressBook();
-
-		// sleep 3 seconds
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		AddressBookManager.getInstance().traversalAddressBook();
 	}
 
 }

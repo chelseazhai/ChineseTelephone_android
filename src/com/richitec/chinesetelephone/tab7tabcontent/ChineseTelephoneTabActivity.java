@@ -64,7 +64,7 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 		_tabHost.addTab(_settingTabSpec);
 
 		// set current tab
-		_tabHost.setCurrentTab(2);
+		_tabHost.setCurrentTab(1);
 
 		//
 		// _tabHost.getTabWidget().get

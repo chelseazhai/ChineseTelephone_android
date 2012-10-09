@@ -45,15 +45,19 @@
         </EditText>
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/contactInAB_listView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:cacheColorHint="@color/clear"
-        android:fadingEdge="none"
-        android:headerDividersEnabled="false"
-        android:listSelector="@color/clear"
-        android:scrollbars="none" >
-    </ListView>
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <ListView
+            android:id="@+id/contactInAB_listView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:cacheColorHint="@color/clear"
+            android:fadingEdge="none"
+            android:headerDividersEnabled="false"
+            android:listSelector="@color/clear" >
+        </ListView>
+    </FrameLayout>
 
 </LinearLayout>

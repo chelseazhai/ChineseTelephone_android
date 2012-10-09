@@ -3,5 +3,6 @@
 
     <color name="clear">#00000000</color>
     <color name="gray">#565656</color>
+    <color name="dark_gray">#a3a3a3</color>
 
 </resources>

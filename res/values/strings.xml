@@ -23,6 +23,7 @@
     <string name="contact_search_confirm_btn_title">Search</string>
     <string name="contact_search_cancel_btn_title">Cancel</string>
     <string name="contact_list_tab7nav_title">Contacts</string>
+    <string name="addressBook_contact_avatar_imageView_content_description">contact avatar image view</string>
 
     <!-- setting activity -->
     <string name="title_activity_setting_tab_content">SettingTabContentActivity</string>
