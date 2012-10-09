@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/img_addressbook_contact_listview_parent_bg"
     android:orientation="vertical" >
 
     <EditText
@@ -27,6 +28,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:cacheColorHint="@color/clear"
+            android:divider="@drawable/img_addressbook_contact_listview_divider_bg"
             android:fadingEdge="none"
             android:headerDividersEnabled="false"
             android:listSelector="@color/clear" >
