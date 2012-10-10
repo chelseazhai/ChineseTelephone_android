@@ -299,7 +299,7 @@ public class DialTabContentActivity extends Activity {
 			} else {
 				Log.e(LOG_TAG, "The dial phone number is null");
 
-				Toast.makeText(DialTabContentActivity.this, "HAHA",
+				Toast.makeText(DialTabContentActivity.this, "null",
 						Toast.LENGTH_SHORT).show();
 			}
 		}
