@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/dialBtn_imageView"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="73dp"
-    android:background="@drawable/dial_btn_bg"
-    android:contentDescription="@string/dialBtn_imageView_content_description" />
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/dialBtn_imageView"
+        android:layout_width="fill_parent"
+        android:layout_height="71dp"
+        android:background="@drawable/dial_btn_bg"
+        android:contentDescription="@string/dialBtn_imageView_content_description" />
+
+</RelativeLayout>

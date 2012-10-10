@@ -6,9 +6,15 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -16,10 +22,18 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.richitec.chinesetelephone.R;
+import com.richitec.commontoolkit.utils.DpPixUtils;
 
 public class DialTabContentActivity extends Activity {
+
+	private static final String LOG_TAG = "DialTabContentActivity";
+
+	// dial phone textView text max and min font size
+	private final Float DIALPHONE_TEXTVIEWTEXT_MAXFONTSIZE = 36.0f;
+	private final Float DIALPHONE_TEXTVIEWTEXT_MINFONTSIZE = 22.0f;
 
 	// dial phone textView
 	private TextView _mDialPhoneTextView;
@@ -32,8 +46,15 @@ public class DialTabContentActivity extends Activity {
 		setContentView(R.layout.dial_tab_content_activity_layout);
 
 		// init dial phone textView
+		// set dial phone textView
 		_mDialPhoneTextView = (TextView) findViewById(R.id.dial_phone_textView);
+
+		// set its default text
 		_mDialPhoneTextView.setText("");
+
+		// set its text watcher
+		_mDialPhoneTextView
+				.addTextChangedListener(new DialPhoneTextViewTextWatcher());
 
 		// get dial phone button gridView
 		GridView _dialPhoneButtonGridView = ((GridView) findViewById(R.id.dial_phoneBtn_gridView));
@@ -43,17 +64,38 @@ public class DialTabContentActivity extends Activity {
 
 		// set dial phone button grid view item click and long click listener
 		_dialPhoneButtonGridView
-				.setOnItemClickListener(new DialBtnGridViewItemOnClickListener());
+				.setOnItemClickListener(new DialPhoneBtnGridViewItemOnClickListener());
 		_dialPhoneButtonGridView
-				.setOnItemLongClickListener(new DialBtnGridViewItemOnLongClickListener());
+				.setOnItemLongClickListener(new DialPhoneBtnGridViewItemOnLongClickListener());
 
-		// test by ares
-		((ImageButton) findViewById(R.id.dial_newContact_functionBtn))
+		// init dial function button and set click and long click listener
+		// get add new contact dial function button
+		ImageButton _addNewContactFunBtn = (ImageButton) findViewById(R.id.dial_newContact_functionBtn);
+
+		// set its image resource
+		_addNewContactFunBtn
 				.setImageResource(R.drawable.img_dial_newcontact_btn);
+
+		// set its click listener
+		_addNewContactFunBtn
+				.setOnClickListener(new AddNewContactDialFunBtnOnClickListener());
+
+		// set dial call button click listener
 		((ImageButton) findViewById(R.id.dial_call_functionBtn))
-				.setImageResource(R.drawable.img_dial_call_btn);
-		((ImageButton) findViewById(R.id.dial_clearDialPhone_functionBtn))
+				.setOnClickListener(new CallDialFunBtnOnClickListener());
+
+		// get clear dial phone function button
+		ImageButton _clearDialPhoneFunBtn = (ImageButton) findViewById(R.id.dial_clearDialPhone_functionBtn);
+
+		// set its image resource
+		_clearDialPhoneFunBtn
 				.setImageResource(R.drawable.img_dial_cleardialphone_btn);
+
+		// set its click and long click listener
+		_clearDialPhoneFunBtn
+				.setOnClickListener(new ClearDialPhoneDialFunBtnOnClickListener());
+		_clearDialPhoneFunBtn
+				.setOnLongClickListener(new ClearDialPhoneDialFunBtnOnLongClickListener());
 	}
 
 	@Override
@@ -100,8 +142,54 @@ public class DialTabContentActivity extends Activity {
 	}
 
 	// inner class
-	// dial button gridView item on click listener
-	class DialBtnGridViewItemOnClickListener implements OnItemClickListener {
+	// dial phone textView text watcher
+	class DialPhoneTextViewTextWatcher implements TextWatcher {
+
+		@Override
+		public void afterTextChanged(Editable s) {
+			// measure text
+			// define textView text bounds and font size
+			Rect _textBounds = new Rect();
+			Integer _textFontSize;
+
+			// set its default font size
+			_mDialPhoneTextView.setTextSize(DIALPHONE_TEXTVIEWTEXT_MAXFONTSIZE);
+
+			do {
+				// get text bounds
+				_mDialPhoneTextView.getPaint().getTextBounds(s.toString(), 0,
+						s.toString().length(), _textBounds);
+
+				// get text font size
+				_textFontSize = DpPixUtils.pix2dp(_mDialPhoneTextView
+						.getTextSize());
+
+				// check bounds
+				if (_textBounds.right + /* padding left and right */2 * 16 > _mDialPhoneTextView
+						.getRight()) {
+					// reset dial phone textView text font size
+					_mDialPhoneTextView.setTextSize(_textFontSize - 1);
+				} else {
+					return;
+				}
+			} while (_textFontSize > DIALPHONE_TEXTVIEWTEXT_MINFONTSIZE);
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int before,
+				int count) {
+		}
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before,
+				int count) {
+		}
+
+	}
+
+	// dial phone button gridView item on click listener
+	class DialPhoneBtnGridViewItemOnClickListener implements
+			OnItemClickListener {
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -139,8 +227,8 @@ public class DialTabContentActivity extends Activity {
 
 	}
 
-	// dial button gridView item on long click listener
-	class DialBtnGridViewItemOnLongClickListener implements
+	// dial phone button gridView item on long click listener
+	class DialPhoneBtnGridViewItemOnLongClickListener implements
 			OnItemLongClickListener {
 
 		@Override
@@ -164,6 +252,94 @@ public class DialTabContentActivity extends Activity {
 			}
 
 			return _ret;
+		}
+
+	}
+
+	// add new contact dial function button on click listener
+	class AddNewContactDialFunBtnOnClickListener implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			// get dial phone text
+			String _dialPhoneString = _mDialPhoneTextView.getText().toString();
+
+			// check dial phone string
+			if (null != _dialPhoneString
+					&& !"".equalsIgnoreCase(_dialPhoneString)) {
+				Log.d(LOG_TAG, "add new contact, new contact phone = "
+						+ _dialPhoneString);
+
+				Toast.makeText(DialTabContentActivity.this,
+						"The new contact phone = " + _dialPhoneString,
+						Toast.LENGTH_SHORT).show();
+			}
+		}
+
+	}
+
+	// call dial function button on click listener
+	class CallDialFunBtnOnClickListener implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			// get dial phone text
+			String _dialPhoneString = _mDialPhoneTextView.getText().toString();
+
+			// check dial phone string
+			if (null != _dialPhoneString
+					&& !"".equalsIgnoreCase(_dialPhoneString)) {
+				Log.d(LOG_TAG, "make a call to sombody and the dial phone = "
+						+ _dialPhoneString);
+
+				Toast.makeText(
+						DialTabContentActivity.this,
+						"Make a call to sombody and the dial phone = "
+								+ _dialPhoneString, Toast.LENGTH_SHORT).show();
+			} else {
+				Log.e(LOG_TAG, "The dial phone number is null");
+
+				Toast.makeText(DialTabContentActivity.this, "HAHA",
+						Toast.LENGTH_SHORT).show();
+			}
+		}
+
+	}
+
+	// clear dial phone dial function button on click listener
+	class ClearDialPhoneDialFunBtnOnClickListener implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			// get dial phone text
+			String _dialPhoneString = _mDialPhoneTextView.getText().toString();
+
+			// check dial phone string
+			if (null != _dialPhoneString && _dialPhoneString.length() > 0) {
+				// reset dial phone textView text
+				_mDialPhoneTextView.setText(_dialPhoneString.substring(0,
+						_dialPhoneString.length() - 1));
+			}
+		}
+
+	}
+
+	// clear dial phone dial function button on long click listener
+	class ClearDialPhoneDialFunBtnOnLongClickListener implements
+			OnLongClickListener {
+
+		@Override
+		public boolean onLongClick(View view) {
+			// get dial phone text
+			String _dialPhoneString = _mDialPhoneTextView.getText().toString();
+
+			// check dial phone string
+			if (null != _dialPhoneString && _dialPhoneString.length() > 0) {
+				// clear dial phone textView text
+				_mDialPhoneTextView.setText("");
+			}
+
+			return true;
 		}
 
 	}

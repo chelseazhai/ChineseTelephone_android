@@ -14,13 +14,12 @@
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@android:color/white"
-        android:textSize="48dp"
         android:textStyle="bold" />
 
     <GridView
         android:id="@+id/dial_phoneBtn_gridView"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_below="@id/dial_phone_textView"
         android:background="@color/gray"
         android:cacheColorHint="@android:color/transparent"
@@ -37,7 +36,7 @@
     <LinearLayout
         android:id="@+id/dial_functionBtn_linearLayout"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="72dp"
         android:layout_alignParentBottom="true"
         android:background="@color/gray"
         android:orientation="horizontal"
@@ -52,11 +51,12 @@
         <ImageButton
             android:id="@+id/dial_call_functionBtn"
             android:layout_width="105dp"
-            android:layout_height="73dp"
+            android:layout_height="fill_parent"
             android:layout_marginLeft="0.5dp"
             android:layout_marginRight="0.5dp"
             android:background="@drawable/dial_call_btn_bg"
-            android:contentDescription="@string/dialBtn_imageView_content_description" />
+            android:contentDescription="@string/dialBtn_imageView_content_description"
+            android:src="@drawable/img_dial_call_btn" />
 
         <include
             android:id="@+id/dial_clearDialPhone_functionBtn"
