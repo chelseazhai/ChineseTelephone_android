@@ -27,11 +27,11 @@
             android:id="@+id/contactInAB_listView"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:cacheColorHint="@color/clear"
+            android:cacheColorHint="@android:color/transparent"
             android:divider="@drawable/img_addressbook_contact_listview_divider_bg"
             android:fadingEdge="none"
             android:headerDividersEnabled="false"
-            android:listSelector="@color/clear" >
+            android:listSelector="@android:color/transparent" >
         </ListView>
     </FrameLayout>
 

@@ -2,6 +2,7 @@ package com.richitec.chinesetelephone.tab7tabcontent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
@@ -13,7 +14,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.SimpleAdapter;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.richitec.chinesetelephone.R;
@@ -34,44 +35,25 @@ public class DialTabContentActivity extends Activity {
 		_mDialPhoneTextView = (TextView) findViewById(R.id.dial_phone_textView);
 		_mDialPhoneTextView.setText("");
 
-		// test by ares
-		// define grid view content
-		String[] gridViewContentArr = { "1", "2", "3", "4", "5", "6", "7", "8",
-				"9", "*", "0", "#" };
+		// get dial phone button gridView
+		GridView _dialPhoneButtonGridView = ((GridView) findViewById(R.id.dial_phoneBtn_gridView));
 
-		// data list
-		ArrayList<Map<String, String>> dataList = new ArrayList<Map<String, String>>();
+		// set dial phone button grid view adapter
+		_dialPhoneButtonGridView.setAdapter(generateDialPhoneButtonAdapter());
 
-		for (int i = 0; i < gridViewContentArr.length; i++) {
-			HashMap<String, String> dataMap = new HashMap<String, String>();
-
-			dataMap.put("dial_btn_title", gridViewContentArr[i]);
-
-			dataList.add(dataMap);
-		}
-
-		// simple adapter with content
-		SimpleAdapter adapter = new SimpleAdapter(this, dataList,
-				R.layout.dial_btn_layout, new String[] { "dial_btn_title" },
-				new int[] { R.id.dialBtn_textView });
-
-		// get dial button gridView
-		GridView _dialBtnGridView = ((GridView) findViewById(R.id.dial_btn_gridView));
-
-		// set dial button grid view adapter
-		_dialBtnGridView.setAdapter(adapter);
-
-		// set dial button grid view item click and long click listener
-		_dialBtnGridView
+		// set dial phone button grid view item click and long click listener
+		_dialPhoneButtonGridView
 				.setOnItemClickListener(new DialBtnGridViewItemOnClickListener());
-		_dialBtnGridView
+		_dialPhoneButtonGridView
 				.setOnItemLongClickListener(new DialBtnGridViewItemOnLongClickListener());
 
 		// test by ares
 		((ImageButton) findViewById(R.id.dial_newContact_functionBtn))
-				.setImageResource(R.drawable.img_dial_star_btn);
+				.setImageResource(R.drawable.img_dial_newcontact_btn);
+		((ImageButton) findViewById(R.id.dial_call_functionBtn))
+				.setImageResource(R.drawable.img_dial_call_btn);
 		((ImageButton) findViewById(R.id.dial_clearDialPhone_functionBtn))
-				.setImageResource(R.drawable.img_dial_star_btn);
+				.setImageResource(R.drawable.img_dial_cleardialphone_btn);
 	}
 
 	@Override
@@ -79,6 +61,42 @@ public class DialTabContentActivity extends Activity {
 		getMenuInflater()
 				.inflate(R.menu.dial_tab_content_activity_layout, menu);
 		return true;
+	}
+
+	// generate dial phone button adapter
+	private ListAdapter generateDialPhoneButtonAdapter() {
+		// dial phone button adapter data keys
+		final String DIAL_PHONEBUTTON_IMAGE = "dial_phone_button_image";
+
+		// define dial phone button gridView content
+		int[] _dialPhoneButtonGridViewContentArray = {
+				R.drawable.img_dial_1_btn, R.drawable.img_dial_2_btn,
+				R.drawable.img_dial_3_btn, R.drawable.img_dial_4_btn,
+				R.drawable.img_dial_5_btn, R.drawable.img_dial_6_btn,
+				R.drawable.img_dial_7_btn, R.drawable.img_dial_8_btn,
+				R.drawable.img_dial_9_btn, R.drawable.img_dial_star_btn,
+				R.drawable.img_dial_0_btn, R.drawable.img_dial_pound_btn };
+
+		// set address book contacts list view present data list
+		List<Map<String, ?>> _dialPhoneButtonDataList = new ArrayList<Map<String, ?>>();
+
+		for (int i = 0; i < _dialPhoneButtonGridViewContentArray.length; i++) {
+			// generate data
+			HashMap<String, Object> _dataMap = new HashMap<String, Object>();
+
+			_dataMap.put(
+					DIAL_PHONEBUTTON_IMAGE,
+					getResources().getDrawable(
+							_dialPhoneButtonGridViewContentArray[i]));
+
+			// add data to list
+			_dialPhoneButtonDataList.add(_dataMap);
+		}
+
+		return new DialPhoneButtonAdapter(this, _dialPhoneButtonDataList,
+				R.layout.dial_phone_btn_layout,
+				new String[] { DIAL_PHONEBUTTON_IMAGE },
+				new int[] { R.id.dialBtn_imageView });
 	}
 
 	// inner class

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="105dp"
-    android:layout_height="71dp"
+    android:layout_height="73dp"
     android:background="@drawable/dial_newcontact7cleardialphone_function_btn_bg"
     android:contentDescription="@string/dialBtn_imageView_content_description" />
