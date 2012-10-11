@@ -214,6 +214,10 @@ public class DialTabContentActivity extends Activity {
 	class DialPhoneBtnGridViewItemOnClickListener implements
 			OnItemClickListener {
 
+		// dial phone button data
+		private final String[] _dialPhoneButtonData = new String[] { "1", "2",
+				"3", "4", "5", "6", "7", "8", "9", "*", "0", "#" };
+
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
@@ -221,28 +225,8 @@ public class DialTabContentActivity extends Activity {
 			StringBuilder _dialPhoneStringBuilder = new StringBuilder(
 					_mDialPhoneTextView.getText());
 
-			// check position
-			switch (position) {
-			case 9:
-				// *
-				_dialPhoneStringBuilder.append('*');
-				break;
-
-			case 10:
-				// 0
-				_dialPhoneStringBuilder.append(0);
-				break;
-
-			case 11:
-				// #
-				_dialPhoneStringBuilder.append('#');
-				break;
-
-			default:
-				// numeric
-				_dialPhoneStringBuilder.append(position + 1);
-				break;
-			}
+			// dial phone
+			_dialPhoneStringBuilder.append(_dialPhoneButtonData[position]);
 
 			// reset dial phone textView text
 			_mDialPhoneTextView.setText(_dialPhoneStringBuilder);
@@ -259,7 +243,7 @@ public class DialTabContentActivity extends Activity {
 				int position, long id) {
 			boolean _ret = false;
 
-			// check 0 or +
+			// check +
 			if (10 == position) {
 				// define dial phone string builder
 				StringBuilder _dialPhoneStringBuilder = new StringBuilder(
