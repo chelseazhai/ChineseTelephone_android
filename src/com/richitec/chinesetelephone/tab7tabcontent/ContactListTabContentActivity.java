@@ -107,7 +107,8 @@ public class ContactListTabContentActivity extends NavigationActivity {
 							AddressBookManager.PHONENUMBER_MATCHING_INDEXES);
 
 			// set data
-			if (ContactSearchStatus.SEARCHBYNAME == _mContactSearchStatus) {
+			if (ContactSearchStatus.SEARCHBYNAME == _mContactSearchStatus
+					|| ContactSearchStatus.SEARCHBYCHINESENAME == _mContactSearchStatus) {
 				// get display name
 				SpannableString _displayName = new SpannableString(
 						_contact.getDisplayName());
@@ -240,7 +241,7 @@ public class ContactListTabContentActivity extends NavigationActivity {
 	// inner class
 	// contact search status
 	enum ContactSearchStatus {
-		NONESEARCH, SEARCHBYNAME, SEARCHBYPHONE
+		NONESEARCH, SEARCHBYNAME, SEARCHBYCHINESENAME, SEARCHBYPHONE
 	}
 
 	// contacts in address book listView quick alphabet bar on touch listener
@@ -294,6 +295,8 @@ public class ContactListTabContentActivity extends NavigationActivity {
 				_mContactSearchStatus = ContactSearchStatus.NONESEARCH;
 			} else if (s.toString().matches("^[0-9]*$")) {
 				_mContactSearchStatus = ContactSearchStatus.SEARCHBYPHONE;
+			} else if (s.toString().matches(".*[\u4e00-\u9fa5].*")) {
+				_mContactSearchStatus = ContactSearchStatus.SEARCHBYCHINESENAME;
 			} else {
 				_mContactSearchStatus = ContactSearchStatus.SEARCHBYNAME;
 			}
@@ -303,6 +306,11 @@ public class ContactListTabContentActivity extends NavigationActivity {
 			case SEARCHBYNAME:
 				_mPresentContactsInABInfoArray = AddressBookManager
 						.getInstance().getContactsByName(s.toString());
+				break;
+
+			case SEARCHBYCHINESENAME:
+				_mPresentContactsInABInfoArray = AddressBookManager
+						.getInstance().getContactsByChineseName(s.toString());
 				break;
 
 			case SEARCHBYPHONE:
