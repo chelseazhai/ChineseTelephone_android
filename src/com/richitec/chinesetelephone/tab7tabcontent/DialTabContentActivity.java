@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.richitec.chinesetelephone.R;
+import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.utils.DpPixUtils;
 
 public class DialTabContentActivity extends Activity {
@@ -170,9 +171,31 @@ public class DialTabContentActivity extends Activity {
 					// reset dial phone textView text font size
 					_mDialPhoneTextView.setTextSize(_textFontSize - 1);
 				} else {
-					return;
+					break;
 				}
 			} while (_textFontSize > DIALPHONE_TEXTVIEWTEXT_MINFONTSIZE);
+
+			// get the dial phone ownership
+			// get dial phone ownership textView
+			TextView _dialPhoneOwnershipTextView = (TextView) findViewById(R.id.dial_phone_ownership_textView);
+
+			// get address book manager reference
+			AddressBookManager _addressBookManager = AddressBookManager
+					.getInstance();
+
+			// check dial phone has ownership
+			Long _contactId = _addressBookManager
+					.isContactWithPhoneInAddressBook(s.toString());
+			if (null != _contactId) {
+				// set dial phone ownership textView text and show it
+				_dialPhoneOwnershipTextView.setText(_addressBookManager
+						.getContactByAggregatedId(_contactId).getDisplayName());
+
+				_dialPhoneOwnershipTextView.setVisibility(View.VISIBLE);
+			} else {
+				// hide dial phone ownership textView
+				_dialPhoneOwnershipTextView.setVisibility(View.GONE);
+			}
 		}
 
 		@Override

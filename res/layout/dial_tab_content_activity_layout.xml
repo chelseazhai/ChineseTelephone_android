@@ -3,24 +3,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <TextView
-        android:id="@+id/dial_phone_textView"
+    <RelativeLayout
+        android:id="@+id/dial_phone_textView_parentRelativeLayout"
         android:layout_width="fill_parent"
         android:layout_height="80dp"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/img_dial_phone_textview_bg"
-        android:ellipsize="middle"
-        android:gravity="center"
-        android:singleLine="true"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@android:color/white"
-        android:textStyle="bold" />
+        android:layout_alignParentTop="true" >
+
+        <TextView
+            android:id="@+id/dial_phone_textView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/img_dial_phone_textview_bg"
+            android:ellipsize="middle"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/dial_phone_ownership_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="4dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/white"
+            android:visibility="gone" />
+    </RelativeLayout>
 
     <GridView
         android:id="@+id/dial_phoneBtn_gridView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/dial_phone_textView"
+        android:layout_below="@id/dial_phone_textView_parentRelativeLayout"
         android:background="@color/gray"
         android:cacheColorHint="@android:color/transparent"
         android:fadingEdge="none"

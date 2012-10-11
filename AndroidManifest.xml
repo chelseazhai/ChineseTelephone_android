@@ -26,7 +26,8 @@
         </activity>
         <activity
             android:name=".tab7tabcontent.ChineseTelephoneTabActivity"
-            android:label="@string/title_activity_chinese_telephone_tab" >
+            android:label="@string/title_activity_chinese_telephone_tab"
+            android:windowSoftInputMode="adjustPan" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
