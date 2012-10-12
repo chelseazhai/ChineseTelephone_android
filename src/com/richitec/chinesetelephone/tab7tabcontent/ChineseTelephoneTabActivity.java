@@ -30,8 +30,8 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 			{ R.drawable.img_tab_setting_unselected,
 					R.drawable.img_tab_setting_selected } };
 
-	// current tab index, default is dial tab
-	private int _mCurrentTabIndex = 1;
+	// current tab index, default is contact list tab
+	private int _mCurrentTabIndex = 2;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
