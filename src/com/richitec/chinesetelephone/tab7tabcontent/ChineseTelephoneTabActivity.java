@@ -3,12 +3,35 @@ package com.richitec.chinesetelephone.tab7tabcontent;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TabHost;
+import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
+import android.widget.TabWidget;
 
 import com.richitec.chinesetelephone.R;
+import com.richitec.commontoolkit.utils.CommonUtils;
 
 public class ChineseTelephoneTabActivity extends TabActivity {
+
+	// tab ids array
+	private final String[] TABIDS = new String[] {
+			"call record history list tab", "dial tab", "contact list tab",
+			"setting tab" };
+
+	// tab images array
+	private final int[][] TABIMGS = new int[][] {
+			{ R.drawable.img_tab_callrecord_unselected,
+					R.drawable.img_tab_callrecord_selected },
+			{ R.drawable.img_tab_dial_unselected,
+					R.drawable.img_tab_dial_selected },
+			{ R.drawable.img_tab_contactlist_unselected,
+					R.drawable.img_tab_contactlist_selected },
+			{ R.drawable.img_tab_setting_unselected,
+					R.drawable.img_tab_setting_selected } };
+
+	// current tab index
+	private int _mCurrentTabIndex = 1;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -23,10 +46,11 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 		// set tab indicator and content
 		// call record history list
 		TabSpec _callRecordHistoryListTabSpec = _tabHost
-				.newTabSpec("call record history list tab spec")
+				.newTabSpec(TABIDS[0])
 				.setIndicator(
 						getResources().getString(
-								R.string.call_record_history_list_tab_title))
+								R.string.call_record_history_list_tab_title),
+						getResources().getDrawable(TABIMGS[0][0]))
 				.setContent(
 						new Intent().setClass(this,
 								CallRecordHistoryListTabContentActivity.class));
@@ -34,8 +58,10 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 
 		// dial
 		TabSpec _dialTabSpec = _tabHost
-				.newTabSpec("dial tab spec")
-				.setIndicator(getResources().getString(R.string.dial_tab_title))
+				.newTabSpec(TABIDS[1])
+				.setIndicator(
+						getResources().getString(R.string.dial_tab_title),
+						getResources().getDrawable(TABIMGS[1][0]))
 				.setContent(
 						new Intent().setClass(this,
 								DialTabContentActivity.class));
@@ -43,10 +69,11 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 
 		// contact list
 		TabSpec _contactListTabSpec = _tabHost
-				.newTabSpec("contact list tab spec")
+				.newTabSpec(TABIDS[2])
 				.setIndicator(
 						getResources().getString(
-								R.string.contact_list_tab7nav_title))
+								R.string.contact_list_tab7nav_title),
+						getResources().getDrawable(TABIMGS[2][0]))
 				.setContent(
 						new Intent().setClass(this,
 								ContactListTabContentActivity.class));
@@ -54,20 +81,50 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 
 		// setting
 		TabSpec _settingTabSpec = _tabHost
-				.newTabSpec("setting tab spec")
+				.newTabSpec(TABIDS[3])
 				.setIndicator(
 						getResources()
-								.getString(R.string.setting_tab7nav_title))
+								.getString(R.string.setting_tab7nav_title),
+						getResources().getDrawable(TABIMGS[3][0]))
 				.setContent(
 						new Intent().setClass(this,
 								SettingTabContentActivity.class));
 		_tabHost.addTab(_settingTabSpec);
 
-		// set current tab
-		_tabHost.setCurrentTab(2);
+		// set current tab and tab image
+		_tabHost.setCurrentTab(_mCurrentTabIndex);
+		((ImageView) _tabHost.getTabWidget().getChildAt(_mCurrentTabIndex)
+				.findViewById(android.R.id.icon))
+				.setImageResource(TABIMGS[_mCurrentTabIndex][1]);
 
-		//
-		// _tabHost.getTabWidget().get
+		// set Chinese telephone on tab changed listener
+		_tabHost.setOnTabChangedListener(new ChineseTelephoneOnTabChangeListener());
+	}
+
+	// inner class
+	// Chinese telephone on tab change listener
+	class ChineseTelephoneOnTabChangeListener implements OnTabChangeListener {
+
+		@Override
+		public void onTabChanged(String tabId) {
+			// get last selected tab index
+			int _lastSelectedTabIndex = _mCurrentTabIndex;
+
+			// set current tab index
+			_mCurrentTabIndex = CommonUtils.array2List(TABIDS).indexOf(tabId);
+
+			// get tab widget
+			TabWidget _tabWidget = getTabHost().getTabWidget();
+
+			// reset last selected and current tab image
+			((ImageView) _tabWidget.getChildAt(_lastSelectedTabIndex)
+					.findViewById(android.R.id.icon))
+					.setImageResource(TABIMGS[_lastSelectedTabIndex][0]);
+			((ImageView) _tabWidget.getChildAt(_mCurrentTabIndex).findViewById(
+					android.R.id.icon))
+					.setImageResource(TABIMGS[_mCurrentTabIndex][1]);
+		}
+
 	}
 
 }
