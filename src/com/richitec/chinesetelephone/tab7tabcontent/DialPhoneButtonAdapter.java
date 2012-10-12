@@ -4,10 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
+import android.widget.ImageButton;
 
 import com.richitec.commontoolkit.customadapter.CommonListAdapter;
 
@@ -27,22 +28,28 @@ public class DialPhoneButtonAdapter extends CommonListAdapter {
 
 		// check view type
 		// image button
-		if (view instanceof ImageView) {
-			// define item data drawable
-			Drawable _itemDataDrawable;
-
+		if (view instanceof ImageButton) {
 			try {
-				// convert item data to drawable
-				_itemDataDrawable = (Drawable) _itemData;
+				// define item data map and convert item data to map
+				@SuppressWarnings("unchecked")
+				Map<String, Object> _itemDataMap = (Map<String, Object>) _itemData;
 
-				// set image button image resource
-				((ImageView) view).setImageDrawable(_itemDataDrawable);
+				// set image button attributes
+				((ImageButton) view).setTag(_itemDataMap
+						.get(DialTabContentActivity.DIAL_PHONE_BUTTON_CODE));
+				((ImageButton) view).setImageResource((Integer) _itemDataMap
+						.get(DialTabContentActivity.DIAL_PHONE_BUTTON_IMAGE));
+				((ImageButton) view)
+						.setOnClickListener((OnClickListener) _itemDataMap
+								.get(DialTabContentActivity.DIAL_PHONE_BUTTON_ONCLICKLISTENER));
+				((ImageButton) view)
+						.setOnLongClickListener((OnLongClickListener) _itemDataMap
+								.get(DialTabContentActivity.DIAL_PHONE_BUTTON_ONLONGCLICKLISTENER));
 			} catch (Exception e) {
 				e.printStackTrace();
 
-				Log.e(LOG_TAG,
-						"Convert item data to drawable error, item data = "
-								+ _itemData);
+				Log.e(LOG_TAG, "Convert item data to map error, item data = "
+						+ _itemData);
 			}
 		}
 	}

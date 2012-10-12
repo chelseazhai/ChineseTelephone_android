@@ -15,9 +15,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
@@ -31,6 +28,12 @@ import com.richitec.commontoolkit.utils.DpPixUtils;
 public class DialTabContentActivity extends Activity {
 
 	private static final String LOG_TAG = "DialTabContentActivity";
+
+	// dial phone button gridView keys
+	public static final String DIAL_PHONE_BUTTON_CODE = "dial_phone_button_code";
+	public static final String DIAL_PHONE_BUTTON_IMAGE = "dial_phone_button_image";
+	public static final String DIAL_PHONE_BUTTON_ONCLICKLISTENER = "dial_phone_button_onClickListener";
+	public static final String DIAL_PHONE_BUTTON_ONLONGCLICKLISTENER = "dial_phone_button_onLongClickListener";
 
 	// dial phone textView text max and min font size
 	private final Float DIALPHONE_TEXTVIEWTEXT_MAXFONTSIZE = 36.0f;
@@ -57,17 +60,9 @@ public class DialTabContentActivity extends Activity {
 		_mDialPhoneTextView
 				.addTextChangedListener(new DialPhoneTextViewTextWatcher());
 
-		// get dial phone button gridView
-		GridView _dialPhoneButtonGridView = ((GridView) findViewById(R.id.dial_phoneBtn_gridView));
-
 		// set dial phone button grid view adapter
-		_dialPhoneButtonGridView.setAdapter(generateDialPhoneButtonAdapter());
-
-		// set dial phone button grid view item click and long click listener
-		_dialPhoneButtonGridView
-				.setOnItemClickListener(new DialPhoneBtnGridViewItemOnClickListener());
-		_dialPhoneButtonGridView
-				.setOnItemLongClickListener(new DialPhoneBtnGridViewItemOnLongClickListener());
+		((GridView) findViewById(R.id.dial_phoneBtn_gridView))
+				.setAdapter(generateDialPhoneButtonAdapter());
 
 		// init dial function button and set click and long click listener
 		// get add new contact dial function button
@@ -108,11 +103,11 @@ public class DialTabContentActivity extends Activity {
 
 	// generate dial phone button adapter
 	private ListAdapter generateDialPhoneButtonAdapter() {
-		// dial phone button adapter data keys
-		final String DIAL_PHONEBUTTON_IMAGE = "dial_phone_button_image";
+		// dial phone button adapter data key
+		final String DIAL_PHONE_BUTTON = "dial_phone_button";
 
-		// define dial phone button gridView content
-		int[] _dialPhoneButtonGridViewContentArray = {
+		// define dial phone button gridView image resource content
+		final int[] _dialPhoneButtonGridViewImgResourceContentArray = {
 				R.drawable.img_dial_1_btn, R.drawable.img_dial_2_btn,
 				R.drawable.img_dial_3_btn, R.drawable.img_dial_4_btn,
 				R.drawable.img_dial_5_btn, R.drawable.img_dial_6_btn,
@@ -123,14 +118,22 @@ public class DialTabContentActivity extends Activity {
 		// set address book contacts list view present data list
 		List<Map<String, ?>> _dialPhoneButtonDataList = new ArrayList<Map<String, ?>>();
 
-		for (int i = 0; i < _dialPhoneButtonGridViewContentArray.length; i++) {
+		for (int i = 0; i < _dialPhoneButtonGridViewImgResourceContentArray.length; i++) {
 			// generate data
-			HashMap<String, Object> _dataMap = new HashMap<String, Object>();
+			Map<String, Object> _dataMap = new HashMap<String, Object>();
 
-			_dataMap.put(
-					DIAL_PHONEBUTTON_IMAGE,
-					getResources().getDrawable(
-							_dialPhoneButtonGridViewContentArray[i]));
+			// value map
+			Map<String, Object> _valueMap = new HashMap<String, Object>();
+			_valueMap.put(DIAL_PHONE_BUTTON_CODE, i);
+			_valueMap.put(DIAL_PHONE_BUTTON_IMAGE,
+					_dialPhoneButtonGridViewImgResourceContentArray[i]);
+			_valueMap.put(DIAL_PHONE_BUTTON_ONCLICKLISTENER,
+					new DialPhoneBtnOnClickListener());
+			_valueMap.put(DIAL_PHONE_BUTTON_ONLONGCLICKLISTENER,
+					new DialPhoneBtnOnLongClickListener());
+
+			// put value
+			_dataMap.put(DIAL_PHONE_BUTTON, _valueMap);
 
 			// add data to list
 			_dialPhoneButtonDataList.add(_dataMap);
@@ -138,7 +141,7 @@ public class DialTabContentActivity extends Activity {
 
 		return new DialPhoneButtonAdapter(this, _dialPhoneButtonDataList,
 				R.layout.dial_phone_btn_layout,
-				new String[] { DIAL_PHONEBUTTON_IMAGE },
+				new String[] { DIAL_PHONE_BUTTON },
 				new int[] { R.id.dialBtn_imageView });
 	}
 
@@ -210,23 +213,22 @@ public class DialTabContentActivity extends Activity {
 
 	}
 
-	// dial phone button gridView item on click listener
-	class DialPhoneBtnGridViewItemOnClickListener implements
-			OnItemClickListener {
+	// dial phone button on click listener
+	class DialPhoneBtnOnClickListener implements OnClickListener {
 
-		// dial phone button data
-		private final String[] _dialPhoneButtonData = new String[] { "1", "2",
-				"3", "4", "5", "6", "7", "8", "9", "*", "0", "#" };
+		// define dial phone button value data
+		private final String[] _dialPhoneButtonValueData = new String[] { "1",
+				"2", "3", "4", "5", "6", "7", "8", "9", "*", "0", "#" };
 
 		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
+		public void onClick(View v) {
 			// define dial phone string builder
 			StringBuilder _dialPhoneStringBuilder = new StringBuilder(
 					_mDialPhoneTextView.getText());
 
 			// dial phone
-			_dialPhoneStringBuilder.append(_dialPhoneButtonData[position]);
+			_dialPhoneStringBuilder
+					.append(_dialPhoneButtonValueData[(Integer) v.getTag()]);
 
 			// reset dial phone textView text
 			_mDialPhoneTextView.setText(_dialPhoneStringBuilder);
@@ -234,17 +236,15 @@ public class DialTabContentActivity extends Activity {
 
 	}
 
-	// dial phone button gridView item on long click listener
-	class DialPhoneBtnGridViewItemOnLongClickListener implements
-			OnItemLongClickListener {
+	// dial phone button on long click listener
+	class DialPhoneBtnOnLongClickListener implements OnLongClickListener {
 
 		@Override
-		public boolean onItemLongClick(AdapterView<?> parent, View view,
-				int position, long id) {
+		public boolean onLongClick(View v) {
 			boolean _ret = false;
 
 			// check +
-			if (10 == position) {
+			if (10 == (Integer) v.getTag()) {
 				// define dial phone string builder
 				StringBuilder _dialPhoneStringBuilder = new StringBuilder(
 						_mDialPhoneTextView.getText());
