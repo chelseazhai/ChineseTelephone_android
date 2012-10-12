@@ -187,12 +187,12 @@ public class DialTabContentActivity extends Activity {
 					.getInstance();
 
 			// check dial phone has ownership
-			Long _contactId = _addressBookManager
+			Long _dialPhoneOwnershipId = _addressBookManager
 					.isContactWithPhoneInAddressBook(s.toString());
-			if (null != _contactId) {
+			if (null != _dialPhoneOwnershipId) {
 				// set dial phone ownership textView text and show it
 				_dialPhoneOwnershipTextView.setText(_addressBookManager
-						.getContactByAggregatedId(_contactId).getDisplayName());
+						.getContactByAggregatedId(_dialPhoneOwnershipId).getDisplayName());
 
 				_dialPhoneOwnershipTextView.setVisibility(View.VISIBLE);
 			} else {

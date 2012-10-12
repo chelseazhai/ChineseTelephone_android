@@ -11,6 +11,9 @@
     <string name="title_activity_call_record_history_list_tab_content">CallRecordHistoryListActivity</string>
     <string name="call_record_history_list_tab_title">Record</string>
     <string name="call_record_history_list_nav_title">Call Record</string>
+    <string name="outgoingCall_imageView_content_description">outgoing call image view</string>
+    <string name="recordDetail_imageButton_content_description">call record detail info image button</string>
+    <string name="unknown_dial_phoneNumber">Unknown</string>
 
     <!-- dial tab content activity -->
     <string name="title_activity_dial_tab_content">DialTabContentActivity</string>
