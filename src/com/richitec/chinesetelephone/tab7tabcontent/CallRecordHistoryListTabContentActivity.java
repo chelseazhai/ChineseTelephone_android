@@ -58,20 +58,26 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 
 		// test by ares
 		// define list view content
-		String[] listViewPhoneContentArr = { "13770662051", "13456231234",
-				"+86-025-66083096-801", "13382794516", "13813005146", "1234" };
-		String[] listViewInitiateContentArr = { "12-10-10\n12:12:10",
-				"12-10-10\n12:22:10", "12-10-10\n14:12:10",
-				"12-10-11\n12:12:10", "12-10-11\n19:12:10",
-				"12-10-12\n11:12:10" };
+		String[][] listViewContentArr = {
+				{ "13770662051", "12-10-10\n12:12:10" },
+				{ "13456231234", "12-10-10\n12:22:10" },
+				{ "+86-025-66083096-801", "12-10-10\n14:12:10" },
+				{ "13382794516", "12-10-11\n12:12:10" },
+				{ "13813005146", "12-10-11\n19:12:10" },
+				{ "1234", "12-10-12\n11:12:10" },
+				{ "13382794516", "12-10-12\n11:30:10" },
+				{ "13382794516", "12-10-12\n13:10:10" },
+				{ "13770662051", "12-10-12\n13:12:10" },
+				{ "13382794516", "12-10-12\n14:02:00" },
+				{ "13770662051", "12-10-12\n15:02:08" } };
 
-		for (int i = 0; i < listViewPhoneContentArr.length; i++) {
+		for (int i = 0; i < listViewContentArr.length; i++) {
 			// generate data
 			Map<String, Object> _dataMap = new HashMap<String, Object>();
 
 			// put value
 			// get dial phone
-			String _dialPhone = listViewPhoneContentArr[i];
+			String _dialPhone = listViewContentArr[i][0];
 
 			// check dial phone has ownership
 			Long _dialPhoneOwnershipId = _addressBookManager
@@ -86,9 +92,8 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 						.getContactByAggregatedId(_dialPhoneOwnershipId)
 						.getDisplayName());
 			}
-			_dataMap.put(CALL_RECORD_PHONE, listViewPhoneContentArr[i]);
-			_dataMap.put(CALL_RECORD_INITIATETIME,
-					listViewInitiateContentArr[i]);
+			_dataMap.put(CALL_RECORD_PHONE, _dialPhone);
+			_dataMap.put(CALL_RECORD_INITIATETIME, listViewContentArr[i][1]);
 
 			// add data to list
 			_callRecordHistoryDataList.add(_dataMap);
