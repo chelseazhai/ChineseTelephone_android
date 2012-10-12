@@ -58,8 +58,8 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 
 		// test by ares
 		// define list view content
-		String[] listViewPhoneContentArr = { "13770886721", "13456231234",
-				"+86-025-66083096-801", "18652970729", "13813005146", "1234" };
+		String[] listViewPhoneContentArr = { "13770662051", "13456231234",
+				"+86-025-66083096-801", "13382794516", "13813005146", "1234" };
 		String[] listViewInitiateContentArr = { "12-10-10\n12:12:10",
 				"12-10-10\n12:22:10", "12-10-10\n14:12:10",
 				"12-10-11\n12:12:10", "12-10-11\n19:12:10",
