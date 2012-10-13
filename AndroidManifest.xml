@@ -42,8 +42,8 @@
             android:label="@string/title_activity_call_record_history_list_tab_content" >
         </activity>
         <activity
-            android:name=".tab7tabcontent.SettingTabContentActivity"
-            android:label="@string/title_activity_setting_tab_content" >
+            android:name=".tab7tabcontent.MoreTabContentActivity"
+            android:label="@string/title_activity_more_tab_content" >
         </activity>
     </application>
 

@@ -17,7 +17,7 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 	// tab ids array
 	private final String[] TABIDS = new String[] {
 			"call record history list tab", "dial tab", "contact list tab",
-			"setting tab" };
+			"more tab" };
 
 	// tab images array
 	private final int[][] TABIMGS = new int[][] {
@@ -27,8 +27,8 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 					R.drawable.img_tab_dial_selected },
 			{ R.drawable.img_tab_contactlist_unselected,
 					R.drawable.img_tab_contactlist_selected },
-			{ R.drawable.img_tab_setting_unselected,
-					R.drawable.img_tab_setting_selected } };
+			{ R.drawable.img_tab_more_unselected,
+					R.drawable.img_tab_more_selected } };
 
 	// current tab index, default is contact list tab
 	private int _mCurrentTabIndex = 2;
@@ -79,17 +79,16 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 								ContactListTabContentActivity.class));
 		_tabHost.addTab(_contactListTabSpec);
 
-		// setting
-		TabSpec _settingTabSpec = _tabHost
+		// more
+		TabSpec _moreTabSpec = _tabHost
 				.newTabSpec(TABIDS[3])
 				.setIndicator(
-						getResources()
-								.getString(R.string.setting_tab7nav_title),
+						getResources().getString(R.string.more_tab7nav_title),
 						getResources().getDrawable(TABIMGS[3][0]))
 				.setContent(
 						new Intent().setClass(this,
-								SettingTabContentActivity.class));
-		_tabHost.addTab(_settingTabSpec);
+								MoreTabContentActivity.class));
+		_tabHost.addTab(_moreTabSpec);
 
 		// set current tab and tab image
 		_tabHost.setCurrentTab(_mCurrentTabIndex);
