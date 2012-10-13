@@ -6,7 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -15,6 +20,12 @@ import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
 
 public class CallRecordHistoryListTabContentActivity extends NavigationActivity {
+
+	private static final String LOG_TAG = "CallRecordHistoryListTabContentActivity";
+
+	// call record detail image button keys
+	public static final String CALL_RECORD_IMAGEBUTTON_TAG = "call_record_imageButton_tag";
+	public static final String CALL_RECORD_IMAGEBUTTON_ONCLICKLISTENER = "call_record_imageButton_onClickListener";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -32,6 +43,10 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 		// set call record history listView adapter
 		_callRecordHistoryListView
 				.setAdapter(generateCallRecordHistoryListItemAdapter());
+
+		// set call record history listView on item click listener
+		_callRecordHistoryListView
+				.setOnItemClickListener(new CallRecordHistoryListViewOnItemClickListener());
 	}
 
 	@Override
@@ -48,6 +63,7 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 		final String CALL_RECORD_DISPLAYNAME = "call_record_displayName";
 		final String CALL_RECORD_PHONE = "call_record_phone";
 		final String CALL_RECORD_INITIATETIME = "call_record_initiateTime";
+		final String CALL_RECORD_DETAIL = "call_record_detailInfo";
 
 		// set call record history list view data list
 		List<Map<String, ?>> _callRecordHistoryDataList = new ArrayList<Map<String, ?>>();
@@ -95,6 +111,14 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 			_dataMap.put(CALL_RECORD_PHONE, _dialPhone);
 			_dataMap.put(CALL_RECORD_INITIATETIME, listViewContentArr[i][1]);
 
+			// call record detail value map
+			Map<String, Object> _callRecordDetailValueMap = new HashMap<String, Object>();
+			_callRecordDetailValueMap.put(CALL_RECORD_IMAGEBUTTON_TAG, i);
+			_callRecordDetailValueMap
+					.put(CALL_RECORD_IMAGEBUTTON_ONCLICKLISTENER,
+							new CallRecordHistoryListViewItemDetailImgBtnOnClickListener());
+			_dataMap.put(CALL_RECORD_DETAIL, _callRecordDetailValueMap);
+
 			// add data to list
 			_callRecordHistoryDataList.add(_dataMap);
 		}
@@ -103,10 +127,36 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 				_callRecordHistoryDataList,
 				R.layout.call_record_historylist_item, new String[] {
 						CALL_RECORD_DISPLAYNAME, CALL_RECORD_PHONE,
-						CALL_RECORD_INITIATETIME }, new int[] {
-						R.id.record_displayName_textView,
+						CALL_RECORD_INITIATETIME, CALL_RECORD_DETAIL },
+				new int[] { R.id.record_displayName_textView,
 						R.id.record_phone_textView,
-						R.id.record_initiateTime_textView });
+						R.id.record_initiateTime_textView,
+						R.id.recordDetail_imageBtn });
+	}
+
+	// inner class
+	// call record history listView on item click listener
+	class CallRecordHistoryListViewOnItemClickListener implements
+			OnItemClickListener {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			Log.d(LOG_TAG, "parent = " + parent + ", view = " + view
+					+ ", position = " + position + " and id = " + id);
+		}
+
+	}
+
+	// call record history listView item detail image button on click listener
+	class CallRecordHistoryListViewItemDetailImgBtnOnClickListener implements
+			OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			Log.d(LOG_TAG, "view = " + v + " and position = " + v.getTag());
+		}
+
 	}
 
 }

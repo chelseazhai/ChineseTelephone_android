@@ -16,6 +16,9 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -69,6 +72,10 @@ public class ContactListTabContentActivity extends NavigationActivity {
 		// touch listener
 		new ListViewQuickAlphabetBar(_mABContactsListView)
 				.setOnTouchListener(new ContactsInABListViewQuickAlphabetBarOnTouchListener());
+
+		// set contacts in address book listView on item click listener
+		_mABContactsListView
+				.setOnItemClickListener(new ContactsInABListViewOnItemClickListener());
 
 		// bind contact search editText text watcher
 		((EditText) findViewById(R.id.contact_search_editText))
@@ -281,6 +288,19 @@ public class ContactListTabContentActivity extends NavigationActivity {
 			}
 
 			return true;
+		}
+
+	}
+
+	// contacts in address book listView on item click listener
+	class ContactsInABListViewOnItemClickListener implements
+			OnItemClickListener {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			Log.d(LOG_TAG, "parent = " + parent + ", view = " + view
+					+ ", position = " + position + " and id = " + id);
 		}
 
 	}

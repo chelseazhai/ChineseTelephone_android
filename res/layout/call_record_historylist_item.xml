@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/addressbook_contact7call_record_bg"
+    android:descendantFocusability="blocksDescendants"
     android:paddingBottom="2dp"
     android:paddingLeft="6dp"
     android:paddingTop="2dp" >
@@ -53,6 +54,7 @@
         android:layout_centerVertical="true"
         android:background="@android:color/transparent"
         android:contentDescription="@string/recordDetail_imageButton_content_description"
+        android:focusable="false"
         android:src="@drawable/img_call_record_detail" />
 
     <TextView
