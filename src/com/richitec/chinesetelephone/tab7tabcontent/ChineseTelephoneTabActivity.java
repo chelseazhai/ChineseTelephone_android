@@ -43,9 +43,12 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 		// get tabHost
 		TabHost _tabHost = getTabHost();
 
+		// define tabSpec
+		TabSpec _tabSpec;
+
 		// set tab indicator and content
 		// call record history list
-		TabSpec _callRecordHistoryListTabSpec = _tabHost
+		_tabSpec = _tabHost
 				.newTabSpec(TABIDS[0])
 				.setIndicator(
 						getResources().getString(
@@ -54,10 +57,10 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 				.setContent(
 						new Intent().setClass(this,
 								CallRecordHistoryListTabContentActivity.class));
-		_tabHost.addTab(_callRecordHistoryListTabSpec);
+		_tabHost.addTab(_tabSpec);
 
 		// dial
-		TabSpec _dialTabSpec = _tabHost
+		_tabSpec = _tabHost
 				.newTabSpec(TABIDS[1])
 				.setIndicator(
 						getResources().getString(R.string.dial_tab_title),
@@ -65,10 +68,10 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 				.setContent(
 						new Intent().setClass(this,
 								DialTabContentActivity.class));
-		_tabHost.addTab(_dialTabSpec);
+		_tabHost.addTab(_tabSpec);
 
 		// contact list
-		TabSpec _contactListTabSpec = _tabHost
+		_tabSpec = _tabHost
 				.newTabSpec(TABIDS[2])
 				.setIndicator(
 						getResources().getString(
@@ -77,10 +80,10 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 				.setContent(
 						new Intent().setClass(this,
 								ContactListTabContentActivity.class));
-		_tabHost.addTab(_contactListTabSpec);
+		_tabHost.addTab(_tabSpec);
 
 		// more
-		TabSpec _moreTabSpec = _tabHost
+		_tabSpec = _tabHost
 				.newTabSpec(TABIDS[3])
 				.setIndicator(
 						getResources().getString(R.string.more_tab7nav_title),
@@ -88,7 +91,7 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 				.setContent(
 						new Intent().setClass(this,
 								MoreTabContentActivity.class));
-		_tabHost.addTab(_moreTabSpec);
+		_tabHost.addTab(_tabSpec);
 
 		// set current tab and tab image
 		_tabHost.setCurrentTab(_mCurrentTabIndex);
