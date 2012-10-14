@@ -6,6 +6,7 @@
     <!-- Chinese telephone tab activity -->
     <string name="menu_settings">Settings</string>
     <string name="title_activity_chinese_telephone_tab">ChineseTelephoneTabActivity</string>
+    <string name="chinese_telephone_tabWidget_itemIcon_imageView_content_description">Chinese telephone tab widget item icon image view</string>
 
     <!-- call record history list activity -->
     <string name="title_activity_call_record_history_list_tab_content">CallRecordHistoryListActivity</string>

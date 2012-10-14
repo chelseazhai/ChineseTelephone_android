@@ -3,32 +3,25 @@ package com.richitec.chinesetelephone.tab7tabcontent;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TabHost;
-import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
-import android.widget.TabWidget;
+import android.widget.TextView;
 
 import com.richitec.chinesetelephone.R;
-import com.richitec.commontoolkit.utils.CommonUtils;
 
 public class ChineseTelephoneTabActivity extends TabActivity {
 
-	// tab ids array
-	private final String[] TABIDS = new String[] {
-			"call record history list tab", "dial tab", "contact list tab",
-			"more tab" };
-
-	// tab images array
-	private final int[][] TABIMGS = new int[][] {
-			{ R.drawable.img_tab_callrecord_unselected,
-					R.drawable.img_tab_callrecord_selected },
-			{ R.drawable.img_tab_dial_unselected,
-					R.drawable.img_tab_dial_selected },
-			{ R.drawable.img_tab_contactlist_unselected,
-					R.drawable.img_tab_contactlist_selected },
-			{ R.drawable.img_tab_more_unselected,
-					R.drawable.img_tab_more_selected } };
+	// tab widget item content array
+	private final int[][] TAB_WIDGETITEM_CONTENTS = new int[][] {
+			{ R.string.call_record_history_list_tab_title,
+					R.drawable.callrecord_tab_icon },
+			{ R.string.dial_tab_title, R.drawable.dial_tab_icon },
+			{ R.string.contact_list_tab7nav_title,
+					R.drawable.contactlist_tab_icon },
+			{ R.string.more_tab7nav_title, R.drawable.more_tab_icon } };
 
 	// current tab index, default is contact list tab
 	private int _mCurrentTabIndex = 2;
@@ -49,11 +42,12 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 		// set tab indicator and content
 		// call record history list
 		_tabSpec = _tabHost
-				.newTabSpec(TABIDS[0])
+				.newTabSpec(
+						getResources().getString(TAB_WIDGETITEM_CONTENTS[0][0]))
 				.setIndicator(
-						getResources().getString(
-								R.string.call_record_history_list_tab_title),
-						getResources().getDrawable(TABIMGS[0][0]))
+						generateChineseTelephoneTabSpecIndicator(
+								TAB_WIDGETITEM_CONTENTS[0][0],
+								TAB_WIDGETITEM_CONTENTS[0][1]))
 				.setContent(
 						new Intent().setClass(this,
 								CallRecordHistoryListTabContentActivity.class));
@@ -61,10 +55,12 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 
 		// dial
 		_tabSpec = _tabHost
-				.newTabSpec(TABIDS[1])
+				.newTabSpec(
+						getResources().getString(TAB_WIDGETITEM_CONTENTS[1][0]))
 				.setIndicator(
-						getResources().getString(R.string.dial_tab_title),
-						getResources().getDrawable(TABIMGS[1][0]))
+						generateChineseTelephoneTabSpecIndicator(
+								TAB_WIDGETITEM_CONTENTS[1][0],
+								TAB_WIDGETITEM_CONTENTS[1][1]))
 				.setContent(
 						new Intent().setClass(this,
 								DialTabContentActivity.class));
@@ -72,11 +68,12 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 
 		// contact list
 		_tabSpec = _tabHost
-				.newTabSpec(TABIDS[2])
+				.newTabSpec(
+						getResources().getString(TAB_WIDGETITEM_CONTENTS[2][0]))
 				.setIndicator(
-						getResources().getString(
-								R.string.contact_list_tab7nav_title),
-						getResources().getDrawable(TABIMGS[2][0]))
+						generateChineseTelephoneTabSpecIndicator(
+								TAB_WIDGETITEM_CONTENTS[2][0],
+								TAB_WIDGETITEM_CONTENTS[2][1]))
 				.setContent(
 						new Intent().setClass(this,
 								ContactListTabContentActivity.class));
@@ -84,10 +81,12 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 
 		// more
 		_tabSpec = _tabHost
-				.newTabSpec(TABIDS[3])
+				.newTabSpec(
+						getResources().getString(TAB_WIDGETITEM_CONTENTS[3][0]))
 				.setIndicator(
-						getResources().getString(R.string.more_tab7nav_title),
-						getResources().getDrawable(TABIMGS[3][0]))
+						generateChineseTelephoneTabSpecIndicator(
+								TAB_WIDGETITEM_CONTENTS[3][0],
+								TAB_WIDGETITEM_CONTENTS[3][1]))
 				.setContent(
 						new Intent().setClass(this,
 								MoreTabContentActivity.class));
@@ -95,38 +94,21 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 
 		// set current tab and tab image
 		_tabHost.setCurrentTab(_mCurrentTabIndex);
-		((ImageView) _tabHost.getTabWidget().getChildAt(_mCurrentTabIndex)
-				.findViewById(android.R.id.icon))
-				.setImageResource(TABIMGS[_mCurrentTabIndex][1]);
-
-		// set Chinese telephone on tab changed listener
-		_tabHost.setOnTabChangedListener(new ChineseTelephoneOnTabChangeListener());
 	}
 
-	// inner class
-	// Chinese telephone on tab change listener
-	class ChineseTelephoneOnTabChangeListener implements OnTabChangeListener {
+	// generate Chinese telephone tab spec indicator
+	private View generateChineseTelephoneTabSpecIndicator(int tabText,
+			int tabIcon) {
+		// get tabSpec indicator view
+		View _tabSpecIndicator = LayoutInflater.from(this).inflate(
+				R.layout.chinese_telephone_tab_widget_item_layout, null);
 
-		@Override
-		public void onTabChanged(String tabId) {
-			// get last selected tab index
-			int _lastSelectedTabIndex = _mCurrentTabIndex;
+		// set tab text and icon
+		((TextView) _tabSpecIndicator.findViewById(R.id.text)).setText(tabText);
+		((ImageView) _tabSpecIndicator.findViewById(R.id.icon))
+				.setImageResource(tabIcon);
 
-			// set current tab index
-			_mCurrentTabIndex = CommonUtils.array2List(TABIDS).indexOf(tabId);
-
-			// get tab widget
-			TabWidget _tabWidget = getTabHost().getTabWidget();
-
-			// reset last selected and current tab image
-			((ImageView) _tabWidget.getChildAt(_lastSelectedTabIndex)
-					.findViewById(android.R.id.icon))
-					.setImageResource(TABIMGS[_lastSelectedTabIndex][0]);
-			((ImageView) _tabWidget.getChildAt(_mCurrentTabIndex).findViewById(
-					android.R.id.icon))
-					.setImageResource(TABIMGS[_mCurrentTabIndex][1]);
-		}
-
+		return _tabSpecIndicator;
 	}
 
 }
