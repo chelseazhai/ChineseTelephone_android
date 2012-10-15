@@ -6,7 +6,7 @@
     <RelativeLayout
         android:id="@+id/dial_phone_textView_parentRelativeLayout"
         android:layout_width="fill_parent"
-        android:layout_height="80dp"
+        android:layout_height="@dimen/dial_phone_textView_parentRelativeLayout_height"
         android:layout_alignParentTop="true" >
 
         <TextView
@@ -38,7 +38,7 @@
     <TableRow
         android:id="@+id/dial_functionBtn_tableRow"
         android:layout_width="fill_parent"
-        android:layout_height="72dp"
+        android:layout_height="@dimen/dial_functionBtn_tableRow_height"
         android:layout_alignParentBottom="true"
         android:background="@color/gray"
         android:orientation="horizontal"

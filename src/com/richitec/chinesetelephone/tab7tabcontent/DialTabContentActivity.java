@@ -35,10 +35,6 @@ public class DialTabContentActivity extends Activity {
 	public static final String DIAL_PHONE_BUTTON_ONCLICKLISTENER = "dial_phone_button_onClickListener";
 	public static final String DIAL_PHONE_BUTTON_ONLONGCLICKLISTENER = "dial_phone_button_onLongClickListener";
 
-	// dial phone textView text max and min font size
-	private final Float DIALPHONE_TEXTVIEWTEXT_MAXFONTSIZE = 36.0f;
-	private final Float DIALPHONE_TEXTVIEWTEXT_MINFONTSIZE = 22.0f;
-
 	// dial phone textView
 	private TextView _mDialPhoneTextView;
 
@@ -157,7 +153,8 @@ public class DialTabContentActivity extends Activity {
 			Integer _textFontSize;
 
 			// set its default font size
-			_mDialPhoneTextView.setTextSize(DIALPHONE_TEXTVIEWTEXT_MAXFONTSIZE);
+			_mDialPhoneTextView.setTextSize(DpPixUtils.pix2dp(getResources()
+					.getDimension(R.dimen.dialPhone_textView_textMaxFontSize)));
 
 			do {
 				// get text bounds
@@ -176,7 +173,8 @@ public class DialTabContentActivity extends Activity {
 				} else {
 					break;
 				}
-			} while (_textFontSize > DIALPHONE_TEXTVIEWTEXT_MINFONTSIZE);
+			} while (_textFontSize > DpPixUtils.pix2dp(getResources()
+					.getDimension(R.dimen.dialPhone_textView_textMinFontSize)));
 
 			// get the dial phone ownership
 			// get dial phone ownership textView
@@ -192,7 +190,8 @@ public class DialTabContentActivity extends Activity {
 			if (null != _dialPhoneOwnershipId) {
 				// set dial phone ownership textView text and show it
 				_dialPhoneOwnershipTextView.setText(_addressBookManager
-						.getContactByAggregatedId(_dialPhoneOwnershipId).getDisplayName());
+						.getContactByAggregatedId(_dialPhoneOwnershipId)
+						.getDisplayName());
 
 				_dialPhoneOwnershipTextView.setVisibility(View.VISIBLE);
 			} else {
