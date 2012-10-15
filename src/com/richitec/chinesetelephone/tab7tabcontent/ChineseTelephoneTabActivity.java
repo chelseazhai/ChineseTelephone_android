@@ -3,14 +3,11 @@ package com.richitec.chinesetelephone.tab7tabcontent;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
-import android.widget.TextView;
 
 import com.richitec.chinesetelephone.R;
+import com.richitec.commontoolkit.customcomponent.CommonTabSpecIndicator;
 
 public class ChineseTelephoneTabActivity extends TabActivity {
 
@@ -45,7 +42,7 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 				.newTabSpec(
 						getResources().getString(TAB_WIDGETITEM_CONTENTS[0][0]))
 				.setIndicator(
-						generateChineseTelephoneTabSpecIndicator(
+						new CommonTabSpecIndicator(this,
 								TAB_WIDGETITEM_CONTENTS[0][0],
 								TAB_WIDGETITEM_CONTENTS[0][1]))
 				.setContent(
@@ -58,7 +55,7 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 				.newTabSpec(
 						getResources().getString(TAB_WIDGETITEM_CONTENTS[1][0]))
 				.setIndicator(
-						generateChineseTelephoneTabSpecIndicator(
+						new CommonTabSpecIndicator(this,
 								TAB_WIDGETITEM_CONTENTS[1][0],
 								TAB_WIDGETITEM_CONTENTS[1][1]))
 				.setContent(
@@ -71,7 +68,7 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 				.newTabSpec(
 						getResources().getString(TAB_WIDGETITEM_CONTENTS[2][0]))
 				.setIndicator(
-						generateChineseTelephoneTabSpecIndicator(
+						new CommonTabSpecIndicator(this,
 								TAB_WIDGETITEM_CONTENTS[2][0],
 								TAB_WIDGETITEM_CONTENTS[2][1]))
 				.setContent(
@@ -84,7 +81,7 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 				.newTabSpec(
 						getResources().getString(TAB_WIDGETITEM_CONTENTS[3][0]))
 				.setIndicator(
-						generateChineseTelephoneTabSpecIndicator(
+						new CommonTabSpecIndicator(this,
 								TAB_WIDGETITEM_CONTENTS[3][0],
 								TAB_WIDGETITEM_CONTENTS[3][1]))
 				.setContent(
@@ -94,21 +91,6 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 
 		// set current tab and tab image
 		_tabHost.setCurrentTab(_mCurrentTabIndex);
-	}
-
-	// generate Chinese telephone tab spec indicator
-	private View generateChineseTelephoneTabSpecIndicator(int tabText,
-			int tabIcon) {
-		// get tabSpec indicator view
-		View _tabSpecIndicator = LayoutInflater.from(this).inflate(
-				R.layout.chinese_telephone_tab_widget_item_layout, null);
-
-		// set tab text and icon
-		((TextView) _tabSpecIndicator.findViewById(R.id.text)).setText(tabText);
-		((ImageView) _tabSpecIndicator.findViewById(R.id.icon))
-				.setImageResource(tabIcon);
-
-		return _tabSpecIndicator;
 	}
 
 }
