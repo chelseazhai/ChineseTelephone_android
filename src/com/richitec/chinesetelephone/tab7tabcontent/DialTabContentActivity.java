@@ -6,11 +6,15 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Rect;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,8 +39,24 @@ public class DialTabContentActivity extends Activity {
 	public static final String DIAL_PHONE_BUTTON_ONCLICKLISTENER = "dial_phone_button_onClickListener";
 	public static final String DIAL_PHONE_BUTTON_ONLONGCLICKLISTENER = "dial_phone_button_onLongClickListener";
 
+	// define dial phone button dtmf sound
+	private final int[] DIALPHONEBUTTON_DTMFARRAY = { R.raw.dtmf_1,
+			R.raw.dtmf_2, R.raw.dtmf_3, R.raw.dtmf_4, R.raw.dtmf_5,
+			R.raw.dtmf_6, R.raw.dtmf_7, R.raw.dtmf_8, R.raw.dtmf_9,
+			R.raw.dtmf_star, R.raw.dtmf_0, R.raw.dtmf_pound };
+
+	// sound pool
+	private final SoundPool SOUND_POOL = new SoundPool(1,
+			AudioManager.STREAM_MUSIC, 0);
+
 	// dial phone textView
 	private TextView _mDialPhoneTextView;
+
+	// dial phone button dtmf sound pool map
+	private SparseArray<Integer> _mDialPhoneBtnDTMFSoundPoolMap;
+
+	// audio manager
+	private AudioManager _mAudioManager;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -59,6 +79,19 @@ public class DialTabContentActivity extends Activity {
 		// set dial phone button grid view adapter
 		((GridView) findViewById(R.id.dial_phoneBtn_gridView))
 				.setAdapter(generateDialPhoneButtonAdapter());
+
+		// init dial phone button dtmf sound pool map
+		_mDialPhoneBtnDTMFSoundPoolMap = new SparseArray<Integer>();
+
+		// add sound
+		for (int i = 0; i < DIALPHONEBUTTON_DTMFARRAY.length; i++) {
+			_mDialPhoneBtnDTMFSoundPoolMap.put(i,
+					SOUND_POOL.load(this, DIALPHONEBUTTON_DTMFARRAY[i], i + 1));
+		}
+
+		// init audio manager
+		_mAudioManager = (AudioManager) this
+				.getSystemService(Context.AUDIO_SERVICE);
 
 		// init dial function button and set click and long click listener
 		// get add new contact dial function button
@@ -139,6 +172,17 @@ public class DialTabContentActivity extends Activity {
 				R.layout.dial_phone_btn_layout,
 				new String[] { DIAL_PHONE_BUTTON },
 				new int[] { R.id.dialBtn_imageView });
+	}
+
+	// play dial phone button dtmf sound
+	private void playDialPhoneBtnDTMFSound(int dialPhoneBtnIndex) {
+		// get volume
+		float _volume = _mAudioManager
+				.getStreamVolume(AudioManager.STREAM_MUSIC);
+
+		// play dial phone button dtmf sound with index
+		SOUND_POOL.play(_mDialPhoneBtnDTMFSoundPoolMap.get(dialPhoneBtnIndex),
+				_volume, _volume, 0, 0, 1f);
 	}
 
 	// inner class
@@ -231,6 +275,9 @@ public class DialTabContentActivity extends Activity {
 
 			// reset dial phone textView text
 			_mDialPhoneTextView.setText(_dialPhoneStringBuilder);
+
+			// play dial phone button dtmf sound
+			playDialPhoneBtnDTMFSound((Integer) v.getTag());
 		}
 
 	}
@@ -253,6 +300,9 @@ public class DialTabContentActivity extends Activity {
 
 				// reset dial phone textView text
 				_mDialPhoneTextView.setText(_dialPhoneStringBuilder);
+
+				// play dial phone button dtmf sound
+				playDialPhoneBtnDTMFSound((Integer) v.getTag());
 
 				_ret = true;
 			}
