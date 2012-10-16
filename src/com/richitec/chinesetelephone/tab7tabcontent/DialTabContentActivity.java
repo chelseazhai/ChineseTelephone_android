@@ -40,23 +40,35 @@ public class DialTabContentActivity extends Activity {
 	public static final String DIAL_PHONE_BUTTON_ONLONGCLICKLISTENER = "dial_phone_button_onLongClickListener";
 
 	// define dial phone button dtmf sound
-	private final int[] DIALPHONEBUTTON_DTMFARRAY = { R.raw.dtmf_1,
+	private static final int[] DIALPHONEBUTTON_DTMFARRAY = { R.raw.dtmf_1,
 			R.raw.dtmf_2, R.raw.dtmf_3, R.raw.dtmf_4, R.raw.dtmf_5,
 			R.raw.dtmf_6, R.raw.dtmf_7, R.raw.dtmf_8, R.raw.dtmf_9,
 			R.raw.dtmf_star, R.raw.dtmf_0, R.raw.dtmf_pound };
 
 	// sound pool
-	private final SoundPool SOUND_POOL = new SoundPool(1,
+	private static final SoundPool SOUND_POOL = new SoundPool(1,
 			AudioManager.STREAM_MUSIC, 0);
 
 	// dial phone textView
 	private TextView _mDialPhoneTextView;
 
 	// dial phone button dtmf sound pool map
-	private SparseArray<Integer> _mDialPhoneBtnDTMFSoundPoolMap;
+	private static SparseArray<Integer> _mDialPhoneBtnDTMFSoundPoolMap;
 
 	// audio manager
 	private AudioManager _mAudioManager;
+
+	// init dial phone button dtmf sound pool map
+	public static void initDialPhoneBtnDTMFSoundPoolMap(Context context) {
+		// define dial phone button dtmf sound pool map
+		_mDialPhoneBtnDTMFSoundPoolMap = new SparseArray<Integer>();
+
+		// add sound
+		for (int i = 0; i < DIALPHONEBUTTON_DTMFARRAY.length; i++) {
+			_mDialPhoneBtnDTMFSoundPoolMap.put(i, SOUND_POOL.load(context,
+					DIALPHONEBUTTON_DTMFARRAY[i], i + 1));
+		}
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -79,15 +91,6 @@ public class DialTabContentActivity extends Activity {
 		// set dial phone button grid view adapter
 		((GridView) findViewById(R.id.dial_phoneBtn_gridView))
 				.setAdapter(generateDialPhoneButtonAdapter());
-
-		// init dial phone button dtmf sound pool map
-		_mDialPhoneBtnDTMFSoundPoolMap = new SparseArray<Integer>();
-
-		// add sound
-		for (int i = 0; i < DIALPHONEBUTTON_DTMFARRAY.length; i++) {
-			_mDialPhoneBtnDTMFSoundPoolMap.put(i,
-					SOUND_POOL.load(this, DIALPHONEBUTTON_DTMFARRAY[i], i + 1));
-		}
 
 		// init audio manager
 		_mAudioManager = (AudioManager) this

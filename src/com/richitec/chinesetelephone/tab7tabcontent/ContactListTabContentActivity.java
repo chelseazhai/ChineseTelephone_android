@@ -41,13 +41,19 @@ public class ContactListTabContentActivity extends NavigationActivity {
 	private ListView _mABContactsListView;
 
 	// all address book name phonetic sorted contacts detail info list
-	private final List<ContactBean> allNamePhoneticSortedContactsInfoArray = AddressBookManager
-			.getInstance().getAllNamePhoneticSortedContactsInfoArray();
+	private static List<ContactBean> _mAllNamePhoneticSortedContactsInfoArray;
+
 	// present contacts in address book detail info list
 	private List<ContactBean> _mPresentContactsInABInfoArray;
 
 	// contact search status
 	private ContactSearchStatus _mContactSearchStatus = ContactSearchStatus.NONESEARCH;
+
+	// init all name phonetic sorted contacts info array
+	public static void initNamePhoneticSortedContactsInfoArray() {
+		_mAllNamePhoneticSortedContactsInfoArray = AddressBookManager
+				.getInstance().getAllNamePhoneticSortedContactsInfoArray();
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -60,7 +66,7 @@ public class ContactListTabContentActivity extends NavigationActivity {
 		setTitle(R.string.contact_list_tab7nav_title);
 
 		// init present contacts in address book detail info array
-		_mPresentContactsInABInfoArray = allNamePhoneticSortedContactsInfoArray;
+		_mPresentContactsInABInfoArray = _mAllNamePhoneticSortedContactsInfoArray;
 
 		// init contacts in address book list view
 		_mABContactsListView = (ListView) findViewById(R.id.contactInAB_listView);
@@ -340,7 +346,7 @@ public class ContactListTabContentActivity extends NavigationActivity {
 
 			case NONESEARCH:
 			default:
-				_mPresentContactsInABInfoArray = allNamePhoneticSortedContactsInfoArray;
+				_mPresentContactsInABInfoArray = _mAllNamePhoneticSortedContactsInfoArray;
 				break;
 			}
 
