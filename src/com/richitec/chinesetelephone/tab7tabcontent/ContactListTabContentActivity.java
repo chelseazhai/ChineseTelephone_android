@@ -1,11 +1,17 @@
 package com.richitec.chinesetelephone.tab7tabcontent;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.SpannableString;
@@ -99,6 +105,7 @@ public class ContactListTabContentActivity extends NavigationActivity {
 	private ListAdapter generateInABContactAdapter(
 			List<ContactBean> presentContactsInAB) {
 		// in address book contacts adapter data keys
+		final String PRESENT_CONTACT_PHOTO = "present_contact_photo";
 		final String PRESENT_CONTACT_NAME = "present_contact_name";
 		final String PRESENT_CONTACT_PHONES = "present_contact_phones";
 
@@ -120,6 +127,38 @@ public class ContactListTabContentActivity extends NavigationActivity {
 							AddressBookManager.PHONENUMBER_MATCHING_INDEXES);
 
 			// set data
+			// define contact photo bitmap
+			Bitmap _contactPhotoBitmap = ((BitmapDrawable) getResources()
+					.getDrawable(R.drawable.img_default_avatar)).getBitmap();
+
+			// check contact photo data
+			if (null != _contact.getPhoto()) {
+				try {
+					// get photo data stream
+					InputStream _photoDataStream = new ByteArrayInputStream(
+							_contact.getPhoto());
+
+					// check photo data stream
+					if (null != _photoDataStream) {
+						_contactPhotoBitmap = BitmapFactory
+								.decodeStream(_photoDataStream);
+
+						// close photo data stream
+						_photoDataStream.close();
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+
+					Log.e(LOG_TAG,
+							"Get contact photo data stream error, error message = "
+									+ e.getMessage());
+				}
+			}
+
+			// set photo
+			_dataMap.put(PRESENT_CONTACT_PHOTO, _contactPhotoBitmap);
+
+			// check contact search status
 			if (ContactSearchStatus.SEARCHBYNAME == _mContactSearchStatus
 					|| ContactSearchStatus.SEARCHBYCHINESENAME == _mContactSearchStatus) {
 				// get display name
@@ -200,8 +239,10 @@ public class ContactListTabContentActivity extends NavigationActivity {
 		return null == _addressBookContactsListViewAdapter ? new AddressBookContactAdapter(
 				this, _addressBookContactsPresentDataList,
 				R.layout.addressbook_contact_layout, new String[] {
-						PRESENT_CONTACT_NAME, PRESENT_CONTACT_PHONES },
-				new int[] { R.id.adressBook_contact_displayName_textView,
+						PRESENT_CONTACT_PHOTO, PRESENT_CONTACT_NAME,
+						PRESENT_CONTACT_PHONES }, new int[] {
+						R.id.addressBook_contact_avatar_imageView,
+						R.id.adressBook_contact_displayName_textView,
 						R.id.addressBook_contact_phoneNumber_textView })
 				: _addressBookContactsListViewAdapter
 						.setData(_addressBookContactsPresentDataList);

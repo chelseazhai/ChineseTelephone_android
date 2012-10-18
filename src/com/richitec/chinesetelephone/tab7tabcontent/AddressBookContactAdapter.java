@@ -4,13 +4,18 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.text.SpannableString;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.richitec.commontoolkit.customadapter.CommonListAdapter;
 
 public class AddressBookContactAdapter extends CommonListAdapter {
+
+	private static final String LOG_TAG = "AddressBookContactAdapter";
 
 	public AddressBookContactAdapter(Context context,
 			List<Map<String, ?>> data, int itemsLayoutResId, String[] dataKeys,
@@ -31,6 +36,22 @@ public class AddressBookContactAdapter extends CommonListAdapter {
 					.setText(null == _itemData ? ""
 							: _itemData instanceof SpannableString ? (SpannableString) _itemData
 									: _itemData.toString());
+		}
+		// imageView
+		else if (view instanceof ImageView) {
+			try {
+				// define item data bitmap and convert item data to bitmap
+				Bitmap _itemDataBitmap = (Bitmap) _itemData;
+
+				// set imageView image
+				((ImageView) view).setImageBitmap(_itemDataBitmap);
+			} catch (Exception e) {
+				e.printStackTrace();
+
+				Log.e(LOG_TAG,
+						"Convert item data to bitmap error, item data = "
+								+ _itemData);
+			}
 		}
 	}
 
