@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- dial phone textView -->
     <dimen name="dial_phone_textView_parentRelativeLayout_height">70dp</dimen>
-    <dimen name="dial_functionBtn_tableRow_height">64dp</dimen>
-    <dimen name="dialBtn_imageView_height">63dp</dimen>
     <dimen name="dialPhone_textView_textMaxFontSize">32dp</dimen>
     <dimen name="dialPhone_textView_textMinFontSize">22dp</dimen>
+
+    <!-- dial phone button -->
+    <dimen name="dial_functionBtn_tableRow_height">64dp</dimen>
+    <dimen name="dialBtn_imageView_height">63dp</dimen>
 
 </resources>
