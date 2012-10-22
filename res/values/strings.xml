@@ -30,4 +30,7 @@
     <string name="title_activity_more_tab_content">MoreTabContentActivity</string>
     <string name="more_tab7nav_title">More</string>
 
+    <!-- outgoing call activity -->
+    <string name="title_activity_outgoing_call">OutgoingCallActivity</string>
+
 </resources>
