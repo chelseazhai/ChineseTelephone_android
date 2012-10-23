@@ -30,8 +30,13 @@ public class OutgoingCallControllerAdapter extends CommonListAdapter {
 		// textView
 		if (view instanceof TextView) {
 			// set view text
-			((TextView) view).setText(null == _itemData ? "" : _itemData
-					.toString());
+			if (null == _itemData) {
+				((TextView) view).setText("");
+			} else if (_itemData instanceof Integer) {
+				((TextView) view).setText((Integer) _itemData);
+			} else {
+				((TextView) view).setText(_itemData.toString());
+			}
 		}
 		// imageView
 		else if (view instanceof ImageView) {

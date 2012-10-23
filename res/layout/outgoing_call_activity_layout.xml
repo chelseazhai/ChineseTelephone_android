@@ -4,12 +4,11 @@
     android:layout_height="match_parent" >
 
     <ImageView
-        android:id="@+id/desktop_wallpaper_imageView"
+        android:id="@+id/outgoingcall_background_imageView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:contentDescription="@string/desktopWallpaper_imageView_content_description"
-        android:scaleType="centerCrop"
-        android:src="@drawable/img_outgoing_call_bg" />
+        android:contentDescription="@string/outgoingCallBG_imageView_content_description"
+        android:scaleType="centerCrop" />
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -59,7 +58,7 @@
             android:background="@drawable/img_tabwidget6outgoingcall_header7footer_bg"
             android:gravity="center_horizontal"
             android:orientation="horizontal"
-            android:padding="10dp" >
+            android:padding="16dp" >
 
             <ImageButton
                 android:id="@+id/hangup_button"

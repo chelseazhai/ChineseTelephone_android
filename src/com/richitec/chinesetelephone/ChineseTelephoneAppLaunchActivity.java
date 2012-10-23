@@ -13,7 +13,7 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 
 	@Override
 	public Drawable splashImg() {
-		return null;
+		return getResources().getDrawable(R.drawable.ic_splash);
 	}
 
 	@Override

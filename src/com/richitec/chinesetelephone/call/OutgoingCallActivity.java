@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -52,6 +53,10 @@ public class OutgoingCallActivity extends Activity {
 					.setText(null != _data.getString(OUTGOING_CALL_OWNERSHIP) ? _data
 							.getString(OUTGOING_CALL_OWNERSHIP) : _mCallPhone);
 		}
+
+		// set wallpaper as outgoing call background
+		((ImageView) findViewById(R.id.outgoingcall_background_imageView))
+				.setImageDrawable(getWallpaper());
 
 		// get call controller gridView
 		GridView _callControllerGridView = (GridView) findViewById(R.id.callController_gridView);

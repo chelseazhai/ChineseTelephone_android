@@ -32,7 +32,7 @@
 
     <!-- outgoing call activity -->
     <string name="title_activity_outgoing_call">OutgoingCallActivity</string>
-    <string name="desktopWallpaper_imageView_content_description">desktop wallpaper image view</string>
+    <string name="outgoingCallBG_imageView_content_description">outgoing call background image view</string>
     <string name="outgoing_call_trying">Calling &#8230;</string>
     <string name="outgoing_call_failed">Call failed</string>
     <string name="end_outgoing_call">Call ending</string>

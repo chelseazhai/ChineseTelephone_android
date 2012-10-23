@@ -20,8 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:contentDescription="@string/callControllerItem_imageView_content_description"
-            android:src="@android:drawable/ic_lock_silent_mode_off" />
+            android:contentDescription="@string/callControllerItem_imageView_content_description" />
 
         <TextView
             android:id="@+id/callController_item_labelTextView"
@@ -30,11 +29,10 @@
             android:layout_alignParentBottom="true"
             android:layout_below="@+id/callController_item_iconImgView"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="10dp"
             android:ellipsize="middle"
             android:gravity="center_horizontal|bottom"
             android:singleLine="true"
-            android:text="静音"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/white" />
     </RelativeLayout>
