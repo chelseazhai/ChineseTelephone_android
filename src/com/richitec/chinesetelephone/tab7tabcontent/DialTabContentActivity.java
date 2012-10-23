@@ -7,6 +7,7 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.richitec.chinesetelephone.R;
+import com.richitec.chinesetelephone.call.OutgoingCallActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.utils.DpPixUtils;
 
@@ -147,7 +149,7 @@ public class DialTabContentActivity extends Activity {
 				R.drawable.img_dial_9_btn, R.drawable.img_dial_star_btn,
 				R.drawable.img_dial_0_btn, R.drawable.img_dial_pound_btn };
 
-		// set address book contacts list view present data list
+		// set dial phone button data list
 		List<Map<String, ?>> _dialPhoneButtonDataList = new ArrayList<Map<String, ?>>();
 
 		for (int i = 0; i < _dialPhoneButtonGridViewImgResourceContentArray.length; i++) {
@@ -348,18 +350,27 @@ public class DialTabContentActivity extends Activity {
 			// check dial phone string
 			if (null != _dialPhoneString
 					&& !"".equalsIgnoreCase(_dialPhoneString)) {
-				Log.d(LOG_TAG, "make a call to sombody and the dial phone = "
-						+ _dialPhoneString);
+				// define the outgoing call intent
+				Intent _outgoingCallIntent = new Intent(
+						DialTabContentActivity.this, OutgoingCallActivity.class);
 
-				Toast.makeText(
-						DialTabContentActivity.this,
-						"Make a call to sombody and the dial phone = "
-								+ _dialPhoneString, Toast.LENGTH_SHORT).show();
+				// set outgoing call phone and ownership
+				_outgoingCallIntent.putExtra(
+						OutgoingCallActivity.OUTGOING_CALL_PHONE,
+						_dialPhoneString);
+
+				// get dial phone ownership textView
+				TextView _dialPhoneOwnershipTextView = (TextView) findViewById(R.id.dial_phone_ownership_textView);
+				if (View.VISIBLE == _dialPhoneOwnershipTextView.getVisibility()) {
+					_outgoingCallIntent.putExtra(
+							OutgoingCallActivity.OUTGOING_CALL_OWNERSHIP,
+							_dialPhoneOwnershipTextView.getText().toString());
+				}
+
+				// start outgoing call activity and make an new call
+				startActivity(_outgoingCallIntent);
 			} else {
 				Log.e(LOG_TAG, "The dial phone number is null");
-
-				Toast.makeText(DialTabContentActivity.this, "null",
-						Toast.LENGTH_SHORT).show();
 			}
 		}
 

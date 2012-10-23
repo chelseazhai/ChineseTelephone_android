@@ -9,7 +9,7 @@
 
     <!-- call record history list activity -->
     <string name="title_activity_call_record_history_list_tab_content">CallRecordHistoryListActivity</string>
-    <string name="call_record_history_list_tab_title">Record</string>
+    <string name="call_record_history_list_tab_title">Recent</string>
     <string name="call_record_history_list_nav_title">Call Record</string>
     <string name="outgoingCall_imageView_content_description">outgoing call image view</string>
     <string name="recordDetail_imageButton_content_description">call record detail info image button</string>
@@ -32,5 +32,17 @@
 
     <!-- outgoing call activity -->
     <string name="title_activity_outgoing_call">OutgoingCallActivity</string>
+    <string name="desktopWallpaper_imageView_content_description">desktop wallpaper image view</string>
+    <string name="outgoing_call_trying">Calling &#8230;</string>
+    <string name="outgoing_call_failed">Call failed</string>
+    <string name="end_outgoing_call">Call ending</string>
+    <string name="outgoing_call_ended">Call ended</string>
+    <string name="callControllerItem_imageView_content_description">call controller image view</string>
+    <string name="callController_contactItem_text">Contact</string>
+    <string name="callController_handfreeItem_text">Handfree</string>
+    <string name="callController_muteItem_text">Mute</string>
+    <string name="callController_keyboardItem_text">Keyboard</string>
+    <string name="endCall_imageView_content_description">end call image button</string>
+    <string name="hideKeyboard_imageView_content_description">hide keyboard image button</string>
 
 </resources>

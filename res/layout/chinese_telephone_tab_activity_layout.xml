@@ -20,7 +20,7 @@
             android:layout_width="fill_parent"
             android:layout_height="66dp"
             android:layout_alignParentBottom="true"
-            android:background="@drawable/img_tabwidget_bg"
+            android:background="@drawable/img_tabwidget6outgoingcall_header7footer_bg"
             android:paddingTop="2dp" >
         </TabWidget>
     </RelativeLayout>
