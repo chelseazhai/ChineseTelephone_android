@@ -87,16 +87,16 @@ public class OutgoingCallActivity extends Activity {
 		// define call controller gridView content
 		final int[][] _callControllerGridViewContentArray = new int[][] {
 				{ R.drawable.callcontroller_contactitem_bg,
-						android.R.drawable.ic_lock_lock,
+						R.drawable.img_tab_contactlist_selected,
 						R.string.callController_contactItem_text },
 				{ R.drawable.callcontroller_keyboarditem_bg,
-						android.R.drawable.ic_lock_power_off,
+						R.drawable.img_tab_dial_selected,
 						R.string.callController_keyboardItem_text },
 				{ R.drawable.callcontroller_muteitem_bg,
-						android.R.drawable.ic_lock_silent_mode,
+						android.R.drawable.ic_media_previous,
 						R.string.callController_muteItem_text },
 				{ R.drawable.callcontroller_handfreeitem_bg,
-						android.R.drawable.ic_lock_silent_mode_off,
+						android.R.drawable.ic_media_rew,
 						R.string.callController_handfreeItem_text } };
 
 		// set call controller data list
