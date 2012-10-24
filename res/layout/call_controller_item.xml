@@ -28,6 +28,6 @@
         android:gravity="center_horizontal|bottom"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@android:color/white" />
+        android:textColor="@color/light_gray" />
 
 </RelativeLayout>
