@@ -1,40 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent" >
+    android:background="@color/gray"
+    android:paddingBottom="@dimen/callControllerItem_relativeLayout_paddingBottom"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="@dimen/callControllerItem_relativeLayout_paddingTop" >
 
-    <RelativeLayout
-        android:id="@+id/callController_item_relativeLayout"
+    <ImageView
+        android:id="@+id/callController_item_iconImgView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/callControllerItem_imageView_content_description" />
+
+    <TextView
+        android:id="@+id/callController_item_labelTextView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@color/gray"
-        android:paddingBottom="20dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="20dp" >
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/callController_item_iconImgView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:ellipsize="middle"
+        android:gravity="center_horizontal|bottom"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/white" />
 
-        <ImageView
-            android:id="@+id/callController_item_iconImgView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:contentDescription="@string/callControllerItem_imageView_content_description" />
-
-        <TextView
-            android:id="@+id/callController_item_labelTextView"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_below="@+id/callController_item_iconImgView"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:ellipsize="middle"
-            android:gravity="center_horizontal|bottom"
-            android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/white" />
-    </RelativeLayout>
-
-</FrameLayout>
+</RelativeLayout>
