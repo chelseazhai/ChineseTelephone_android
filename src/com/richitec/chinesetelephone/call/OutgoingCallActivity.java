@@ -80,19 +80,24 @@ public class OutgoingCallActivity extends Activity {
 	// generate call controller adapter
 	private ListAdapter generateCallControllerAdapter() {
 		// call controller item adapter data key
+		final String CALL_CONTROLLER_ITEM_BACKGROUND = "call_controller_item_background";
 		final String CALL_CONTROLLER_ITEM_ICON = "call_controller_item_icon";
 		final String CALL_CONTROLLER_ITEM_LABEL = "call_controller_item_label";
 
 		// define call controller gridView content
-		final int[][] _callControllerGridViewContentArray = {
-				{ android.R.drawable.ic_lock_lock,
+		final int[][] _callControllerGridViewContentArray = new int[][] {
+				{ R.drawable.callcontroller_contactitem_bg,
+						android.R.drawable.ic_lock_lock,
 						R.string.callController_contactItem_text },
-				{ android.R.drawable.ic_lock_power_off,
-						R.string.callController_handfreeItem_text },
-				{ android.R.drawable.ic_lock_silent_mode,
+				{ R.drawable.callcontroller_keyboarditem_bg,
+						android.R.drawable.ic_lock_power_off,
+						R.string.callController_keyboardItem_text },
+				{ R.drawable.callcontroller_muteitem_bg,
+						android.R.drawable.ic_lock_silent_mode,
 						R.string.callController_muteItem_text },
-				{ android.R.drawable.ic_lock_silent_mode_off,
-						R.string.callController_keyboardItem_text } };
+				{ R.drawable.callcontroller_handfreeitem_bg,
+						android.R.drawable.ic_lock_silent_mode_off,
+						R.string.callController_handfreeItem_text } };
 
 		// set call controller data list
 		List<Map<String, ?>> _callControllerDataList = new ArrayList<Map<String, ?>>();
@@ -102,19 +107,24 @@ public class OutgoingCallActivity extends Activity {
 			Map<String, Object> _dataMap = new HashMap<String, Object>();
 
 			// put value
-			_dataMap.put(CALL_CONTROLLER_ITEM_ICON,
+			_dataMap.put(CALL_CONTROLLER_ITEM_BACKGROUND,
 					_callControllerGridViewContentArray[i][0]);
-			_dataMap.put(CALL_CONTROLLER_ITEM_LABEL,
+			_dataMap.put(CALL_CONTROLLER_ITEM_ICON,
 					_callControllerGridViewContentArray[i][1]);
+			_dataMap.put(CALL_CONTROLLER_ITEM_LABEL,
+					_callControllerGridViewContentArray[i][2]);
 
 			// add data to list
 			_callControllerDataList.add(_dataMap);
 		}
 
-		return new OutgoingCallControllerAdapter(this, _callControllerDataList,
+		return new OutgoingCallControllerAdapter(
+				this,
+				_callControllerDataList,
 				R.layout.call_controller_item,
-				new String[] { CALL_CONTROLLER_ITEM_ICON,
-						CALL_CONTROLLER_ITEM_LABEL }, new int[] {
+				new String[] { CALL_CONTROLLER_ITEM_BACKGROUND,
+						CALL_CONTROLLER_ITEM_ICON, CALL_CONTROLLER_ITEM_LABEL },
+				new int[] { R.id.callController_item_relativeLayout,
 						R.id.callController_item_iconImgView,
 						R.id.callController_item_labelTextView });
 	}

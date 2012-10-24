@@ -7,6 +7,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.richitec.commontoolkit.customadapter.CommonListAdapter;
@@ -27,8 +28,24 @@ public class OutgoingCallControllerAdapter extends CommonListAdapter {
 		Object _itemData = dataMap.get(dataKey);
 
 		// check view type
+		// relativeLayout
+		if (view instanceof RelativeLayout) {
+			try {
+				// define item data integer and convert item data to integer
+				Integer _itemDataInteger = (Integer) _itemData;
+
+				// set call controller item background resource
+				((RelativeLayout) view).setBackgroundResource(_itemDataInteger);
+			} catch (Exception e) {
+				e.printStackTrace();
+
+				Log.e(LOG_TAG,
+						"Convert item data to integer error, item data = "
+								+ _itemData);
+			}
+		}
 		// textView
-		if (view instanceof TextView) {
+		else if (view instanceof TextView) {
 			// set view text
 			if (null == _itemData) {
 				((TextView) view).setText("");
@@ -41,7 +58,7 @@ public class OutgoingCallControllerAdapter extends CommonListAdapter {
 		// imageView
 		else if (view instanceof ImageView) {
 			try {
-				// define item data bitmap and convert item data to bitmap
+				// define item data integer and convert item data to integer
 				Integer _itemDataInteger = (Integer) _itemData;
 
 				// set imageView image resource
