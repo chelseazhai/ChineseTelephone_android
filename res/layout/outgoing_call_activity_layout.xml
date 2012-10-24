@@ -53,7 +53,7 @@
         <LinearLayout
             android:id="@+id/outgoingCall_footerLinearLayout"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:layout_alignParentBottom="true"
             android:background="@drawable/img_outgoingcall_header7footer_bg"
             android:gravity="center_horizontal"
@@ -63,14 +63,15 @@
             <ImageButton
                 android:id="@+id/hangup_button"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
                 android:layout_weight="1"
+                android:background="@drawable/img_hangupbtn_normal_bg"
                 android:contentDescription="@string/endCall_imageView_content_description" />
 
             <ImageButton
                 android:id="@+id/hideKeyboard_button"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:contentDescription="@string/hideKeyboard_imageView_content_description"

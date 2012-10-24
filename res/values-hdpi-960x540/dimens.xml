@@ -2,16 +2,16 @@
 <resources>
 
     <!-- dial phone textView -->
-    <dimen name="dialPhone_textView_parentRelativeLayout_height">98dp</dimen>
+    <dimen name="dialPhone_textView_parentRelativeLayout_height">96dp</dimen>
     <dimen name="dialPhone_textView_textMaxFontSize">36dp</dimen>
     <dimen name="dialPhone_textView_textMinFontSize">22dp</dimen>
 
     <!-- dial phone button -->
-    <dimen name="dial_functionBtn_tableRow_height">91dp</dimen>
-    <dimen name="dialBtn_imageView_height">90dp</dimen>
+    <dimen name="dial_functionBtn_tableRow_height">90dp</dimen>
+    <dimen name="dialBtn_imageView_height">89dp</dimen>
 
     <!-- call controller -->
-    <dimen name="callController_gridView_marginTop7Bottom">96dp</dimen>
-    <dimen name="callController_gridView_marginLeft7Right">68dp</dimen>
+    <dimen name="callController_gridView_marginTop7Bottom">94dp</dimen>
+    <dimen name="callController_gridView_marginLeft7Right">60dp</dimen>
 
 </resources>
