@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.call.OutgoingCallActivity;
+import com.richitec.chinesetelephone.call.SampleDoubangoNGNStack;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.utils.DpPixUtils;
 
@@ -71,6 +72,11 @@ public class DialTabContentActivity extends Activity {
 					DIALPHONEBUTTON_DTMFARRAY[i], i + 1));
 		}
 	}
+
+	// test by ares
+	// sample doubango ngnStack instance
+	private final SampleDoubangoNGNStack doubango_ngnStack_instance = SampleDoubangoNGNStack
+			.getInstance();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -126,6 +132,10 @@ public class DialTabContentActivity extends Activity {
 				.setOnClickListener(new ClearDialPhoneDialFunBtnOnClickListener());
 		_clearDialPhoneFunBtn
 				.setOnLongClickListener(new ClearDialPhoneDialFunBtnOnLongClickListener());
+
+		// test by ares
+		// init account register receiver
+		doubango_ngnStack_instance.initAccountRegisterReceiver(this);
 	}
 
 	@Override
@@ -133,6 +143,44 @@ public class DialTabContentActivity extends Activity {
 		getMenuInflater()
 				.inflate(R.menu.dial_tab_content_activity_layout, menu);
 		return true;
+	}
+
+	@Override
+	protected void onDestroy() {
+		// stop the engine
+		if (doubango_ngnStack_instance.getNgnEngine().isStarted()) {
+			doubango_ngnStack_instance.getNgnEngine().stop();
+		}
+
+		// release the listener
+		if (doubango_ngnStack_instance.getSipBroadCastRecv() != null) {
+			doubango_ngnStack_instance.releaseAccountRegisterReceiver(this);
+		}
+
+		super.onDestroy();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		// starts the engine
+		if (!doubango_ngnStack_instance.getNgnEngine().isStarted()) {
+			if (doubango_ngnStack_instance.getNgnEngine().start()) {
+				Log.d(LOG_TAG, "Engine started :)");
+			} else {
+				Log.e(LOG_TAG, "Failed to start the engine :(");
+			}
+		}
+
+		if (doubango_ngnStack_instance.getNgnEngine().isStarted()
+				&& !doubango_ngnStack_instance.getSipService().isRegistered()) {
+			// account register
+			doubango_ngnStack_instance.accountRegister();
+
+			// register (log in)
+			doubango_ngnStack_instance.getSipService().register(this);
+		}
 	}
 
 	// generate dial phone button adapter
@@ -368,7 +416,9 @@ public class DialTabContentActivity extends Activity {
 				}
 
 				// start outgoing call activity and make an new call
-				startActivity(_outgoingCallIntent);
+				// startActivity(_outgoingCallIntent);
+				doubango_ngnStack_instance.makeVoiceCall(
+						DialTabContentActivity.this, _dialPhoneString);
 			} else {
 				Log.e(LOG_TAG, "The dial phone number is null");
 			}
