@@ -13,7 +13,6 @@
     <!-- call controller -->
     <dimen name="callController_gridView_marginTop7Bottom">40dp</dimen>
     <dimen name="callController_gridView_marginLeft7Right">44dp</dimen>
-    <dimen name="callControllerItem_relativeLayout_paddingTop">26dp</dimen>
-    <dimen name="callControllerItem_relativeLayout_paddingBottom">20dp</dimen>
+    <dimen name="callControllerItem_relativeLayout_paddingTop7Bottom">16dp</dimen>
 
 </resources>

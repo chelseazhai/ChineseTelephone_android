@@ -11,9 +11,8 @@
     <dimen name="dialBtn_imageView_height">62dp</dimen>
 
     <!-- call controller gridView -->
-    <dimen name="callController_gridView_marginTop7Bottom">18dp</dimen>
+    <dimen name="callController_gridView_marginTop7Bottom">16dp</dimen>
     <dimen name="callController_gridView_marginLeft7Right">44dp</dimen>
-    <dimen name="callControllerItem_relativeLayout_paddingTop">24dp</dimen>
-    <dimen name="callControllerItem_relativeLayout_paddingBottom">18dp</dimen>
+    <dimen name="callControllerItem_relativeLayout_paddingTop7Bottom">15dp</dimen>
 
 </resources>

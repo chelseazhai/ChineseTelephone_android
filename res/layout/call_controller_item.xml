@@ -3,15 +3,15 @@
     android:id="@+id/callController_item_relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/callControllerItem_relativeLayout_paddingBottom"
+    android:paddingBottom="@dimen/callControllerItem_relativeLayout_paddingTop7Bottom"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    android:paddingTop="@dimen/callControllerItem_relativeLayout_paddingTop" >
+    android:paddingTop="@dimen/callControllerItem_relativeLayout_paddingTop7Bottom" >
 
     <ImageView
         android:id="@+id/callController_item_iconImgView"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:contentDescription="@string/callControllerItem_imageView_content_description" />
@@ -23,7 +23,7 @@
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/callController_item_iconImgView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:ellipsize="middle"
         android:gravity="center_horizontal|bottom"
         android:singleLine="true"

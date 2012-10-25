@@ -93,10 +93,10 @@ public class OutgoingCallActivity extends Activity {
 						R.drawable.img_callcontroller_keyboarditem_normal,
 						R.string.callController_keyboardItem_text },
 				{ R.drawable.callcontroller_muteitem_bg,
-						android.R.drawable.ic_media_previous,
+						R.drawable.img_callcontroller_muteitem_normal,
 						R.string.callController_muteItem_text },
 				{ R.drawable.callcontroller_handfreeitem_bg,
-						android.R.drawable.ic_media_rew,
+						R.drawable.img_callcontroller_handfreeitem_normal,
 						R.string.callController_handfreeItem_text } };
 
 		// set call controller data list
