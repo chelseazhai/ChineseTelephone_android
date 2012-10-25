@@ -77,6 +77,11 @@ public class OutgoingCallActivity extends Activity {
 				.setOnClickListener(new HideKeyboardBtnOnClickListener());
 	}
 
+	@Override
+	public void onBackPressed() {
+		// nothing to do
+	}
+
 	// generate call controller adapter
 	private ListAdapter generateCallControllerAdapter() {
 		// call controller item adapter data key
