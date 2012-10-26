@@ -417,6 +417,8 @@ public class DialTabContentActivity extends Activity {
 
 				// start outgoing call activity and make an new call
 				// startActivity(_outgoingCallIntent);
+
+				// test by ares
 				doubango_ngnStack_instance.makeVoiceCall(
 						DialTabContentActivity.this, _dialPhoneString);
 			} else {

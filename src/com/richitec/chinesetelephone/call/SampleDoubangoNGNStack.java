@@ -41,9 +41,6 @@ public class SampleDoubangoNGNStack {
 	private static final String SIP_REALM = "richitec.com";
 	private static final int SIP_SERVER_PORT = 5060;
 
-	// ??
-	public final static String EXTRAT_SIP_SESSION_ID = "SipSession";
-
 	// singleton instance
 	private static volatile SampleDoubangoNGNStack _singletonInstance;
 
@@ -182,7 +179,9 @@ public class SampleDoubangoNGNStack {
 
 			Intent i = new Intent(context, OutgoingCallActivity.class);
 
-			i.putExtra(EXTRAT_SIP_SESSION_ID, _audioAVSession.getId());
+			i.putExtra(OutgoingCallActivity.OUTGOING_CALL_SIPSESSIONID,
+					_audioAVSession.getId());
+			i.putExtra(OutgoingCallActivity.OUTGOING_CALL_PHONE, phoneNumber);
 
 			context.startActivity(i);
 

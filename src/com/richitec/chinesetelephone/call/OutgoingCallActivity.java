@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.doubango.ngn.sip.NgnAVSession;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,9 +29,13 @@ public class OutgoingCallActivity extends Activity {
 	// outgoing call activity onCreate param key
 	public static final String OUTGOING_CALL_PHONE = "outgoing_call_phone";
 	public static final String OUTGOING_CALL_OWNERSHIP = "outgoing_call_ownership";
+	public static final String OUTGOING_CALL_SIPSESSIONID = "outgoing_call_sipSessionId";
 
 	// outgoing call phone number
-	private String _mCallPhone;
+	private String _mCallerPhone;
+
+	// doubango ngn audio/video session
+	private NgnAVSession _mNgnAvSession;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -45,13 +51,30 @@ public class OutgoingCallActivity extends Activity {
 		if (null != _data) {
 			// init outgoing call phone
 			if (null != _data.getString(OUTGOING_CALL_PHONE)) {
-				_mCallPhone = _data.getString(OUTGOING_CALL_PHONE);
+				_mCallerPhone = _data.getString(OUTGOING_CALL_PHONE);
 			}
 
-			// set caller textView text
+			// set callee textView text
 			((TextView) findViewById(R.id.callee_textView))
 					.setText(null != _data.getString(OUTGOING_CALL_OWNERSHIP) ? _data
-							.getString(OUTGOING_CALL_OWNERSHIP) : _mCallPhone);
+							.getString(OUTGOING_CALL_OWNERSHIP) : _mCallerPhone);
+
+			// init doubango ngn audio/video session
+			_mNgnAvSession = NgnAVSession.getSession(_data
+					.getLong(OUTGOING_CALL_SIPSESSIONID));
+
+			// check the session
+			if (null == _mNgnAvSession) {
+				Log.e(LOG_TAG, "Doubango ngn audio/video session is null");
+
+				// finish outgoing call activity
+				finish();
+			} else {
+				// increase doubango ngn audio/video session reference and set
+				// context
+				_mNgnAvSession.incRef();
+				_mNgnAvSession.setContext(this);
+			}
 		}
 
 		// set wallpaper as outgoing call background
