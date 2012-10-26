@@ -5,9 +5,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.doubango.ngn.NgnEngine;
+import org.doubango.ngn.events.NgnEventArgs;
+import org.doubango.ngn.events.NgnRegistrationEventArgs;
+import org.doubango.ngn.media.NgnMediaType;
+import org.doubango.ngn.services.INgnConfigurationService;
+import org.doubango.ngn.services.INgnSipService;
+import org.doubango.ngn.sip.NgnAVSession;
+import org.doubango.ngn.utils.NgnConfigurationEntry;
+import org.doubango.ngn.utils.NgnUriUtils;
+
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Rect;
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -28,7 +40,6 @@ import android.widget.Toast;
 
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.call.OutgoingCallActivity;
-import com.richitec.chinesetelephone.call.SampleDoubangoNGNStack;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.utils.DpPixUtils;
 
@@ -73,10 +84,11 @@ public class DialTabContentActivity extends Activity {
 		}
 	}
 
-	// test by ares
-	// sample doubango ngnStack instance
-	private final SampleDoubangoNGNStack doubango_ngnStack_instance = SampleDoubangoNGNStack
-			.getInstance();
+	// doubango ngnEngine instance
+	private final NgnEngine NGN_ENGINE = NgnEngine.getInstance();
+
+	// doubango ngn registration state broadcast receiver
+	private BroadcastReceiver _mRegistrationStateBroadcastReceiver;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -133,9 +145,15 @@ public class DialTabContentActivity extends Activity {
 		_clearDialPhoneFunBtn
 				.setOnLongClickListener(new ClearDialPhoneDialFunBtnOnLongClickListener());
 
-		// test by ares
-		// init account register receiver
-		doubango_ngnStack_instance.initAccountRegisterReceiver(this);
+		// init doubango ngn registration state broadcast receiver
+		_mRegistrationStateBroadcastReceiver = new RegistrationStateBroadcastReceiver();
+
+		// add doubango ngn registration state changed listener
+		IntentFilter _intentFilter = new IntentFilter();
+		_intentFilter
+				.addAction(NgnRegistrationEventArgs.ACTION_REGISTRATION_EVENT);
+
+		registerReceiver(_mRegistrationStateBroadcastReceiver, _intentFilter);
 	}
 
 	@Override
@@ -148,13 +166,15 @@ public class DialTabContentActivity extends Activity {
 	@Override
 	protected void onDestroy() {
 		// stop the engine
-		if (doubango_ngnStack_instance.getNgnEngine().isStarted()) {
-			doubango_ngnStack_instance.getNgnEngine().stop();
+		if (NGN_ENGINE.isStarted()) {
+			NGN_ENGINE.stop();
 		}
 
-		// release the listener
-		if (doubango_ngnStack_instance.getSipBroadCastRecv() != null) {
-			doubango_ngnStack_instance.releaseAccountRegisterReceiver(this);
+		// release doubango ngn registration state broadcast receiver
+		if (_mRegistrationStateBroadcastReceiver != null) {
+			unregisterReceiver(_mRegistrationStateBroadcastReceiver);
+
+			_mRegistrationStateBroadcastReceiver = null;
 		}
 
 		super.onDestroy();
@@ -165,21 +185,56 @@ public class DialTabContentActivity extends Activity {
 		super.onResume();
 
 		// starts the engine
-		if (!doubango_ngnStack_instance.getNgnEngine().isStarted()) {
-			if (doubango_ngnStack_instance.getNgnEngine().start()) {
+		if (!NGN_ENGINE.isStarted()) {
+			if (NGN_ENGINE.start()) {
 				Log.d(LOG_TAG, "Engine started :)");
 			} else {
 				Log.e(LOG_TAG, "Failed to start the engine :(");
 			}
 		}
 
-		if (doubango_ngnStack_instance.getNgnEngine().isStarted()
-				&& !doubango_ngnStack_instance.getSipService().isRegistered()) {
+		// get doubango ngn sip service
+		INgnConfigurationService _configurationService = NGN_ENGINE
+				.getConfigurationService();
+		INgnSipService _sipService = NGN_ENGINE.getSipService();
+
+		// register sip account
+		if (NGN_ENGINE.isStarted() && !_sipService.isRegistered()) {
 			// account register
-			doubango_ngnStack_instance.accountRegister();
+			// credentials
+			final String SIP_USERNAME = "8003";
+			final String SIP_PASSWORD = "622021";
+			final String SIP_SERVER_HOST = "210.56.60.150";
+			final String SIP_DOMAIN = "richitec.com";
+			final String SIP_REALM = "richitec.com";
+			final int SIP_SERVER_PORT = 5060;
+
+			// Set network
+			_configurationService.putBoolean(
+					NgnConfigurationEntry.NETWORK_USE_3G, true);
+			_configurationService.putBoolean(
+					NgnConfigurationEntry.NETWORK_USE_WIFI, true);
+
+			// Set credentials
+			_configurationService.putString(
+					NgnConfigurationEntry.IDENTITY_IMPI, SIP_USERNAME);
+			_configurationService.putString(
+					NgnConfigurationEntry.IDENTITY_IMPU,
+					String.format("sip:%s@%s", SIP_USERNAME, SIP_DOMAIN));
+			_configurationService.putString(
+					NgnConfigurationEntry.IDENTITY_PASSWORD, SIP_PASSWORD);
+			_configurationService.putString(
+					NgnConfigurationEntry.NETWORK_PCSCF_HOST, SIP_SERVER_HOST);
+			_configurationService.putInt(
+					NgnConfigurationEntry.NETWORK_PCSCF_PORT, SIP_SERVER_PORT);
+			_configurationService.putString(
+					NgnConfigurationEntry.NETWORK_REALM, SIP_REALM);
+
+			// VERY IMPORTANT: commit changes
+			_configurationService.commit();
 
 			// register (log in)
-			doubango_ngnStack_instance.getSipService().register(this);
+			_sipService.register(this);
 		}
 	}
 
@@ -236,6 +291,55 @@ public class DialTabContentActivity extends Activity {
 		// play dial phone button dtmf sound with index
 		SOUND_POOL.play(_mDialPhoneBtnDTMFSoundPoolMap.get(dialPhoneBtnIndex),
 				_volume, _volume, 0, 0, 1f);
+	}
+
+	// make voice call
+	private boolean makeVoiceCall(String phoneNumber) {
+		// call phone prefix
+		final String CallPhonePrefix = "86";
+
+		boolean _ret = false;
+
+		// generate sip phone number
+		final String _sipPhoneUri = NgnUriUtils.makeValidSipUri(String.format(
+				"sip:%s@%s", CallPhonePrefix + phoneNumber, ""));
+
+		// check sip phone uri
+		if (_sipPhoneUri == null) {
+			Log.e(LOG_TAG, "Failed to normalize sip uri '" + phoneNumber + "'");
+		} else {
+			// define audio session
+			NgnAVSession _audioSession = NgnAVSession.createOutgoingSession(
+					NGN_ENGINE.getSipService().getSipStack(),
+					NgnMediaType.Audio);
+
+			// define the outgoing call intent
+			Intent _outgoingCallIntent = new Intent(this,
+					OutgoingCallActivity.class);
+
+			// set outgoing call phone, ownership and audio session id
+			_outgoingCallIntent.putExtra(
+					OutgoingCallActivity.OUTGOING_CALL_PHONE, phoneNumber);
+
+			// get dial phone ownership textView
+			TextView _dialPhoneOwnershipTextView = (TextView) findViewById(R.id.dial_phone_ownership_textView);
+			if (View.VISIBLE == _dialPhoneOwnershipTextView.getVisibility()) {
+				_outgoingCallIntent.putExtra(
+						OutgoingCallActivity.OUTGOING_CALL_OWNERSHIP,
+						_dialPhoneOwnershipTextView.getText().toString());
+			}
+
+			_outgoingCallIntent.putExtra(
+					OutgoingCallActivity.OUTGOING_CALL_SIPSESSIONID,
+					_audioSession.getId());
+
+			// start outgoing call activity and make an new call
+			startActivity(_outgoingCallIntent);
+
+			_ret = _audioSession.makeCall(_sipPhoneUri);
+		}
+
+		return _ret;
 	}
 
 	// inner class
@@ -398,29 +502,8 @@ public class DialTabContentActivity extends Activity {
 			// check dial phone string
 			if (null != _dialPhoneString
 					&& !"".equalsIgnoreCase(_dialPhoneString)) {
-				// define the outgoing call intent
-				Intent _outgoingCallIntent = new Intent(
-						DialTabContentActivity.this, OutgoingCallActivity.class);
-
-				// set outgoing call phone and ownership
-				_outgoingCallIntent.putExtra(
-						OutgoingCallActivity.OUTGOING_CALL_PHONE,
-						_dialPhoneString);
-
-				// get dial phone ownership textView
-				TextView _dialPhoneOwnershipTextView = (TextView) findViewById(R.id.dial_phone_ownership_textView);
-				if (View.VISIBLE == _dialPhoneOwnershipTextView.getVisibility()) {
-					_outgoingCallIntent.putExtra(
-							OutgoingCallActivity.OUTGOING_CALL_OWNERSHIP,
-							_dialPhoneOwnershipTextView.getText().toString());
-				}
-
-				// start outgoing call activity and make an new call
-				// startActivity(_outgoingCallIntent);
-
-				// test by ares
-				doubango_ngnStack_instance.makeVoiceCall(
-						DialTabContentActivity.this, _dialPhoneString);
+				// make voice call
+				makeVoiceCall(_dialPhoneString);
 			} else {
 				Log.e(LOG_TAG, "The dial phone number is null");
 			}
@@ -462,6 +545,53 @@ public class DialTabContentActivity extends Activity {
 			}
 
 			return true;
+		}
+
+	}
+
+	// doubango ngn registration state broadcast receiver
+	class RegistrationStateBroadcastReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// get the action
+			String _action = intent.getAction();
+
+			// check the action for ngn registration Event
+			if (NgnRegistrationEventArgs.ACTION_REGISTRATION_EVENT
+					.equals(_action)) {
+				// get ngn registration event arguments
+				NgnRegistrationEventArgs _ngnRegistrationEventArgs = intent
+						.getParcelableExtra(NgnEventArgs.EXTRA_EMBEDDED);
+
+				// check the arguments
+				if (null == _ngnRegistrationEventArgs) {
+					Log.e(LOG_TAG,
+							"Doubango ngn registration event arguments is null");
+				} else {
+					// check registration event type
+					switch (_ngnRegistrationEventArgs.getEventType()) {
+					case REGISTRATION_NOK:
+						Log.d(LOG_TAG, "Failed to register :(");
+						break;
+					case UNREGISTRATION_OK:
+						Log.d(LOG_TAG, "You are now unregistered :)");
+						break;
+					case REGISTRATION_OK:
+						Log.d(LOG_TAG, "You are now registered :)");
+						break;
+					case REGISTRATION_INPROGRESS:
+						Log.d(LOG_TAG, "Trying to register...");
+						break;
+					case UNREGISTRATION_INPROGRESS:
+						Log.d(LOG_TAG, "Trying to unregister...");
+						break;
+					case UNREGISTRATION_NOK:
+						Log.d(LOG_TAG, "Failed to unregister :(");
+						break;
+					}
+				}
+			}
 		}
 
 	}

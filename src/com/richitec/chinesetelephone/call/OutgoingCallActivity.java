@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
@@ -44,7 +45,7 @@ public class OutgoingCallActivity extends Activity {
 	// outgoing call phone number
 	private String _mCallerPhone;
 
-	//
+	// doubango ngn audio/video session
 	private NgnAVSession _mAVSession;
 
 	// doubango ngn audio/video session state broadcast receiver
@@ -53,6 +54,9 @@ public class OutgoingCallActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		// keep outgoing call activity screen on
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 		// set content view
 		setContentView(R.layout.outgoing_call_activity_layout);
@@ -236,11 +240,13 @@ public class OutgoingCallActivity extends Activity {
 	}
 
 	// inner class
-	// audio/video session state broadcast receiver
+	// doubango ngn audio/video session state broadcast receiver
 	class AVSessionStateBroadcastReceiver extends BroadcastReceiver {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			Log.d(LOG_TAG, "AVSessionStateBroadcastReceiver on receive");
+
 			// check ngn audio/video session
 			if (null == _mAVSession) {
 				Log.e(LOG_TAG, "Doubango ngn audio/video session is null");
@@ -265,6 +271,10 @@ public class OutgoingCallActivity extends Activity {
 					} else {
 						// get the ngn invite state
 						InviteState _inviteState = _mAVSession.getState();
+
+						Log.d(LOG_TAG,
+								"AVSessionStateBroadcastReceiver on receive invite state = "
+										+ _inviteState);
 
 						// update call state textView text
 						((TextView) findViewById(R.id.callState_textView))
