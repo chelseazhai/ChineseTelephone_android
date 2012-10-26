@@ -33,7 +33,9 @@
     <!-- outgoing call activity -->
     <string name="title_activity_outgoing_call">OutgoingCallActivity</string>
     <string name="outgoingCallBG_imageView_content_description">outgoing call background image view</string>
+    <string name="outgoing_call_unknownState">Unknown</string>
     <string name="outgoing_call_trying">Calling &#8230;</string>
+    <string name="outgoing_call_earlyMedia7RemoteRing">Ring &#8230;</string>
     <string name="outgoing_call_failed">Call failed</string>
     <string name="end_outgoing_call">Call ending</string>
     <string name="outgoing_call_ended">Call ended</string>

@@ -5,9 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.doubango.ngn.NgnEngine;
+import org.doubango.ngn.events.NgnInviteEventArgs;
 import org.doubango.ngn.sip.NgnAVSession;
+import org.doubango.ngn.sip.NgnInviteSession.InviteState;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,11 +38,17 @@ public class OutgoingCallActivity extends Activity {
 	public static final String OUTGOING_CALL_OWNERSHIP = "outgoing_call_ownership";
 	public static final String OUTGOING_CALL_SIPSESSIONID = "outgoing_call_sipSessionId";
 
+	// doubango ngnEngine instance
+	private final NgnEngine NGN_ENGINE = NgnEngine.getInstance();
+
 	// outgoing call phone number
 	private String _mCallerPhone;
 
 	// doubango ngn audio/video session
-	private NgnAVSession _mNgnAvSession;
+	private NgnAVSession _mAVSession;
+
+	// doubango ngn audio/video session state broadcast receiver
+	private BroadcastReceiver _mAVSessionStateBroadcastReceiver;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -60,11 +73,11 @@ public class OutgoingCallActivity extends Activity {
 							.getString(OUTGOING_CALL_OWNERSHIP) : _mCallerPhone);
 
 			// init doubango ngn audio/video session
-			_mNgnAvSession = NgnAVSession.getSession(_data
+			_mAVSession = NgnAVSession.getSession(_data
 					.getLong(OUTGOING_CALL_SIPSESSIONID));
 
 			// check the session
-			if (null == _mNgnAvSession) {
+			if (null == _mAVSession) {
 				Log.e(LOG_TAG, "Doubango ngn audio/video session is null");
 
 				// finish outgoing call activity
@@ -72,10 +85,20 @@ public class OutgoingCallActivity extends Activity {
 			} else {
 				// increase doubango ngn audio/video session reference and set
 				// context
-				_mNgnAvSession.incRef();
-				_mNgnAvSession.setContext(this);
+				_mAVSession.incRef();
+
+				_mAVSession.setContext(this);
 			}
 		}
+
+		// init doubango ngn audio/video session state broadcast receiver
+		_mAVSessionStateBroadcastReceiver = new AVSessionStateBroadcastReceiver();
+
+		// add doubango ngn audio/video session state changed listener
+		IntentFilter _intentFilter = new IntentFilter();
+		_intentFilter.addAction(NgnInviteEventArgs.ACTION_INVITE_EVENT);
+
+		registerReceiver(_mAVSessionStateBroadcastReceiver, _intentFilter);
 
 		// set wallpaper as outgoing call background
 		((ImageView) findViewById(R.id.outgoingcall_background_imageView))
@@ -103,6 +126,25 @@ public class OutgoingCallActivity extends Activity {
 	@Override
 	public void onBackPressed() {
 		// nothing to do
+	}
+
+	@Override
+	protected void onDestroy() {
+		// release doubango ngn audio/video session state broadcast receiver
+		if (null != _mAVSessionStateBroadcastReceiver) {
+			unregisterReceiver(_mAVSessionStateBroadcastReceiver);
+
+			_mAVSessionStateBroadcastReceiver = null;
+		}
+
+		// release doubango ngn audio/video session
+		if (null != _mAVSession) {
+			_mAVSession.setContext(null);
+
+			_mAVSession.decRef();
+		}
+
+		super.onDestroy();
 	}
 
 	// generate call controller adapter
@@ -157,7 +199,106 @@ public class OutgoingCallActivity extends Activity {
 						R.id.callController_item_labelTextView });
 	}
 
+	// get outgoing call invite state string
+	private String getOutgoingCallInviteState(InviteState inviteState) {
+		String _inviteStateString = "";
+
+		// check invite state
+		switch (inviteState) {
+		case INPROGRESS:
+			_inviteStateString = getResources().getString(
+					R.string.outgoing_call_trying);
+			break;
+		case REMOTE_RINGING:
+		case EARLY_MEDIA:
+			_inviteStateString = getResources().getString(
+					R.string.outgoing_call_earlyMedia7RemoteRing);
+			break;
+		case INCALL:
+			_inviteStateString = "speaking ...";
+			break;
+		case TERMINATING:
+			_inviteStateString = getResources().getString(
+					R.string.end_outgoing_call);
+			break;
+		case TERMINATED:
+			_inviteStateString = getResources().getString(
+					R.string.outgoing_call_ended);
+			break;
+		case NONE:
+		default:
+			_inviteStateString = getResources().getString(
+					R.string.outgoing_call_unknownState);
+			break;
+		}
+
+		return _inviteStateString;
+	}
+
 	// inner class
+	// audio/video session state broadcast receiver
+	class AVSessionStateBroadcastReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// check ngn audio/video session
+			if (null == _mAVSession) {
+				Log.e(LOG_TAG, "Doubango ngn audio/video session is null");
+			} else {
+				// get the action
+				String _action = intent.getAction();
+
+				// check the action for ngn invite event
+				if (NgnInviteEventArgs.ACTION_INVITE_EVENT.equals(_action)) {
+					// get ngn invite event arguments
+					NgnInviteEventArgs _ngnInviteEventArgs = intent
+							.getParcelableExtra(NgnInviteEventArgs.EXTRA_EMBEDDED);
+
+					// check the arguments
+					if (null == _ngnInviteEventArgs) {
+						Log.e(LOG_TAG,
+								"Doubango ngn invite event arguments is null");
+					} else if (_mAVSession.getId() != _ngnInviteEventArgs
+							.getSessionId()) {
+						Log.e(LOG_TAG,
+								"Doubango ngn audio/video session invalid");
+					} else {
+						// get the ngn invite state
+						InviteState _inviteState = _mAVSession.getState();
+
+						// update call state textView text
+						((TextView) findViewById(R.id.callState_textView))
+								.setText(getOutgoingCallInviteState(_inviteState));
+
+						// check invite state
+						switch (_inviteState) {
+						case REMOTE_RINGING:
+							NGN_ENGINE.getSoundService().startRingBackTone();
+							break;
+						case EARLY_MEDIA:
+						case INCALL:
+							NGN_ENGINE.getSoundService().stopRingBackTone();
+
+							_mAVSession.setSpeakerphoneOn(false);
+							break;
+						case TERMINATING:
+						case TERMINATED:
+							NGN_ENGINE.getSoundService().stopRingBackTone();
+
+							finish();
+
+							break;
+						default:
+							//
+							break;
+						}
+					}
+				}
+			}
+		}
+
+	}
+
 	// call controller gridView on item click listener
 	class CallControllerGridViewOnItemClickListener implements
 			OnItemClickListener {
