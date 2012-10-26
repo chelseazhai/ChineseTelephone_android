@@ -44,7 +44,7 @@ public class OutgoingCallActivity extends Activity {
 	// outgoing call phone number
 	private String _mCallerPhone;
 
-	// doubango ngn audio/video session
+	//
 	private NgnAVSession _mAVSession;
 
 	// doubango ngn audio/video session state broadcast receiver
@@ -285,11 +285,12 @@ public class OutgoingCallActivity extends Activity {
 						case TERMINATED:
 							NGN_ENGINE.getSoundService().stopRingBackTone();
 
+							// finish outgoing call activity
 							finish();
 
 							break;
 						default:
-							//
+							// ??
 							break;
 						}
 					}
@@ -322,11 +323,16 @@ public class OutgoingCallActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
-			// finish outgoing call activity
-			finish();
+			// check doubango ngn audio/video session
+			if (null != _mAVSession) {
+				_mAVSession.hangUpCall();
+			} else {
+				Log.e(LOG_TAG,
+						"Doubango ngn audio/video session is null, force finish outgoing call activity");
 
-			//
-			// ??
+				// finish outgoing call activity
+				finish();
+			}
 		}
 
 	}
