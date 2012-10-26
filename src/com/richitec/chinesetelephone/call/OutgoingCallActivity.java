@@ -245,8 +245,6 @@ public class OutgoingCallActivity extends Activity {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			Log.d(LOG_TAG, "AVSessionStateBroadcastReceiver on receive");
-
 			// check ngn audio/video session
 			if (null == _mAVSession) {
 				Log.e(LOG_TAG, "Doubango ngn audio/video session is null");
