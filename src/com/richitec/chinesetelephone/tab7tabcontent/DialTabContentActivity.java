@@ -87,6 +87,9 @@ public class DialTabContentActivity extends Activity {
 	// doubango ngnEngine instance
 	private final NgnEngine NGN_ENGINE = NgnEngine.getInstance();
 
+	// sip server host
+	private final String SIP_SERVER_HOST = "210.56.60.150";
+
 	// doubango ngn registration state broadcast receiver
 	private BroadcastReceiver _mRegistrationStateBroadcastReceiver;
 
@@ -204,7 +207,6 @@ public class DialTabContentActivity extends Activity {
 			// credentials
 			final String SIP_USERNAME = "8003";
 			final String SIP_PASSWORD = "622021";
-			final String SIP_SERVER_HOST = "210.56.60.150";
 			final String SIP_DOMAIN = "richitec.com";
 			final String SIP_REALM = "richitec.com";
 			final int SIP_SERVER_PORT = 5060;
@@ -302,7 +304,7 @@ public class DialTabContentActivity extends Activity {
 
 		// generate sip phone number
 		final String _sipPhoneUri = NgnUriUtils.makeValidSipUri(String.format(
-				"sip:%s@%s", CallPhonePrefix + phoneNumber, ""));
+				"sip:%s@%s", CallPhonePrefix + phoneNumber, SIP_SERVER_HOST));
 
 		// check sip phone uri
 		if (_sipPhoneUri == null) {
