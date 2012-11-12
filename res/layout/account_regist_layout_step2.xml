@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical" >
+    
+    <LinearLayout 
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:orientation="vertical"
+        android:background="@drawable/account_setting_bg"
+        android:padding="10dp"
+        >
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/account_regist"
+            android:textSize="25sp"
+            android:gravity="center"
+            />
+        
+        <RelativeLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            >
+            
+            <TextView 
+	            android:layout_width="80dp"
+	            android:layout_height="50dp"
+	            android:gravity="center_vertical|left"
+	            android:text="@string/step2"
+	            android:textSize="25sp"
+            />
+            
+            <TextView 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|bottom"
+                android:text="@string/input_auth_code_inform"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:gravity="right"
+                android:ellipsize="end"
+                >
+            </TextView>
+        </RelativeLayout>
+        
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/textfeild_nor"
+            android:layout_margin="5dp"
+            android:orientation="horizontal"
+            >
+            
+            <TextView 
+	            android:layout_width="80dp"
+	            android:layout_height="50dp"
+	            android:gravity="center_vertical|right"
+	            android:text="@string/auth_code"
+	            android:textSize="17sp"
+            />
+            
+            <EditText 
+                android:id="@+id/auth_code_edittext"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:ellipsize="end"
+                android:hint="@string/regist_step2_hint"
+                android:inputType="phone"
+                android:background="@null"
+                />
+            
+        </LinearLayout>
+        
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            >
+            
+            <Button
+                android:id="@+id/next_btn"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+				android:gravity="center"
+				android:textSize="20dp"
+				android:textColor="@android:color/white"
+				android:text="@string/next"
+				android:background="@drawable/login_btn_bg"
+				android:onClick="onVerifyAuthCodeAction"
+                />
+            
+        </LinearLayout>
+        
+    </LinearLayout>
+    
+    
+    
+
+</LinearLayout>

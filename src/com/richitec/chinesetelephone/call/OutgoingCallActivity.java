@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.doubango.ngn.NgnEngine;
+/*import org.doubango.ngn.NgnEngine;
 import org.doubango.ngn.events.NgnInviteEventArgs;
 import org.doubango.ngn.sip.NgnAVSession;
-import org.doubango.ngn.sip.NgnInviteSession.InviteState;
+import org.doubango.ngn.sip.NgnInviteSession.InviteState;*/
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -32,7 +32,7 @@ import com.richitec.chinesetelephone.R;
 
 public class OutgoingCallActivity extends Activity {
 
-	private static final String LOG_TAG = "OutgoingCallActivity";
+	/*private static final String LOG_TAG = "OutgoingCallActivity";
 
 	// outgoing call activity onCreate param key
 	public static final String OUTGOING_CALL_PHONE = "outgoing_call_phone";
@@ -356,6 +356,6 @@ public class OutgoingCallActivity extends Activity {
 			// ??
 		}
 
-	}
+	}*/
 
 }

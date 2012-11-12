@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+    android:layout_width = "fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginTop="10.0dp" 
+    xmlns:android="http://schemas.android.com/apk/res/android">
+		<TextView
+		               android:textSize="20.0sp" 
+		               android:layout_width="wrap_content"
+		               android:layout_height="wrap_content" 
+		               android:text="@string/setting"
+		               android:gravity="center_vertical"
+		               android:layout_marginLeft="12.0dp"
+		               android:layout_marginRight="10.0dp"
+		               />
+		<LinearLayout 	
+		                android:background="@drawable/img_setting_content_bg"
+		                android:orientation="vertical"
+		                android:gravity="center"
+		                android:layout_width="fill_parent"
+		                android:layout_height="wrap_content"
+		                android:layout_marginLeft="10.0dp"
+		                android:layout_marginRight="10.0dp"
+		                >
+                
+                <LinearLayout 
+                    android:id="@+id/setting_dial_btn"
+                    android:background="@drawable/setting_top_item_bg"
+                    android:clickable="true"
+                    android:layout_width="fill_parent"
+                    android:layout_height="50.0dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    >
+                    
+                    <ImageView 
+                        android:layout_width="30.0dp"
+                        android:layout_height="30.0dp"
+                        android:layout_marginLeft="10.0dp"
+                        android:src="@drawable/setting_dial"
+                        />
+                    
+                    <TextView
+                        android:textSize="18.0sp" 
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" 
+                        android:layout_marginLeft="10.0dp"
+                        android:layout_weight="1.0"
+                        android:text="@string/setting_dial_item"
+                        android:gravity="center_vertical"
+                        />
+                    <ImageView 
+                        android:layout_width="12.0dp"
+                        android:layout_height="12.0dp"
+                        android:layout_marginRight="10.0dp"
+                        android:src="@drawable/into_icon"
+                        />                   
+                </LinearLayout>
+                
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1.0dp"
+                    android:background="@drawable/setting_line_img" 
+                    />
+                
+                <LinearLayout 
+                    android:id="@+id/setting_areacode_btn"
+                    android:background="@drawable/setting_middle_item_bg"
+                    android:clickable="true"
+                    android:layout_width="fill_parent"
+                    android:layout_height="50.0dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    >
+                    
+                    <ImageView 
+                        android:layout_width="30.0dp"
+                        android:layout_height="30.0dp"
+                        android:layout_marginLeft="10.0dp"
+                        android:src="@drawable/setting_areacode"
+                        />
+                    
+                    <TextView
+                        android:textSize="18.0sp" 
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" 
+                        android:layout_marginLeft="10.0dp"
+                        android:gravity="center_vertical"
+                        android:layout_weight="1.0"
+                        android:text="@string/setting_areacode_item"
+                        />
+                    <ImageView 
+                        android:layout_width="12.0dp"
+                        android:layout_height="12.0dp"
+                        android:layout_marginRight="10.0dp"
+                        android:src="@drawable/into_icon"
+                        />                   
+                </LinearLayout>
+                
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1.0dp"
+                    android:background="@drawable/setting_line_img" 
+                    />
+                
+                <LinearLayout 
+                    android:id="@+id/setting_setup_btn"
+                    android:background="@drawable/setting_middle_item_bg"
+                    android:clickable="true"
+                    android:layout_width="fill_parent"
+                    android:layout_height="50.0dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    >
+                    
+                    <ImageView 
+                        android:layout_width="30.0dp"
+                        android:layout_height="30.0dp"
+                        android:layout_marginLeft="10.0dp"
+                        android:src="@drawable/setting_setup"
+                        />
+                    
+                    <TextView
+                        android:textSize="18.0sp" 
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" 
+                        android:layout_marginLeft="10.0dp"
+                        android:gravity="center_vertical"
+                        android:layout_weight="1.0"
+                        android:text="@string/setting_setup_item"
+                        />
+                    <ImageView 
+                        android:layout_width="12.0dp"
+                        android:layout_height="12.0dp"
+                        android:layout_marginRight="10.0dp"
+                        android:src="@drawable/into_icon"
+                        />                   
+                </LinearLayout>
+                
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1.0dp"
+                    android:background="@drawable/setting_line_img" 
+                    />
+                
+                <LinearLayout 
+                    android:id="@+id/search_logout_btn"
+                    android:background="@drawable/setting_bottom_item_bg"
+                    android:clickable="true"
+                    android:layout_width="fill_parent"
+                    android:layout_height="50.0dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    >
+                    
+                    <ImageView 
+                        android:layout_width="30.0dp"
+                        android:layout_height="30.0dp"
+                        android:layout_marginLeft="10.0dp"
+                        android:src="@drawable/menuexit"
+                        />
+                    
+                    <TextView
+                        android:textSize="18.0sp" 
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" 
+                        android:layout_marginLeft="10.0dp"
+                        android:gravity="center_vertical"
+                        android:layout_weight="1.0"
+                        android:text="@string/setting_logout_item"
+                        />
+                    <ImageView 
+                        android:layout_width="12.0dp"
+                        android:layout_height="12.0dp"
+                        android:layout_marginRight="10.0dp"
+                        android:src="@drawable/into_icon"
+                        />                   
+                </LinearLayout>
+                
+            </LinearLayout>
+</LinearLayout>

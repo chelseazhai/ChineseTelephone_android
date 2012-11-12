@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="server_url">http://192.168.1.137:8080/angola</string>
+    <string name="retrieve_auth_code_url">/user/getPhoneCode</string>
+    <string name="check_auth_code_url">/user/checkPhoneCode</string>
+    <string name="user_register_url">/user/regUser</string>
+    <string name="login_url">/user/login</string>
+    <string name="getpsw_url">/user/getUserPwd</string>
+</resources>
