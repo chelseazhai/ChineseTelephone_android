@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical" >
+    
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+    
+    <LinearLayout 
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:orientation="vertical"
+        android:background="@drawable/account_setting_bg"
+        android:padding="10dp"
+        >
+        <TextView 
+            android:id="@+id/account_setting_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome"
+            android:textSize="25sp"
+            android:gravity="center"
+            />
+        
+        <Button
+            android:id="@+id/account_choose_country_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="55dp"
+            android:text="0086(china 中国)"
+            android:textSize="20dp"
+            android:padding="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="left|center_vertical"
+            android:background="@drawable/select_country_btn_bg"
+            android:drawableRight="@drawable/down_into_icon"
+            android:onClick="chooseCountry"
+            >
+            
+        </Button>
+        
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/textfeild_selected"
+            android:layout_margin="5dp"
+            android:orientation="horizontal"
+            >
+            
+            <TextView 
+	            android:layout_width="80dp"
+	            android:layout_height="50dp"
+	            android:gravity="center_vertical|right"
+	            android:text="@string/account_name"
+	            android:textSize="17sp"
+            />
+            
+            <EditText 
+                android:id="@+id/account_user_edittext"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:ellipsize="end"
+                android:hint="@string/account_name_hint"
+                android:inputType="phone"
+                android:background="@null"
+                >
+                <requestFocus />
+            </EditText>
+        </LinearLayout>
+        
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/textfeild_nor"
+            android:layout_margin="5dp"
+            android:orientation="horizontal"
+            >
+            
+            <TextView 
+	            android:layout_width="80dp"
+	            android:layout_height="50dp"
+	            android:gravity="center_vertical|right"
+	            android:text="@string/account_psw"
+	            android:textSize="17sp"
+            />
+            
+            <EditText 
+                android:id="@+id/account_psw_edittext"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:ellipsize="end"
+                android:hint="@string/account_psw_hint"
+                android:inputType="textPassword"
+                android:background="@null"
+                />
+            
+        </LinearLayout>
+        
+        <RelativeLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_margin="5dp"       
+            >
+            <CheckBox 
+                android:id="@+id/account_remember_psw_cbtn"
+                android:layout_alignParentLeft="true"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:background="@drawable/checkbox_bg"
+                android:button="@null"
+                />
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:text="@string/remember_psw"
+                android:textSize="15sp"
+                android:layout_marginLeft="3dp"
+                android:gravity="center"
+                android:layout_toRightOf="@id/account_remember_psw_cbtn"
+                android:onClick="onCheckBoxTitleClick"
+                android:clickable="true"
+                />
+            
+            <TextView 
+                android:id="@+id/account_forget_psw_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:autoLink="web"
+                android:gravity="center"
+                android:textSize="15sp"
+                android:layout_marginLeft="3dp"
+                android:textColor="@android:color/black"
+                android:text="@string/forget_psw"
+                android:clickable="true"
+                android:onClick="onForgetPSWBtnClick"
+                />
+            <ImageView
+                android:layout_width="23dp"
+                android:layout_height="23dp" 
+                android:layout_toLeftOf="@id/account_forget_psw_btn"
+                android:src="@drawable/r_box_2"
+                android:clickable="true"
+                android:onClick="onForgetPSWBtnClick"
+                />
+            
+        </RelativeLayout>
+        
+        <RelativeLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_margin="5dp"
+            >
+            
+            <Button
+                android:id="@+id/account_regist_btn"
+                android:layout_width="130dp"
+                android:layout_height="51.5dp"
+				android:gravity="center"
+				android:textSize="20dp"
+				android:textColor="@android:color/white"
+				android:text="@string/regist_btn_title"
+				android:layout_alignParentLeft="true"
+				android:background="@drawable/regist_btn_bg"
+				android:onClick="onRegist"
+                />
+            
+            <Button
+                android:id="@+id/account_login_btn"
+                android:layout_width="130dp"
+                android:layout_height="50dp"
+				android:gravity="center"
+				android:textSize="20dp"
+				android:textColor="@android:color/white"
+				android:text="@string/login_btn_title"
+				android:layout_alignParentRight="true"
+				android:background="@drawable/login_btn_bg"
+				android:onClick="onLogin"
+                />
+            
+        </RelativeLayout>
+        
+    </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>
