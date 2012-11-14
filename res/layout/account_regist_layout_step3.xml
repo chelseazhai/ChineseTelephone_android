@@ -63,6 +63,7 @@
 	            android:layout_height="50dp"
 	            android:gravity="center_vertical|right"
 	            android:text="@string/account_psw"
+	            android:textColor="@color/dark_dim_gray"
 	            android:textSize="17sp"
             />
             
@@ -91,6 +92,7 @@
 	            android:layout_height="50dp"
 	            android:gravity="center_vertical|right"
 	            android:text="@string/verify_psw"
+	            android:textColor="@color/dark_dim_gray"
 	            android:textSize="17sp"
             />
             

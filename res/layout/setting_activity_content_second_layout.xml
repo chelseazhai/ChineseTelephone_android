@@ -31,6 +31,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="50.0dp"
                     android:orientation="horizontal"
+                    android:onClick="getRemainMoney"
                     android:gravity="center_vertical"
                     >
                     

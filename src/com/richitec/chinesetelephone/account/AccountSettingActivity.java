@@ -93,8 +93,10 @@ public class AccountSettingActivity extends Activity {
         	useSavedPsw = true;
         	remember.setChecked(true);
         }
-        else
+        else{
+        	useSavedPsw = false;
         	remember.setChecked(false);
+        }
     }
     
     private TextWatcher onTextChanged = new TextWatcher() {
@@ -102,6 +104,7 @@ public class AccountSettingActivity extends Activity {
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before,
 				int count) {
+			((CheckBox)(findViewById(R.id.account_remember_psw_cbtn))).setChecked(false);
 			useSavedPsw = false;
 		}
 
@@ -162,13 +165,15 @@ public class AccountSettingActivity extends Activity {
 		}
 		
 		if(!useSavedPsw){
+			//Log.d("SETUser", "set user");
 			UserManager.getInstance().setUser(username, psw);
 		}
 		TelUserBean telUserBean = (TelUserBean) UserManager.getInstance().getUser();
+		//Log.d("psw", telUserBean.getPassword());
 		telUserBean.setRememberPwd(isRemember);
 		telUserBean.setCountryCode(countrycode);
 		
-		Log.d(SystemConstants.TAG, telUserBean.toString());
+		//Log.d(SystemConstants.TAG, telUserBean.toString());
 		
 		progressDialog = ProgressDialog.show(this, null,
 				getString(R.string.logining), true);

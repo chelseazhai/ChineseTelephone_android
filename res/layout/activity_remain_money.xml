@@ -1,0 +1,189 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/light_blue"
+    android:layout_height="match_parent" >
+
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:gravity="center"
+		android:layout_marginTop="30dp"
+		android:layout_marginLeft="20dp"
+		android:layout_marginRight="20dp"
+		android:background="@drawable/img_setting_content_bg"
+        >
+        
+        <LinearLayout
+            android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:orientation="horizontal"
+        	android:gravity="center_vertical"
+        	android:padding="10dp"
+            >
+            
+            <TextView
+                android:layout_width="130dp"
+                android:layout_height="30dp"
+                android:gravity="right|center_vertical"
+                android:text="@string/account_name" 
+                android:textColor="@color/dark_dim_gray"
+                android:textSize="20dp"
+                />
+            
+            <TextView 
+                android:id="@+id/uername"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:text="13739194534"
+                android:layout_marginLeft="10dp"
+                android:gravity="left|center_vertical"
+                android:textColor="@color/dodger_blue"
+                android:textSize="18dp"
+                />
+            
+        </LinearLayout>
+        
+        <View
+           android:layout_width="fill_parent"
+           android:layout_height="1.0dp"
+           android:background="@drawable/setting_line_img" 
+           />
+        
+        <LinearLayout
+            android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:orientation="horizontal"
+        	android:gravity="center_vertical"
+        	android:padding="10dp"
+            >
+            
+            <TextView
+                android:layout_width="130dp"
+                android:layout_height="30dp"
+                android:gravity="right|center_vertical"
+                android:text="@string/remain_balance_textfield"
+                android:textColor="@color/dark_dim_gray" 
+                android:textSize="20dp"
+                />
+            
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp" 
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/search_remainmoney"
+                />
+            
+            <TextView 
+                android:id="@+id/remain_money"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:text="2.0元"
+                android:layout_marginLeft="10dp"
+                android:gravity="left|center_vertical"
+                android:textColor="@color/dodger_blue"
+                android:textSize="18dp"
+                />
+            
+        </LinearLayout>
+        
+        <View
+           android:layout_width="fill_parent"
+           android:layout_height="1.0dp"
+           android:background="@drawable/setting_line_img" 
+           />
+        
+        <LinearLayout
+            android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:orientation="horizontal"
+        	android:gravity="center_vertical"
+        	android:padding="10dp"
+            >
+            
+            <TextView
+                android:layout_width="130dp"
+                android:layout_height="30dp"
+                android:gravity="right|center_vertical"
+                android:text="@string/direct_call_textfield" 
+                android:textColor="@color/dark_dim_gray"
+                android:textSize="20dp"
+                />
+            
+            <TextView 
+                android:id="@+id/direct_call"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:text="10分钟"
+                android:layout_marginLeft="10dp"
+                android:gravity="left|center_vertical"
+                android:textColor="@color/dodger_blue"
+                android:textSize="18dp"
+                />
+            
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:orientation="horizontal"
+        	android:gravity="center_vertical"
+        	android:padding="10dp"
+            >
+            
+            <TextView
+                android:layout_width="130dp"
+                android:layout_height="30dp"
+                android:gravity="right|center_vertical"
+                android:text="@string/back_call_textfield" 
+                android:textColor="@color/dark_dim_gray"
+                android:textSize="20dp"
+                />
+            
+            <TextView 
+                android:id="@+id/back_call"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:text="6分钟"
+                android:layout_marginLeft="10dp"
+                android:gravity="left|center_vertical"
+                android:textColor="@color/dodger_blue"
+                android:textSize="18dp"
+                />
+            
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:orientation="horizontal"
+        	android:gravity="center_vertical"
+        	android:padding="10dp"
+            >
+            
+            <TextView
+                android:layout_width="130dp"
+                android:layout_height="30dp"
+                android:gravity="right|center_vertical"
+                android:text="@string/sms_textfield" 
+                android:textColor="@color/dark_dim_gray"
+                android:textSize="20dp"
+                />
+            
+            <TextView 
+                android:id="@+id/sms_count"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:text="10条"
+                android:layout_marginLeft="10dp"
+                android:gravity="left|center_vertical"
+                android:textColor="@color/dodger_blue"
+                android:textSize="18dp"
+                />
+            
+        </LinearLayout>
+        
+    </LinearLayout>
+
+</RelativeLayout>
