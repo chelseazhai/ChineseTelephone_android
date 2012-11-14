@@ -79,6 +79,7 @@
 	            android:layout_width="80dp"
 	            android:layout_height="50dp"
 	            android:gravity="center_vertical|right"
+	            android:textColor="@color/dark_dim_gray"
 	            android:text="@string/getpsw_phone"
 	            android:textSize="17sp"
             />

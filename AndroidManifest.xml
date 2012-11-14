@@ -14,6 +14,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -22,11 +24,10 @@
         <activity
             android:name=".account.AccountSettingActivity"
             android:label="@string/title_activity_account_setting"
-            android:theme="@style/AppTheme"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
-        
         <activity
             android:name=".ChineseTelephoneAppLaunchActivity"
             android:theme="@style/AppLaunchActivityTheme" >
@@ -36,7 +37,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name=".tab7tabcontent.ChineseTelephoneTabActivity"
             android:label="@string/title_activity_chinese_telephone_tab"
@@ -64,25 +64,27 @@
             android:label="@string/title_activity_outgoing_call"
             android:screenOrientation="portrait" >
         </activity>
-        
-        
-        
         <activity
             android:name=".account.AccountForgetPSWActivity"
+            android:label="@string/title_activity_account_forget_psw"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden"
-            android:label="@string/title_activity_account_forget_psw" >
+            android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
             android:name=".account.AccountRegistActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_account_regist"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
             android:name=".account.SettingActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_setting" >
+            android:label="@string/title_setting"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".assist.RemainMoneyActivity"
+            android:label="@string/title_activity_remain_money"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 

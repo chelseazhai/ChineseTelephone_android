@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -118,6 +119,10 @@ public class AccountForgetPSWActivity extends Activity {
 											 		Context.INPUT_METHOD_SERVICE); 
 							        imm.hideSoftInputFromWindow(((EditText) findViewById(R.id.get_phone_editText))
 							        		 		.getWindowToken(),0);
+							        
+							       /* Intent intent = new Intent(AccountForgetPSWActivity.this, AccountSettingActivity.class);
+									intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+									startActivity(intent);*/
 									dialog.dismiss();
 									finish();
 								}

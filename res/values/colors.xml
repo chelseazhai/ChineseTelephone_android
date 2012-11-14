@@ -28,4 +28,6 @@
     <color name="dark_goldenrod">#bfad89</color>
     <color name="goldenrod">#cfc1b3</color>
     <color name="dark_wheat">#d0c1b3</color>
+    <color name="white">#ffffff</color>
+    <color name="light_blue">#2399ffcc</color>
 </resources>
