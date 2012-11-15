@@ -1,4 +1,4 @@
-package com.richitec.chinesetelephone.util;
+package com.richitec.chinesetelephone.bean;
 
 import com.richitec.commontoolkit.user.UserBean;
 

@@ -6,10 +6,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.richitec.chinesetelephone.R;
+import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.constant.TelUser;
 import com.richitec.chinesetelephone.util.CountryCodeManager;
-import com.richitec.chinesetelephone.util.TelUserBean;
 import com.richitec.commontoolkit.user.User;
 import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
@@ -48,13 +48,87 @@ public class AccountSettingActivity extends Activity {
 	private String PWD_MASK = "#@1d~`*)";
 	private boolean useSavedPsw ;
 	
-    @Override
+	private boolean isFirstLogin;
+	
+    private TextWatcher onTextChanged = new TextWatcher() {
+	
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before,
+				int count) {
+			//((CheckBox)(findViewById(R.id.account_remember_psw_cbtn))).setChecked(false);
+			useSavedPsw = false;
+		}
+	
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+			// TODO Auto-generated method stub
+	
+		}
+	
+		@Override
+		public void afterTextChanged(Editable s) {
+			// TODO Auto-generated method stub
+	
+		}
+	};
+	private OnHttpRequestListener onFinishedLogin = new OnHttpRequestListener() {
+	
+		@Override
+		public void onFinished(HttpResponseResult responseResult) {
+			try {
+	
+				JSONObject data = new JSONObject(
+						responseResult.getResponseText());
+				String result = data.getString("result");
+				if (result.equals("0")) {
+					// login success
+					loginSuccess(data);
+				} else if (result.equals("1") || result.equals("2")) {
+					Log.d("Error Result", result);
+					loginFailed();
+				} else {
+					loginError();
+				}
+	
+			} catch (Exception e) {
+				e.printStackTrace();
+				loginError();
+			}
+	
+		}
+	
+		@Override
+		public void onFailed(HttpResponseResult responseResult) {
+			loginError();
+		}
+	};
+
+	private void saveUserAccount() {
+		Log.d(SystemConstants.TAG, "save user account");
+		TelUserBean user = (TelUserBean) UserManager.getInstance().getUser();
+		Log.d(SystemConstants.TAG, "user: " + user.toString());
+		DataStorageUtils.putObject(User.username.name(), user.getName());
+		DataStorageUtils.putObject(TelUser.countryCode.name(), user.getCountryCode());
+		if (user.isRememberPwd()) {
+			DataStorageUtils
+					.putObject(User.password.name(), user.getPassword());
+			DataStorageUtils.putObject(User.userkey.name(), user.getUserKey());
+		} else {
+			DataStorageUtils.putObject(User.password.name(), "");
+			user.setPassword("");
+		}
+	}
+
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        
         setContentView(R.layout.account_setting_layout);
         
         Intent intent = this.getIntent();
+        
+        isFirstLogin = intent.getBooleanExtra("firstLogin", true);
         
         Bundle data = intent.getExtras();
         if(data!=null&&data.containsKey(SettingActivity.TITLE_NAME)){
@@ -98,35 +172,25 @@ public class AccountSettingActivity extends Activity {
         	remember.setChecked(false);
         }
     }
-    
-    private TextWatcher onTextChanged = new TextWatcher() {
-
-		@Override
-		public void onTextChanged(CharSequence s, int start, int before,
-				int count) {
-			((CheckBox)(findViewById(R.id.account_remember_psw_cbtn))).setChecked(false);
-			useSavedPsw = false;
+	
+	@Override
+	public void onBackPressed(){
+		if(isFirstLogin){
+			Intent i= new Intent(Intent.ACTION_MAIN); 
+		    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
+		    i.addCategory(Intent.CATEGORY_HOME); 
+		    startActivity(i);
 		}
-
-		@Override
-		public void beforeTextChanged(CharSequence s, int start, int count,
-				int after) {
-			// TODO Auto-generated method stub
-
+		else{
+			finish();
 		}
-
-		@Override
-		public void afterTextChanged(Editable s) {
-			// TODO Auto-generated method stub
-
-		}
-	};
+	}
     
     public void chooseCountry(View v){
     	AlertDialog.Builder chooseCountryDialogBuilder = new AlertDialog.Builder(this);
     	chooseCountryDialogBuilder.setTitle(R.string.countrycode_list);
     	chooseCountryDialogBuilder.setSingleChoiceItems(
-    			countryCodeManager.getCountryNameList(), lastSelectCountryCode, new chooseCountryListener());
+    			countryCodeManager.getCountryNameList(), lastSelectCountryCode, new ChooseCountryListener());
     	chooseCountryDialogBuilder.setNegativeButton(R.string.cancel, null);
     	chooseCountryDialog= chooseCountryDialogBuilder.create();
     	chooseCountryDialog.show();
@@ -201,39 +265,7 @@ public class AccountSettingActivity extends Activity {
 				null, HttpRequestType.ASYNCHRONOUS, onFinishedLogin);
     }
     
-    private OnHttpRequestListener onFinishedLogin = new OnHttpRequestListener() {
-
-		@Override
-		public void onFinished(HttpResponseResult responseResult) {
-			try {
-
-				JSONObject data = new JSONObject(
-						responseResult.getResponseText());
-				String result = data.getString("result");
-				if (result.equals("0")) {
-					// login success
-					loginSuccess(data);
-				} else if (result.equals("1") || result.equals("2")) {
-					Log.d("Error Result", result);
-					loginFailed();
-				} else {
-					loginError();
-				}
-
-			} catch (Exception e) {
-				e.printStackTrace();
-				loginError();
-			}
-
-		}
-
-		@Override
-		public void onFailed(HttpResponseResult responseResult) {
-			loginError();
-		}
-	};
-
-	public void loginError() {
+    public void loginError() {
 		if (progressDialog != null) {
 			progressDialog.dismiss();
 		}
@@ -268,36 +300,7 @@ public class AccountSettingActivity extends Activity {
 
 	}
 	
-	private void saveUserAccount() {
-		Log.d(SystemConstants.TAG, "save user account");
-		TelUserBean user = (TelUserBean) UserManager.getInstance().getUser();
-		Log.d(SystemConstants.TAG, "user: " + user.toString());
-		DataStorageUtils.putObject(User.username.name(), user.getName());
-		DataStorageUtils.putObject(TelUser.countryCode.name(), user.getCountryCode());
-		if (user.isRememberPwd()) {
-			DataStorageUtils
-					.putObject(User.password.name(), user.getPassword());
-			DataStorageUtils.putObject(User.userkey.name(), user.getUserKey());
-		} else {
-			DataStorageUtils.putObject(User.password.name(), "");
-			user.setPassword("");
-		}
-	}
-    
-    class chooseCountryListener implements DialogInterface.OnClickListener{
-
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-			// TODO Auto-generated method stub
-			lastSelectCountryCode = which;
-			((Button)(AccountSettingActivity.this.findViewById(R.id.account_choose_country_btn)))
-					.setText(countryCodeManager.getCountryName(which));
-			chooseCountryDialog.dismiss();
-		}
-    	
-    }
-    
-    public void onCheckBoxTitleClick(View v){
+	public void onCheckBoxTitleClick(View v){
     	boolean isCheck = !((CheckBox)findViewById(R.id.account_remember_psw_cbtn)).isChecked();
     	((CheckBox)findViewById(R.id.account_remember_psw_cbtn)).setChecked(isCheck);
     }
@@ -307,7 +310,20 @@ public class AccountSettingActivity extends Activity {
     	startActivity(intent);
     }
     
-    class OnChangeEditTextBGListener implements OnFocusChangeListener{
+    class ChooseCountryListener implements DialogInterface.OnClickListener{
+	
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			// TODO Auto-generated method stub
+			lastSelectCountryCode = which;
+			((Button)(AccountSettingActivity.this.findViewById(R.id.account_choose_country_btn)))
+					.setText(countryCodeManager.getCountryName(which));
+			chooseCountryDialog.dismiss();
+		}
+		
+	}
+
+	class OnChangeEditTextBGListener implements OnFocusChangeListener{
 
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
