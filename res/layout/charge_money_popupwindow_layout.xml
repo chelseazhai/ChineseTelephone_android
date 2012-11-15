@@ -71,11 +71,12 @@
                 android:layout_height="43dp"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/login_btn_bg"
-                android:gravity="center"
+                android:gravity="center_horizontal"
+                android:paddingBottom="16dp"
                 android:text="@string/ok"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@android:color/white"
-                android:textSize="14sp" />
+                android:textSize="12dp" />
 
             <Button
                 android:id="@+id/charge_cancelBtn"
@@ -83,11 +84,12 @@
                 android:layout_height="45dp"
                 android:layout_marginLeft="10dp"
                 android:background="@drawable/regist_btn_bg"
-                android:gravity="center"
+                android:paddingBottom="16dp"
+                android:gravity="center_horizontal"
                 android:text="@string/cancel"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@android:color/white"
-                android:textSize="14sp" />
+                android:textSize="12dp" />
         </LinearLayout>
     </LinearLayout>
 

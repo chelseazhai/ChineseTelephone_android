@@ -75,7 +75,7 @@
     <string name="old_psw">原有密码：</string>
     <string name="new_psw">新的密码：</string>
     <string name="confirm_psw">确认密码：</string>
-    <string name="modify_btn_title">修改</string>
+    <string name="modify_btn_title">修   改</string>
     <string name="old_psw_not_equal">输入的原有密码与账号原有密码不一致，请检查</string>
     <string name="new_confirm_not_equal">新的密码与确认密码不一致，请检查</string>
     <string name="modify_success">密码修改成功，将返回登陆界面重新登录</string>
@@ -99,8 +99,8 @@
 	<string name="confirm_install">"为保证您的交易安全，需要您安装支付宝安全支付服务，才能进行付款。\n\n点击确定，立即安装。"</string>
 	<string name="confirm_update_hint">"更新提示"</string>	
 	<string name="confirm_update">"为保证您的交易安全，请您更新支付宝安全支付服务，让您的交易更加安全。\n\n点击确定，立即安装。"</string>
-	<string name="Ensure">"确定"</string>
-	<string name="Cancel">"取消"</string>
+	<string name="Ensure">确定</string>
+	<string name="Cancel">取消</string>
 	<string name="check_sign_failed">您的订单信息已被非法篡改。</string>    
 	<string name="ensure_charge_title">充值确认</string>
 	<string name="charge_alipay_hint">确认充值***元？\n点击确定将会从您的支付宝中扣除相应费用！！</string>
