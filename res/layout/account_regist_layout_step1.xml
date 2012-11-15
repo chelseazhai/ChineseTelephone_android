@@ -99,11 +99,11 @@
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"
                 android:background="@drawable/login_btn_bg"
-                android:gravity="center"
+                android:paddingBottom="18dp"
+				android:textSize="16dp"
                 android:onClick="onGetAuthCode"
                 android:text="@string/get_auth_code_btn"
-                android:textColor="@android:color/white"
-                android:textSize="20dp" />
+                android:textColor="@android:color/white"/>
 
             <TextView
                 android:layout_width="fill_parent"
