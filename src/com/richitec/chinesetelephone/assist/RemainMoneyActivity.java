@@ -13,6 +13,7 @@ import com.richitec.commontoolkit.utils.MyToast;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,18 +25,21 @@ import android.support.v4.app.NavUtils;
 public class RemainMoneyActivity extends TelephoneNavigationActivity {
 	public static String BALANCE = "balance";
 	private MobileSecurePayHelper mspHelper= null;
+	private double balance;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_remain_money);
+        setContentView(R.layout.activity_remain_money_layout);
         
         mspHelper = new MobileSecurePayHelper(RemainMoneyActivity.this);
         
-        this.setRightBarButtonItem(new TelephoneBarButtonItem(this,BarButtonItemStyle.LEFT_BACK,"充值",chargeBtnListener));
+        this.setRightBarButtonItem(new TelephoneBarButtonItem(
+        		this,BarButtonItemStyle.LEFT_BACK,R.string.charge_title_popwin,chargeBtnListener));
+        
         setTitle(R.string.get_remain_money_title);
         
-        double balance = getIntent().getDoubleExtra(BALANCE, 0.0);
+        balance = getIntent().getDoubleExtra(BALANCE, 0.0);
         //MyToast.show(this, "balance:"+balance, Toast.LENGTH_SHORT);
         
         String username = UserManager.getInstance().getUser().getName();
@@ -58,9 +62,9 @@ public class RemainMoneyActivity extends TelephoneNavigationActivity {
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			boolean isMobile_spExist = mspHelper.detectMobile_sp();
-			if (!isMobile_spExist)
-				return;
+			Intent intent = new Intent(RemainMoneyActivity.this,AccountChargeActivity.class);
+			intent.putExtra(BALANCE, balance);
+			startActivity(intent);
 		}
     	
     };

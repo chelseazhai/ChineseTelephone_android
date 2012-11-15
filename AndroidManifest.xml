@@ -86,6 +86,12 @@
             android:label="@string/title_activity_remain_money"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name=".assist.AccountChargeActivity" 
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_remain_money"
+            >
+        </activity>
     </application>
 
 </manifest>

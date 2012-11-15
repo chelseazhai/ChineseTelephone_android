@@ -6,9 +6,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.richitec.chinesetelephone.R;
-import com.richitec.chinesetelephone.account.AccountSettingActivity.chooseCountryListener;
+import com.richitec.chinesetelephone.account.AccountSettingActivity.ChooseCountryListener;
 import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.util.CountryCodeManager;
+import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.HttpUtils;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpResponseResult;
@@ -19,6 +20,7 @@ import com.richitec.commontoolkit.utils.MyToast;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,6 +34,7 @@ import android.widget.Toast;
 public class AccountForgetPSWActivity extends Activity {
 	private AlertDialog chooseCountryDialog;
 	private int lastSelectCountryCode=0;
+	private ProgressDialog progressDialog;
 	private CountryCodeManager countryCodeManager;
 	
     @Override
@@ -120,9 +123,11 @@ public class AccountForgetPSWActivity extends Activity {
 							        imm.hideSoftInputFromWindow(((EditText) findViewById(R.id.get_phone_editText))
 							        		 		.getWindowToken(),0);
 							        
-							       /* Intent intent = new Intent(AccountForgetPSWActivity.this, AccountSettingActivity.class);
+							        UserManager.getInstance().getUser().setPassword("");
+							        UserManager.getInstance().getUser().setUserKey("");
+							        Intent intent = new Intent(AccountForgetPSWActivity.this, AccountSettingActivity.class);
 									intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-									startActivity(intent);*/
+									startActivity(intent);
 									dialog.dismiss();
 									finish();
 								}
