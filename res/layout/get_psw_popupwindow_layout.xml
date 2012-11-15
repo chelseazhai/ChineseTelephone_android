@@ -79,9 +79,10 @@
             android:layout_height="43dp"
             android:background="@drawable/login_btn_bg"
             android:text="@string/ok"
-            android:textSize="14sp"
+            android:textSize="12dp"
+            android:gravity="center_horizontal"
+            android:paddingBottom="16dp"
             android:layout_marginRight="10dp"
-            android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/white" /> 
             
@@ -89,11 +90,12 @@
             android:id="@+id/get_psw_cancelBtn"
             android:layout_width="100dp"
             android:layout_height="45dp"
-            android:gravity="center"
+            android:gravity="center_horizontal"
+            android:paddingBottom="16dp"
             android:layout_marginLeft="10dp"
             android:background="@drawable/regist_btn_bg"
             android:text="@string/cancel"
-            android:textSize="14sp"
+            android:textSize="12dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@android:color/white" /> 
     	</LinearLayout>
