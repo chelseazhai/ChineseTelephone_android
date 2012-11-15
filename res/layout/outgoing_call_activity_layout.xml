@@ -65,9 +65,9 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
-                android:background="@drawable/img_hangupbtn_normal_bg"
+                android:background="@drawable/hangup_btn_bg"
                 android:contentDescription="@string/endCall_imageView_content_description"
-                android:src="@drawable/img_hangup_btn" />
+                android:src="@drawable/img_hangup_btn_long" />
 
             <ImageButton
                 android:id="@+id/hideKeyboard_button"
