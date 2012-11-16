@@ -75,7 +75,7 @@
     <string name="old_psw">原有密码：</string>
     <string name="new_psw">新的密码：</string>
     <string name="confirm_psw">确认密码：</string>
-    <string name="modify_btn_title">修改</string>
+    <string name="modify_btn_title">修   改</string>
     <string name="old_psw_not_equal">输入的原有密码与账号原有密码不一致，请检查</string>
     <string name="new_confirm_not_equal">新的密码与确认密码不一致，请检查</string>
     <string name="modify_success">密码修改成功，将返回登陆界面重新登录</string>
@@ -90,7 +90,7 @@
     <string name="remain_balance_textfield">账户余额：</string>
     <string name="direct_call_textfield">可直拨通话：</string>
     <string name="back_call_textfield">可回拨通话：</string>
-    <string name="sms_textfield">可发生短信：</string>
+    <string name="sms_textfield">可发送短信：</string>
     <string name="yuan">元</string>
     <string name="minute">分钟</string>
     <string name="tiao">条</string>
@@ -99,10 +99,23 @@
 	<string name="confirm_install">"为保证您的交易安全，需要您安装支付宝安全支付服务，才能进行付款。\n\n点击确定，立即安装。"</string>
 	<string name="confirm_update_hint">"更新提示"</string>	
 	<string name="confirm_update">"为保证您的交易安全，请您更新支付宝安全支付服务，让您的交易更加安全。\n\n点击确定，立即安装。"</string>
-	<string name="Ensure">"确定"</string>
-	<string name="Cancel">"取消"</string>
+	<string name="Ensure">确定</string>
+	<string name="Cancel">取消</string>
 	<string name="check_sign_failed">您的订单信息已被非法篡改。</string>    
-	
+	<string name="ensure_charge_title">充值确认</string>
+	<string name="charge_alipay_hint">确认充值***元？\n点击确定将会从您的支付宝中扣除相应费用！！</string>
+	<string name="charge_title_popwin">充值</string>
+	<string name="charge_textfield_popwin">充值金额：</string>
+	<string name="charge_pattern_title">请选择充值方式</string>
+	<string name="alipay_pattern">支付宝充值</string>
+	<string name="charge_100">充值100元</string>
+	<string name="charge_50">充值50元</string>
+	<string name="charge_30">充值30元</string>
+	<string name="charge_other">其他</string> 
+	<string name="charge_back">返   回</string>
+	<string name="input_valid_charge_money">请输入正确充值金额</string>
+	<string name="process_charge_pls_wait">正在进行交易，请稍等</string>
+	<string name="is_charging">正在支付</string>
 	
     <!-- account setting -->
     <string name="forget_psw"><u>忘记密码</u></string>

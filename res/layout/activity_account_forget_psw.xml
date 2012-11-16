@@ -4,77 +4,70 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical" >
-    
- 	<ScrollView
- 	    android:layout_width="wrap_content"
- 	    android:layout_height="wrap_content"
- 	    >
-    
-    <LinearLayout 
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:orientation="vertical"
-        android:background="@drawable/account_setting_bg"
-        android:padding="10dp"
-        >
-        <TextView 
-            android:layout_width="wrap_content"
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="@string/getpsw"
-            android:textSize="25sp"
-            android:gravity="center"
-            />
-        
-         <Button
-            android:id="@+id/getpsw_choose_country_btn"
-            android:layout_width="fill_parent"
-            android:layout_height="55dp"
-            android:text="0086(china 中国)"
-            android:textSize="20dp"
-            android:padding="15dp"
-            android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
-            android:gravity="left|center_vertical"
-            android:background="@drawable/select_country_btn_bg"
-            android:drawableRight="@drawable/down_into_icon"
-            android:onClick="chooseCountry"
-            />
-        
-        <LinearLayout 
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/textfeild_selected"
-            android:layout_margin="10dp"
-            android:orientation="horizontal"
-            >
-            
-            <TextView 
-	            android:layout_width="80dp"
-	            android:layout_height="50dp"
-	            android:gravity="center_vertical|right"
-	            android:text="@string/getpsw_phone"
-	            android:textColor="@color/dark_dim_gray"
-	            android:textSize="17sp"
-            />
-            
-            <EditText 
-                android:id="@+id/get_phone_editText"
+            android:background="@drawable/account_setting_bg"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="10dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/getpsw"
+                android:textSize="25sp" />
+
+            <Button
+                android:id="@+id/getpsw_choose_country_btn"
                 android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:ellipsize="end"
-                android:hint="@string/getpsw_phone_hint"
-                android:inputType="phone"
-                android:background="@null"
-                />
-            
-        </LinearLayout>
-        
-        <RelativeLayout 
+                android:layout_height="55dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/select_country_btn_bg"
+                android:drawableRight="@drawable/down_into_icon"
+                android:gravity="left|center_vertical"
+                android:onClick="chooseCountry"
+                android:padding="15dp"
+                android:text="0086(china 中国)"
+                android:textSize="20dp" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/textfeild_selected"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical|right"
+                    android:text="@string/getpsw_phone"
+                    android:textColor="@color/dark_dim_gray"
+                    android:textSize="17sp" />
+
+                <EditText
+                    android:id="@+id/get_phone_editText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:hint="@string/getpsw_phone_hint"
+                    android:inputType="phone" />
+            </LinearLayout>
+
+            <RelativeLayout 
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -111,8 +104,7 @@
                 />
             
         </RelativeLayout>
-        
-    </LinearLayout>
+        </LinearLayout>
     
 </ScrollView>
 

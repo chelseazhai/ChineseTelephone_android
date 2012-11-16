@@ -8,12 +8,14 @@ import org.json.JSONObject;
 
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.assist.RemainMoneyActivity;
+import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.constant.SystemConstants;
-import com.richitec.chinesetelephone.util.TelUserBean;
 import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.customcomponent.CommonPopupWindow;
+import com.richitec.commontoolkit.user.User;
 import com.richitec.commontoolkit.user.UserManager;
+import com.richitec.commontoolkit.utils.DataStorageUtils;
 import com.richitec.commontoolkit.utils.HttpUtils;
 import com.richitec.commontoolkit.utils.MyToast;
 import com.richitec.commontoolkit.utils.StringUtils;
@@ -56,12 +58,12 @@ public class SettingActivity extends Activity {
 	private AlertDialog dialog;
 	private ProgressDialog progressDialog;
 	
-	private ModifyPSWPopupWindow modifyPSWPopupWindow = new ModifyPSWPopupWindow(
+	private final ModifyPSWPopupWindow modifyPSWPopupWindow = new ModifyPSWPopupWindow(
 			R.layout.modify_psw_popupwindow_layout,
 			LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT
 			);
 	
-	private GetPSWPopupWindow getPSWPopupWindow = new GetPSWPopupWindow(
+	private final GetPSWPopupWindow getPSWPopupWindow = new GetPSWPopupWindow(
 			R.layout.get_psw_popupwindow_layout,
 			LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT
 			);
@@ -162,6 +164,7 @@ public class SettingActivity extends Activity {
 			// TODO Auto-generated method stub
 			Intent intent = new Intent(SettingActivity.this,AccountSettingActivity.class);
 			intent.putExtra(TITLE_NAME, getString(R.string.change_account_title));
+			intent.putExtra("firstLogin", false);
 			startActivity(intent);
 		}
     	
@@ -182,7 +185,16 @@ public class SettingActivity extends Activity {
     		progressDialog.dismiss();
     }
     
-    private void modifyPSW(String oldpsw,String newpsw , String confirm){
+    private void updatePreference(String key,String psw){
+		if(UserManager.getInstance().getUser().isRememberPwd()){
+			Log.d("update", "update!");
+			DataStorageUtils
+			.putObject(User.password.name(), psw);
+			DataStorageUtils.putObject(User.userkey.name(), key);
+		}
+	}
+
+	private void modifyPSW(String oldpsw,String newpsw , String confirm){
     	if(oldpsw==null||oldpsw.equals("")){
     		MyToast.show(this, R.string.old_psw_not_null, Toast.LENGTH_SHORT);
     		return;
@@ -223,11 +235,24 @@ public class SettingActivity extends Activity {
 
 		@Override
 		public void onFinished(HttpResponseResult responseResult) {
+			try {
+				JSONObject data = new JSONObject(
+						responseResult.getResponseText());
+				String userkey = data.getString("userkey");
+				Log.d("userkey", userkey);
+				String newpsw = ((EditText)modifyPSWPopupWindow.getContentView().
+						findViewById(R.id.new_psw_editText)).getEditableText().toString().trim();
+				Log.d("psw", newpsw);
+				UserManager.getInstance().getUser().setUserKey(userkey);
+				UserManager.getInstance().getUser().setPassword(StringUtils.md5(newpsw));
+				updatePreference(userkey,newpsw);
+				
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			dismiss();
 			modifyPSWPopupWindow.dismiss();
-			builder.setMessage(R.string.modify_success);
-			dialog = builder.create();
-			dialog.show();
 		}
 
 		@Override
