@@ -197,46 +197,12 @@ public class DialTabContentActivity extends Activity {
 		}
 
 		// get doubango ngn sip service
-		INgnConfigurationService _configurationService = NGN_ENGINE
-				.getConfigurationService();
 		INgnSipService _sipService = NGN_ENGINE.getSipService();
 
 		// register sip account
 		if (NGN_ENGINE.isStarted() && !_sipService.isRegistered()) {
-			// account register
-			// credentials
-			final String SIP_USERNAME = "8003";
-			final String SIP_PASSWORD = "622021";
-			final String SIP_DOMAIN = "richitec.com";
-			final String SIP_REALM = "richitec.com";
-			final int SIP_SERVER_PORT = 5060;
-
-			// Set network
-			_configurationService.putBoolean(
-					NgnConfigurationEntry.NETWORK_USE_3G, true);
-			_configurationService.putBoolean(
-					NgnConfigurationEntry.NETWORK_USE_WIFI, true);
-
-			// Set credentials
-			_configurationService.putString(
-					NgnConfigurationEntry.IDENTITY_IMPI, SIP_USERNAME);
-			_configurationService.putString(
-					NgnConfigurationEntry.IDENTITY_IMPU,
-					String.format("sip:%s@%s", SIP_USERNAME, SIP_DOMAIN));
-			_configurationService.putString(
-					NgnConfigurationEntry.IDENTITY_PASSWORD, SIP_PASSWORD);
-			_configurationService.putString(
-					NgnConfigurationEntry.NETWORK_PCSCF_HOST, SIP_SERVER_HOST);
-			_configurationService.putInt(
-					NgnConfigurationEntry.NETWORK_PCSCF_PORT, SIP_SERVER_PORT);
-			_configurationService.putString(
-					NgnConfigurationEntry.NETWORK_REALM, SIP_REALM);
-
-			// VERY IMPORTANT: commit changes
-			_configurationService.commit();
-
-			// register (log in)
-			_sipService.register(this);
+			// register
+			sipAccountRegister();
 		}
 	}
 
@@ -293,6 +259,47 @@ public class DialTabContentActivity extends Activity {
 		// play dial phone button dtmf sound with index
 		SOUND_POOL.play(_mDialPhoneBtnDTMFSoundPoolMap.get(dialPhoneBtnIndex),
 				_volume, _volume, 0, 0, 1f);
+	}
+
+	// sip account register
+	private void sipAccountRegister() {
+		// get doubango ngn sip service
+		INgnConfigurationService _configurationService = NGN_ENGINE
+				.getConfigurationService();
+		INgnSipService _sipService = NGN_ENGINE.getSipService();
+
+		// credentials
+		final String SIP_USERNAME = "8003";
+		final String SIP_PASSWORD = "123789";
+		final String SIP_DOMAIN = "richitec.com";
+		final String SIP_REALM = "richitec.com";
+		final int SIP_SERVER_PORT = 5060;
+
+		// Set network
+		_configurationService.putBoolean(NgnConfigurationEntry.NETWORK_USE_3G,
+				true);
+		_configurationService.putBoolean(
+				NgnConfigurationEntry.NETWORK_USE_WIFI, true);
+
+		// Set credentials
+		_configurationService.putString(NgnConfigurationEntry.IDENTITY_IMPI,
+				SIP_USERNAME);
+		_configurationService.putString(NgnConfigurationEntry.IDENTITY_IMPU,
+				String.format("sip:%s@%s", SIP_USERNAME, SIP_DOMAIN));
+		_configurationService.putString(
+				NgnConfigurationEntry.IDENTITY_PASSWORD, SIP_PASSWORD);
+		_configurationService.putString(
+				NgnConfigurationEntry.NETWORK_PCSCF_HOST, SIP_SERVER_HOST);
+		_configurationService.putInt(NgnConfigurationEntry.NETWORK_PCSCF_PORT,
+				SIP_SERVER_PORT);
+		_configurationService.putString(NgnConfigurationEntry.NETWORK_REALM,
+				SIP_REALM);
+
+		// VERY IMPORTANT: commit changes
+		_configurationService.commit();
+
+		// register (log in)
+		_sipService.register(this);
 	}
 
 	// make voice call
@@ -504,6 +511,9 @@ public class DialTabContentActivity extends Activity {
 			// check dial phone string
 			if (null != _dialPhoneString
 					&& !"".equalsIgnoreCase(_dialPhoneString)) {
+				// re-register
+				sipAccountRegister();
+
 				// make voice call
 				makeVoiceCall(_dialPhoneString);
 			} else {
