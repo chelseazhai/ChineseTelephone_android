@@ -1,5 +1,8 @@
 package com.richitec.chinesetelephone.constant;
 
 public enum TelUser {
-	countryCode
+	countryCode,
+	areaCode,
+	vosphone,
+	vosphone_pwd
 }

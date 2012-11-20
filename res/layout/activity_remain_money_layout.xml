@@ -154,36 +154,6 @@
             
         </LinearLayout>
         
-        <LinearLayout
-            android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:orientation="horizontal"
-        	android:gravity="center_vertical"
-        	android:padding="10dp"
-            >
-            
-            <TextView
-                android:layout_width="130dp"
-                android:layout_height="30dp"
-                android:gravity="right|center_vertical"
-                android:text="@string/sms_textfield" 
-                android:textColor="@color/dark_dim_gray"
-                android:textSize="20dp"
-                />
-            
-            <TextView 
-                android:id="@+id/sms_count"
-                android:layout_width="fill_parent"
-                android:layout_height="30dp"
-                android:text="10条"
-                android:layout_marginLeft="10dp"
-                android:gravity="left|center_vertical"
-                android:textColor="@color/dodger_blue"
-                android:textSize="18dp"
-                />
-            
-        </LinearLayout>
-        
     </LinearLayout>
 
 </RelativeLayout>

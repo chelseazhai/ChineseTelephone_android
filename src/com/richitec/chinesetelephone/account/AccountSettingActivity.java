@@ -110,13 +110,16 @@ public class AccountSettingActivity extends Activity {
 		Log.d(SystemConstants.TAG, "user: " + user.toString());
 		DataStorageUtils.putObject(User.username.name(), user.getName());
 		DataStorageUtils.putObject(TelUser.countryCode.name(), user.getCountryCode());
+		
 		if (user.isRememberPwd()) {
+			DataStorageUtils.putObject(TelUser.vosphone.name(), user.getVosphone());
+			DataStorageUtils.putObject(TelUser.vosphone_pwd.name(), user.getVosphone_pwd());
 			DataStorageUtils
 					.putObject(User.password.name(), user.getPassword());
 			DataStorageUtils.putObject(User.userkey.name(), user.getUserKey());
 		} else {
 			DataStorageUtils.putObject(User.password.name(), "");
-			user.setPassword("");
+			//user.setPassword("");
 		}
 	}
 
@@ -168,6 +171,15 @@ public class AccountSettingActivity extends Activity {
         	remember.setChecked(true);
         }
         else{
+        	useSavedPsw = false;
+        	remember.setChecked(false);
+        }
+        
+        //从设置页面切换账号时标明用户是否在登录时勾选记住密码
+        boolean isRemember = intent.getBooleanExtra("isRemember",true);
+        if(!isRemember){
+        	Log.d("Account remember", isRemember+"");
+        	pswEditText.setText("");
         	useSavedPsw = false;
         	remember.setChecked(false);
         }
@@ -286,6 +298,13 @@ public class AccountSettingActivity extends Activity {
 		try {
 			String userKey = data.getString("userkey");
 			UserManager.getInstance().setUserKey(userKey);
+			String vosphone = data.getString("vosphone");
+			String vosphone_psw = data.getString("vosphone_pwd");
+			
+			TelUserBean telUser = (TelUserBean)UserManager.getInstance().getUser();
+			telUser.setVosphone(vosphone);
+			telUser.setVosphone_pwd(vosphone_psw);
+			
 			saveUserAccount();
 //			pushActivity(TalkingGroupHistoryListActivity.class);
 			Intent intent = new Intent(AccountSettingActivity.this, SettingActivity.class);

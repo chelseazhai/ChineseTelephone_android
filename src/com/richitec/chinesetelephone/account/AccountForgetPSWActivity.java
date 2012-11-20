@@ -34,7 +34,7 @@ import android.widget.Toast;
 public class AccountForgetPSWActivity extends Activity {
 	private AlertDialog chooseCountryDialog;
 	private int lastSelectCountryCode=0;
-	private ProgressDialog progressDialog;
+	private ProgressDialog progressDlg;
 	private CountryCodeManager countryCodeManager;
 	
     @Override
@@ -92,6 +92,9 @@ public class AccountForgetPSWActivity extends Activity {
     	
     	Log.d(SystemConstants.TAG, phone+":"+countryCode);
     	
+    	progressDlg = ProgressDialog.show(this, null,
+				getString(R.string.sending_request));
+    	
     	HashMap<String,String> params = new HashMap<String,String>();
     	params.put("username", phone);
     	params.put("countryCode", countryCode);
@@ -101,13 +104,18 @@ public class AccountForgetPSWActivity extends Activity {
     					HttpRequestType.ASYNCHRONOUS, onFinishGetPSW);
     }
     
+    private void dismiss(){
+    	if(progressDlg!=null)
+    		progressDlg.dismiss();
+    }
+    
     private OnHttpRequestListener onFinishGetPSW = new OnHttpRequestListener(){
 
 		@Override
 		public void onFinished(HttpResponseResult responseResult) {
 			// TODO Auto-generated method stub
 			int result = responseResult.getStatusCode();
-			
+			dismiss();
 			if(result == 200||result==201){
 				new AlertDialog.Builder(AccountForgetPSWActivity.this)
 					.setTitle(R.string.alert_title)
@@ -141,6 +149,7 @@ public class AccountForgetPSWActivity extends Activity {
 		public void onFailed(HttpResponseResult responseResult) {
 			// TODO Auto-generated method stub
 			//Log.d(SystemConstants.TAG, responseResult.getStatusCode()+"");
+			dismiss();
 			MyToast.show(AccountForgetPSWActivity.this,
 					R.string.phone_number_not_exist, Toast.LENGTH_SHORT);
 		}
