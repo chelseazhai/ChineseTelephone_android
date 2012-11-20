@@ -77,7 +77,7 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 		userBean.setVosphone(vosphone);
 		userBean.setVosphone_pwd(vosphone_psw);
 		UserManager.getInstance().setUser(userBean);
-		Log.d(SystemConstants.TAG+"load account: ", userBean.toString());
+		Log.d(SystemConstants.TAG+" load account: ", userBean.toString());
 		//保存拨打设置属性
 		DialPreferenceBean dialBean = DialPreferenceManager.getInstance().getDialPreferenceBean();
 		String dialPattern = DataStorageUtils.getString(DialPreference.DialSetting.dialPattern.name());

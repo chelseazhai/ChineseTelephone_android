@@ -92,6 +92,11 @@
             android:label="@string/title_activity_remain_money"
             >
         </activity>
+        <receiver android:name=".autolaunch.BootCompletedReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

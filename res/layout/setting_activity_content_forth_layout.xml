@@ -48,6 +48,7 @@
                         android:layout_marginLeft="10.0dp"
                         android:layout_weight="1.0"
                         android:text="@string/help_item"
+                        android:textColor="@color/dark_dim_gray"
                         android:gravity="center_vertical"
                         />
                     <ImageView 
@@ -89,6 +90,7 @@
                         android:gravity="center_vertical"
                         android:layout_weight="1.0"
                         android:text="@string/help_update_item"
+                        android:textColor="@color/dark_dim_gray"
                         />
                     <ImageView 
                         android:layout_width="12.0dp"
@@ -129,6 +131,7 @@
                         android:gravity="center_vertical"
                         android:layout_weight="1.0"
                         android:text="@string/help_about_item"
+                        android:textColor="@color/dark_dim_gray"
                         />
                     <ImageView 
                         android:layout_width="12.0dp"

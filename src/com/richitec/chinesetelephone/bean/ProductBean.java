@@ -1,10 +1,10 @@
 package com.richitec.chinesetelephone.bean;
 
 public class ProductBean {
-	String subject;
-	String body;
-	String price;
-	int resId;
+	private String subject;
+	private String body;
+	private String price;
+	private final String notify_url = "http://122.96.24.173/angola/alipayComplete";
 	public String getSubject() {
 		return subject;
 	}
@@ -23,12 +23,7 @@ public class ProductBean {
 	public void setPrice(String price) {
 		this.price = price;
 	}
-	public int getResId() {
-		return resId;
+	public String getNotify_url() {
+		return notify_url;
 	}
-	public void setResId(int resId) {
-		this.resId = resId;
-	}
-	
-	
 }
