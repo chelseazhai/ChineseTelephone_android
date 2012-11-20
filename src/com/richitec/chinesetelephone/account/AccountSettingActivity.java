@@ -176,9 +176,8 @@ public class AccountSettingActivity extends Activity {
         }
         
         //从设置页面切换账号时标明用户是否在登录时勾选记住密码
-        boolean isRemember = intent.getBooleanExtra("isRemember",true);
-        if(!isRemember){
-        	Log.d("Account remember", isRemember+"");
+        if(!user.isRememberPwd()){
+        	Log.d("Account remember", user.isRememberPwd()+"");
         	pswEditText.setText("");
         	useSavedPsw = false;
         	remember.setChecked(false);

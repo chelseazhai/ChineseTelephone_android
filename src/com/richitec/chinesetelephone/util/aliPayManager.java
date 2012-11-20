@@ -43,7 +43,7 @@ public class AliPayManager {
 		strOrderInfo += "total_fee=" + "\"" + p.getPrice() + "\"";
 		strOrderInfo += "&";
 		strOrderInfo += "notify_url=" + "\""
-				+ "http://notify.java.jpxx.org/index.jsp" + "\"";
+				+ p.getNotify_url() + "\"";
 		
 		return strOrderInfo;
 	}
@@ -93,8 +93,7 @@ public class AliPayManager {
 	public  boolean pay(ProductBean p){
 		String orderInfo = getOrderInfo(p);
 		String signType = getSignType();
-		//String strsign = sign(orderInfo);
-		String strsign = orderInfo;
+		String strsign = sign(orderInfo);
 		Log.v("sign:", strsign);
 		// 对签名进行编码
 		strsign = URLEncoder.encode(strsign);
@@ -104,31 +103,9 @@ public class AliPayManager {
 		Log.v("orderInfo:", info);
 		
 		// 调用pay方法进行支付
-		/*MobileSecurePayer msp = new MobileSecurePayer();
-		boolean bRet = msp.pay(info, handler, AlixId.RQF_PAY, activity);*/
-		Thread t = null;
-		try{
-			t = new Thread(){
-				@Override
-				public void run(){
-					Message msg = new Message();
-					msg.what = 12;
-					msg.obj = "haha";
-					try {
-						Thread.sleep(3000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					handler.sendMessage(msg);
-				}
-			};
-			return true;
-		}
-		finally{
-			t.start();
-		}
-		
+		MobileSecurePayer msp = new MobileSecurePayer();
+		boolean bRet = msp.pay(info, handler, AlixId.RQF_PAY, activity);
+		return bRet;
 	}
 	
 }

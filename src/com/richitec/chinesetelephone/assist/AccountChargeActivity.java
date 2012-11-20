@@ -1,15 +1,33 @@
 package com.richitec.chinesetelephone.assist;
 
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.alipay.AlixId;
 import com.richitec.chinesetelephone.alipay.BaseHelper;
 import com.richitec.chinesetelephone.alipay.MobileSecurePayHelper;
+import com.richitec.chinesetelephone.alipay.MyRC4;
+import com.richitec.chinesetelephone.alipay.PartnerConfig;
 import com.richitec.chinesetelephone.alipay.ResultChecker;
 import com.richitec.chinesetelephone.bean.ProductBean;
+import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.constant.AliPay;
 import com.richitec.chinesetelephone.util.AliPayManager;
 import com.richitec.commontoolkit.customcomponent.CommonPopupWindow;
+import com.richitec.commontoolkit.user.UserManager;
+import com.richitec.commontoolkit.utils.HexUtils;
+import com.richitec.commontoolkit.utils.HttpUtils;
+import com.richitec.commontoolkit.utils.HttpUtils.HttpResponseResult;
+import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
 import com.richitec.commontoolkit.utils.MyToast;
+import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
+import com.richitec.commontoolkit.utils.HttpUtils.PostRequestFormat;
+import com.richitec.commontoolkit.utils.StringUtils;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -131,11 +149,67 @@ public class AccountChargeActivity extends Activity {
 		if (!isMobile_spExist)
 			return;
 		
-    	mainLayout = (LinearLayout) findViewById(R.id.main_charge_layout);
-    	mainLayout.setVisibility(View.GONE);
-    	contentLayout = (LinearLayout) findViewById(R.id.alipay_charge_content);
-    	contentLayout.setVisibility(View.VISIBLE);
+		if(PartnerConfig.RSA_PRIVATE.equals("")){
+			
+			mProgress = ProgressDialog.show(this, null,
+					getString(R.string.sending_request), true);
+			
+			TelUserBean telUser = (TelUserBean) UserManager.getInstance().getUser();
+			HashMap<String,String> params = new HashMap<String,String>();
+	    	params.put("countryCode", telUser.getCountryCode());
+			
+	    	HttpUtils.postSignatureRequest(getString(R.string.server_url)+getString(R.string.get_private_key), 
+					PostRequestFormat.URLENCODED, params,
+					null, HttpRequestType.ASYNCHRONOUS, onGetPrivateKeyListener);	
+		}
+		else{
+	    	mainLayout = (LinearLayout) findViewById(R.id.main_charge_layout);
+	    	mainLayout.setVisibility(View.GONE);
+	    	contentLayout = (LinearLayout) findViewById(R.id.alipay_charge_content);
+	    	contentLayout.setVisibility(View.VISIBLE);
+		}
     }
+    
+    private OnHttpRequestListener onGetPrivateKeyListener = new OnHttpRequestListener(){
+
+		@Override
+		public void onFinished(HttpResponseResult responseResult) {
+			// TODO Auto-generated method stub
+			closeProgress();
+			TelUserBean telUser = (TelUserBean) UserManager.getInstance().getUser();
+			String encryStr = responseResult.getResponseText();
+
+			String decryData = MyRC4.decryptPro(encryStr, telUser.getUserKey());
+		
+			try {
+				JSONObject data = new JSONObject(decryData);
+				String partnerId = data.getString("partner_id");
+				String sellerId = data.getString("seller");
+				String private_key = data.getString("private_key");
+				
+				PartnerConfig.PARTNER = partnerId;
+				PartnerConfig.SELLER = sellerId;
+				PartnerConfig.RSA_PRIVATE = private_key;
+				
+				mainLayout = (LinearLayout) findViewById(R.id.main_charge_layout);
+		    	mainLayout.setVisibility(View.GONE);
+		    	contentLayout = (LinearLayout) findViewById(R.id.alipay_charge_content);
+		    	contentLayout.setVisibility(View.VISIBLE);
+				
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public void onFailed(HttpResponseResult responseResult) {
+			// TODO Auto-generated method stub
+			closeProgress();
+			MyToast.show(AccountChargeActivity.this, "获取秘钥错误，请重试", Toast.LENGTH_SHORT);
+		}
+    	
+    };
     
     public void backMainChargeAction(View v){
     	if(contentLayout!=null)

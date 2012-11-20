@@ -11,6 +11,7 @@ import com.richitec.chinesetelephone.assist.RemainMoneyActivity;
 import com.richitec.chinesetelephone.bean.DialPreferenceBean;
 import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.constant.DialPreference;
+import com.richitec.chinesetelephone.constant.LaunchSetting;
 import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.constant.TelUser;
 import com.richitec.chinesetelephone.util.DialPreferenceManager;
@@ -132,7 +133,6 @@ public class SettingActivity extends Activity {
 					}
 				}
 				);
-        
     }  
     
     public void getAuthNumber(View v){
@@ -589,6 +589,17 @@ public class SettingActivity extends Activity {
     private void saveSetupSetting(){
     	int launchPatternId = this.launchGroup.getCheckedRadioButtonId();
     	
+    	if(launchPatternId==R.id.auto_launch_rbtn){
+    		DataStorageUtils.putObject(LaunchSetting.autoLaunch.name(), "autoLaunch");
+    	}
+    	else if(launchPatternId==R.id.manual_launch_rbtn){
+    		Log.d("not auto","not auto");
+    		DataStorageUtils.putObject(LaunchSetting.autoLaunch.name(), "");
+    	}
+    	Log.d("*****","*****");
+    	String a = DataStorageUtils.getString(LaunchSetting.autoLaunch.name());
+    	Log.d("isautoLaunch", a);
+    	
     	int loginPatternId = this.loginGroup.getCheckedRadioButtonId();
     	TelUserBean userBean = (TelUserBean) UserManager.getInstance().getUser();
     	
@@ -604,6 +615,10 @@ public class SettingActivity extends Activity {
     	else if(loginPatternId==R.id.manual_login_rbtn){
     		userBean.setRememberPwd(false);
     		DataStorageUtils.putObject(User.password.name(), "");
+    		DataStorageUtils.putObject(User.password.name(), "");
+			DataStorageUtils.putObject(TelUser.vosphone.name(), "");
+			DataStorageUtils.putObject(TelUser.vosphone_pwd.name(), "");
+			DataStorageUtils.putObject(User.userkey.name(), "");
     	}
     }
     
@@ -748,6 +763,13 @@ public class SettingActivity extends Activity {
 			}
 			else
 				((RadioButton)getContentView().findViewById(R.id.manual_login_rbtn)).setChecked(true);
+			
+			String auto = DataStorageUtils.getString(LaunchSetting.autoLaunch.name());
+			if(auto!=null&&auto.equals("autoLaunch")){
+				((RadioButton)getContentView().findViewById(R.id.auto_launch_rbtn)).setChecked(true);
+			}
+			else
+				((RadioButton)getContentView().findViewById(R.id.manual_launch_rbtn)).setChecked(true);
 		}
 		
 		@Override
