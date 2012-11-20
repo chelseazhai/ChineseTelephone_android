@@ -25,6 +25,15 @@
     <string name="contact_search_editText_hint">Search contacts</string>
     <string name="contact_list_tab7nav_title">Contacts</string>
     <string name="addressBook_contact_avatar_imageView_content_description">contact avatar image view</string>
+    <string name="contact_hasNoPhone_alertDialog_title">Contact has no phone</string>
+    <string name="contact_hasNoPhone_alertDialog_reselectBtn_title">Reselect</string>
+    <string name="contactPhone_dialMode_selectPopupWindow_titleTextView_text">Select dial *** mode</string>
+    <string name="contactPhone_dialMode_selectPopupWindow_directdialBtn_title">Direct dial</string>
+    <string name="contactPhone_dialMode_selectPopupWindow_callbackBtn_title">Callback</string>
+    <string name="contactPhone_dialMode_selectPopupWindow_cancelBtn_title">Cancel</string>
+    <string name="contactPhone_dialMode_selectPopupWindow_contactPhones_4selecting">phones for selecting</string>
+    <string name="contactPhones_selectPopupWindow_titleTextView_text">Select ***\'s phone to</string>
+    <string name="contactPhones_selectPopupWindow_cancelBtn_title">Cancel</string>
 
     <!-- more activity -->
     <string name="title_activity_more_tab_content">MoreTabContentActivity</string>
