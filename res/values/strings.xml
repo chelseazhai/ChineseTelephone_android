@@ -71,6 +71,23 @@
     <string name="help_update_item">软件升级</string>
     <string name="help_about_item">关于我们</string>
     <string name="change_account_title">切换账户</string>
+    <string name="set_area_code">区号设置</string>
+    <string name="invalid_areacode">请输入正确的区号</string>
+    <string name="null_areacode">区号不能为空</string>
+    <string name="is_auto_launch">是否开机启动?</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="is_auto_login">登录设置</string>
+    <string name="auto_login_rbtn_title">自动登录</string>
+    <string name="manual_login_rbtn_title">手动登录</string>
+    <!-- dial preference  -->
+    <string name="dia_preference_title">拨号方式设置</string>
+    <string name="choose_direct_dial">固定选择直拨</string>
+    <string name="choose_back_dial">固定选择回拨</string>
+    <string name="manual_choose_dial">手动选择直拨或回拨</string>
+    <string name="back_call_preference">回拨自动接听设置</string>
+    <string name="back_call_auto">自动接听</string>
+    <string name="back_call_manual">手动接听</string>
     <!-- change psw -->
     <string name="old_psw">原有密码：</string>
     <string name="new_psw">新的密码：</string>
@@ -93,7 +110,6 @@
     <string name="sms_textfield">可发送短信：</string>
     <string name="yuan">元</string>
     <string name="minute">分钟</string>
-    <string name="tiao">条</string>
     <!-- alipay -->
 	<string name="confirm_install_hint">"安装提示"</string>	
 	<string name="confirm_install">"为保证您的交易安全，需要您安装支付宝安全支付服务，才能进行付款。\n\n点击确定，立即安装。"</string>

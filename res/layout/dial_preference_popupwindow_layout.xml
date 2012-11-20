@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/half_transparent" >
+
+    <LinearLayout
+        android:id="@+id/modify_psw_popupWindow_relativeLayout"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:background="@drawable/popupwindow_relativelayout_bg"
+        android:paddingBottom="10dp"
+        >
+		
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/popupwindow_title_relativelayout_bg"
+            >
+        
+	        <TextView 
+	            android:layout_width="fill_parent"
+	            android:layout_height="40dp"
+	            android:text="@string/dia_preference_title"
+	            android:paddingLeft="10dp"
+	            android:textColor="@android:color/white"
+	            android:textSize="20sp" 
+	            android:gravity="center_vertical"
+	            />
+        
+        </LinearLayout>
+        
+        <RadioGroup 
+            android:id="@+id/dial_radio_group"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:orientation="vertical"
+            android:checkedButton="@+id/radio_direct_btn"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            >
+        	<RadioButton 
+        	    android:id="@+id/radio_direct_btn"
+        	    android:layout_width="fill_parent"
+        	    android:layout_height="wrap_content"
+        	    android:text="@string/choose_direct_dial"
+        	    android:textSize="18dp"
+        	    android:textColor="@color/dark_dim_gray"
+        	    android:gravity="center"
+        	    />
+        	<RadioButton 
+        	    android:id="@+id/radio_back_btn"
+        	    android:layout_width="fill_parent"
+        	    android:layout_height="wrap_content"
+        	    android:text="@string/choose_back_dial"
+        	    android:textSize="18dp"
+        	    android:textColor="@color/dark_dim_gray"
+        	    android:gravity="center"
+        	    />
+        	<RadioButton 
+        	    android:id="@+id/radio_manual_btn"
+        	    android:layout_width="fill_parent"
+        	    android:layout_height="wrap_content"
+        	    android:text="@string/manual_choose_dial"
+        	    android:textSize="18dp"
+        	    android:textColor="@color/dark_dim_gray"
+        	    android:gravity="center"
+        	    />
+        </RadioGroup>
+        
+        
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/dial_setting_answer_popupwindow_bg"
+            >
+        
+	        <TextView 
+	            android:layout_width="fill_parent"
+	            android:layout_height="30dp"
+	            android:text="@string/back_call_preference"
+	            android:textColor="@android:color/white"
+	            android:textSize="20sp" 
+	            android:gravity="center"
+	            />
+        
+        </LinearLayout>
+        
+        <RadioGroup 
+            android:id="@+id/answer_radio_group"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:checkedButton="@+id/answer_auto_btn"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            >
+        	<RadioButton 
+        	    android:id="@+id/answer_auto_btn"
+        	    android:layout_width="wrap_content"
+        	    android:layout_height="wrap_content"
+        	    android:text="@string/back_call_auto"
+        	    android:textSize="18dp"
+        	    android:textColor="@color/dark_dim_gray"
+        	    android:layout_marginRight="5dp"
+        	    android:gravity="center"
+        	    />
+        	<RadioButton 
+        	    android:id="@+id/answer_manual_btn"
+        	    android:layout_width="wrap_content"
+        	    android:layout_height="wrap_content"
+        	    android:text="@string/back_call_manual"
+        	    android:textSize="18dp"
+        	    android:textColor="@color/dark_dim_gray"
+        	    android:gravity="center"
+        	    />
+        </RadioGroup>
+        
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            >
+
+	       <Button
+	            android:id="@+id/dial_preference_confirmBtn"
+	            android:layout_width="100dp"
+	            android:layout_height="43dp"
+	            android:background="@drawable/login_btn_bg"
+	            android:text="@string/ok"
+	            android:textSize="12dp"
+	            android:gravity="center_horizontal"
+	            android:paddingBottom="16dp"
+	            android:layout_marginRight="10dp"
+	            android:textAppearance="?android:attr/textAppearanceSmall"
+	            android:textColor="@android:color/white" /> 
+	            
+	       <Button
+	            android:id="@+id/dial_preference_cancelBtn"
+	            android:layout_width="100dp"
+	            android:layout_height="45dp"
+	            android:gravity="center_horizontal"
+	            android:paddingBottom="16dp"
+	            android:layout_marginLeft="10dp"
+	            android:background="@drawable/regist_btn_bg"
+	            android:text="@string/cancel"
+	            android:textSize="12dp"
+	            android:textAppearance="?android:attr/textAppearanceSmall"
+	            android:textColor="@android:color/white" /> 
+    	</LinearLayout>
+
+     </LinearLayout>
+</FrameLayout>

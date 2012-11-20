@@ -15,14 +15,14 @@
 		               android:layout_marginRight="10.0dp"
 		               />
 		<LinearLayout 	
-		                android:background="@drawable/img_setting_content_bg"
-		                android:orientation="vertical"
-		                android:gravity="center"
-		                android:layout_width="fill_parent"
-		                android:layout_height="wrap_content"
-		                android:layout_marginLeft="10.0dp"
-		                android:layout_marginRight="10.0dp"
-		                >
+            android:background="@drawable/img_setting_content_bg"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10.0dp"
+            android:layout_marginRight="10.0dp"
+            >
                 
                 <LinearLayout 
                     android:id="@+id/setting_dial_btn"
@@ -32,6 +32,7 @@
                     android:layout_height="50.0dp"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
+                    android:onClick="setDialPreference"
                     >
                     
                     <ImageView 
@@ -71,6 +72,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="50.0dp"
                     android:orientation="horizontal"
+                    android:onClick="setAreaCode"
                     android:gravity="center_vertical"
                     >
                     
@@ -111,6 +113,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="50.0dp"
                     android:orientation="horizontal"
+                    android:onClick="setSetupPreference"
                     android:gravity="center_vertical"
                     >
                     

@@ -3,9 +3,9 @@
 public class PartnerConfig {
 
 	// 合作商户ID。用签约支付宝账号登录ms.alipay.com后，在账户信息页面获取。
-	public static final String PARTNER = "partner";
+	public static final String PARTNER = "2088801270252724";
 	// 商户收款的支付宝账号
-	public static final String SELLER = "seller";
+	public static final String SELLER = "2088801270252724";
 	// 商户（RSA）私钥
 	public static final String RSA_PRIVATE = "private_rsa";
 	// 支付宝（RSA）公钥 用签约支付宝账号登录ms.alipay.com后，在密钥管理页面获取。
