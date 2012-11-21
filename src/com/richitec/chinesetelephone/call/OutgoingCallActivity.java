@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -84,8 +85,19 @@ public class OutgoingCallActivity extends Activity {
 			if (null == _mAVSession) {
 				Log.e(LOG_TAG, "Doubango ngn audio/video session is null");
 
-				// finish outgoing call activity
-				finish();
+				// delayed one second to back
+				new Handler().postDelayed(new Runnable() {
+
+					@Override
+					public void run() {
+						// update call state textView text
+						((TextView) findViewById(R.id.callState_textView))
+								.setText(R.string.outgoing_call_failed);
+
+						// finish outgoing call activity
+						finish();
+					}
+				}, 1000);
 			} else {
 				// increase doubango ngn audio/video session reference and set
 				// context

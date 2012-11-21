@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/half_transparent" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/threequarters_transparent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="14dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:paddingTop="10dp" >
+
+        <TextView
+            android:id="@+id/contactPhones_select_titleTextView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/contactPhones_selectPopupWindow_titleTextView_text"
+            android:textColor="@android:color/white" />
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp" >
+
+            <LinearLayout
+                android:id="@+id/contactPhones_select_phoneBtn_linearLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:visibility="gone" >
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/contactPhones_select_phonesListView"
+                android:layout_width="fill_parent"
+                android:layout_height="164dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:background="@android:color/white"
+                android:cacheColorHint="@android:color/transparent"
+                android:fadingEdge="none"
+                android:listSelector="@android:color/transparent"
+                android:visibility="gone" >
+            </ListView>
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/contactPhones_select_cancelBtn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="14dp"
+            android:text="@string/contactPhones_selectPopupWindow_cancelBtn_title"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</FrameLayout>
