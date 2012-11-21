@@ -1,4 +1,4 @@
-package com.richitec.chinesetelephone.util;
+package com.rictitec.chinesetelephone.utils;
 
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;

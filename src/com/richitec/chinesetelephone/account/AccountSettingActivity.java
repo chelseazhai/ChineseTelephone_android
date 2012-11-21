@@ -9,7 +9,6 @@ import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.constant.TelUser;
-import com.richitec.chinesetelephone.util.CountryCodeManager;
 import com.richitec.commontoolkit.user.User;
 import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
@@ -20,6 +19,8 @@ import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpResponseResult;
 import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
 import com.richitec.commontoolkit.utils.HttpUtils.PostRequestFormat;
+import com.rictitec.chinesetelephone.utils.CountryCodeManager;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;

@@ -14,13 +14,13 @@ import com.richitec.chinesetelephone.constant.TelUser;
 import com.richitec.chinesetelephone.tab7tabcontent.ChineseTelephoneTabActivity;
 import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity;
 import com.richitec.chinesetelephone.tab7tabcontent.DialTabContentActivity;
-import com.richitec.chinesetelephone.util.DialPreferenceManager;
 import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.user.User;
 import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.DataStorageUtils;
+import com.rictitec.chinesetelephone.utils.DialPreferenceManager;
 
 public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 

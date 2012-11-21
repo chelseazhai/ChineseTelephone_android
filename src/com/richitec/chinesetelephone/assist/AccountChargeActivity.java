@@ -16,7 +16,6 @@ import com.richitec.chinesetelephone.alipay.ResultChecker;
 import com.richitec.chinesetelephone.bean.ProductBean;
 import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.constant.AliPay;
-import com.richitec.chinesetelephone.util.AliPayManager;
 import com.richitec.commontoolkit.customcomponent.CommonPopupWindow;
 import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.HexUtils;
@@ -27,6 +26,7 @@ import com.richitec.commontoolkit.utils.MyToast;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
 import com.richitec.commontoolkit.utils.HttpUtils.PostRequestFormat;
 import com.richitec.commontoolkit.utils.StringUtils;
+import com.rictitec.chinesetelephone.utils.AliPayManager;
 
 import android.os.Bundle;
 import android.os.Handler;

@@ -8,7 +8,6 @@ import org.json.JSONObject;
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.account.AccountSettingActivity.ChooseCountryListener;
 import com.richitec.chinesetelephone.constant.SystemConstants;
-import com.richitec.chinesetelephone.util.CountryCodeManager;
 import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.HttpUtils;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
@@ -16,6 +15,7 @@ import com.richitec.commontoolkit.utils.HttpUtils.HttpResponseResult;
 import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
 import com.richitec.commontoolkit.utils.HttpUtils.PostRequestFormat;
 import com.richitec.commontoolkit.utils.MyToast;
+import com.rictitec.chinesetelephone.utils.CountryCodeManager;
 
 import android.os.Bundle;
 import android.app.Activity;
