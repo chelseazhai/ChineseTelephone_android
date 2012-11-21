@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="server_url">http://122.96.24.173/angola</string>
+    <string name="server_url">http://122.96.24.173:8080/angola</string>
     <string name="retrieve_auth_code_url">/user/getPhoneCode</string>
     <string name="check_auth_code_url">/user/checkPhoneCode</string>
     <string name="user_register_url">/user/regUser</string>
@@ -8,5 +8,6 @@
     <string name="getpsw_url">/user/getUserPwd</string>
     <string name="modify_psw_url">/profile/changePwd</string>
     <string name="account_balance_url">/accountBalance</string>
-    <string name="get_private_key">/profile/alipayinfo</string>
+    <string name="get_seller_partner_key">/profile/alipayinfo</string>
+    <string name="alipay_sign">/profile/alipaysign</string>
 </resources>

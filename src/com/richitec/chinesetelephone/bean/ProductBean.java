@@ -4,7 +4,7 @@ public class ProductBean {
 	private String subject;
 	private String body;
 	private String price;
-	private final String notify_url = "http://122.96.24.173/angola/alipayComplete";
+	private final String notify_url = "http://122.96.24.173:8080/angola/alipayClientComplete";
 	public String getSubject() {
 		return subject;
 	}

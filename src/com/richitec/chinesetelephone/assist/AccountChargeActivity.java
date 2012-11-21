@@ -16,6 +16,7 @@ import com.richitec.chinesetelephone.alipay.ResultChecker;
 import com.richitec.chinesetelephone.bean.ProductBean;
 import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.constant.AliPay;
+import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.customcomponent.CommonPopupWindow;
 import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.HexUtils;
@@ -48,7 +49,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class AccountChargeActivity extends Activity {
+public class AccountChargeActivity extends NavigationActivity {
 	private static MobileSecurePayHelper mspHelper= null;
 	private LinearLayout mainLayout;
 	private LinearLayout contentLayout;
@@ -105,17 +106,14 @@ public class AccountChargeActivity extends Activity {
     	AliPayManager aliPayManager = new AliPayManager(mHandler,this);
     	if(aliPayManager.checkInfo()){
         	
-	    	boolean pay = aliPayManager.pay(p);	    	
-	    	if (pay) {
-				// show the progress bar to indicate that we have started
-				// paying.
-				// 显示“正在支付”进度条
-				closeProgress();
-				mProgress = BaseHelper.showProgress(
-						this, null, getString(R.string.is_charging),
-						false,true);
-			} else
-				MyToast.show(this, R.string.process_charge_pls_wait, Toast.LENGTH_SHORT);
+	    	aliPayManager.pay(p);	    	
+			// show the progress bar to indicate that we have started
+			// paying.
+			// 显示“正在支付”进度条
+			closeProgress();
+			mProgress = BaseHelper.showProgress(
+					this, null, getString(R.string.is_charging),
+					false,true);
     	}
     	else{
     		BaseHelper
@@ -142,6 +140,8 @@ public class AccountChargeActivity extends Activity {
         String remainBalanceStr = ((TextView)findViewById(R.id.remain_balance)).getText().toString();
         remainBalanceStr += balance + getString(R.string.yuan);
         ((TextView)findViewById(R.id.remain_balance)).setText(remainBalanceStr);
+        
+        setTitle(R.string.charge_title);
     }
     
     public void aliPayBtnAction(View v){
@@ -149,7 +149,7 @@ public class AccountChargeActivity extends Activity {
 		if (!isMobile_spExist)
 			return;
 		
-		if(PartnerConfig.RSA_PRIVATE.equals("")){
+		if(PartnerConfig.PARTNER.equals("")){
 			
 			mProgress = ProgressDialog.show(this, null,
 					getString(R.string.sending_request), true);
@@ -158,7 +158,7 @@ public class AccountChargeActivity extends Activity {
 			HashMap<String,String> params = new HashMap<String,String>();
 	    	params.put("countryCode", telUser.getCountryCode());
 			
-	    	HttpUtils.postSignatureRequest(getString(R.string.server_url)+getString(R.string.get_private_key), 
+	    	HttpUtils.postSignatureRequest(getString(R.string.server_url)+getString(R.string.get_seller_partner_key), 
 					PostRequestFormat.URLENCODED, params,
 					null, HttpRequestType.ASYNCHRONOUS, onGetPrivateKeyListener);	
 		}
@@ -185,11 +185,11 @@ public class AccountChargeActivity extends Activity {
 				JSONObject data = new JSONObject(decryData);
 				String partnerId = data.getString("partner_id");
 				String sellerId = data.getString("seller");
-				String private_key = data.getString("private_key");
+				//String private_key = data.getString("private_key");
 				
 				PartnerConfig.PARTNER = partnerId;
 				PartnerConfig.SELLER = sellerId;
-				PartnerConfig.RSA_PRIVATE = private_key;
+				//PartnerConfig.RSA_PRIVATE = private_key;
 				
 				mainLayout = (LinearLayout) findViewById(R.id.main_charge_layout);
 		    	mainLayout.setVisibility(View.GONE);

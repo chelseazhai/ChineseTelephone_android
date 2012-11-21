@@ -39,8 +39,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.richitec.chinesetelephone.R;
+import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.call.OutgoingCallActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
+import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.DpPixUtils;
 
 public class DialTabContentActivity extends Activity {
@@ -88,7 +90,7 @@ public class DialTabContentActivity extends Activity {
 	private final NgnEngine NGN_ENGINE = NgnEngine.getInstance();
 
 	// sip server host
-	private final String SIP_SERVER_HOST = "210.56.60.150";
+	private final String SIP_SERVER_HOST = "112.132.217.13";//"210.56.60.150";
 
 	// doubango ngn registration state broadcast receiver
 	private BroadcastReceiver _mRegistrationStateBroadcastReceiver;
@@ -96,7 +98,7 @@ public class DialTabContentActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		Log.e("DiaTab", "onCreate");
 		// set content view
 		setContentView(R.layout.dial_tab_content_activity_layout);
 
@@ -179,14 +181,14 @@ public class DialTabContentActivity extends Activity {
 
 			_mRegistrationStateBroadcastReceiver = null;
 		}
-
+		Log.e("DiaTab", "destroy");
 		super.onDestroy();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-
+		Log.e("DiaTab", "onResume");
 		// starts the engine
 		if (!NGN_ENGINE.isStarted()) {
 			if (NGN_ENGINE.start()) {
@@ -267,10 +269,14 @@ public class DialTabContentActivity extends Activity {
 		INgnConfigurationService _configurationService = NGN_ENGINE
 				.getConfigurationService();
 		INgnSipService _sipService = NGN_ENGINE.getSipService();
+		
+		TelUserBean telUser = (TelUserBean) UserManager.getInstance().getUser();
+		
+		Log.d("DiaTabContent", telUser.getVosphone()+":"+telUser.getVosphone_pwd());
 
 		// credentials
-		final String SIP_USERNAME = "8003";
-		final String SIP_PASSWORD = "123789";
+		final String SIP_USERNAME = telUser.getVosphone();
+		final String SIP_PASSWORD = telUser.getVosphone_pwd();
 		final String SIP_DOMAIN = "richitec.com";
 		final String SIP_REALM = "richitec.com";
 		final int SIP_SERVER_PORT = 5060;

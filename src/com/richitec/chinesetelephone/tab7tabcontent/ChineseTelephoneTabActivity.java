@@ -7,6 +7,7 @@ import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 
 import com.richitec.chinesetelephone.R;
+import com.richitec.chinesetelephone.assist.SettingActivity;
 import com.richitec.commontoolkit.customcomponent.CommonTabSpecIndicator;
 
 public class ChineseTelephoneTabActivity extends TabActivity {
@@ -86,7 +87,7 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 								TAB_WIDGETITEM_CONTENTS[3][1]))
 				.setContent(
 						new Intent().setClass(this,
-								MoreTabContentActivity.class));
+								SettingActivity.class));
 		_tabHost.addTab(_tabSpec);
 
 		// set current tab and tab image
