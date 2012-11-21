@@ -550,7 +550,7 @@ public class ContactListTabContentActivity extends NavigationActivity {
 						+ " "
 						+ getResources()
 								.getString(
-										R.string.contactPhone_dialMode_selectPopupWindow_contactPhones_4selecting)
+										R.string.contactPhone_dialMode_selectPopupWindow_contactPhones_4select)
 						+ ")";
 			}
 
@@ -714,11 +714,11 @@ public class ContactListTabContentActivity extends NavigationActivity {
 									R.string.contactPhones_selectPopupWindow_titleTextView_text)
 							+ " " + (SipCallMode.DIRECT_CALL == dialContactPhoneMode ? getResources()
 							.getString(
-									R.string.contactPhone_dialMode_selectPopupWindow_directdialBtn_title)
+									R.string.contactPhones_selectPopupWindow_4directdial)
 							: getResources()
 									.getString(
-											R.string.contactPhone_dialMode_selectPopupWindow_callbackBtn_title))
-							.toLowerCase()).replace("***", displayName));
+											R.string.contactPhones_selectPopupWindow_4callback)))
+							.replace("***", displayName));
 
 			// check phone numbers for selecting
 			if (2 <= phoneNumbers.size() && phoneNumbers.size() <= 3) {
