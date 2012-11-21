@@ -10,6 +10,8 @@
     <string name="title_activity_account_setting">AccountSettingActivity</string>
     <string name="title_activity_account_regist">AccountRegistActivity</string>
     <string name="title_activity_account_forget_psw">AccountForgetPSWActivity</string>
+    
+    <string name="charge_title">Charge Account</string>
 
     <!-- call record history list activity -->
     <string name="title_activity_call_record_history_list_tab_content">CallRecordHistoryListActivity</string>
@@ -89,6 +91,7 @@
     <string name="is_auto_login">登录设置</string>
     <string name="auto_login_rbtn_title">自动登录</string>
     <string name="manual_login_rbtn_title">手动登录</string>
+    
     <!-- dial preference  -->
     <string name="dia_preference_title">拨号方式设置</string>
     <string name="choose_direct_dial">固定选择直拨</string>
@@ -110,6 +113,7 @@
     <string name="auth_not_pass">原有密码输入错误</string>
     <string name="new_psw_error">新密码为空，或者两次输入不一致</string>
     <string name="server_error">服务器出错</string>
+    <string name="change_psw_success">修改密码成功</string>
     <!-- get remain money-->
     <string name="get_remain_money_title">查询余额</string>
     <string name="get_balance_error">查询出错，请重试</string>

@@ -6,9 +6,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.richitec.chinesetelephone.R;
+import com.richitec.chinesetelephone.assist.SettingActivity;
 import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.constant.TelUser;
+import com.richitec.chinesetelephone.tab7tabcontent.ChineseTelephoneTabActivity;
 import com.richitec.commontoolkit.user.User;
 import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
@@ -198,6 +200,7 @@ public class AccountSettingActivity extends Activity {
 		}
 	}
     
+	//country code select dialog
     public void chooseCountry(View v){
     	AlertDialog.Builder chooseCountryDialogBuilder = new AlertDialog.Builder(this);
     	chooseCountryDialogBuilder.setTitle(R.string.countrycode_list);
@@ -307,10 +310,9 @@ public class AccountSettingActivity extends Activity {
 			
 			saveUserAccount();
 //			pushActivity(TalkingGroupHistoryListActivity.class);
-			Intent intent = new Intent(AccountSettingActivity.this, SettingActivity.class);
+			Intent intent = new Intent(AccountSettingActivity.this, ChineseTelephoneTabActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
-			
 			finish();
 
 		} catch (JSONException e) {

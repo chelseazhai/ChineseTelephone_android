@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import com.richitec.chinesetelephone.account.AccountSettingActivity;
-import com.richitec.chinesetelephone.account.SettingActivity;
+import com.richitec.chinesetelephone.assist.SettingActivity;
 import com.richitec.chinesetelephone.bean.DialPreferenceBean;
 import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.constant.DialPreference;
@@ -36,7 +36,7 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 		UserBean userBean = UserManager.getInstance().getUser();
 		if(userBean.getPassword()!=null&&!userBean.getPassword().equals("")
 				&&userBean.getUserKey()!=null&&!userBean.getUserKey().equals("")){
-			return new Intent(this, SettingActivity.class);
+			return new Intent(this, ChineseTelephoneTabActivity.class);
 		}
 		else{
 			return new Intent(this, AccountSettingActivity.class);

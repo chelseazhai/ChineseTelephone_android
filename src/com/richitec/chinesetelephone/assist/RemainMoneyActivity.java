@@ -3,6 +3,8 @@ package com.richitec.chinesetelephone.assist;
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.customcomponent.TelephoneBarButtonItem;
 import com.richitec.chinesetelephone.customcomponent.TelephoneNavigationActivity;
+import com.richitec.commontoolkit.activityextension.NavigationActivity;
+import com.richitec.commontoolkit.customcomponent.BarButtonItem;
 import com.richitec.commontoolkit.customcomponent.BarButtonItem.BarButtonItemStyle;
 import com.richitec.commontoolkit.user.UserManager;
 import android.os.Bundle;
@@ -11,7 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
-public class RemainMoneyActivity extends TelephoneNavigationActivity {
+public class RemainMoneyActivity extends NavigationActivity {
 	public static String BALANCE = "balance";
 	private double balance;
 	
@@ -20,8 +22,8 @@ public class RemainMoneyActivity extends TelephoneNavigationActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_remain_money_layout);
         
-        this.setRightBarButtonItem(new TelephoneBarButtonItem(
-        		this,BarButtonItemStyle.LEFT_BACK,R.string.charge_title_popwin,chargeBtnListener));
+        this.setRightBarButtonItem(new BarButtonItem(
+        		this,BarButtonItemStyle.RIGHT_GO,R.string.charge_title_popwin,chargeBtnListener));
         
         setTitle(R.string.get_remain_money_title);
         
@@ -30,9 +32,9 @@ public class RemainMoneyActivity extends TelephoneNavigationActivity {
         
         String username = UserManager.getInstance().getUser().getName();
         
-        double callTime = balance*10;
+        int callTime = (int) (balance*10);
         
-        double backcallTime = balance*6;
+        int backcallTime = (int) (balance*6);
         
         ((TextView)findViewById(R.id.uername)).setText(username);
         ((TextView)findViewById(R.id.remain_money)).setText(String.valueOf(balance)+getString(R.string.yuan));
@@ -48,6 +50,7 @@ public class RemainMoneyActivity extends TelephoneNavigationActivity {
 			Intent intent = new Intent(RemainMoneyActivity.this,AccountChargeActivity.class);
 			intent.putExtra(BALANCE, balance);
 			startActivity(intent);
+			//RemainMoneyActivity.this.pushActivity(activityClass)
 		}
     	
     };

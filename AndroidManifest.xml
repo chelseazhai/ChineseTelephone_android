@@ -20,7 +20,9 @@
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:name="org.doubango.ngn.NgnApplication"
+         >
         <activity
             android:name=".account.AccountSettingActivity"
             android:label="@string/title_activity_account_setting"
@@ -77,7 +79,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name=".account.SettingActivity"
+            android:name=".assist.SettingActivity"
             android:label="@string/title_setting"
             android:screenOrientation="portrait" >
         </activity>

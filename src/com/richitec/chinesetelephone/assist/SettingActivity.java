@@ -1,4 +1,4 @@
-package com.richitec.chinesetelephone.account;
+package com.richitec.chinesetelephone.assist;
 
 import java.util.HashMap;
 import java.util.List;
@@ -7,7 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.richitec.chinesetelephone.R;
-import com.richitec.chinesetelephone.assist.RemainMoneyActivity;
+import com.richitec.chinesetelephone.account.AccountSettingActivity;
 import com.richitec.chinesetelephone.bean.DialPreferenceBean;
 import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.constant.DialPreference;
@@ -58,7 +58,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 import android.support.v4.app.NavUtils;
 
-public class SettingActivity extends Activity {
+public class SettingActivity extends NavigationActivity {
 	
 	public static String TITLE_NAME = "titlename";
 	
@@ -93,6 +93,7 @@ public class SettingActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	Log.e("SettingActivity", "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         
@@ -133,8 +134,20 @@ public class SettingActivity extends Activity {
 					}
 				}
 				);
-    }  
+        setTitle(R.string.menu_settings);
+    } 
     
+    @Override
+	protected void onDestroy() {
+    	super.onDestroy();
+    	Log.e("SettingActivity", "destroy");
+    }
+    
+    @Override
+	protected void onResume() {
+    	super.onResume();
+    	Log.e("SettingActivity", "resume");
+    }
     public void getAuthNumber(View v){
     	
     }
@@ -213,7 +226,6 @@ public class SettingActivity extends Activity {
 			// TODO Auto-generated method stub
 			Intent intent = new Intent(SettingActivity.this,AccountSettingActivity.class);
 			intent.putExtra(TITLE_NAME, getString(R.string.change_account_title));
-			intent.putExtra("isRemember", UserManager.getInstance().getUser().isRememberPwd());
 			intent.putExtra("firstLogin", false);
 			startActivity(intent);
 		}
@@ -304,6 +316,7 @@ public class SettingActivity extends Activity {
 			dismiss();
 			if(modifyPSWPopupWindow!=null)
 				modifyPSWPopupWindow.dismiss();
+			MyToast.show(SettingActivity.this, R.string.change_psw_success, Toast.LENGTH_SHORT);
 		}
 
 		@Override
@@ -522,6 +535,10 @@ public class SettingActivity extends Activity {
 		public SetAreaCodePopupWindow(int resource, int width,
 				int height) {
 			super(resource, width, height);
+			TelUserBean telUser = (TelUserBean) UserManager.getInstance().getUser();
+			String areacode = telUser.getAreaCode();
+			if(areacode!=null&&!areacode.equals(""))
+				((EditText)getContentView().findViewById(R.id.set_areacode_editText)).setText(areacode);
 		}
 		
 		@Override
