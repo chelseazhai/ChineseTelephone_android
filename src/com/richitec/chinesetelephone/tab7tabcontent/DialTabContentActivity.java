@@ -5,15 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//import org.doubango.ngn.NgnEngine;
-//import org.doubango.ngn.events.NgnEventArgs;
-//import org.doubango.ngn.events.NgnRegistrationEventArgs;
-//import org.doubango.ngn.media.NgnMediaType;
-//import org.doubango.ngn.services.INgnConfigurationService;
-//import org.doubango.ngn.services.INgnSipService;
-//import org.doubango.ngn.sip.NgnAVSession;
-//import org.doubango.ngn.utils.NgnConfigurationEntry;
-//import org.doubango.ngn.utils.NgnUriUtils;
+import org.doubango.ngn.NgnEngine;
+import org.doubango.ngn.events.NgnEventArgs;
+import org.doubango.ngn.events.NgnRegistrationEventArgs;
+import org.doubango.ngn.media.NgnMediaType;
+import org.doubango.ngn.services.INgnConfigurationService;
+import org.doubango.ngn.services.INgnSipService;
+import org.doubango.ngn.sip.NgnAVSession;
+import org.doubango.ngn.utils.NgnConfigurationEntry;
+import org.doubango.ngn.utils.NgnUriUtils;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -85,8 +85,7 @@ public class DialTabContentActivity extends Activity {
 	}
 
 	// doubango ngnEngine instance
-	//此处修改
-//	private final NgnEngine NGN_ENGINE = NgnEngine.getInstance();
+	private final NgnEngine NGN_ENGINE = NgnEngine.getInstance();
 
 	// sip server host
 	private final String SIP_SERVER_HOST = "210.56.60.150";
@@ -154,9 +153,8 @@ public class DialTabContentActivity extends Activity {
 
 		// add doubango ngn registration state changed listener
 		IntentFilter _intentFilter = new IntentFilter();
-		//此处修改
-		/*_intentFilter
-				.addAction(NgnRegistrationEventArgs.ACTION_REGISTRATION_EVENT);*/
+		_intentFilter
+				.addAction(NgnRegistrationEventArgs.ACTION_REGISTRATION_EVENT);
 
 		registerReceiver(_mRegistrationStateBroadcastReceiver, _intentFilter);
 	}
@@ -171,10 +169,9 @@ public class DialTabContentActivity extends Activity {
 	@Override
 	protected void onDestroy() {
 		// stop the engine
-		//此处修改
-		/*if (NGN_ENGINE.isStarted()) {
+		if (NGN_ENGINE.isStarted()) {
 			NGN_ENGINE.stop();
-		}*/
+		}
 
 		// release doubango ngn registration state broadcast receiver
 		if (_mRegistrationStateBroadcastReceiver != null) {
@@ -191,7 +188,6 @@ public class DialTabContentActivity extends Activity {
 		super.onResume();
 
 		// starts the engine
-		//此处修改
 		if (!NGN_ENGINE.isStarted()) {
 			if (NGN_ENGINE.start()) {
 				Log.d(LOG_TAG, "Engine started :)");
@@ -314,8 +310,7 @@ public class DialTabContentActivity extends Activity {
 		boolean _ret = false;
 
 		// generate sip phone number
-		//此处修改
-		/*final String _sipPhoneUri = NgnUriUtils.makeValidSipUri(String.format(
+		final String _sipPhoneUri = NgnUriUtils.makeValidSipUri(String.format(
 				"sip:%s@%s", CallPhonePrefix + phoneNumber, SIP_SERVER_HOST));
 
 		// check sip phone uri
@@ -351,7 +346,7 @@ public class DialTabContentActivity extends Activity {
 			startActivity(_outgoingCallIntent);
 
 			_ret = _audioSession.makeCall(_sipPhoneUri);
-		}*/
+		}
 
 		return _ret;
 	}
@@ -575,8 +570,7 @@ public class DialTabContentActivity extends Activity {
 			String _action = intent.getAction();
 
 			// check the action for ngn registration Event
-			//此处修改
-			/*if (NgnRegistrationEventArgs.ACTION_REGISTRATION_EVENT
+			if (NgnRegistrationEventArgs.ACTION_REGISTRATION_EVENT
 					.equals(_action)) {
 				// get ngn registration event arguments
 				NgnRegistrationEventArgs _ngnRegistrationEventArgs = intent
@@ -609,7 +603,7 @@ public class DialTabContentActivity extends Activity {
 						break;
 					}
 				}
-			}*/
+			}
 		}
 
 	}
