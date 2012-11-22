@@ -9,20 +9,19 @@
     android:paddingTop="4dp" >
 
     <ImageView
-        android:id="@+id/outgoingCall_imageView"
+        android:id="@+id/record_callType_imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:contentDescription="@string/outgoingCall_imageView_content_description"
-        android:src="@android:drawable/sym_call_outgoing" />
+        android:contentDescription="@string/outgoingCall_imageView_content_description" />
 
     <RelativeLayout
         android:layout_width="168dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@id/outgoingCall_imageView" >
+        android:layout_toRightOf="@id/record_callType_imageView" >
 
         <TextView
             android:id="@+id/record_displayName_textView"

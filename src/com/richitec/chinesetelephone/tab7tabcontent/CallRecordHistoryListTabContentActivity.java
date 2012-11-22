@@ -1,5 +1,7 @@
 package com.richitec.chinesetelephone.tab7tabcontent;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +19,8 @@ import android.widget.ListView;
 
 import com.richitec.chinesetelephone.R;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
-import com.richitec.commontoolkit.addressbook.AddressBookManager;
+import com.richitec.commontoolkit.calllog.CallLogBean;
+import com.richitec.commontoolkit.calllog.CallLogManager;
 
 public class CallRecordHistoryListTabContentActivity extends NavigationActivity {
 
@@ -26,6 +29,9 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 	// call record detail image button keys
 	public static final String CALL_RECORD_IMAGEBUTTON_TAG = "call_record_imageButton_tag";
 	public static final String CALL_RECORD_IMAGEBUTTON_ONCLICKLISTENER = "call_record_imageButton_onClickListener";
+
+	// call log list
+	private final List<CallLogBean> _mCallLogList = new ArrayList<CallLogBean>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -60,6 +66,7 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 	// generate call record history list item adapter
 	private ListAdapter generateCallRecordHistoryListItemAdapter() {
 		// call record history list item adapter data keys
+		final String CALL_RECORD_CALLTYPE = "call_record_callType";
 		final String CALL_RECORD_DISPLAYNAME = "call_record_displayName";
 		final String CALL_RECORD_PHONE = "call_record_phone";
 		final String CALL_RECORD_INITIATETIME = "call_record_initiateTime";
@@ -68,48 +75,22 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 		// set call record history list view data list
 		List<Map<String, ?>> _callRecordHistoryDataList = new ArrayList<Map<String, ?>>();
 
-		// get address book manager reference
-		AddressBookManager _addressBookManager = AddressBookManager
-				.getInstance();
+		// get all call log and all added to call log list
+		_mCallLogList.addAll(CallLogManager.getAllCallLogs());
 
-		// test by ares
-		// define list view content
-		String[][] listViewContentArr = {
-				{ "13770662051", "12-10-10\n12:12:10" },
-				{ "13456231234", "12-10-10\n12:22:10" },
-				{ "+86-025-66083096-801", "12-10-10\n14:12:10" },
-				{ "13382794516", "12-10-11\n12:12:10" },
-				{ "13813005146", "12-10-11\n19:12:10" },
-				{ "1234", "12-10-12\n11:12:10" },
-				{ "13382794516", "12-10-12\n11:30:10" },
-				{ "14751802319", "12-10-12\n13:10:10" },
-				{ "13423123456", "12-10-12\n13:12:10" },
-				{ "13382794516", "12-10-12\n14:02:00" },
-				{ "18001582338", "12-10-12\n15:02:08" } };
-
-		for (int i = 0; i < listViewContentArr.length; i++) {
+		for (int i = 0; i < _mCallLogList.size(); i++) {
 			// generate data
 			Map<String, Object> _dataMap = new HashMap<String, Object>();
 
-			// put value
-			// get dial phone
-			String _dialPhone = listViewContentArr[i][0];
+			// get call log bean
+			CallLogBean _callLogBean = _mCallLogList.get(i);
 
-			// check dial phone has ownership
-			Long _dialPhoneOwnershipId = _addressBookManager
-					.isContactWithPhoneInAddressBook(_dialPhone);
-			if (null == _dialPhoneOwnershipId) {
-				_dataMap.put(
-						CALL_RECORD_DISPLAYNAME,
-						getResources().getString(
-								R.string.unknown_dial_phoneNumber));
-			} else {
-				_dataMap.put(CALL_RECORD_DISPLAYNAME, _addressBookManager
-						.getContactByAggregatedId(_dialPhoneOwnershipId)
-						.getDisplayName());
-			}
-			_dataMap.put(CALL_RECORD_PHONE, _dialPhone);
-			_dataMap.put(CALL_RECORD_INITIATETIME, listViewContentArr[i][1]);
+			// put value
+			_dataMap.put(CALL_RECORD_CALLTYPE, _callLogBean.getCallType());
+			_dataMap.put(CALL_RECORD_DISPLAYNAME, _callLogBean.getCalleeName());
+			_dataMap.put(CALL_RECORD_PHONE, _callLogBean.getCalleePhone());
+			_dataMap.put(CALL_RECORD_INITIATETIME,
+					formatCallRecordInitiateTime(_callLogBean.getCallDate()));
 
 			// call record detail value map
 			Map<String, Object> _callRecordDetailValueMap = new HashMap<String, Object>();
@@ -126,12 +107,33 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 		return new CallRecordHistoryListItemAdapter(this,
 				_callRecordHistoryDataList,
 				R.layout.call_record_historylist_item, new String[] {
-						CALL_RECORD_DISPLAYNAME, CALL_RECORD_PHONE,
-						CALL_RECORD_INITIATETIME, CALL_RECORD_DETAIL },
-				new int[] { R.id.record_displayName_textView,
+						CALL_RECORD_CALLTYPE, CALL_RECORD_DISPLAYNAME,
+						CALL_RECORD_PHONE, CALL_RECORD_INITIATETIME,
+						CALL_RECORD_DETAIL }, new int[] {
+						R.id.record_callType_imageView,
+						R.id.record_displayName_textView,
 						R.id.record_phone_textView,
 						R.id.record_initiateTime_textView,
 						R.id.recordDetail_imageBtn });
+	}
+
+	// format call record initiate time
+	private String formatCallRecordInitiateTime(Long callDate) {
+		// define return string builder
+		StringBuilder _ret = new StringBuilder();
+
+		// call record initiate time day and time format, format unix timeStamp
+		final DateFormat _callRecordInitiateTimeDayFormat = new SimpleDateFormat(
+				"yy-MM-dd");
+		final DateFormat _callRecordInitiateTimeTimeFormat = new SimpleDateFormat(
+				"HH:mm:ss");
+
+		// format day and time
+		_ret.append(_callRecordInitiateTimeDayFormat.format(callDate))
+				.append("\n")
+				.append(_callRecordInitiateTimeTimeFormat.format(callDate));
+
+		return _ret.toString();
 	}
 
 	// inner class
