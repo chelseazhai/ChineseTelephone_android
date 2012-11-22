@@ -1,13 +1,7 @@
 package com.richitec.chinesetelephone.account;
 
 import java.util.HashMap;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.richitec.chinesetelephone.R;
-import com.richitec.chinesetelephone.account.AccountSettingActivity.ChooseCountryListener;
-import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.HttpUtils;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
@@ -16,7 +10,6 @@ import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
 import com.richitec.commontoolkit.utils.HttpUtils.PostRequestFormat;
 import com.richitec.commontoolkit.utils.MyToast;
 import com.rictitec.chinesetelephone.utils.CountryCodeManager;
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -24,7 +17,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -90,7 +82,7 @@ public class AccountForgetPSWActivity extends Activity {
     		MyToast.show(this, R.string.phone_wrong_format, Toast.LENGTH_LONG);
     	}
     	
-    	Log.d(SystemConstants.TAG, phone+":"+countryCode);
+    	//Log.d(SystemConstants.TAG, phone+":"+countryCode);
     	
     	progressDlg = ProgressDialog.show(this, null,
 				getString(R.string.sending_request));

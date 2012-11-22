@@ -12,15 +12,11 @@ import com.richitec.commontoolkit.utils.HttpUtils.HttpResponseResult;
 import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
 import com.richitec.commontoolkit.utils.HttpUtils.PostRequestFormat;
 import com.rictitec.chinesetelephone.utils.CountryCodeManager;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
@@ -62,7 +58,7 @@ public class AccountRegistActivity extends Activity {
 		String pwd1 = pwd1ET.getText().toString().trim();
 		String pwd2 = pwd2ET.getText().toString().trim();
 		
-		Log.d("psw", pwd1+":"+pwd2);
+		//Log.d("psw", pwd1+":"+pwd2);
 
 		if (pwd1 == null || pwd1.equals("")) {
 			MyToast.show(this, R.string.pls_input_pwd, Toast.LENGTH_SHORT);
@@ -155,7 +151,7 @@ public class AccountRegistActivity extends Activity {
 			return;
 		}
     	
-    	Log.d("authcode", authcode);
+    	//Log.d("authcode", authcode);
     
     	progressDlg = ProgressDialog.show(this, null,
 				getString(R.string.verifying_auth_code));
@@ -215,7 +211,7 @@ public class AccountRegistActivity extends Activity {
     					.getCountryCode(((Button)findViewById(R.id.regist_choose_country_btn))
     							.getText().toString()).trim();
     	
-    	Log.d("AccountSetting", phone+":"+countrycode);
+    	//Log.d("AccountSetting", phone+":"+countrycode);
     	
     	if (phone==null||phone.equals("")) {
     		MyToast.show(AccountRegistActivity.this,

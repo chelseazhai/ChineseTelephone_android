@@ -1,20 +1,17 @@
 package com.richitec.chinesetelephone.assist;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.account.AccountSettingActivity;
 import com.richitec.chinesetelephone.bean.DialPreferenceBean;
 import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.constant.DialPreference;
 import com.richitec.chinesetelephone.constant.LaunchSetting;
-import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.constant.TelUser;
-import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.customcomponent.CommonPopupWindow;
 import com.richitec.commontoolkit.user.User;
@@ -29,38 +26,34 @@ import com.richitec.commontoolkit.utils.HttpUtils.HttpResponseResult;
 import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
 import com.richitec.commontoolkit.utils.HttpUtils.PostRequestFormat;
 import com.rictitec.chinesetelephone.utils.DialPreferenceManager;
-
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.provider.ContactsContract.Data;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
+import android.database.Cursor;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
-import android.support.v4.app.NavUtils;
 
 public class SettingActivity extends NavigationActivity {
 	
 	public static String TITLE_NAME = "titlename";
+	private String inviteLink;
 	
 	private AlertDialog.Builder builder;
 	private AlertDialog dialog;
@@ -73,27 +66,27 @@ public class SettingActivity extends NavigationActivity {
 	private final ModifyPSWPopupWindow modifyPSWPopupWindow = new ModifyPSWPopupWindow(
 			R.layout.modify_psw_popupwindow_layout,
 			LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT
-			);
-	
+			);	
 	private final GetPSWPopupWindow getPSWPopupWindow = new GetPSWPopupWindow(
 			R.layout.get_psw_popupwindow_layout,
 			LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT
-			);
-	
+			);	
 	private final SetAreaCodePopupWindow setAreaCodePopupWindow = new SetAreaCodePopupWindow(
 			R.layout.set_areacode_popupwindow_layout,
 			LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT
 			);
 	private final SetDialPreferencePopupWindow setDialPreferencePopupWin = new SetDialPreferencePopupWindow(
 			R.layout.dial_preference_popupwindow_layout,
-			LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+			LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT
+			);
 	private final LaunchSetCodePopupWindow launchSetCodePopupWindow = new LaunchSetCodePopupWindow(
 			R.layout.setup_preference_popupwindow_layout,
-			LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+			LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT
+			);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-    	Log.e("SettingActivity", "onCreate");
+    	//Log.e("SettingActivity", "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         
@@ -137,7 +130,7 @@ public class SettingActivity extends NavigationActivity {
         setTitle(R.string.menu_settings);
     } 
     
-    @Override
+    /*@Override
 	protected void onDestroy() {
     	super.onDestroy();
     	Log.e("SettingActivity", "destroy");
@@ -147,9 +140,35 @@ public class SettingActivity extends NavigationActivity {
 	protected void onResume() {
     	super.onResume();
     	Log.e("SettingActivity", "resume");
-    }
+    }*/
     public void getAuthNumber(View v){
     	
+    }
+    
+    public void exitProgram(View v){
+    	new AlertDialog.Builder(SettingActivity.this)
+		.setTitle(R.string.alert_title)
+		.setMessage(R.string.exit_program_messge)
+		.setPositiveButton(R.string.ok, 
+				new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						dialog.dismiss();
+						DataStorageUtils.putObject(User.password.name(), "");
+			    		DataStorageUtils.putObject(User.password.name(), "");
+						DataStorageUtils.putObject(TelUser.vosphone.name(), "");
+						DataStorageUtils.putObject(TelUser.vosphone_pwd.name(), "");
+						DataStorageUtils.putObject(User.userkey.name(), "");
+						Activity parent = getParent();
+						if(parent!=null){
+							parent.onBackPressed();
+						}
+					}
+				}
+				)
+		.setNegativeButton(R.string.cancel, null).show();
     }
     
     public void setAreaCode(View v){
@@ -165,49 +184,126 @@ public class SettingActivity extends NavigationActivity {
     }
     
     public void getRemainMoney(View v){
-    	TelUserBean userBean = (TelUserBean) UserManager.getInstance().getUser();
-    	String username = userBean.getName();
-    	String countryCode = userBean.getCountryCode();
-    	
-    	progressDialog = ProgressDialog.show(this, null,
-				getString(R.string.sending_request), true);
-    	
-    	HashMap<String,String> params = new HashMap<String,String>();
-    	params.put("username", username);
-    	params.put("countryCode", countryCode);
-    	
-    	HttpUtils.postSignatureRequest(getString(R.string.server_url)+getString(R.string.account_balance_url), 
-				PostRequestFormat.URLENCODED, params,
-				null, HttpRequestType.ASYNCHRONOUS, onFinishedGetBalance);
-    	
+    	Intent intent = new Intent(SettingActivity.this,RemainMoneyActivity.class);
+    	intent.putExtra("nav_back_btn_default_title",getString(R.string.setting));
+    	startActivity(intent);  	
     }
     
-    private OnHttpRequestListener onFinishedGetBalance = new OnHttpRequestListener() {
+    public void inviteFriend(View v){
+    	progressDialog = ProgressDialog.show(this, null,
+				getString(R.string.sending_request), true);
+    	TelUserBean userBean = (TelUserBean) UserManager.getInstance().getUser();
+    	String username = userBean.getName();
+    	String countrycode = userBean.getCountryCode();
+		HashMap<String,String> params = new HashMap<String,String>();
+		params.put("username", username);
+		params.put("countryCode", countrycode);
+		HttpUtils.postSignatureRequest(getString(R.string.server_url)+getString(R.string.getInviteLink), 
+				PostRequestFormat.URLENCODED, params,
+				null, HttpRequestType.ASYNCHRONOUS, onFinishedGetInviteLink);
+    }
+    
+    private OnHttpRequestListener onFinishedGetInviteLink = new OnHttpRequestListener() {
 
 		@Override
 		public void onFinished(HttpResponseResult responseResult) {
+
+			inviteLink = responseResult.getResponseText();			
 			dismiss();
-			JSONObject data;
-			try {
-				data = new JSONObject(
-						responseResult.getResponseText());
-				double result = data.getDouble("balance");
-				Intent intent = new Intent(SettingActivity.this,RemainMoneyActivity.class);
-		    	intent.putExtra("nav_back_btn_default_title",getString(R.string.setting));
-		    	intent.putExtra(RemainMoneyActivity.BALANCE, result);
-		    	startActivity(intent);
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			Intent intent = new Intent();
+	        intent.setAction(Intent.ACTION_PICK);
+	        intent.setData(ContactsContract.Contacts.CONTENT_URI);
+	        startActivityForResult(intent, 0);
 		}
 
 		@Override
 		public void onFailed(HttpResponseResult responseResult) {
 			dismiss();
-			MyToast.show(SettingActivity.this, R.string.get_balance_error, Toast.LENGTH_SHORT);
+
+			MyToast.show(SettingActivity.this, R.string.server_error, Toast.LENGTH_SHORT);
+			
 		}
 	};
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 0) {
+
+            if (resultCode == RESULT_OK) {
+
+                if (data == null) {
+                    return;
+                }    
+                
+                Uri result = data.getData();
+                final String[] phones = getPhoneNumbers(result);
+                
+                if(phones.length>0){
+                	if(phones.length==1){
+                		Uri uri = Uri.parse("smsto:" + phones[0]);
+            			Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
+            			String inviteMessage = getString(R.string.invite_message).replace("***", inviteLink);
+            			intent.putExtra("sms_body", inviteMessage);
+            			startActivity(intent);
+                	}
+                	else{
+                		AlertDialog.Builder builder = new AlertDialog.Builder(SettingActivity.this);
+        				builder.setTitle(getString(R.string.choose_sms_number));
+        				builder.setItems(phones,
+        						new DialogInterface.OnClickListener(){
+
+        							@Override
+        							public void onClick(DialogInterface dialog,
+        									int which) {
+        								// TODO Auto-generated method stub
+        								Uri uri = Uri.parse("smsto:" + phones[0]);
+        		            			Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
+        		            			String inviteMessage = getString(R.string.invite_message).replace("***", inviteLink);
+        		            			intent.putExtra("sms_body", inviteMessage);
+        		            			startActivity(intent);
+        							}      					
+        						}
+        						)
+        				.setNegativeButton(getString(R.string.cancel), null);	
+        				builder.show();
+                	}
+                }
+                else{
+                	MyToast.show(this, R.string.no_sms_number, Toast.LENGTH_SHORT);
+                }
+            }
+        }
+    }
+	
+	private String[] getPhoneNumbers(Uri contactData){
+		String contactId = contactData.getLastPathSegment();
+		Cursor cursor = managedQuery(contactData, null, null, null, null);
+		cursor.moveToFirst();
+		
+		int phoneColumn = cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER); 
+		int phoneNum = cursor.getInt(phoneColumn);
+		
+		if(phoneNum>0){
+			final String[] _projection = new String[] {Phone.NUMBER };
+			final String _selection = Data.MIMETYPE + "=? and "+Phone.CONTACT_ID+"=?";
+			final String[] _selectionArgs = new String[] { Phone.CONTENT_ITEM_TYPE,contactId };
+			List<String> phones = new ArrayList<String>();
+			
+			Cursor phoneCursor = this.getContentResolver().query(Data.CONTENT_URI, _projection, _selection, _selectionArgs, null);
+			if(phoneCursor!=null){
+				while(phoneCursor.moveToNext()){
+					String phone = phoneCursor.getString(phoneCursor.getColumnIndex(Phone.NUMBER));
+					//find the old record and update it
+					if(phone!=null&&!phone.trim().equals(""))
+						phones.add(phone);
+				}
+			}
+			return phones.toArray(new String[]{});
+		}
+		else{
+			return new String[]{};
+		}
+	}
     
     private OnClickListener getPswListener = new OnClickListener(){
 
@@ -285,7 +381,7 @@ public class SettingActivity extends NavigationActivity {
 		params.put("oldPwd", oldmd5);
 		params.put("newPwd", newpsw);
 		params.put("newPwdConfirm", confirm);
-		Log.d("modify", "modify");
+
 		HttpUtils.postSignatureRequest(getString(R.string.server_url)+getString(R.string.modify_psw_url), 
 				PostRequestFormat.URLENCODED, params,
 				null, HttpRequestType.ASYNCHRONOUS, onFinishedModifyPsw);
@@ -301,10 +397,9 @@ public class SettingActivity extends NavigationActivity {
 				JSONObject data = new JSONObject(
 						responseResult.getResponseText());
 				String userkey = data.getString("userkey");
-				Log.d("userkey", userkey);
 				String newpsw = ((EditText)modifyPSWPopupWindow.getContentView().
 						findViewById(R.id.new_psw_editText)).getEditableText().toString().trim();
-				Log.d("psw", newpsw);
+
 				UserManager.getInstance().getUser().setUserKey(userkey);
 				UserManager.getInstance().getUser().setPassword(StringUtils.md5(newpsw));
 				updatePreference(userkey,newpsw);
@@ -383,6 +478,83 @@ public class SettingActivity extends NavigationActivity {
 	    	
 	    };
     
+    private void saveSetupSetting(){
+    	int launchPatternId = this.launchGroup.getCheckedRadioButtonId();
+    	
+    	if(launchPatternId==R.id.auto_launch_rbtn){
+    		DataStorageUtils.putObject(LaunchSetting.autoLaunch.name(), "autoLaunch");
+    	}
+    	else if(launchPatternId==R.id.manual_launch_rbtn){
+    		DataStorageUtils.putObject(LaunchSetting.autoLaunch.name(), "");
+    	}
+    	
+    	int loginPatternId = this.loginGroup.getCheckedRadioButtonId();
+    	TelUserBean userBean = (TelUserBean) UserManager.getInstance().getUser();
+    	
+    	if(loginPatternId==R.id.auto_login_rbtn){
+    		if(!userBean.isRememberPwd()){
+    			userBean.setRememberPwd(true);
+    			DataStorageUtils.putObject(User.password.name(), userBean.getPassword());
+    			DataStorageUtils.putObject(TelUser.vosphone.name(), userBean.getVosphone());
+    			DataStorageUtils.putObject(TelUser.vosphone_pwd.name(), userBean.getVosphone_pwd());
+    			DataStorageUtils.putObject(User.userkey.name(), userBean.getUserKey());
+    		}
+    	}
+    	else if(loginPatternId==R.id.manual_login_rbtn){
+    		userBean.setRememberPwd(false);
+    		DataStorageUtils.putObject(User.password.name(), "");
+    		DataStorageUtils.putObject(User.password.name(), "");
+			DataStorageUtils.putObject(TelUser.vosphone.name(), "");
+			DataStorageUtils.putObject(TelUser.vosphone_pwd.name(), "");
+			DataStorageUtils.putObject(User.userkey.name(), "");
+    	}
+    }
+    
+    //拨打设置
+    private void saveDialPreference(){
+    	int dialPatternId = this.dialGroup.getCheckedRadioButtonId();
+    	int answerPatternId = this.answerGroup.getCheckedRadioButtonId();
+    	
+    	String dialPattern = getDialPattern(dialPatternId);
+    	String answerPattern = getAnswerPattern(answerPatternId);
+    	
+    	DialPreferenceBean dialBean = DialPreferenceManager.getInstance().getDialPreferenceBean();
+    	dialBean.setAnswerPattern(answerPattern);
+    	dialBean.setDialPattern(dialPattern);
+    	
+    	DataStorageUtils.putObject(DialPreference.DialSetting.dialPattern.name(), dialPattern);
+    	DataStorageUtils.putObject(DialPreference.DialSetting.answerPattern.name(), answerPattern);
+    }
+    
+    private String getDialPattern(int id){
+    	String result = "";
+    	switch(id){
+    	case R.id.radio_direct_btn:
+    		result = DialPreference.DIRECT_DIAL;
+    		break;
+    	case R.id.radio_back_btn:
+    		result = DialPreference.BACK_DIAL;
+    		break;
+    	case R.id.radio_manual_btn:
+    		result = DialPreference.MANUAL_DIAL;
+    		break;
+    	}
+    	return result;
+    }
+    
+    private String getAnswerPattern(int id){
+    	String result = "";
+    	switch(id){
+    	case R.id.answer_auto_btn:
+    		result = DialPreference.AUTO_ANSWER;
+    		break;
+    	case R.id.answer_manual_btn:
+    		result = DialPreference.MANUAL_ANSWER;
+    		break;
+    	}
+    	return result;
+    }
+    
     class ModifyPSWPopupWindow extends CommonPopupWindow {
 		
 		public ModifyPSWPopupWindow(int resource, int width,
@@ -445,15 +617,15 @@ public class SettingActivity extends NavigationActivity {
 				InputMethodManager imm = (InputMethodManager)getSystemService(
 				 		Context.INPUT_METHOD_SERVICE); 
 				imm.hideSoftInputFromWindow(((EditText) getContentView().findViewById(R.id.old_psw_editText))
-        		 		.getWindowToken(),0);
+	    		 		.getWindowToken(),0);
 				dismiss();
 			}
 		
 		}
+	
+	}
 
-    }
-    
-    class GetPSWPopupWindow extends CommonPopupWindow {
+	class GetPSWPopupWindow extends CommonPopupWindow {
 		
 		public GetPSWPopupWindow(int resource, int width,
 				int height, boolean focusable, boolean isBindDefListener) {
@@ -517,15 +689,81 @@ public class SettingActivity extends NavigationActivity {
 				InputMethodManager imm = (InputMethodManager)getSystemService(
 				 		Context.INPUT_METHOD_SERVICE); 
 				imm.hideSoftInputFromWindow(((EditText) getContentView().findViewById(R.id.get_psw_editText))
-        		 		.getWindowToken(),0);
+	    		 		.getWindowToken(),0);
 				dismiss();
 			}
 		
 		}
+	
+	}
 
-    }
-    
-    class SetAreaCodePopupWindow extends CommonPopupWindow {
+	class LaunchSetCodePopupWindow extends CommonPopupWindow {
+		
+		public LaunchSetCodePopupWindow(int resource, int width,
+				int height, boolean focusable, boolean isBindDefListener) {
+			super(resource, width, height, focusable, isBindDefListener);
+		}
+		
+		public LaunchSetCodePopupWindow(int resource, int width,
+				int height) {
+			super(resource, width, height);
+			UserBean user = UserManager.getInstance().getUser();
+			if(user.isRememberPwd()){
+				((RadioButton)getContentView().findViewById(R.id.auto_login_rbtn)).setChecked(true);
+			}
+			else
+				((RadioButton)getContentView().findViewById(R.id.manual_login_rbtn)).setChecked(true);
+			
+			String auto = DataStorageUtils.getString(LaunchSetting.autoLaunch.name());
+			if(auto!=null&&auto.equals("autoLaunch")){
+				((RadioButton)getContentView().findViewById(R.id.auto_launch_rbtn)).setChecked(true);
+			}
+			else
+				((RadioButton)getContentView().findViewById(R.id.manual_launch_rbtn)).setChecked(true);
+		}
+		
+		@Override
+		protected void bindPopupWindowComponentsListener() {
+		
+			// bind contact phone select cancel button click listener
+			((Button) getContentView().findViewById(R.id.setup_confirmBtn))
+					.setOnClickListener(new LaunchSetConfirmBtnOnClickListener());
+			((Button)getContentView().findViewById(R.id.setup_cancelBtn)).setOnClickListener(
+					new LaunchSetCancelBtnOnClickListener());
+		}
+		
+		@Override
+		protected void resetPopupWindow() {
+			// hide contact phones select phone list view
+		}
+		
+		// inner class
+		// contact phone select phone button on click listener
+		class LaunchSetConfirmBtnOnClickListener implements OnClickListener {
+		
+			@Override
+			public void onClick(View v) {		
+				// dismiss contact phone select popup window		
+				saveSetupSetting();
+				dismiss();
+			}
+		
+		}
+		
+		// contact phone select cancel button on click listener
+		class LaunchSetCancelBtnOnClickListener implements OnClickListener {
+		
+			@Override
+			public void onClick(View v) {
+				// dismiss contact phone select popup window
+				dismiss();
+			}
+		
+		}
+	
+	}
+
+	class SetAreaCodePopupWindow extends CommonPopupWindow {
 		
 		public SetAreaCodePopupWindow(int resource, int width,
 				int height, boolean focusable, boolean isBindDefListener) {
@@ -595,98 +833,15 @@ public class SettingActivity extends NavigationActivity {
 				 		Context.INPUT_METHOD_SERVICE); 
 				imm.hideSoftInputFromWindow(((EditText) getContentView()
 						.findViewById(R.id.set_areacode_editText))
-        		 		.getWindowToken(),0);
+	    		 		.getWindowToken(),0);
 				dismiss();
 			}
 		
 		}
+	
+	}
 
-    }
-    
-    private void saveSetupSetting(){
-    	int launchPatternId = this.launchGroup.getCheckedRadioButtonId();
-    	
-    	if(launchPatternId==R.id.auto_launch_rbtn){
-    		DataStorageUtils.putObject(LaunchSetting.autoLaunch.name(), "autoLaunch");
-    	}
-    	else if(launchPatternId==R.id.manual_launch_rbtn){
-    		Log.d("not auto","not auto");
-    		DataStorageUtils.putObject(LaunchSetting.autoLaunch.name(), "");
-    	}
-    	Log.d("*****","*****");
-    	String a = DataStorageUtils.getString(LaunchSetting.autoLaunch.name());
-    	Log.d("isautoLaunch", a);
-    	
-    	int loginPatternId = this.loginGroup.getCheckedRadioButtonId();
-    	TelUserBean userBean = (TelUserBean) UserManager.getInstance().getUser();
-    	
-    	if(loginPatternId==R.id.auto_login_rbtn){
-    		if(!userBean.isRememberPwd()){
-    			userBean.setRememberPwd(true);
-    			DataStorageUtils.putObject(User.password.name(), userBean.getPassword());
-    			DataStorageUtils.putObject(TelUser.vosphone.name(), userBean.getVosphone());
-    			DataStorageUtils.putObject(TelUser.vosphone_pwd.name(), userBean.getVosphone_pwd());
-    			DataStorageUtils.putObject(User.userkey.name(), userBean.getUserKey());
-    		}
-    	}
-    	else if(loginPatternId==R.id.manual_login_rbtn){
-    		userBean.setRememberPwd(false);
-    		DataStorageUtils.putObject(User.password.name(), "");
-    		DataStorageUtils.putObject(User.password.name(), "");
-			DataStorageUtils.putObject(TelUser.vosphone.name(), "");
-			DataStorageUtils.putObject(TelUser.vosphone_pwd.name(), "");
-			DataStorageUtils.putObject(User.userkey.name(), "");
-    	}
-    }
-    
-    //拨打设置
-    private void saveDialPreference(){
-    	int dialPatternId = this.dialGroup.getCheckedRadioButtonId();
-    	int answerPatternId = this.answerGroup.getCheckedRadioButtonId();
-    	
-    	String dialPattern = getDialPattern(dialPatternId);
-    	String answerPattern = getAnswerPattern(answerPatternId);
-    	
-    	Log.d("Dial Setting", dialPattern+":"+answerPattern); 
-    	
-    	DialPreferenceBean dialBean = DialPreferenceManager.getInstance().getDialPreferenceBean();
-    	dialBean.setAnswerPattern(answerPattern);
-    	dialBean.setDialPattern(dialPattern);
-    	
-    	DataStorageUtils.putObject(DialPreference.DialSetting.dialPattern.name(), dialPattern);
-    	DataStorageUtils.putObject(DialPreference.DialSetting.answerPattern.name(), answerPattern);
-    }
-    
-    private String getDialPattern(int id){
-    	String result = "";
-    	switch(id){
-    	case R.id.radio_direct_btn:
-    		result = DialPreference.DIRECT_DIAL;
-    		break;
-    	case R.id.radio_back_btn:
-    		result = DialPreference.BACK_DIAL;
-    		break;
-    	case R.id.radio_manual_btn:
-    		result = DialPreference.MANUAL_DIAL;
-    		break;
-    	}
-    	return result;
-    }
-    
-    private String getAnswerPattern(int id){
-    	String result = "";
-    	switch(id){
-    	case R.id.answer_auto_btn:
-    		result = DialPreference.AUTO_ANSWER;
-    		break;
-    	case R.id.answer_manual_btn:
-    		result = DialPreference.MANUAL_ANSWER;
-    		break;
-    	}
-    	return result;
-    }
-    
-    class SetDialPreferencePopupWindow extends CommonPopupWindow {
+	class SetDialPreferencePopupWindow extends CommonPopupWindow {
 		
 		public SetDialPreferencePopupWindow(int resource, int width,
 				int height, boolean focusable, boolean isBindDefListener) {
@@ -753,73 +908,6 @@ public class SettingActivity extends NavigationActivity {
 		
 		// contact phone select cancel button on click listener
 		class SetAreaCodeCancelBtnOnClickListener implements OnClickListener {
-		
-			@Override
-			public void onClick(View v) {
-				// dismiss contact phone select popup window
-				dismiss();
-			}
-		
-		}
-
-    }
-    
-    class LaunchSetCodePopupWindow extends CommonPopupWindow {
-		
-		public LaunchSetCodePopupWindow(int resource, int width,
-				int height, boolean focusable, boolean isBindDefListener) {
-			super(resource, width, height, focusable, isBindDefListener);
-		}
-		
-		public LaunchSetCodePopupWindow(int resource, int width,
-				int height) {
-			super(resource, width, height);
-			UserBean user = UserManager.getInstance().getUser();
-			if(user.isRememberPwd()){
-				((RadioButton)getContentView().findViewById(R.id.auto_login_rbtn)).setChecked(true);
-			}
-			else
-				((RadioButton)getContentView().findViewById(R.id.manual_login_rbtn)).setChecked(true);
-			
-			String auto = DataStorageUtils.getString(LaunchSetting.autoLaunch.name());
-			if(auto!=null&&auto.equals("autoLaunch")){
-				((RadioButton)getContentView().findViewById(R.id.auto_launch_rbtn)).setChecked(true);
-			}
-			else
-				((RadioButton)getContentView().findViewById(R.id.manual_launch_rbtn)).setChecked(true);
-		}
-		
-		@Override
-		protected void bindPopupWindowComponentsListener() {
-		
-			// bind contact phone select cancel button click listener
-			((Button) getContentView().findViewById(R.id.setup_confirmBtn))
-					.setOnClickListener(new LaunchSetConfirmBtnOnClickListener());
-			((Button)getContentView().findViewById(R.id.setup_cancelBtn)).setOnClickListener(
-					new LaunchSetCancelBtnOnClickListener());
-		}
-		
-		@Override
-		protected void resetPopupWindow() {
-			// hide contact phones select phone list view
-			//((EditText)getContentView().findViewById(R.id.set_areacode_editText)).setText("");
-		}
-		
-		// inner class
-		// contact phone select phone button on click listener
-		class LaunchSetConfirmBtnOnClickListener implements OnClickListener {
-		
-			@Override
-			public void onClick(View v) {		
-				// dismiss contact phone select popup window		
-				saveSetupSetting();
-				dismiss();
-			}
-		
-		}
-		
-		// contact phone select cancel button on click listener
-		class LaunchSetCancelBtnOnClickListener implements OnClickListener {
 		
 			@Override
 			public void onClick(View v) {

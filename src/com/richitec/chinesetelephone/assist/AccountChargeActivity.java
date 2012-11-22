@@ -1,11 +1,8 @@
 package com.richitec.chinesetelephone.assist;
 
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.alipay.AlixId;
 import com.richitec.chinesetelephone.alipay.BaseHelper;
@@ -19,25 +16,20 @@ import com.richitec.chinesetelephone.constant.AliPay;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.customcomponent.CommonPopupWindow;
 import com.richitec.commontoolkit.user.UserManager;
-import com.richitec.commontoolkit.utils.HexUtils;
 import com.richitec.commontoolkit.utils.HttpUtils;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpResponseResult;
 import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
 import com.richitec.commontoolkit.utils.MyToast;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
 import com.richitec.commontoolkit.utils.HttpUtils.PostRequestFormat;
-import com.richitec.commontoolkit.utils.StringUtils;
 import com.rictitec.chinesetelephone.utils.AliPayManager;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -102,6 +94,50 @@ public class AccountChargeActivity extends NavigationActivity {
     	tDialog.show();
 	}
 	
+	private void getRemainMoney(){
+    	TelUserBean userBean = (TelUserBean) UserManager.getInstance().getUser();
+    	String username = userBean.getName();
+    	String countryCode = userBean.getCountryCode();
+    	
+    	mProgress = ProgressDialog.show(this, null,
+				getString(R.string.sending_request), true);
+    	
+    	HashMap<String,String> params = new HashMap<String,String>();
+    	params.put("username", username);
+    	params.put("countryCode", countryCode);
+    	
+    	HttpUtils.postSignatureRequest(getString(R.string.server_url)+getString(R.string.account_balance_url), 
+				PostRequestFormat.URLENCODED, params,
+				null, HttpRequestType.ASYNCHRONOUS, onFinishedGetBalance);
+    }
+    
+    private OnHttpRequestListener onFinishedGetBalance = new OnHttpRequestListener() {
+
+		@Override
+		public void onFinished(HttpResponseResult responseResult) {
+			closeProgress();
+			JSONObject data;
+			try {
+				data = new JSONObject(
+						responseResult.getResponseText());
+				double balance = RemainMoneyActivity.formatRemainMoney(data.getDouble("balance")+"");
+				String remainBalanceStr = AccountChargeActivity.this.getString(R.string.remain_balance_textfield);
+		        remainBalanceStr += balance + getString(R.string.yuan);
+		        ((TextView)findViewById(R.id.remain_balance)).setText(remainBalanceStr);
+				
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public void onFailed(HttpResponseResult responseResult) {
+			closeProgress();
+			MyToast.show(AccountChargeActivity.this, R.string.get_balance_error, Toast.LENGTH_SHORT);
+		}
+	};
+	
 	private void charging(ProductBean p){
     	AliPayManager aliPayManager = new AliPayManager(mHandler,this);
     	if(aliPayManager.checkInfo()){
@@ -133,15 +169,10 @@ public class AccountChargeActivity extends NavigationActivity {
         
     	mspHelper = new MobileSecurePayHelper(AccountChargeActivity.this);
         
-        double balance = getIntent().getDoubleExtra(RemainMoneyActivity.BALANCE, 0.0);
-        
         //MyToast.show(this, "balance:"+balance, Toast.LENGTH_SHORT);
         
-        String remainBalanceStr = ((TextView)findViewById(R.id.remain_balance)).getText().toString();
-        remainBalanceStr += balance + getString(R.string.yuan);
-        ((TextView)findViewById(R.id.remain_balance)).setText(remainBalanceStr);
-        
-        setTitle(R.string.charge_title);
+        setTitle(R.string.charge_title_popwin);
+        getRemainMoney();
     }
     
     public void aliPayBtnAction(View v){
@@ -297,7 +328,6 @@ public class AccountChargeActivity extends NavigationActivity {
     public void chargeOtherAction(View v){
     	chargeMoneyPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
     }
-    
 	
 	class ChargeMoneyPopupWindow extends CommonPopupWindow {
 		
@@ -376,8 +406,7 @@ public class AccountChargeActivity extends NavigationActivity {
  		public void handleMessage(Message msg) {
  			try {
  				String strRet = (String) msg.obj;
-
- 				Log.e(TAG, strRet);	// strRet范例：resultStatus={9000};memo={};result={partner="2088201564809153"&seller="2088201564809153"&out_trade_no="050917083121576"&subject="123456"&body="2010新款NIKE 耐克902第三代板鞋 耐克男女鞋 386201 白红"&total_fee="0.01"&notify_url="http://notify.java.jpxx.org/index.jsp"&success="true"&sign_type="RSA"&sign="d9pdkfy75G997NiPS1yZoYNCmtRbdOP0usZIMmKCCMVqbSG1P44ohvqMYRztrB6ErgEecIiPj9UldV5nSy9CrBVjV54rBGoT6VSUF/ufjJeCSuL510JwaRpHtRPeURS1LXnSrbwtdkDOktXubQKnIMg2W0PreT1mRXDSaeEECzc="}
+ 				//Log.e(TAG, strRet);	// strRet范例：resultStatus={9000};memo={};result={partner="2088201564809153"&seller="2088201564809153"&out_trade_no="050917083121576"&subject="123456"&body="2010新款NIKE 耐克902第三代板鞋 耐克男女鞋 386201 白红"&total_fee="0.01"&notify_url="http://notify.java.jpxx.org/index.jsp"&success="true"&sign_type="RSA"&sign="d9pdkfy75G997NiPS1yZoYNCmtRbdOP0usZIMmKCCMVqbSG1P44ohvqMYRztrB6ErgEecIiPj9UldV5nSy9CrBVjV54rBGoT6VSUF/ufjJeCSuL510JwaRpHtRPeURS1LXnSrbwtdkDOktXubQKnIMg2W0PreT1mRXDSaeEECzc="}
  				switch (msg.what) {
  				case AlixId.RQF_PAY: {
  					//
@@ -406,8 +435,10 @@ public class AccountChargeActivity extends NavigationActivity {
  											R.string.check_sign_failed),
  									android.R.drawable.ic_dialog_alert);
  						} else {// 验签成功。验签成功后再判断交易状态码
- 							if(tradeStatus.equals("9000"))//判断交易状态码，只有9000表示交易成功
+ 							if(tradeStatus.equals("9000")){//判断交易状态码，只有9000表示交易成功
+ 								getRemainMoney();
  								BaseHelper.showDialog(AccountChargeActivity.this, "提示","支付成功。交易状态码："+tradeStatus, R.drawable.infoicon);
+ 							}
  							else
  							BaseHelper.showDialog(AccountChargeActivity.this, "提示", "支付失败。交易状态码:"
  									+ tradeStatus, R.drawable.infoicon);

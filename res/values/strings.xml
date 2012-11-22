@@ -10,8 +10,6 @@
     <string name="title_activity_account_setting">AccountSettingActivity</string>
     <string name="title_activity_account_regist">AccountRegistActivity</string>
     <string name="title_activity_account_forget_psw">AccountForgetPSWActivity</string>
-    
-    <string name="charge_title">Charge Account</string>
 
     <!-- call record history list activity -->
     <string name="title_activity_call_record_history_list_tab_content">CallRecordHistoryListActivity</string>
@@ -73,6 +71,7 @@
     <string name="search_remainmoney_item">查询余额</string>
     <string name="search_authnumber_item">查询认证号</string>
     <string name="setting">设置</string>
+    <string name="back">返回</string>
     <string name="setting_dial_item">拨打设置</string>
     <string name="setting_areacode_item">本地区号设置</string>
     <string name="setting_setup_item">启动设置</string>
@@ -91,7 +90,15 @@
     <string name="is_auto_login">登录设置</string>
     <string name="auto_login_rbtn_title">自动登录</string>
     <string name="manual_login_rbtn_title">手动登录</string>
-    
+    <string name="exit_program_messge">确定要注销并退出程序？</string>
+    <string name="invite_friend">邀请好友</string>
+    <string name="add_contact">添加联系人</string>
+    <string name="add_new_contact_item">添加新联系人</string>
+    <string name="add_exist_contact_item">添加现有联系人</string>
+    <string name="no_sms_number">无号码，请重新选择</string>
+    <string name="invite_message">邀请你使用免费电话软件,点击 *** 进行下载</string>
+    <string name="choose_sms_number">请选择号码</string>
+    <string name="pls_input_phone">请输入电话号码</string>  
     <!-- dial preference  -->
     <string name="dia_preference_title">拨号方式设置</string>
     <string name="choose_direct_dial">固定选择直拨</string>
@@ -112,7 +119,7 @@
     <string name="new_confirm_not_null">请输入新的密码或确认密码</string>
     <string name="auth_not_pass">原有密码输入错误</string>
     <string name="new_psw_error">新密码为空，或者两次输入不一致</string>
-    <string name="server_error">服务器出错</string>
+    <string name="server_error">服务器出错，请重试</string>
     <string name="change_psw_success">修改密码成功</string>
     <!-- get remain money-->
     <string name="get_remain_money_title">查询余额</string>
@@ -141,7 +148,7 @@
 	<string name="charge_50">充值50元</string>
 	<string name="charge_30">充值30元</string>
 	<string name="charge_other">其他</string> 
-	<string name="charge_back">返   回</string>
+	<string name="charge_back">其他充值方式</string>
 	<string name="input_valid_charge_money">请输入正确充值金额</string>
 	<string name="process_charge_pls_wait">正在进行交易，请稍等</string>
 	<string name="is_charging">正在支付</string>

@@ -29,6 +29,6 @@
     <color name="goldenrod">#cfc1b3</color>
     <color name="dark_wheat">#d0c1b3</color>
     <color name="white">#ffffff</color>
-    <color name="light_blue">#2399ffcc</color>
     <color name="light_orange">#FAEAA9</color>
+    <color name="setting_bg">#E1E0DE</color>
 </resources>

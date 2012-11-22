@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.assist.SettingActivity;
 import com.richitec.chinesetelephone.bean.TelUserBean;
@@ -12,7 +11,6 @@ import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.constant.TelUser;
 import com.richitec.chinesetelephone.tab7tabcontent.ChineseTelephoneTabActivity;
 import com.richitec.commontoolkit.user.User;
-import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.DataStorageUtils;
 import com.richitec.commontoolkit.utils.HttpUtils;
@@ -22,7 +20,6 @@ import com.richitec.commontoolkit.utils.HttpUtils.HttpResponseResult;
 import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
 import com.richitec.commontoolkit.utils.HttpUtils.PostRequestFormat;
 import com.rictitec.chinesetelephone.utils.CountryCodeManager;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -139,7 +136,7 @@ public class AccountSettingActivity extends Activity {
         Bundle data = intent.getExtras();
         if(data!=null&&data.containsKey(SettingActivity.TITLE_NAME)){
         	String title = data.getString(SettingActivity.TITLE_NAME);
-        	Log.d(SystemConstants.TAG, "title:"+title);
+        	//Log.d(SystemConstants.TAG, "title:"+title);
         	((TextView)findViewById(R.id.account_setting_title)).setText(title);
         }
         
@@ -180,7 +177,7 @@ public class AccountSettingActivity extends Activity {
         
         //从设置页面切换账号时标明用户是否在登录时勾选记住密码
         if(!user.isRememberPwd()){
-        	Log.d("Account remember", user.isRememberPwd()+"");
+        	//Log.d("Account remember", user.isRememberPwd()+"");
         	pswEditText.setText("");
         	useSavedPsw = false;
         	remember.setChecked(false);
