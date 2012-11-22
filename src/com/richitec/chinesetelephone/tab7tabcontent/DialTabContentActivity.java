@@ -16,14 +16,20 @@ import org.doubango.ngn.utils.NgnConfigurationEntry;
 import org.doubango.ngn.utils.NgnUriUtils;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Rect;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds;
+import android.provider.ContactsContract.Intents;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -44,6 +50,7 @@ import com.richitec.chinesetelephone.call.OutgoingCallActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.DpPixUtils;
+import com.richitec.commontoolkit.utils.MyToast;
 
 public class DialTabContentActivity extends Activity {
 
@@ -483,6 +490,30 @@ public class DialTabContentActivity extends Activity {
 		}
 
 	}
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 0) {
+
+            if (resultCode == RESULT_OK) {
+
+                if (data == null) {
+                    return;
+                }    
+                String _dialPhoneString = _mDialPhoneTextView.getText().toString();
+                
+                Uri result = data.getData();
+                String contactId = result.getLastPathSegment();
+                Intent intent = new Intent(Intent.ACTION_EDIT, 
+                		Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, 
+                				String.valueOf(contactId)));
+                intent.putExtra(Intents.Insert.PHONE, _dialPhoneString);
+                intent.putExtra(Intents.Insert.PHONE_TYPE,
+                		CommonDataKinds.Phone.TYPE_MOBILE);
+                startActivity(intent);
+            }
+        }
+    }
 
 	// add new contact dial function button on click listener
 	class AddNewContactDialFunBtnOnClickListener implements OnClickListener {
@@ -495,12 +526,43 @@ public class DialTabContentActivity extends Activity {
 			// check dial phone string
 			if (null != _dialPhoneString
 					&& !"".equalsIgnoreCase(_dialPhoneString)) {
-				Log.d(LOG_TAG, "add new contact, new contact phone = "
-						+ _dialPhoneString);
-
-				Toast.makeText(DialTabContentActivity.this,
-						"The new contact phone = " + _dialPhoneString,
-						Toast.LENGTH_SHORT).show();
+				
+				AlertDialog.Builder builder = new AlertDialog.Builder(DialTabContentActivity.this);
+				builder.setTitle(DialTabContentActivity.this.getString(R.string.add_contact));
+				builder.setItems(new String[]{DialTabContentActivity.this.
+								getString(R.string.add_exist_contact_item),
+								DialTabContentActivity.this.
+								getString(R.string.add_new_contact_item)},
+						new DialogInterface.OnClickListener(){
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								// TODO Auto-generated method stub
+								if(which==0){
+									Intent intent = new Intent();
+							        intent.setAction(Intent.ACTION_PICK);
+							        intent.setData(ContactsContract.Contacts.CONTENT_URI);
+							        startActivityForResult(intent, 0);
+								}
+								else{
+									String dialPhoneString = _mDialPhoneTextView.getText().toString();
+									Intent intent = new Intent(Intent.ACTION_INSERT);
+							        intent.setType("vnd.android.cursor.dir/person");
+							        intent.setType("vnd.android.cursor.dir/contact");
+							        intent.setType("vnd.android.cursor.dir/raw_contact");
+							        intent.putExtra("phone", dialPhoneString); 
+							        intent.putExtra(Intents.Insert.PHONE_TYPE, 
+							        		CommonDataKinds.Phone.TYPE_MOBILE);
+							        startActivity(intent);
+								}
+							}
+					
+						}
+						);	
+				builder.show();
+			}
+			else{
+				MyToast.show(DialTabContentActivity.this, R.string.pls_input_phone, Toast.LENGTH_SHORT);
 			}
 		}
 
