@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/half_transparent" >
+
+    <LinearLayout
+        android:id="@+id/modify_psw_popupWindow_relativeLayout"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:background="@drawable/popupwindow_relativelayout_bg"
+        android:paddingBottom="10dp"
+        >
+		
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/popupwindow_title_relativelayout_bg"
+            >
+        
+        <TextView 
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:text="@string/get_bind_phone_title"
+            android:paddingLeft="10dp"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" 
+            android:gravity="center_vertical"
+            />
+        
+        </LinearLayout>
+        
+        <LinearLayout 
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="10dp"
+            >
+        
+        <TextView 
+            android:layout_width="100dp"
+            android:layout_height="30dp"       
+            android:gravity="center" 
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/dark_dim_gray"    
+            android:textSize="15sp"
+            android:text="@string/get_bind_phone_message"
+            />
+
+        <TextView
+            android:id="@+id/get_bind_number_editText"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textColor="@android:color/black"
+            android:text="13739194534"
+            android:textSize="15dp"
+            android:gravity="center_vertical|left"
+            android:ellipsize="end" />
+        
+        </LinearLayout>
+        
+        <LinearLayout 
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="10dp"
+            >
+        
+        <TextView 
+            android:layout_width="100dp"
+            android:layout_height="30dp"       
+            android:gravity="center" 
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/dark_dim_gray"    
+            android:textSize="15sp"
+            android:text="@string/get_bind_country_message"
+            />
+
+        <TextView
+            android:id="@+id/get_bind_country_editText"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textColor="@android:color/black"
+            android:text="0086"
+            android:textSize="15dp"
+            android:gravity="center_vertical|left"
+            android:ellipsize="end" />
+        
+        </LinearLayout>
+        
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            >
+
+       <Button
+            android:id="@+id/get_bind_confirmBtn"
+            android:layout_width="100dp"
+            android:layout_height="43dp"
+            android:background="@drawable/login_btn_bg"
+            android:text="@string/ok"
+            android:textSize="12dp"
+            android:gravity="center"
+            android:paddingBottom="16dp"
+            android:layout_marginRight="10dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/white" /> 
+    	</LinearLayout>
+
+     </LinearLayout>
+</FrameLayout>

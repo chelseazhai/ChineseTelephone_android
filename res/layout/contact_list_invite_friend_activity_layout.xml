@@ -1,0 +1,49 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/img_addressbook_contact_listview_parent_bg"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/contact_search_editText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:drawableLeft="@drawable/ic_action_search"
+        android:hint="@string/contact_search_editText_hint"
+        android:inputType="text" >
+
+        <requestFocus />
+    </EditText>
+	   
+	
+    <FrameLayout
+        android:id="@+id/contact_list"
+        android:layout_alignBottom="@id/contact_search_editText"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <ListView
+            android:id="@+id/contactInAB_listView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="@drawable/img_addressbook_contact_listview_divider_bg"
+            android:fadingEdge="none"
+            android:headerDividersEnabled="false"
+            android:listSelector="@android:color/transparent" >
+        </ListView>
+    </FrameLayout>
+    
+    <Button 
+        android:layout_alignParentBottom="true"
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:text="确定"
+        android:layout_gravity="bottom"
+        android:onClick="onConfirm"
+        />
+</RelativeLayout>

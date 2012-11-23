@@ -11,4 +11,6 @@
     <string name="get_seller_partner_key">/profile/alipayinfo</string>
     <string name="alipay_sign">/profile/alipaysign</string>
     <string name="getInviteLink">/profile/getRegInviteLink</string>
+    <string name="setBindPhone">/profile/setBindPhone</string>
+    <string name="getBindPhone">/profile/getBindPhone</string>
 </resources>
