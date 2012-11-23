@@ -75,6 +75,7 @@
     <string name="setting_dial_item">拨打设置</string>
     <string name="setting_areacode_item">本地区号设置</string>
     <string name="setting_setup_item">启动设置</string>
+    <string name="setting_set_auth_number">绑定号码设置</string>
     <string name="setting_logout_item">注销登录并退出</string>
     <string name="help">帮助</string>
     <string name="help_item">系统帮助及资费查询</string>
@@ -98,7 +99,14 @@
     <string name="no_sms_number">无号码，请重新选择</string>
     <string name="invite_message">邀请你使用免费电话软件,点击 *** 进行下载</string>
     <string name="choose_sms_number">请选择号码</string>
-    <string name="pls_input_phone">请输入电话号码</string>  
+    <string name="pls_input_phone">请输入电话号码</string>
+    <string name="set_bind_number_title">设置绑定号码</string>
+    <string name="set_bind_number_message">绑定号码：</string>
+    <string name="set_bind_number_success">绑定号码成！</string>
+    <string name="get_bind_phone_title">已绑定号码</string>
+    <string name="get_bind_phone_message">绑定手机号：</string>
+    <string name="get_bind_country_message">国家号：</string>
+    <string name="setup_popwin_title">启动方式设置</string>
     <!-- dial preference  -->
     <string name="dia_preference_title">拨号方式设置</string>
     <string name="choose_direct_dial">固定选择直拨</string>

@@ -23,7 +23,7 @@
 	        <TextView 
 	            android:layout_width="fill_parent"
 	            android:layout_height="40dp"
-	            android:text="@string/dia_preference_title"
+	            android:text="@string/setup_popwin_title"
 	            android:paddingLeft="10dp"
 	            android:textColor="@android:color/white"
 	            android:textSize="20sp" 
