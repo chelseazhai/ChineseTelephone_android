@@ -8,19 +8,25 @@ import java.util.List;
 import java.util.Map;
 
 import android.os.Bundle;
+import android.text.SpannableString;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.richitec.chinesetelephone.R;
+import com.richitec.chinesetelephone.call.ContactPhoneDialModeSelectpopupWindow;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.calllog.CallLogBean;
+import com.richitec.commontoolkit.calllog.CallLogBean.CallType;
 import com.richitec.commontoolkit.calllog.CallLogManager;
+import com.richitec.commontoolkit.utils.CommonUtils;
 
 public class CallRecordHistoryListTabContentActivity extends NavigationActivity {
 
@@ -85,10 +91,19 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 			// get call log bean
 			CallLogBean _callLogBean = _mCallLogList.get(i);
 
+			// get call type, callee display name and phone
+			CallType _callType = _callLogBean.getCallType();
+			String _calleeName = _callLogBean.getCalleeName();
+			String _calleePhone = _callLogBean.getCalleePhone();
+
 			// put value
-			_dataMap.put(CALL_RECORD_CALLTYPE, _callLogBean.getCallType());
-			_dataMap.put(CALL_RECORD_DISPLAYNAME, _callLogBean.getCalleeName());
-			_dataMap.put(CALL_RECORD_PHONE, _callLogBean.getCalleePhone());
+			_dataMap.put(CALL_RECORD_CALLTYPE, _callType);
+			_dataMap.put(CALL_RECORD_DISPLAYNAME,
+					CallType.MISSED == _callType ? new SpannableString(
+							_calleeName) : _calleeName);
+			_dataMap.put(CALL_RECORD_PHONE,
+					CallType.MISSED == _callType ? new SpannableString(
+							_calleePhone) : _calleePhone);
 			_dataMap.put(CALL_RECORD_INITIATETIME,
 					formatCallRecordInitiateTime(_callLogBean.getCallDate()));
 
@@ -144,8 +159,28 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
-			Log.d(LOG_TAG, "parent = " + parent + ", view = " + view
-					+ ", position = " + position + " and id = " + id);
+			// get the click item view data: call log object
+			CallLogBean _clickItemViewData = _mCallLogList.get((int) id);
+
+			// define contact phone dial mode select popup window
+			ContactPhoneDialModeSelectpopupWindow _contactPhoneDialModeSelectPopupWindow = new ContactPhoneDialModeSelectpopupWindow(
+					R.layout.contact_phone_dialmode_select_popupwindow_layout,
+					LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+
+			// set callee contact info
+			// generate callee phones
+			@SuppressWarnings("unchecked")
+			List<String> _calleePhones = (List<String>) CommonUtils
+					.array2List(new String[] { _clickItemViewData
+							.getCalleePhone() });
+
+			// set callee contact info
+			_contactPhoneDialModeSelectPopupWindow.setCalleeContactInfo(
+					_clickItemViewData.getCalleeName(), _calleePhones);
+
+			// show contact phone dial mode select pupupWindow
+			_contactPhoneDialModeSelectPopupWindow.showAtLocation(parent,
+					Gravity.CENTER, 0, 0);
 		}
 
 	}

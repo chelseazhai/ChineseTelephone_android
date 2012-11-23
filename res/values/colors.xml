@@ -13,5 +13,6 @@
     <color name="dark_gray">#a3a3a3</color>
     <color name="light_gray">#b6b6b6</color>
     <color name="gainsboro">#c0c0c0</color>
+    <color name="red">#bb1919</color>
 
 </resources>
