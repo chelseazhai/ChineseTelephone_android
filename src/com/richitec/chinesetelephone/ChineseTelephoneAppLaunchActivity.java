@@ -9,6 +9,9 @@ import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.constant.DialPreference;
 import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.constant.TelUser;
+import com.richitec.chinesetelephone.sip.SipRegisterBean;
+import com.richitec.chinesetelephone.sip.SipUtils;
+import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
 import com.richitec.chinesetelephone.tab7tabcontent.ChineseTelephoneTabActivity;
 import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity;
 import com.richitec.chinesetelephone.tab7tabcontent.DialTabContentActivity;
@@ -30,7 +33,7 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 	@Override
 	public Intent intentActivity() {
 		// go to Chinese telephone main tab activity
-		loadAccount();
+		
 		UserBean userBean = UserManager.getInstance().getUser();
 		if(userBean.getPassword()!=null&&!userBean.getPassword().equals("")
 				&&userBean.getUserKey()!=null&&!userBean.getUserKey().equals("")){
@@ -51,7 +54,45 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 
 		// init dial phone button dtmf sound pool map
 		DialTabContentActivity.initDialPhoneBtnDTMFSoundPoolMap(this);
+
+		loadAccount();
 	
+		// test by ares
+		// generate sip register account
+		SipRegisterBean _sipAccount = new SipRegisterBean();
+
+		// set test sip account
+		_sipAccount.setSipUserName("8003");
+		_sipAccount.setSipPwd("123789");
+		_sipAccount.setSipServer("210.56.60.150");
+		_sipAccount.setSipDomain("richitec.com");
+		_sipAccount.setSipRealm("richitec.com");
+
+		// register sip account
+		SipUtils.registerSipAccount(_sipAccount,
+				new SipRegistrationStateListener() {
+
+					@Override
+					public void onUnRegisterSuccess() {
+						Log.d("TestRegisterSipAccount", "onUnRegisterSuccess");
+					}
+
+					@Override
+					public void onUnRegisterFailed() {
+						Log.d("TestRegisterSipAccount", "onUnRegisterFailed");
+					}
+
+					@Override
+					public void onRegisterSuccess() {
+						Log.d("TestRegisterSipAccount", "onRegisterSuccess");
+					}
+
+					@Override
+					public void onRegisterFailed() {
+						Log.d("TestRegisterSipAccount", "onRegisterFailed");
+					}
+				});
+		
 	}
 	
 	private void loadAccount() {
