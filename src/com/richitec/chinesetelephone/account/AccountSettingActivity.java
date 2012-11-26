@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.richitec.chinesetelephone.R;
+import com.richitec.chinesetelephone.assist.ContactLisInviteFriendActivity;
 import com.richitec.chinesetelephone.assist.SettingActivity;
 import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.constant.SystemConstants;
@@ -275,6 +276,10 @@ public class AccountSettingActivity extends Activity {
 		
 		HttpUtils.postRequest(loginUrl, PostRequestFormat.URLENCODED, params,
 				null, HttpRequestType.ASYNCHRONOUS, onFinishedLogin);
+    	/*Intent intent = new Intent(AccountSettingActivity.this, ContactLisInviteFriendActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
+		finish();*/
     }
     
     public void loginError() {

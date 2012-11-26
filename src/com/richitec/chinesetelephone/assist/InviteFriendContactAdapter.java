@@ -28,24 +28,20 @@ public class InviteFriendContactAdapter extends CommonListAdapter {
 	protected void bindView(View view, Map<String, ?> dataMap, String dataKey) {
 		// get item data object
 		Object _itemData = dataMap.get(dataKey);
-
 		// check view type
 		if(view instanceof CheckBox){
-			Log.d("CheckBox", "CheckBox");
 			
 			boolean selected = (Boolean) _itemData;
 			if(selected){
 				((CheckBox)view).setChecked(true);				
 			}
 			else{
-				Log.d("not select", "not select");
 				((CheckBox)view).setChecked(false);
 			}
 		}
 		// textView
 		else if (view instanceof TextView) {
 			// set view text
-			Log.d("textView", ""+view.getClass());
 			((TextView) view)
 					.setText(null == _itemData ? ""
 							: _itemData instanceof SpannableString ? (SpannableString) _itemData
@@ -53,7 +49,6 @@ public class InviteFriendContactAdapter extends CommonListAdapter {
 		}
 		// imageView
 		else if (view instanceof ImageView) {
-			Log.d("imageView", ""+view.getClass());
 			try {
 				// define item data bitmap and convert item data to bitmap
 				Bitmap _itemDataBitmap = (Bitmap) _itemData;

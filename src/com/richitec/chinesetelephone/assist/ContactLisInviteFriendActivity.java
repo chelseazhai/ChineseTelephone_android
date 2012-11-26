@@ -7,12 +7,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.SpannableString;
@@ -22,7 +23,6 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,9 +37,9 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.richitec.chinesetelephone.R;
-import com.richitec.chinesetelephone.tab7tabcontent.AddressBookContactAdapter;
 import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
@@ -48,8 +48,8 @@ import com.richitec.commontoolkit.customadapter.CommonListAdapter;
 import com.richitec.commontoolkit.customcomponent.CommonPopupWindow;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar.OnTouchListener;
+import com.richitec.commontoolkit.utils.MyToast;
 import com.richitec.commontoolkit.utils.StringUtils;
-import com.rictitec.chinesetelephone.utils.SipUtils.SipCallMode;
 
 public class ContactLisInviteFriendActivity extends NavigationActivity {
 
@@ -58,13 +58,15 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 	private final String CONTACT_IS_SELECTED = "contact_is_selected";
 	private final String SELECTED_PHONE = "selected_phone";
 	private int selectedPosition;
+	
+	private String inviteLink;
 
 	// address book contacts list view
 	private ListView _mABContactsListView;
 
 	// all address book name phonetic sorted contacts detail info list
 	private static List<ContactBean> _mAllNamePhoneticSortedContactsInfoArray = AddressBookManager
-			.getInstance().getAllNamePhoneticSortedContactsInfoArray();;
+			.getInstance().getAllNamePhoneticSortedContactsInfoArray();
 
 	// present contacts in address book detail info list
 	private List<ContactBean> _mPresentContactsInABInfoArray;
@@ -86,6 +88,10 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 
 		// set content view
 		setContentView(R.layout.contact_list_invite_friend_activity_layout);
+		
+		inviteLink = getIntent().getStringExtra("inviteLink");
+		
+		Log.d("inviteLink", inviteLink);
 
 		// set title
 		setTitle("邀请好友");
@@ -483,9 +489,6 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 	// contact phone numbers select popup window
 	class ContactPhoneNumbersSelectPopupWindow extends CommonPopupWindow {
 
-		// contact display name
-		private String _mContactDisplayName;
-
 		// dial contact phone mode
 
 		public ContactPhoneNumbersSelectPopupWindow(int resource, int width,
@@ -550,7 +553,6 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 				List<String> phoneNumbers,int position) {
 			// update select contact display name and dial its phone mode
 			selectedPosition = position;
-			_mContactDisplayName = displayName;
 
 			// set contact phones select title textView text
 			((TextView) getContentView().findViewById(
@@ -559,7 +561,7 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 							.getAppContext()
 							.getResources()
 							.getString(
-									R.string.contactPhones_selectPopupWindow_titleTextView_text)
+									R.string.select_phone_to_invite)
 							.replace("***", displayName));
 
 			// check phone numbers for selecting
@@ -643,10 +645,8 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 				 ((InviteFriendContactAdapter)_mABContactsListView.getAdapter()).notifyDataSetChanged();
 				// dismiss contact phone select popup window
 				 dismiss();
-				// make sip voice call
-				
+				// make sip voice call				
 			}
-
 		}
 
 		// contact phone select cancel button on click listener
@@ -658,16 +658,36 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 				// dismiss contact phone select popup window
 				dismiss();
 			}
-
 		}
-
 	}
 	
 	public void onConfirm(View v){
-		for(ContactBean b :_mInviteFriendsInfo){
-			Log.d("ok", (String) b.getExtension().get(SELECTED_PHONE));
+		if(_mInviteFriendsInfo.size()>0){
+			StringBuffer toNumbers = new StringBuffer();
+			for(ContactBean b :_mInviteFriendsInfo){
+				toNumbers.append((String) b.getExtension().get(SELECTED_PHONE)).append(";");
+			}	
+			Uri uri = Uri.parse("smsto:" + toNumbers.toString());
+			Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
+			String inviteMessage = getString(R.string.invite_message).replace("***", inviteLink);
+			intent.putExtra("sms_body", inviteMessage);
+			startActivity(intent);
 		}
-		
+		else{
+			MyToast.show(ContactLisInviteFriendActivity.this, "请选择邀请人", Toast.LENGTH_SHORT);
+		}
 	}
-
+	@Override
+	public void onDestroy(){
+		resetContact();
+		super.onDestroy();
+	}
+	
+	private void resetContact(){
+		for(ContactBean b :_mInviteFriendsInfo){
+			 b.getExtension().put(CONTACT_IS_SELECTED, false);
+			 b.getExtension().put(SELECTED_PHONE, "");
+		}
+		_mInviteFriendsInfo.clear();
+	}
 }
