@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import com.richitec.chinesetelephone.account.AccountSettingActivity;
+import com.richitec.chinesetelephone.assist.SettingActivity;
 import com.richitec.chinesetelephone.bean.DialPreferenceBean;
 import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.constant.DialPreference;

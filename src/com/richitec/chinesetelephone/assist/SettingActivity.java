@@ -25,6 +25,7 @@ import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpResponseResult;
 import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
 import com.richitec.commontoolkit.utils.HttpUtils.PostRequestFormat;
+import com.rictitec.chinesetelephone.utils.CountryCodeManager;
 import com.rictitec.chinesetelephone.utils.DialPreferenceManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -38,7 +39,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -46,12 +49,15 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class SettingActivity extends NavigationActivity {
-	
+	private AlertDialog chooseCountryDialog ;
+	private CountryCodeManager countryCodeManager = CountryCodeManager.getInstance();
 	public static String TITLE_NAME = "titlename";
 	private String inviteLink;
 	
@@ -62,6 +68,8 @@ public class SettingActivity extends NavigationActivity {
 	private RadioGroup answerGroup;
 	private RadioGroup launchGroup;
 	private RadioGroup loginGroup;
+	
+	private PopupWindow popWin;
 	
 	private final ModifyPSWPopupWindow modifyPSWPopupWindow = new ModifyPSWPopupWindow(
 			R.layout.modify_psw_popupwindow_layout,
@@ -83,6 +91,9 @@ public class SettingActivity extends NavigationActivity {
 			R.layout.setup_preference_popupwindow_layout,
 			LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT
 			);
+	private final SetAuthNumberPopupWindow setAuthNumberPopupWindow = new SetAuthNumberPopupWindow(
+			R.layout.set_auth_number_popupwindow_layout,
+			LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -127,6 +138,7 @@ public class SettingActivity extends NavigationActivity {
 					}
 				}
 				);
+        
         setTitle(R.string.menu_settings);
     } 
     
@@ -142,7 +154,68 @@ public class SettingActivity extends NavigationActivity {
     	Log.e("SettingActivity", "resume");
     }*/
     public void getAuthNumber(View v){
-    	
+    	progressDialog = ProgressDialog.show(this, null,
+				getString(R.string.sending_request), true);
+    	TelUserBean userBean = (TelUserBean) UserManager.getInstance().getUser();
+    	String username = userBean.getName();
+    	String countrycode = userBean.getCountryCode();
+		HashMap<String,String> params = new HashMap<String,String>();
+		params.put("username", username);
+		params.put("countryCode", countrycode);
+		HttpUtils.postSignatureRequest(getString(R.string.server_url)+getString(R.string.getBindPhone), 
+				PostRequestFormat.URLENCODED, params,
+				null, HttpRequestType.ASYNCHRONOUS, onFinishedGetBindPhone);
+    }
+    
+    private OnHttpRequestListener onFinishedGetBindPhone = new OnHttpRequestListener() {
+
+		@Override
+		public void onFinished(HttpResponseResult responseResult) {
+
+			try {
+				JSONObject data = new JSONObject(responseResult.getResponseText());
+				String phone = data.getString("bindphone");
+				String countrycode = data.getString("bindphone_country_code");
+				//Log.d("!!!!!!", phone+":"+countrycode);
+				View contentView = LayoutInflater.from(getApplicationContext())
+						.inflate(R.layout.get_bind_phone_popupwindow_layout, null); 
+				
+				popWin = new PopupWindow(contentView,
+						LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT
+						);
+				popWin.showAtLocation(findViewById(R.id.setting_main_layout), Gravity.CENTER, 0, 0);
+				
+				((TextView)(popWin.getContentView().
+						findViewById(R.id.get_bind_country_editText))).setText(countrycode);
+				((TextView)(popWin.getContentView().
+						findViewById(R.id.get_bind_number_editText))).setText(phone);
+				((Button)(popWin.getContentView().findViewById(R.id.get_bind_confirmBtn))).
+						setOnClickListener(
+								new OnClickListener(){
+									@Override
+									public void onClick(View v) {
+										// TODO Auto-generated method stub
+										popWin.dismiss();
+									}									
+								}
+						);
+					
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}		
+			dismiss();
+		}
+
+		@Override
+		public void onFailed(HttpResponseResult responseResult) {
+			dismiss();
+			MyToast.show(SettingActivity.this, R.string.server_error, Toast.LENGTH_SHORT);			
+		}
+	};
+    
+    public void setAuthNumber(View v){
+    	setAuthNumberPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
     }
     
     public void exitProgram(View v){
@@ -214,6 +287,7 @@ public class SettingActivity extends NavigationActivity {
 	        intent.setAction(Intent.ACTION_PICK);
 	        intent.setData(ContactsContract.Contacts.CONTENT_URI);
 	        startActivityForResult(intent, 0);
+			/*SettingActivity.this.pushActivity(ContactLisInviteFriendActivity.class);*/
 		}
 
 		@Override
@@ -907,16 +981,137 @@ public class SettingActivity extends NavigationActivity {
 		}
 		
 		// contact phone select cancel button on click listener
-		class SetAreaCodeCancelBtnOnClickListener implements OnClickListener {
+		class SetAreaCodeCancelBtnOnClickListener implements OnClickListener {		
+			@Override
+			public void onClick(View v) {
+				// dismiss contact phone select popup window
+				dismiss();
+			}	
+		}
+    }
+	
+	class SetAuthNumberPopupWindow extends CommonPopupWindow {
+		private int lastSelectCountryCode = 0;
 		
+		
+		public SetAuthNumberPopupWindow(int resource, int width,
+				int height, boolean focusable, boolean isBindDefListener) {
+			super(resource, width, height, focusable, isBindDefListener);
+		}
+		
+		public SetAuthNumberPopupWindow(int resource, int width,
+				int height) {
+			super(resource, width, height);
+			((Button)(this.getContentView().findViewById(R.id.setAuth_choose_country_btn)))
+    		.setText(countryCodeManager.getCountryName(0));
+			//Log.d("Setting Dial Preference", dialPattern+":"+answerPattern);
+		}
+		
+		@Override
+		protected void bindPopupWindowComponentsListener() {
+			// bind contact phone select cancel button click listener
+			((Button) getContentView().findViewById(R.id.set_auth_confirmBtn))
+					.setOnClickListener(new SetAuthCodeConfirmBtnOnClickListener());
+			((Button)getContentView().findViewById(R.id.set_auth_cancelBtn))
+					.setOnClickListener(new SetAuthCodeCancelBtnOnClickListener());
+			((Button)(this.getContentView().findViewById(R.id.setAuth_choose_country_btn)))
+					.setOnClickListener(new OnClickListener(){
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							chooseCountry(v);
+						}						
+					});
+		}
+		
+		@Override
+		protected void resetPopupWindow() {
+			// hide contact phones select phone list view
+			((EditText)(SetAuthNumberPopupWindow.this.getContentView()
+					.findViewById(R.id.set_auth_number_editText))).setText("");
+		}
+		
+		public void chooseCountry(View v){
+	    	AlertDialog.Builder chooseCountryDialogBuilder = new AlertDialog.Builder(SettingActivity.this);
+	    	chooseCountryDialogBuilder.setTitle(R.string.countrycode_list);
+	    	chooseCountryDialogBuilder.setSingleChoiceItems(
+	    			countryCodeManager.getCountryNameList(), lastSelectCountryCode, new chooseCountryListener());
+	    	chooseCountryDialogBuilder.setNegativeButton(R.string.cancel, null);
+	    	chooseCountryDialog= chooseCountryDialogBuilder.create();
+	    	chooseCountryDialog.show();
+	    }
+	    
+	    class chooseCountryListener implements DialogInterface.OnClickListener{
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				lastSelectCountryCode = which;
+				((Button)(SetAuthNumberPopupWindow.this.getContentView()
+						.findViewById(R.id.setAuth_choose_country_btn)))
+						.setText(countryCodeManager.getCountryName(which));
+				chooseCountryDialog.dismiss();
+			}    	
+	    }
+		
+		// inner class
+		// contact phone select phone button on click listener
+		class SetAuthCodeConfirmBtnOnClickListener implements OnClickListener {
+		
+			@Override
+			public void onClick(View v) {		
+				// dismiss contact phone select popup window		
+				//saveDialPreference();
+				String phone = ((EditText)(SetAuthNumberPopupWindow.this.getContentView()
+								.findViewById(R.id.set_auth_number_editText))).getText().toString().trim();
+				String countrycode = countryCodeManager.getCountryCode(
+		    			((Button)SetAuthNumberPopupWindow.this.getContentView().
+		    					findViewById(R.id.setAuth_choose_country_btn))
+		    				.getText().toString().trim());
+				if(phone!=null&&!phone.equals("")){
+					setAuthNumber(phone,countrycode);
+					dismiss();
+				}				
+			}
+		}
+		
+		// contact phone select cancel button on click listener
+		class SetAuthCodeCancelBtnOnClickListener implements OnClickListener {
 			@Override
 			public void onClick(View v) {
 				// dismiss contact phone select popup window
 				dismiss();
 			}
-		
 		}
-
     }
+	
+	public void setAuthNumber(String phone,String country){
+		Log.d("$$$$$", phone+":"+country);
+		progressDialog = ProgressDialog.show(this, null,
+				getString(R.string.sending_request), true);
+    	TelUserBean userBean = (TelUserBean) UserManager.getInstance().getUser();
+    	String username = userBean.getName();
+    	String oldCountryCode = userBean.getCountryCode();
+		HashMap<String,String> params = new HashMap<String,String>();
+		params.put("username", username);
+		params.put("countryCode", oldCountryCode);
+		params.put("bindphone_country_code", country);
+		params.put("bindphone", phone);
+		HttpUtils.postSignatureRequest(getString(R.string.server_url)+getString(R.string.setBindPhone), 
+				PostRequestFormat.URLENCODED, params,
+				null, HttpRequestType.ASYNCHRONOUS, onFinishedSetBindPhone);
+	}
+	
+	private OnHttpRequestListener onFinishedSetBindPhone = new OnHttpRequestListener() {
 
+		@Override
+		public void onFinished(HttpResponseResult responseResult) {
+			MyToast.show(SettingActivity.this, R.string.set_bind_number_success, Toast.LENGTH_SHORT);			
+			dismiss();
+		}
+		@Override
+		public void onFailed(HttpResponseResult responseResult) {
+			dismiss();
+			MyToast.show(SettingActivity.this, R.string.server_error, Toast.LENGTH_SHORT);			
+		}
+	};
 }
