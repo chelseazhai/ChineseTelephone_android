@@ -283,11 +283,13 @@ public class SettingActivity extends NavigationActivity {
 
 			inviteLink = responseResult.getResponseText();			
 			dismiss();
-			Intent intent = new Intent();
+			/*Intent intent = new Intent();
 	        intent.setAction(Intent.ACTION_PICK);
 	        intent.setData(ContactsContract.Contacts.CONTENT_URI);
-	        startActivityForResult(intent, 0);
-			/*SettingActivity.this.pushActivity(ContactLisInviteFriendActivity.class);*/
+	        startActivityForResult(intent, 0);*/
+			HashMap<String,Object> params = new HashMap<String,Object>();
+			params.put("inviteLink", inviteLink);
+			SettingActivity.this.pushActivity(ContactLisInviteFriendActivity.class,params);
 		}
 
 		@Override
