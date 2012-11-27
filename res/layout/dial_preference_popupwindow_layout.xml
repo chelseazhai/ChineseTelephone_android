@@ -124,6 +124,19 @@
             android:gravity="center"
             android:orientation="horizontal"
             >
+        	
+            <Button
+	            android:id="@+id/dial_preference_cancelBtn"
+	            android:layout_width="100dp"
+	            android:layout_height="45dp"
+	            android:gravity="center_horizontal"
+	            android:paddingBottom="16dp"
+	            android:layout_marginRight="10dp"
+	            android:background="@drawable/regist_btn_bg"
+	            android:text="@string/cancel"
+	            android:textSize="12dp"
+	            android:textAppearance="?android:attr/textAppearanceSmall"
+	            android:textColor="@android:color/white" /> 
 
 	       <Button
 	            android:id="@+id/dial_preference_confirmBtn"
@@ -134,22 +147,10 @@
 	            android:textSize="12dp"
 	            android:gravity="center_horizontal"
 	            android:paddingBottom="16dp"
-	            android:layout_marginRight="10dp"
-	            android:textAppearance="?android:attr/textAppearanceSmall"
-	            android:textColor="@android:color/white" /> 
-	            
-	       <Button
-	            android:id="@+id/dial_preference_cancelBtn"
-	            android:layout_width="100dp"
-	            android:layout_height="45dp"
-	            android:gravity="center_horizontal"
-	            android:paddingBottom="16dp"
 	            android:layout_marginLeft="10dp"
-	            android:background="@drawable/regist_btn_bg"
-	            android:text="@string/cancel"
-	            android:textSize="12dp"
 	            android:textAppearance="?android:attr/textAppearanceSmall"
 	            android:textColor="@android:color/white" /> 
+	       
     	</LinearLayout>
 
      </LinearLayout>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="server_url">http://192.168.1.143:8080/angola</string>
+    <!-- <string name="server_url">http://192.168.1.143:8080/angola</string> -->
+    <string name="server_url">http://122.96.24.173:8080/angola</string>
     <string name="retrieve_auth_code_url">/user/getPhoneCode</string>
     <string name="check_auth_code_url">/user/checkPhoneCode</string>
     <string name="user_register_url">/user/regUser</string>

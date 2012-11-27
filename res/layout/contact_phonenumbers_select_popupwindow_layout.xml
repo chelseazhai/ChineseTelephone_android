@@ -40,25 +40,31 @@
 
                 <Button
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/btn_bg"
+                    android:visibility="gone" />
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black"
+                    android:background="@drawable/btn_bg"
                     android:textStyle="bold"
                     android:visibility="gone" />
 
                 <Button
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@android:color/black"
-                    android:textStyle="bold"
-                    android:visibility="gone" />
-
-                <Button
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@android:color/black"
+                    android:background="@drawable/btn_bg"
                     android:textStyle="bold"
                     android:visibility="gone" />
             </LinearLayout>

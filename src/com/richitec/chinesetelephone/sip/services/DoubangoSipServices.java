@@ -198,11 +198,7 @@ public class DoubangoSipServices implements ISipServices {
 		final String _sipPhoneUri = NgnUriUtils
 				.makeValidSipUri(String.format(
 						"sip:%s@%s",
-						calleePhoneNumber.startsWith(CallPhonePrefix) ? calleePhoneNumber
-								: calleePhoneNumber.startsWith(CallPhonePrefix,
-										1) ? calleePhoneNumber.substring(1,
-										calleePhoneNumber.length())
-										: CallPhonePrefix + calleePhoneNumber,
+						calleePhoneNumber,
 						NGN_ENGINE.getConfigurationService().getString(
 								NgnConfigurationEntry.NETWORK_PCSCF_HOST, "")));
 

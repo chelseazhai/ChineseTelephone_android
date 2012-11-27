@@ -10,6 +10,7 @@ import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.constant.DialPreference;
 import com.richitec.chinesetelephone.constant.LaunchSetting;
 import com.richitec.chinesetelephone.constant.TelUser;
+import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.customcomponent.CommonPopupWindow;
 import com.richitec.commontoolkit.user.User;
@@ -227,14 +228,17 @@ public class SettingActivity extends NavigationActivity {
 						DataStorageUtils.putObject(TelUser.vosphone.name(), "");
 						DataStorageUtils.putObject(TelUser.vosphone_pwd.name(), "");
 						DataStorageUtils.putObject(User.userkey.name(), "");
-						Activity parent = getParent();
-						if(parent!=null){
-							parent.onBackPressed();
-						}
+						SipUtils.unregisterSipAccount(null);
+						System.exit(0);
 					}
 				}
 				)
 		.setNegativeButton(R.string.cancel, null).show();
+    }
+    
+    @Override
+    public void onBackPressed(){
+    	this.getParent().onBackPressed();
     }
     
     public void setAreaCode(View v){

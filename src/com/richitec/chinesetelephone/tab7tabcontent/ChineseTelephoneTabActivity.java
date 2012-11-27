@@ -13,8 +13,12 @@ import android.widget.TabHost.TabSpec;
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.account.AccountSettingActivity;
 import com.richitec.chinesetelephone.assist.SettingActivity;
+import com.richitec.chinesetelephone.constant.TelUser;
+import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
 import com.richitec.commontoolkit.customcomponent.CommonTabSpecIndicator;
+import com.richitec.commontoolkit.user.User;
+import com.richitec.commontoolkit.utils.DataStorageUtils;
 import com.richitec.commontoolkit.utils.VersionUtils;
 import com.rictitec.chinesetelephone.utils.SipRegisterManager;
 
@@ -54,12 +58,14 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 			// TODO Auto-generated method stub
 			//sipRegistFail();
 			Log.d("ChineseTelephoneTabActivity", "unregist success");
+			sipRegistFail();
 		}
 
 		@Override
 		public void onUnRegisterFailed() {
 			// TODO Auto-generated method stub
 			Log.d("ChineseTelephoneTabActivity", "unregist fail");
+			sipRegistFail();
 		}
 		
 	};
@@ -85,6 +91,8 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 				// TODO Auto-generated method stub
 				//regist sip account
 				SipRegisterManager.registSip(sipRegistrationStateListener);
+				/*SipRegisterManager sipManager = new SipRegisterManager(ChineseTelephoneTabActivity.this);
+				sipManager.registSip(null);*/
 			}
 		};
 		Thread registSipThread = new Thread(registSipRunnable);
@@ -103,7 +111,7 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						startActivity(intent);
 						arg0.dismiss();
-						finish();					
+						ChineseTelephoneTabActivity.this.finish();					
 					}
 				}).create();
 		
@@ -172,7 +180,24 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 		// set current tab and tab image
 		_tabHost.setCurrentTab(_mCurrentTabIndex);
 		
-		//check sip account regist status
 	}
-
+	
+	@Override
+	public void onBackPressed(){
+		new AlertDialog.Builder(this)
+		.setTitle(R.string.alert_title)
+		.setMessage(R.string.exit)
+		.setPositiveButton(R.string.ok, 
+				new DialogInterface.OnClickListener() {			
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						dialog.dismiss();
+						SipUtils.unregisterSipAccount(null);
+						System.exit(0);
+					}
+				}
+				)
+		.setNegativeButton(R.string.cancel, null).show();
+	}
 }
