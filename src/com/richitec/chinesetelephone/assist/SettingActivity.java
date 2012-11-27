@@ -1,8 +1,6 @@
 package com.richitec.chinesetelephone.assist;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.richitec.chinesetelephone.R;
@@ -27,18 +25,13 @@ import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
 import com.richitec.commontoolkit.utils.HttpUtils.PostRequestFormat;
 import com.rictitec.chinesetelephone.utils.CountryCodeManager;
 import com.rictitec.chinesetelephone.utils.DialPreferenceManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.provider.ContactsContract.Data;
-import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -301,7 +294,7 @@ public class SettingActivity extends NavigationActivity {
 		}
 	};
 	
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	/*protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == 0) {
 
@@ -349,9 +342,9 @@ public class SettingActivity extends NavigationActivity {
                 }
             }
         }
-    }
+    }*/
 	
-	private String[] getPhoneNumbers(Uri contactData){
+	/*private String[] getPhoneNumbers(Uri contactData){
 		String contactId = contactData.getLastPathSegment();
 		Cursor cursor = managedQuery(contactData, null, null, null, null);
 		cursor.moveToFirst();
@@ -379,7 +372,7 @@ public class SettingActivity extends NavigationActivity {
 		else{
 			return new String[]{};
 		}
-	}
+	}*/
     
     private OnClickListener getPswListener = new OnClickListener(){
 
@@ -578,7 +571,6 @@ public class SettingActivity extends NavigationActivity {
     	}
     	else if(loginPatternId==R.id.manual_login_rbtn){
     		userBean.setRememberPwd(false);
-    		DataStorageUtils.putObject(User.password.name(), "");
     		DataStorageUtils.putObject(User.password.name(), "");
 			DataStorageUtils.putObject(TelUser.vosphone.name(), "");
 			DataStorageUtils.putObject(TelUser.vosphone_pwd.name(), "");

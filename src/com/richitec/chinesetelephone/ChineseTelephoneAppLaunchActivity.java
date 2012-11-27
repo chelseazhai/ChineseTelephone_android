@@ -34,6 +34,7 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 	@Override
 	public Intent intentActivity() {
 		// go to Chinese telephone main tab activity
+		loadAccount();
 		
 		UserBean userBean = UserManager.getInstance().getUser();
 		if(userBean.getPassword()!=null&&!userBean.getPassword().equals("")
@@ -55,44 +56,49 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 
 		// init dial phone button dtmf sound pool map
 		DialTabContentActivity.initDialPhoneBtnDTMFSoundPoolMap(this);
-
-		loadAccount();
+		
+		TelUserBean userBean = (TelUserBean) UserManager.getInstance().getUser();
+		
+		String sipName = userBean.getVosphone();
+		String sipPsw = userBean.getVosphone_pwd();
+		
+		if(sipName!=null&&!sipName.equals("")&&sipPsw!=null&&!sipPsw.equals("")){
+			// test by ares
+			// generate sip register account
+			SipRegisterBean _sipAccount = new SipRegisterBean();
 	
-		// test by ares
-		// generate sip register account
-		SipRegisterBean _sipAccount = new SipRegisterBean();
-
-		// set test sip account
-		_sipAccount.setSipUserName("8003");
-		_sipAccount.setSipPwd("123789");
-		_sipAccount.setSipServer("210.56.60.150");
-		_sipAccount.setSipDomain("richitec.com");
-		_sipAccount.setSipRealm("richitec.com");
-
-		// register sip account
-		SipUtils.registerSipAccount(_sipAccount,
-				new SipRegistrationStateListener() {
-
-					@Override
-					public void onUnRegisterSuccess() {
-						Log.d("TestRegisterSipAccount", "onUnRegisterSuccess");
-					}
-
-					@Override
-					public void onUnRegisterFailed() {
-						Log.d("TestRegisterSipAccount", "onUnRegisterFailed");
-					}
-
-					@Override
-					public void onRegisterSuccess() {
-						Log.d("TestRegisterSipAccount", "onRegisterSuccess");
-					}
-
-					@Override
-					public void onRegisterFailed() {
-						Log.d("TestRegisterSipAccount", "onRegisterFailed");
-					}
-				});
+			// set test sip account
+			_sipAccount.setSipUserName(sipName);
+			_sipAccount.setSipPwd(sipPsw);
+			_sipAccount.setSipServer("112.132.217.13");
+			_sipAccount.setSipDomain("richitec.com");
+			_sipAccount.setSipRealm("richitec.com");
+	
+			// register sip account
+			SipUtils.registerSipAccount(_sipAccount,
+					new SipRegistrationStateListener() {
+	
+						@Override
+						public void onUnRegisterSuccess() {
+							Log.d("TestRegisterSipAccount", "onUnRegisterSuccess");
+						}
+	
+						@Override
+						public void onUnRegisterFailed() {
+							Log.d("TestRegisterSipAccount", "onUnRegisterFailed");
+						}
+	
+						@Override
+						public void onRegisterSuccess() {
+							Log.d("TestRegisterSipAccount", "onRegisterSuccess");
+						}
+	
+						@Override
+						public void onRegisterFailed() {
+							Log.d("TestRegisterSipAccount", "onRegisterFailed");
+						}
+					});
+		}
 		
 	}
 	

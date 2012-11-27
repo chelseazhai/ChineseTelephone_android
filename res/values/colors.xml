@@ -28,5 +28,6 @@
     <!--  -->
     <color name="settingitempress">#ffcc33</color> 
     <color name="window_bg">#FFE7BA</color>
+    <color name="gray_btn_bg">#C2C2C2</color>
 
 </resources>
