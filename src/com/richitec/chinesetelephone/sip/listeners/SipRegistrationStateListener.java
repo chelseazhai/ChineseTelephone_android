@@ -1,17 +1,17 @@
 package com.richitec.chinesetelephone.sip.listeners;
 
-public abstract class SipRegistrationStateListener {
+public interface SipRegistrationStateListener {
 
 	// register success
-	public abstract void onRegisterSuccess();
+	public void onRegisterSuccess();
 
 	// register failed
-	public abstract void onRegisterFailed();
+	public void onRegisterFailed();
 
 	// unregister success
-	public abstract void onUnRegisterSuccess();
+	public void onUnRegisterSuccess();
 
 	// unregister failed
-	public abstract void onUnRegisterFailed();
+	public void onUnRegisterFailed();
 
 }

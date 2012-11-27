@@ -2,11 +2,13 @@ package com.richitec.chinesetelephone.sip.services;
 
 import org.doubango.ngn.NgnEngine;
 import org.doubango.ngn.events.NgnEventArgs;
+import org.doubango.ngn.events.NgnInviteEventArgs;
 import org.doubango.ngn.events.NgnRegistrationEventArgs;
 import org.doubango.ngn.media.NgnMediaType;
 import org.doubango.ngn.services.INgnConfigurationService;
 import org.doubango.ngn.services.INgnSipService;
 import org.doubango.ngn.sip.NgnAVSession;
+import org.doubango.ngn.sip.NgnInviteSession.InviteState;
 import org.doubango.ngn.utils.NgnConfigurationEntry;
 import org.doubango.ngn.utils.NgnUriUtils;
 
@@ -16,13 +18,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 
-import com.richitec.chinesetelephone.call.OutgoingCallActivity;
-import com.richitec.chinesetelephone.sip.SipCallMode;
 import com.richitec.chinesetelephone.sip.SipRegisterBean;
+import com.richitec.chinesetelephone.sip.listeners.SipInviteStateListener;
 import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
 import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
 
-public class DoubangoSipServices implements ISipServices {
+public class DoubangoSipServices extends BaseSipServices implements
+		ISipServices {
 
 	private static final String LOG_TAG = "DoubangoSipServices";
 
@@ -35,9 +37,19 @@ public class DoubangoSipServices implements ISipServices {
 	// doubango ngn registration state broadcast receiver
 	private BroadcastReceiver _mRegistrationStateBroadcastReceiver;
 
+	// doubango ngn audio/video session state broadcast receiver
+	private BroadcastReceiver _mAVSessionStateBroadcastReceiver;
+
+	// doubango current sip voice call ngn audio session
+	private NgnAVSession _mSipVoiceCallSession;
+
 	public DoubangoSipServices() {
 		super();
 
+		// get application context
+		Context _appContext = AppLaunchActivity.getAppContext();
+
+		// register
 		// init doubango ngn registration state broadcast receiver
 		_mRegistrationStateBroadcastReceiver = new RegistrationStateBroadcastReceiver();
 
@@ -47,8 +59,21 @@ public class DoubangoSipServices implements ISipServices {
 		_sipRegisterIntentFilter
 				.addAction(NgnRegistrationEventArgs.ACTION_REGISTRATION_EVENT);
 
-		AppLaunchActivity.getAppContext().registerReceiver(
-				_mRegistrationStateBroadcastReceiver, _sipRegisterIntentFilter);
+		_appContext.registerReceiver(_mRegistrationStateBroadcastReceiver,
+				_sipRegisterIntentFilter);
+
+		// invite
+		// init doubango ngn audio/video session state broadcast receiver
+		_mAVSessionStateBroadcastReceiver = new AVSessionStateBroadcastReceiver();
+
+		// register doubango ngn audio/video session state receiver
+		// new sip invite intent filter
+		IntentFilter _sipInviteIntentFilter = new IntentFilter();
+		_sipInviteIntentFilter
+				.addAction(NgnInviteEventArgs.ACTION_INVITE_EVENT);
+
+		_appContext.registerReceiver(_mAVSessionStateBroadcastReceiver,
+				_sipInviteIntentFilter);
 	}
 
 	@Override
@@ -124,6 +149,87 @@ public class DoubangoSipServices implements ISipServices {
 		}
 	}
 
+	@Override
+	public boolean makeDirectDialSipVoiceCall(String calleeName,
+			String calleePhone) {
+		// define return result
+		boolean _ret = false;
+
+		// get doubango ngn sip service
+		INgnSipService _sipService = NGN_ENGINE.getSipService();
+
+		// re-register
+		if (!_sipService.isRegistered()) {
+			_sipService.register(AppLaunchActivity.getAppContext());
+		}
+
+		// generate callee sip phone number uri
+		final String _sipPhoneUri = NgnUriUtils.makeValidSipUri(String.format(
+				"sip:%s@%s",
+				calleePhone,
+				NGN_ENGINE.getConfigurationService().getString(
+						NgnConfigurationEntry.NETWORK_PCSCF_HOST, "")));
+
+		// check callee sip phone number uri
+		if (null == _sipPhoneUri) {
+			Log.e(LOG_TAG, "Failed to normalize callee sip phone number uri '"
+					+ calleePhone + "'");
+		} else {
+			// define get current ngn audio session
+			_mSipVoiceCallSession = NgnAVSession.createOutgoingSession(
+					NGN_ENGINE.getSipService().getSipStack(),
+					NgnMediaType.Audio);
+
+			// doubango ngn audio session make call
+			_ret = _mSipVoiceCallSession.makeCall(_sipPhoneUri);
+		}
+
+		return _ret;
+	}
+
+	@Override
+	public boolean makeCallbackSipVoiceCall(String calleeName,
+			String calleePhone) {
+		Log.d(LOG_TAG, "Not implement make callback sip voice call now");
+
+		return true;
+	}
+
+	@Override
+	public boolean hangupSipVoiceCall() {
+		// define return result
+		boolean _ret = false;
+
+		// increase doubango ngn audio/video session reference and set context
+		_mSipVoiceCallSession.incRef();
+		_mSipVoiceCallSession.setContext((Context) getSipInviteStateListener());
+
+		// check doubango ngn audio/video session
+		if (null != _mSipVoiceCallSession) {
+			_ret = _mSipVoiceCallSession.hangUpCall();
+		} else {
+			Log.e(LOG_TAG,
+					"Doubango ngn audio/video session is null, force finish outgoing call activity");
+		}
+
+		// release doubango ngn audio/video session state broadcast receiver
+		if (null != _mAVSessionStateBroadcastReceiver) {
+			AppLaunchActivity.getAppContext().unregisterReceiver(
+					_mAVSessionStateBroadcastReceiver);
+
+			_mAVSessionStateBroadcastReceiver = null;
+		}
+
+		// release doubango ngn audio/video session
+		if (null != _mSipVoiceCallSession) {
+			_mSipVoiceCallSession.setContext(null);
+
+			_mSipVoiceCallSession.decRef();
+		}
+
+		return _ret;
+	}
+
 	// inner class
 	// doubango ngn registration state broadcast receiver
 	class RegistrationStateBroadcastReceiver extends BroadcastReceiver {
@@ -151,27 +257,33 @@ public class DoubangoSipServices implements ISipServices {
 						Log.d(LOG_TAG, "You are now registered :)");
 
 						_mSipRegistrationStateListener.onRegisterSuccess();
+
 						break;
 					case REGISTRATION_NOK:
 						Log.d(LOG_TAG, "Failed to register :(");
 
 						_mSipRegistrationStateListener.onRegisterFailed();
+
 						break;
 					case UNREGISTRATION_OK:
 						Log.d(LOG_TAG, "You are now unregistered :)");
 
 						_mSipRegistrationStateListener.onUnRegisterSuccess();
+
 						break;
 					case UNREGISTRATION_NOK:
 						Log.d(LOG_TAG, "Failed to unregister :(");
 
 						_mSipRegistrationStateListener.onUnRegisterFailed();
+
 						break;
 					case REGISTRATION_INPROGRESS:
 						Log.d(LOG_TAG, "Trying to register...");
+
 						break;
 					case UNREGISTRATION_INPROGRESS:
 						Log.d(LOG_TAG, "Trying to unregister...");
+
 						break;
 					}
 				}
@@ -180,70 +292,106 @@ public class DoubangoSipServices implements ISipServices {
 
 	}
 
-	@Override
-	public void makeSipVoiceCall(String calleeDisplayName,
-			String calleePhoneNumber, SipCallMode callMode) {
-		// get doubango ngn sip service
-		INgnSipService _sipService = NGN_ENGINE.getSipService();
+	// doubango ngn audio/video session state broadcast receiver
+	class AVSessionStateBroadcastReceiver extends BroadcastReceiver {
 
-		// re-register
-		if (!_sipService.isRegistered()) {
-			_sipService.register(AppLaunchActivity.getAppContext());
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// check ngn audio/video session
+			if (null == _mSipVoiceCallSession) {
+				Log.e(LOG_TAG, "Doubango ngn audio/video session is null");
+			} else {
+				// get the action
+				String _action = intent.getAction();
+
+				// check the action for ngn invite event
+				if (NgnInviteEventArgs.ACTION_INVITE_EVENT.equals(_action)) {
+					// get ngn invite event arguments
+					NgnInviteEventArgs _ngnInviteEventArgs = intent
+							.getParcelableExtra(NgnInviteEventArgs.EXTRA_EMBEDDED);
+					Short _ngnInviteEventArgsSipCode = intent.getShortExtra(
+							NgnInviteEventArgs.EXTRA_SIPCODE, (short) 200);
+
+					// check the arguments
+					if (null == _ngnInviteEventArgs) {
+						Log.e(LOG_TAG,
+								"Doubango ngn invite event arguments is null");
+					} else if (_mSipVoiceCallSession.getId() != _ngnInviteEventArgs
+							.getSessionId()) {
+						Log.e(LOG_TAG,
+								"Doubango ngn audio/video session invalid");
+					} else {
+						// get the ngn invite state
+						InviteState _inviteState = _mSipVoiceCallSession
+								.getState();
+
+						Log.d(LOG_TAG,
+								"AVSessionStateBroadcastReceiver on receive invite state = "
+										+ _inviteState);
+
+						// get sip invite listener
+						SipInviteStateListener _sipInviteStateListener = getSipInviteStateListener();
+
+						// check ngn invite state
+						switch (_inviteState) {
+						case REMOTE_RINGING:
+							NGN_ENGINE.getSoundService().startRingBackTone();
+
+							_sipInviteStateListener.onCallRemoteRinging();
+
+							break;
+
+						case EARLY_MEDIA:
+							_sipInviteStateListener.onCallEarlyMedia();
+
+							_sipInviteStateListener.onCallEarlyMedia();
+
+							break;
+
+						case INCALL:
+							NGN_ENGINE.getSoundService().stopRingBackTone();
+
+							_mSipVoiceCallSession.setSpeakerphoneOn(false);
+
+							_sipInviteStateListener.onCallSpeaking();
+
+							break;
+
+						case TERMINATING:
+							_sipInviteStateListener.onCallTerminating();
+
+							break;
+
+						case TERMINATED:
+							NGN_ENGINE.getSoundService().stopRingBackTone();
+
+							// check invite event argument sip code
+							switch (_ngnInviteEventArgsSipCode) {
+							case 480:
+								_sipInviteStateListener.onCallFailed();
+
+								break;
+
+							case 200:
+							default:
+								_sipInviteStateListener.onCallTerminated();
+
+								break;
+							}
+
+							break;
+
+						default:
+							Log.d(LOG_TAG, "Doubango other invite state = "
+									+ _inviteState);
+
+							break;
+						}
+					}
+				}
+			}
 		}
 
-		// call phone prefix
-		final String CallPhonePrefix = "86";
-
-		// generate sip phone number
-		final String _sipPhoneUri = NgnUriUtils
-				.makeValidSipUri(String.format(
-						"sip:%s@%s",
-						calleePhoneNumber.startsWith(CallPhonePrefix) ? calleePhoneNumber
-								: calleePhoneNumber.startsWith(CallPhonePrefix,
-										1) ? calleePhoneNumber.substring(1,
-										calleePhoneNumber.length())
-										: CallPhonePrefix + calleePhoneNumber,
-						NGN_ENGINE.getConfigurationService().getString(
-								NgnConfigurationEntry.NETWORK_PCSCF_HOST, "")));
-
-		// check sip phone uri
-		if (_sipPhoneUri == null) {
-			Log.e(LOG_TAG, "Failed to normalize sip uri '" + calleePhoneNumber
-					+ "'");
-		} else {
-			// define audio session
-			NgnAVSession _audioSession = NgnAVSession.createOutgoingSession(
-					NGN_ENGINE.getSipService().getSipStack(),
-					NgnMediaType.Audio);
-
-			// define the outgoing call intent
-			Intent _outgoingCallIntent = new Intent(
-					AppLaunchActivity.getAppContext(),
-					OutgoingCallActivity.class);
-
-			// set new task flag
-			_outgoingCallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-			// set outgoing call phone, ownership and audio session id
-			_outgoingCallIntent
-					.putExtra(OutgoingCallActivity.OUTGOING_CALL_PHONE,
-							calleePhoneNumber);
-
-			_outgoingCallIntent.putExtra(
-					OutgoingCallActivity.OUTGOING_CALL_OWNERSHIP,
-					calleeDisplayName);
-
-			_outgoingCallIntent.putExtra(
-					OutgoingCallActivity.OUTGOING_CALL_SIPSESSIONID,
-					_audioSession.getId());
-
-			// start outgoing call activity and make an new call
-			AppLaunchActivity.getAppContext()
-					.startActivity(_outgoingCallIntent);
-
-			boolean _ret = _audioSession.makeCall(_sipPhoneUri);
-			Log.d(LOG_TAG, "Doubango make call result = " + _ret);
-		}
 	}
 
 }
