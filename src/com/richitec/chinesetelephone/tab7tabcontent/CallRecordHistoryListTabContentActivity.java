@@ -68,6 +68,11 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 				menu);
 		return true;
 	}
+	
+	@Override
+    public void onBackPressed(){
+    	this.getParent().onBackPressed();
+    }
 
 	// generate call record history list item adapter
 	private ListAdapter generateCallRecordHistoryListItemAdapter() {

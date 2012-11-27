@@ -32,7 +32,7 @@
             android:id="@+id/setAuth_choose_country_btn"
             android:layout_width="fill_parent"
             android:layout_height="40dp"
-            android:text="0086(china 中国)"
+            android:text=""
             android:textSize="17dp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
@@ -81,12 +81,25 @@
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:orientation="horizontal" >
+            
+            <Button
+                android:id="@+id/set_auth_cancelBtn"
+                android:layout_width="100dp"
+                android:layout_height="45dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/regist_btn_bg"
+                android:gravity="center_horizontal"
+            	android:paddingBottom="16dp"
+                android:text="@string/cancel"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@android:color/white"
+                android:textSize="12dp" />
 
             <Button
                 android:id="@+id/set_auth_confirmBtn"
                 android:layout_width="100dp"
                 android:layout_height="43dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
                 android:background="@drawable/login_btn_bg"
                 android:gravity="center_horizontal"
             	android:paddingBottom="16dp"
@@ -95,18 +108,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="12dp" />
 
-            <Button
-                android:id="@+id/set_auth_cancelBtn"
-                android:layout_width="100dp"
-                android:layout_height="45dp"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/regist_btn_bg"
-                android:gravity="center_horizontal"
-            	android:paddingBottom="16dp"
-                android:text="@string/cancel"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@android:color/white"
-                android:textSize="12dp" />
+            
         </LinearLayout>
     </LinearLayout>
 

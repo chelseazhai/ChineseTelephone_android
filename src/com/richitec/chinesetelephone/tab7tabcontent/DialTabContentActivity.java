@@ -149,6 +149,11 @@ public class DialTabContentActivity extends NavigationActivity {
 	protected boolean hideNavigationBarWhenOnCreated() {
 		return true;
 	}
+	
+	@Override
+    public void onBackPressed(){
+    	this.getParent().onBackPressed();
+    }
 
 	// @Override
 	// protected void onDestroy() {
@@ -416,11 +421,17 @@ public class DialTabContentActivity extends NavigationActivity {
 										}
 								
 									}
-									);	
+									)
+									.setNegativeButton(DialTabContentActivity.this.getString(R.string.cancel), null);	
 							builder.show();
 						}
 						else{
-							MyToast.show(DialTabContentActivity.this, R.string.pls_input_phone, Toast.LENGTH_SHORT);
+							//MyToast.show(DialTabContentActivity.this, R.string.pls_input_phone, Toast.LENGTH_SHORT);
+							new AlertDialog.Builder(DialTabContentActivity.this)
+							.setTitle(R.string.alert_title)
+							.setMessage(DialTabContentActivity.this.getString(R.string.pls_input_phone))
+							.setPositiveButton(DialTabContentActivity.this.getString(R.string.ok), null)
+							.show();
 						}
 		}
 

@@ -93,6 +93,7 @@
     <string name="auto_login_rbtn_title">自动登录</string>
     <string name="manual_login_rbtn_title">手动登录</string>
     <string name="exit_program_messge">确定要注销并退出程序？</string>
+    <string name="exit">确定要退出程序？</string>
     <string name="invite_friend">邀请好友</string>
     <string name="add_contact">添加联系人</string>
     <string name="add_new_contact_item">添加新联系人</string>

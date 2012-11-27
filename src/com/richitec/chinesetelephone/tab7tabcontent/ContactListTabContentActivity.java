@@ -113,6 +113,11 @@ public class ContactListTabContentActivity extends NavigationActivity {
 				R.menu.contact_list_tab_content_activity_layout, menu);
 		return true;
 	}
+	
+	@Override
+    public void onBackPressed(){
+    	this.getParent().onBackPressed();
+    }
 
 	// generate in address book contact adapter
 	private ListAdapter generateInABContactAdapter(

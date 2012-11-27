@@ -35,23 +35,27 @@
             <Button
                 android:id="@+id/contactPhone_dialMode_select_directdialBtn"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="@string/contactPhone_dialMode_selectPopupWindow_directdialBtn_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/black"
+                android:background="@drawable/btn_bg"
                 android:textStyle="bold" />
 
             <Button
                 android:id="@+id/contactPhone_dialMode_select_callbackBtn"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="@string/contactPhone_dialMode_selectPopupWindow_callbackBtn_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/black"
+                android:background="@drawable/btn_bg"
                 android:textStyle="bold" />
         </LinearLayout>
 
