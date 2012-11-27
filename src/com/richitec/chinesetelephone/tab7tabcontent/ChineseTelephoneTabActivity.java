@@ -1,14 +1,22 @@
 package com.richitec.chinesetelephone.tab7tabcontent;
 
+import android.app.AlertDialog;
 import android.app.TabActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 
 import com.richitec.chinesetelephone.R;
+import com.richitec.chinesetelephone.account.AccountSettingActivity;
 import com.richitec.chinesetelephone.assist.SettingActivity;
+import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
 import com.richitec.commontoolkit.customcomponent.CommonTabSpecIndicator;
+import com.richitec.commontoolkit.utils.VersionUtils;
+import com.rictitec.chinesetelephone.utils.SipRegisterManager;
 
 public class ChineseTelephoneTabActivity extends TabActivity {
 
@@ -23,11 +31,82 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 
 	// current tab index, default is contact list tab
 	private int _mCurrentTabIndex = 2;
+	
+	private AlertDialog dialog;
+	
+	private SipRegistrationStateListener sipRegistrationStateListener = new SipRegistrationStateListener(){
+
+		@Override
+		public void onRegisterSuccess() {
+			// TODO Auto-generated method stub
+			//do nothing
+			Log.d("ChineseTelephoneTabActivity", "regist success");
+		}
+
+		@Override
+		public void onRegisterFailed() {
+			// TODO Auto-generated method stub
+			sipRegistFail();
+		}
+
+		@Override
+		public void onUnRegisterSuccess() {
+			// TODO Auto-generated method stub
+			//sipRegistFail();
+			Log.d("ChineseTelephoneTabActivity", "unregist success");
+		}
+
+		@Override
+		public void onUnRegisterFailed() {
+			// TODO Auto-generated method stub
+			Log.d("ChineseTelephoneTabActivity", "unregist fail");
+		}
+		
+	};
+	
+	private void sipRegistFail(){
+		dialog.show();
+	}
+	
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		dialog.dismiss();
+		dialog=null;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
+		Runnable registSipRunnable = new Runnable(){
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				//regist sip account
+				SipRegisterManager.registSip(sipRegistrationStateListener);
+			}
+		};
+		Thread registSipThread = new Thread(registSipRunnable);
+		registSipThread.start();
+		
+		dialog = new AlertDialog.Builder(ChineseTelephoneTabActivity.this)
+		.setTitle(R.string.alert_title)
+		.setMessage("网络电话登录失败，请重新登录！")
+		.setPositiveButton(ChineseTelephoneTabActivity.this.getString(R.string.ok),
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(
+							DialogInterface arg0, int arg1) {
+						Intent intent = new Intent(ChineseTelephoneTabActivity.this, 
+								AccountSettingActivity.class);
+						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						startActivity(intent);
+						arg0.dismiss();
+						finish();					
+					}
+				}).create();
+		
 		// set content view
 		setContentView(R.layout.chinese_telephone_tab_activity_layout);
 
@@ -92,6 +171,8 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 
 		// set current tab and tab image
 		_tabHost.setCurrentTab(_mCurrentTabIndex);
+		
+		//check sip account regist status
 	}
 
 }

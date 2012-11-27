@@ -55,6 +55,8 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 
 	private static final String LOG_TAG = "ContactListInviteFriendActivity";
 	
+	private final String PRESENT_CONTACT_PHONES = "present_contact_phones";
+	private final String PREVIOUS_PHONES_STYLE = "previous_phones_style";
 	private final String CONTACT_IS_SELECTED = "contact_is_selected";
 	private final String SELECTED_PHONE = "selected_phone";
 	private int selectedPosition;
@@ -94,7 +96,7 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 		Log.d("inviteLink", inviteLink);
 
 		// set title
-		setTitle("邀请好友");
+		setTitle(R.string.invite_title);
 		
 		_mInviteFriendsInfo = new ArrayList<ContactBean>();
 
@@ -127,7 +129,6 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 		// in address book contacts adapter data keys
 		final String PRESENT_CONTACT_PHOTO = "present_contact_photo";
 		final String PRESENT_CONTACT_NAME = "present_contact_name";
-		final String PRESENT_CONTACT_PHONES = "present_contact_phones";
 
 		// set address book contacts list view present data list
 		List<Map<String, ?>> _addressBookContactsPresentDataList = new ArrayList<Map<String, ?>>();
@@ -237,11 +238,41 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 								_endPos, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 					}
 				}
-
-				_dataMap.put(PRESENT_CONTACT_PHONES, _formatPhoneNumberString);
+				
+				if(_contact.getExtension().get(SELECTED_PHONE)==null||
+						((String)_contact.getExtension().get(SELECTED_PHONE)).equals("")){
+					_dataMap.put(PRESENT_CONTACT_PHONES, _formatPhoneNumberString);
+				}
+				else{
+					_contact.getExtension().put(PREVIOUS_PHONES_STYLE, _formatPhoneNumberString);
+					String selectedPhone = (String) _contact.getExtension().get(SELECTED_PHONE);
+					String allPhones = _contact.getFormatPhoneNumbers();
+					int begin = allPhones.indexOf(selectedPhone);
+					int end = begin + selectedPhone.length();
+					SpannableString _newformatPhoneNumberString = new SpannableString(
+							_formatPhoneNumberString);
+					_newformatPhoneNumberString.setSpan(new ForegroundColorSpan(Color.RED), begin,
+								end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+					_dataMap.put(PRESENT_CONTACT_PHONES, _newformatPhoneNumberString);
+				}
 			} else {
-				_dataMap.put(PRESENT_CONTACT_PHONES,
-						_contact.getFormatPhoneNumbers());
+				if(_contact.getExtension().get(SELECTED_PHONE)==null||
+						((String)_contact.getExtension().get(SELECTED_PHONE)).equals("")){
+					_dataMap.put(PRESENT_CONTACT_PHONES,
+							_contact.getFormatPhoneNumbers());
+				}
+				else{
+					_contact.getExtension().put(PREVIOUS_PHONES_STYLE, _contact.getFormatPhoneNumbers());
+					String selectedPhone = (String) _contact.getExtension().get(SELECTED_PHONE);
+					String allPhones = _contact.getFormatPhoneNumbers();
+					int begin = allPhones.indexOf(selectedPhone);
+					int end = begin + selectedPhone.length();
+					SpannableString _newformatPhoneNumberString = new SpannableString(
+							_contact.getFormatPhoneNumbers());
+					_newformatPhoneNumberString.setSpan(new ForegroundColorSpan(Color.RED), begin,
+								end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+					_dataMap.put(PRESENT_CONTACT_PHONES, _newformatPhoneNumberString);
+				}
 			}
 
 			// put alphabet index
@@ -400,6 +431,18 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 						 _clickItemViewData.getExtension().put(CONTACT_IS_SELECTED, true);
 						 Map<String, Object> map = (Map<String, Object>) _mABContactsListView.getAdapter().getItem(position);
 						 map.put(CONTACT_IS_SELECTED, true);
+						 //暂存之前显示号码的方式，为取消时恢复号码之前显示
+						 Object phonesObj = map.get(PRESENT_CONTACT_PHONES);					 
+						 _clickItemViewData.getExtension().put(PREVIOUS_PHONES_STYLE, phonesObj);
+						 //将选择号码显示为红色
+						 SpannableString _formatPhoneNumberString = new SpannableString(
+								 _clickItemViewData.getFormatPhoneNumbers());
+						 				 
+						 _formatPhoneNumberString.setSpan(
+									new ForegroundColorSpan(Color.RED), 0,
+									_clickItemViewData.getPhoneNumbers().get(0).length(),
+								    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+						 map.put(PRESENT_CONTACT_PHONES, _formatPhoneNumberString);
 						 
 						 ((InviteFriendContactAdapter)_mABContactsListView.getAdapter()).notifyDataSetChanged();
 						 break;
@@ -421,7 +464,13 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 					 _mInviteFriendsInfo.remove(_clickItemViewData);
 					 _clickItemViewData.getExtension().put(CONTACT_IS_SELECTED, false);
 					 _clickItemViewData.getExtension().put(SELECTED_PHONE, "");
+
+					 Object phoneObj = _clickItemViewData.getExtension().get(PREVIOUS_PHONES_STYLE);
+					 _clickItemViewData.getExtension().put(PREVIOUS_PHONES_STYLE, "");
 					 Map<String, Object> map = (Map<String, Object>) _mABContactsListView.getAdapter().getItem(position);
+					 if(phoneObj!=null){
+						 map.put(PRESENT_CONTACT_PHONES, phoneObj);
+					 }
 					 map.put(CONTACT_IS_SELECTED, false);
 					 ((InviteFriendContactAdapter)_mABContactsListView.getAdapter()).notifyDataSetChanged();
 				 }
@@ -609,50 +658,65 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 			public void onClick(View v) {
 				// get phone button text
 				String _selectedPhone = (String) ((Button) v).getText();
-				
-				ContactBean _clickItemViewData = _mPresentContactsInABInfoArray
-						.get(selectedPosition);
-				_mInviteFriendsInfo.add(_clickItemViewData);
-				 _clickItemViewData.getExtension().put(SELECTED_PHONE, _selectedPhone);
-				 _clickItemViewData.getExtension().put(CONTACT_IS_SELECTED, true);
-				 Map<String, Object> map = (Map<String, Object>) _mABContactsListView.getAdapter().getItem(selectedPosition);
-				 map.put(CONTACT_IS_SELECTED, true);
-				 ((InviteFriendContactAdapter)_mABContactsListView.getAdapter()).notifyDataSetChanged();
-				// dismiss contact phone select popup window
-				dismiss();
-				// make sip voice call
-				
+				choosePhone2Invite(_selectedPhone)	;	
 			}
 
+		}
+		
+		private void choosePhone2Invite(String _selectedPhone){
+			 ContactBean _clickItemViewData = _mPresentContactsInABInfoArray
+					.get(selectedPosition);
+			 _mInviteFriendsInfo.add(_clickItemViewData);
+			 _clickItemViewData.getExtension().put(SELECTED_PHONE, _selectedPhone);
+			 _clickItemViewData.getExtension().put(CONTACT_IS_SELECTED, true);
+			 Map<String, Object> map = (Map<String, Object>) _mABContactsListView
+					 .getAdapter().getItem(selectedPosition);
+			 map.put(CONTACT_IS_SELECTED, true);
+			 
+			//暂存之前显示号码的方式，为取消时恢复号码之前显示
+			 Object phonesObj = map.get(PRESENT_CONTACT_PHONES);					 
+			 _clickItemViewData.getExtension().put(PREVIOUS_PHONES_STYLE, phonesObj);
+			 //将选择号码显示为红色
+			 SpannableString _formatPhoneNumberString = null;
+			 if(phonesObj instanceof String){
+				 _formatPhoneNumberString = new SpannableString(
+						 (String)phonesObj);
+			 }
+			 else if(phonesObj instanceof SpannableString){
+				 _formatPhoneNumberString = new SpannableString(
+						 (SpannableString)phonesObj);
+			 }
+			 
+			 String allPhones = _clickItemViewData.getFormatPhoneNumbers();
+			 int begin = allPhones.indexOf(_selectedPhone);
+			 int end = begin + _selectedPhone.length();
+			 				 
+			 _formatPhoneNumberString.setSpan(
+						new ForegroundColorSpan(Color.RED), begin, end,
+					    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			 map.put(PRESENT_CONTACT_PHONES, _formatPhoneNumberString);
+			 
+			 ((InviteFriendContactAdapter)_mABContactsListView
+					 .getAdapter()).notifyDataSetChanged();
+			// dismiss contact phone select popup window
+			dismiss();
 		}
 
 		// contact phone select phone listView on item click listener
 		class ContactPhoneSelectPhoneListViewOnItemClickListener implements
 				OnItemClickListener {
-
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// get phone listView item data
 				String _selectedPhone = (String) ((TextView) view).getText();
-				ContactBean _clickItemViewData = _mPresentContactsInABInfoArray
-						.get(selectedPosition);
-				_mInviteFriendsInfo.add(_clickItemViewData);
-				 _clickItemViewData.getExtension().put(SELECTED_PHONE, _selectedPhone);
-				 _clickItemViewData.getExtension().put(CONTACT_IS_SELECTED, true);
-				 Map<String, Object> map = (Map<String, Object>) _mABContactsListView.getAdapter().getItem(selectedPosition);
-				 map.put(CONTACT_IS_SELECTED, true);
-				 ((InviteFriendContactAdapter)_mABContactsListView.getAdapter()).notifyDataSetChanged();
-				// dismiss contact phone select popup window
-				 dismiss();
-				// make sip voice call				
+				choosePhone2Invite(_selectedPhone)	;		
 			}
 		}
 
 		// contact phone select cancel button on click listener
 		class ContactPhoneSelectCancelBtnOnClickListener implements
 				OnClickListener {
-
 			@Override
 			public void onClick(View v) {
 				// dismiss contact phone select popup window
@@ -665,17 +729,24 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 		if(_mInviteFriendsInfo.size()>0){
 			StringBuffer toNumbers = new StringBuffer();
 			for(ContactBean b :_mInviteFriendsInfo){
-				toNumbers.append((String) b.getExtension().get(SELECTED_PHONE)).append(";");
+				toNumbers.append((String) b.getExtension()
+						.get(SELECTED_PHONE)).append(";");
 			}	
 			Uri uri = Uri.parse("smsto:" + toNumbers.toString());
 			Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
-			String inviteMessage = getString(R.string.invite_message).replace("***", inviteLink);
+			String inviteMessage = getString(R.string.invite_message)
+					.replace("***", inviteLink);
 			intent.putExtra("sms_body", inviteMessage);
 			startActivity(intent);
 		}
 		else{
-			MyToast.show(ContactLisInviteFriendActivity.this, "请选择邀请人", Toast.LENGTH_SHORT);
+			MyToast.show(ContactLisInviteFriendActivity.this, 
+					R.string.pls_choose_invite_people, Toast.LENGTH_SHORT);
 		}
+	}
+	
+	public void onCancel(View v){
+		finish();
 	}
 	@Override
 	public void onDestroy(){

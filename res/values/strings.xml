@@ -108,7 +108,10 @@
     <string name="get_bind_phone_message">绑定手机号：</string>
     <string name="get_bind_country_message">国家号：</string>
     <string name="setup_popwin_title">启动方式设置</string>
+    <string name="invite_title">邀请好友</string>
     <string name="select_phone_to_invite">请选择***的号码：</string>
+    <string name="pls_choose_invite_people">请选择邀请人</string>
+    <string name="sip_account_regist_fail">账户登录失败，请重试</string>
     <!-- dial preference  -->
     <string name="dia_preference_title">拨号方式设置</string>
     <string name="choose_direct_dial">固定选择直拨</string>
