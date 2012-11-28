@@ -192,7 +192,7 @@ public class DoubangoSipServices extends BaseSipServices implements
 			String calleePhone) {
 		Log.d(LOG_TAG, "Not implement make callback sip voice call now");
 
-		return true;
+		return false;
 	}
 
 	@Override

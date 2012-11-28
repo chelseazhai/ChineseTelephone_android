@@ -4,10 +4,10 @@
     android:layout_height="match_parent" >
 
     <ImageButton
-        android:id="@+id/dialBtn_imageBtn"
+        android:id="@+id/keyboardBtn_imageBtn"
         android:layout_width="fill_parent"
-        android:layout_height="@dimen/dialBtn_imageView_height"
-        android:background="@drawable/dial_btn_bg"
-        android:contentDescription="@string/dialBtn_imageButton_content_description" />
+        android:layout_height="@dimen/keyboardBtn_imageView_height"
+        android:background="@drawable/keyboard_btn_bg"
+        android:contentDescription="@string/keyboardBtn_imageButton_content_description" />
 
 </RelativeLayout>

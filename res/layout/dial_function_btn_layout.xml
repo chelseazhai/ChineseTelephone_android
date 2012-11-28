@@ -3,4 +3,4 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/dial_newcontact7cleardialphone_function_btn_bg"
-    android:contentDescription="@string/dialBtn_imageView_content_description" />
+    android:contentDescription="@string/dialBtn_imageButton_content_description" />

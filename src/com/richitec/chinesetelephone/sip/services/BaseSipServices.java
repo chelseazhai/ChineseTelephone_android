@@ -72,6 +72,30 @@ public abstract class BaseSipServices implements ISipServices {
 		return _hangupCurrentSipVoiceCallResult;
 	}
 
+	@Override
+	public void muteSipVoiceCall() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void unmuteSipVoiceCall() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setSipVoiceCallUsingLoudspeaker() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setSipVoiceCallUsingEarphone() {
+		// TODO Auto-generated method stub
+
+	}
+
 	public SipInviteStateListener getSipInviteStateListener() {
 		return _mSipInviteStateListener;
 	}

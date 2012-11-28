@@ -200,7 +200,7 @@ public class DialTabContentActivity extends NavigationActivity {
 		return new DialPhoneButtonAdapter(this, _dialPhoneButtonDataList,
 				R.layout.dial_phone_btn_layout,
 				new String[] { DIAL_PHONE_BUTTON },
-				new int[] { R.id.dialBtn_imageView });
+				new int[] { R.id.dialBtn_imageBtn });
 	}
 
 	// play dial phone button dtmf sound

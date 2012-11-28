@@ -17,7 +17,7 @@
     <!-- dial tab content activity -->
     <string name="title_activity_dial_tab_content">DialTabContentActivity</string>
     <string name="dial_tab_title">Dial</string>
-    <string name="dialBtn_imageView_content_description">dial button image view</string>
+    <string name="dialBtn_imageButton_content_description">dial button image button</string>
 
     <!-- contact list tab content activity -->
     <string name="title_activity_contact_list_tab_content">ContactListTabContentActivity</string>
@@ -56,5 +56,6 @@
     <string name="callController_keyboardItem_text">Keyboard</string>
     <string name="endCall_imageView_content_description">end call image button</string>
     <string name="hideKeyboard_imageView_content_description">hide keyboard image button</string>
+    <string name="keyboardBtn_imageButton_content_description">keyboard button image button</string>
 
 </resources>

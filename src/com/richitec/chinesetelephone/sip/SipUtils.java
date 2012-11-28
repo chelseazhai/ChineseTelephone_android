@@ -39,29 +39,4 @@ public class SipUtils {
 		sipServices.makeSipVoiceCall(calleeName, calleePhone, callMode);
 	}
 
-	// hangup current sip voice call
-	public static boolean hangupSipVoiceCall(Long callDuration) {
-		return sipServices.hangupSipVoiceCall(callDuration);
-	}
-
-	// mute current sip voice call
-	public static void muteSipVoiceCall() {
-		//
-	}
-
-	// unmute current sip voice call
-	public static void unmuteSipVoiceCall() {
-		//
-	}
-
-	// set current sip voice call using loudspeaker
-	public static void setSipVoiceCallUsingLoudspeaker() {
-		//
-	}
-
-	// set current sip voice call using earphone
-	public static void setSipVoiceCallUsingEarphone() {
-		//
-	}
-
 }

@@ -21,4 +21,16 @@ public interface ISipServices {
 	// hangup current sip voice call
 	public boolean hangupSipVoiceCall(Long callDuration);
 
+	// mute current sip voice call
+	public void muteSipVoiceCall();
+
+	// unmute current sip voice call
+	public void unmuteSipVoiceCall();
+
+	// set current sip voice call using loudspeaker
+	public void setSipVoiceCallUsingLoudspeaker();
+
+	// set current sip voice call using earphone
+	public void setSipVoiceCallUsingEarphone();
+
 }
