@@ -52,10 +52,6 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 		// get call record history listView
 		ListView _callRecordHistoryListView = (ListView) findViewById(R.id.callRecordHistoryList_listView);
 
-		// set call record history listView adapter
-		_callRecordHistoryListView
-				.setAdapter(generateCallRecordHistoryListItemAdapter());
-
 		// set call record history listView on item click listener
 		_callRecordHistoryListView
 				.setOnItemClickListener(new CallRecordHistoryListViewOnItemClickListener());
@@ -73,6 +69,18 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
     public void onBackPressed(){
     	this.getParent().onBackPressed();
     }
+
+	@Override
+	protected void onResume() {
+		// clear call log list
+		_mCallLogList.clear();
+
+		// update call record history listView adapter
+		((ListView) findViewById(R.id.callRecordHistoryList_listView))
+				.setAdapter(generateCallRecordHistoryListItemAdapter());
+
+		super.onResume();
+	}
 
 	// generate call record history list item adapter
 	private ListAdapter generateCallRecordHistoryListItemAdapter() {

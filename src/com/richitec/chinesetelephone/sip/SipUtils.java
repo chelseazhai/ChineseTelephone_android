@@ -30,19 +30,18 @@ public class SipUtils {
 	}
 
 	// make sip voice call
-	public static void makeSipVoiceCall(String calleeDisplayName,
-			String calleePhoneNumber, SipCallMode callMode) {
-		Log.d("SipUtils", "makeSipVoiceCall - callee display name = "
-				+ calleeDisplayName + " , phone number = " + calleePhoneNumber
-				+ " and call mode = " + callMode);
+	public static void makeSipVoiceCall(String calleeName, String calleePhone,
+			SipCallMode callMode) {
+		Log.d("SipUtils", "makeSipVoiceCall - callee name = " + calleeName
+				+ " , phone number = " + calleePhone + " and call mode = "
+				+ callMode);
 
-		sipServices.makeSipVoiceCall(calleeDisplayName, calleePhoneNumber,
-				callMode);
+		sipServices.makeSipVoiceCall(calleeName, calleePhone, callMode);
 	}
 
 	// hangup current sip voice call
-	public static void hangupSipVoiceCall() {
-		//
+	public static boolean hangupSipVoiceCall(Long callDuration) {
+		return sipServices.hangupSipVoiceCall(callDuration);
 	}
 
 	// mute current sip voice call

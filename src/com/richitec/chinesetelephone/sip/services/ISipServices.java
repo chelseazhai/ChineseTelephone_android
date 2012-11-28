@@ -15,7 +15,10 @@ public interface ISipServices {
 			SipRegistrationStateListener sipRegistrationStateListener);
 
 	// make sip voice call
-	public void makeSipVoiceCall(String calleeDisplayName,
-			String calleePhoneNumber, SipCallMode callMode);
+	public void makeSipVoiceCall(String calleeName, String calleePhone,
+			SipCallMode callMode);
+
+	// hangup current sip voice call
+	public boolean hangupSipVoiceCall(Long callDuration);
 
 }
