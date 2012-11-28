@@ -304,23 +304,6 @@ public class DoubangoSipServices extends BaseSipServices implements
 				// get the action
 				String _action = intent.getAction();
 
-		// generate sip phone number
-		final String _sipPhoneUri = NgnUriUtils
-				.makeValidSipUri(String.format(
-						"sip:%s@%s",
-						calleePhoneNumber,
-						NGN_ENGINE.getConfigurationService().getString(
-								NgnConfigurationEntry.NETWORK_PCSCF_HOST, "")));
-
-		// check sip phone uri
-		if (_sipPhoneUri == null) {
-			Log.e(LOG_TAG, "Failed to normalize sip uri '" + calleePhoneNumber
-					+ "'");
-		} else {
-			// define audio session
-			NgnAVSession _audioSession = NgnAVSession.createOutgoingSession(
-					NGN_ENGINE.getSipService().getSipStack(),
-					NgnMediaType.Audio);
 				// check the action for ngn invite event
 				if (NgnInviteEventArgs.ACTION_INVITE_EVENT.equals(_action)) {
 					// get ngn invite event arguments

@@ -1,4 +1,4 @@
-package com.rictitec.chinesetelephone.utils;
+package com.richitec.chinesetelephone.utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -429,7 +429,8 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 						 _mInviteFriendsInfo.add(_clickItemViewData);
 						 _clickItemViewData.getExtension().put(SELECTED_PHONE, _clickItemViewData.getPhoneNumbers().get(0));
 						 _clickItemViewData.getExtension().put(CONTACT_IS_SELECTED, true);
-						 Map<String, Object> map = (Map<String, Object>) _mABContactsListView.getAdapter().getItem(position);
+						 @SuppressWarnings("unchecked")
+						Map<String, Object> map = (Map<String, Object>) _mABContactsListView.getAdapter().getItem(position);
 						 map.put(CONTACT_IS_SELECTED, true);
 						 //暂存之前显示号码的方式，为取消时恢复号码之前显示
 						 Object phonesObj = map.get(PRESENT_CONTACT_PHONES);					 
@@ -467,7 +468,9 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 
 					 Object phoneObj = _clickItemViewData.getExtension().get(PREVIOUS_PHONES_STYLE);
 					 _clickItemViewData.getExtension().put(PREVIOUS_PHONES_STYLE, "");
-					 Map<String, Object> map = (Map<String, Object>) _mABContactsListView.getAdapter().getItem(position);
+					
+					 @SuppressWarnings("unchecked")
+					Map<String, Object> map = (Map<String, Object>) _mABContactsListView.getAdapter().getItem(position);
 					 if(phoneObj!=null){
 						 map.put(PRESENT_CONTACT_PHONES, phoneObj);
 					 }
@@ -669,6 +672,8 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 			 _mInviteFriendsInfo.add(_clickItemViewData);
 			 _clickItemViewData.getExtension().put(SELECTED_PHONE, _selectedPhone);
 			 _clickItemViewData.getExtension().put(CONTACT_IS_SELECTED, true);
+			 
+			 @SuppressWarnings("unchecked")
 			 Map<String, Object> map = (Map<String, Object>) _mABContactsListView
 					 .getAdapter().getItem(selectedPosition);
 			 map.put(CONTACT_IS_SELECTED, true);

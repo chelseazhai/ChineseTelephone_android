@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,15 +30,12 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.call.ContactPhoneDialModeSelectpopupWindow;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.utils.CommonUtils;
 import com.richitec.commontoolkit.utils.DpPixUtils;
-import com.richitec.commontoolkit.utils.MyToast;
 
 public class DialTabContentActivity extends NavigationActivity {
 
@@ -463,7 +459,7 @@ public class DialTabContentActivity extends NavigationActivity {
 
 				String _calleeName = View.VISIBLE == _dialPhoneOwnershipTextView
 						.getVisibility() ? _dialPhoneOwnershipTextView
-						.getText().toString() : "Unknown";
+						.getText().toString() : "未知联系人";
 
 				@SuppressWarnings("unchecked")
 				List<String> _calleePhones = (List<String>) CommonUtils

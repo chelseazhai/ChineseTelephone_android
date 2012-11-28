@@ -11,6 +11,9 @@ import com.richitec.chinesetelephone.constant.DialPreference;
 import com.richitec.chinesetelephone.constant.LaunchSetting;
 import com.richitec.chinesetelephone.constant.TelUser;
 import com.richitec.chinesetelephone.sip.SipUtils;
+import com.richitec.chinesetelephone.utils.AppUpdateManager;
+import com.richitec.chinesetelephone.utils.CountryCodeManager;
+import com.richitec.chinesetelephone.utils.DialPreferenceManager;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.customcomponent.CommonPopupWindow;
 import com.richitec.commontoolkit.user.User;
@@ -24,10 +27,7 @@ import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpResponseResult;
 import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
 import com.richitec.commontoolkit.utils.HttpUtils.PostRequestFormat;
-import com.rictitec.chinesetelephone.utils.CountryCodeManager;
-import com.rictitec.chinesetelephone.utils.DialPreferenceManager;
 import android.os.Bundle;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -95,6 +95,9 @@ public class SettingActivity extends NavigationActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         
+        LinearLayout inviteFriend = (LinearLayout) findViewById(R.id.account_invite_btn);        
+        inviteFriend.setOnClickListener(inviteFriendListener);
+        
         LinearLayout changeAccount = (LinearLayout) findViewById(R.id.account_setting_btn);        
         changeAccount.setOnClickListener(changeAccountListener);
         
@@ -136,17 +139,6 @@ public class SettingActivity extends NavigationActivity {
         setTitle(R.string.menu_settings);
     } 
     
-    /*@Override
-	protected void onDestroy() {
-    	super.onDestroy();
-    	Log.e("SettingActivity", "destroy");
-    }
-    
-    @Override
-	protected void onResume() {
-    	super.onResume();
-    	Log.e("SettingActivity", "resume");
-    }*/
     public void getAuthNumber(View v){
     	progressDialog = ProgressDialog.show(this, null,
 				getString(R.string.sending_request), true);
@@ -234,6 +226,11 @@ public class SettingActivity extends NavigationActivity {
 				}
 				)
 		.setNegativeButton(R.string.cancel, null).show();
+    }
+    
+    public void checkUpdateVersion(View v){
+    	AppUpdateManager updateManager = new AppUpdateManager(this);
+    	updateManager.checkVersion(true);
     }
     
     @Override
@@ -397,6 +394,16 @@ public class SettingActivity extends NavigationActivity {
 			intent.putExtra(TITLE_NAME, getString(R.string.change_account_title));
 			intent.putExtra("firstLogin", false);
 			startActivity(intent);
+		}
+    	
+    };
+    
+    private OnClickListener inviteFriendListener = new OnClickListener(){
+
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			inviteFriend(null);
 		}
     	
     };
@@ -1068,7 +1075,10 @@ public class SettingActivity extends NavigationActivity {
 				if(phone!=null&&!phone.equals("")){
 					setAuthNumber(phone,countrycode);
 					dismiss();
-				}				
+				}	
+				else{
+					MyToast.show(SettingActivity.this, R.string.phone_not_null, Toast.LENGTH_SHORT);
+				}
 			}
 		}
 		

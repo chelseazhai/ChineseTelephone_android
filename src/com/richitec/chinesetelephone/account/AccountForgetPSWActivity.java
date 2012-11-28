@@ -2,6 +2,7 @@ package com.richitec.chinesetelephone.account;
 
 import java.util.HashMap;
 import com.richitec.chinesetelephone.R;
+import com.richitec.chinesetelephone.utils.CountryCodeManager;
 import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.HttpUtils;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
@@ -9,7 +10,6 @@ import com.richitec.commontoolkit.utils.HttpUtils.HttpResponseResult;
 import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
 import com.richitec.commontoolkit.utils.HttpUtils.PostRequestFormat;
 import com.richitec.commontoolkit.utils.MyToast;
-import com.rictitec.chinesetelephone.utils.CountryCodeManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
