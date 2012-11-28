@@ -230,6 +230,13 @@ public class DoubangoSipServices extends BaseSipServices implements
 		return _ret;
 	}
 
+	@Override
+	public void sentDTMF(String dtmfCode) {
+		// send dtmf
+		Log.d(LOG_TAG, "Doubango send dtmf not implement, dtmf code = "
+				+ dtmfCode);
+	}
+
 	// inner class
 	// doubango ngn registration state broadcast receiver
 	class RegistrationStateBroadcastReceiver extends BroadcastReceiver {

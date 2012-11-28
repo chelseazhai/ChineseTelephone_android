@@ -35,4 +35,7 @@ public interface ISipServices {
 	// set current sip voice call using earphone
 	public void setSipVoiceCallUsingEarphone(AudioManager audioManager);
 
+	// send dtmf
+	public void sentDTMF(String dtmfCode);
+
 }

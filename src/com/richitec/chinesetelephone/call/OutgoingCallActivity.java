@@ -368,7 +368,7 @@ public class OutgoingCallActivity extends Activity implements
 			switch (position) {
 			case 0:
 				// show contacts list
-				Log.d(LOG_TAG, "Show contacts list, not implemetent now");
+				Log.d(LOG_TAG, "Show contacts list, not implement now");
 
 				break;
 
@@ -420,21 +420,25 @@ public class OutgoingCallActivity extends Activity implements
 				_dtmfTextView.setVisibility(View.VISIBLE);
 			}
 
+			// get clicked phone number
+			String _clickedPhoneNumber = _keyboardPhoneButtonValueData[(Integer) v
+					.getTag()];
+
 			// define keyboard phone string builder
 			StringBuilder _keyboardPhoneStringBuilder = new StringBuilder(
 					_dtmfTextView.getText());
 
 			// dial phone
-			_keyboardPhoneStringBuilder
-					.append(_keyboardPhoneButtonValueData[(Integer) v.getTag()]);
+			_keyboardPhoneStringBuilder.append(_clickedPhoneNumber);
 
 			// reset dtmf textView text
 			_dtmfTextView.setText(_keyboardPhoneStringBuilder);
 
-			// play dial phone button dtmf sound
+			// play keyboard phone button dtmf sound
 			// playDialPhoneBtnDTMFSound((Integer) v.getTag());
 
-			//
+			// send dtmf
+			_smSipServices.sentDTMF(_clickedPhoneNumber);
 		}
 	}
 
