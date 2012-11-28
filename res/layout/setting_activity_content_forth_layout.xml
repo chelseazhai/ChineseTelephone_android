@@ -73,6 +73,7 @@
                     android:layout_height="50.0dp"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
+                    android:onClick="checkUpdateVersion"
                     >
                     
                     <ImageView 

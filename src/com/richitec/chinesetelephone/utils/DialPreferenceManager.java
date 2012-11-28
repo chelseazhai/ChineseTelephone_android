@@ -1,4 +1,4 @@
-package com.rictitec.chinesetelephone.utils;
+package com.richitec.chinesetelephone.utils;
 
 import com.richitec.chinesetelephone.bean.DialPreferenceBean;
 

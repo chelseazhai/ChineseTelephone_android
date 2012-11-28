@@ -5,15 +5,14 @@ import java.util.HashMap;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.richitec.chinesetelephone.R;
-import com.richitec.chinesetelephone.assist.ContactLisInviteFriendActivity;
 import com.richitec.chinesetelephone.assist.SettingActivity;
 import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.constant.TelUser;
-import com.richitec.chinesetelephone.sip.SipRegisterBean;
 import com.richitec.chinesetelephone.sip.SipUtils;
-import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
 import com.richitec.chinesetelephone.tab7tabcontent.ChineseTelephoneTabActivity;
+import com.richitec.chinesetelephone.utils.AppUpdateManager;
+import com.richitec.chinesetelephone.utils.CountryCodeManager;
 import com.richitec.commontoolkit.user.User;
 import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.DataStorageUtils;
@@ -23,9 +22,6 @@ import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpResponseResult;
 import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
 import com.richitec.commontoolkit.utils.HttpUtils.PostRequestFormat;
-import com.rictitec.chinesetelephone.utils.CountryCodeManager;
-import com.rictitec.chinesetelephone.utils.SipRegisterManager;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -191,6 +187,9 @@ public class AccountSettingActivity extends Activity {
         	useSavedPsw = false;
         	remember.setChecked(false);
         }
+        
+        AppUpdateManager updateManager = new AppUpdateManager(this);
+        updateManager.checkVersion(false);
     }
 	
 	@Override

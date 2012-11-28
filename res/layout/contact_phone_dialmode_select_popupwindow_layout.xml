@@ -23,6 +23,24 @@
             android:gravity="center"
             android:text="@string/contactPhone_dialMode_selectPopupWindow_titleTextView_text"
             android:textColor="@android:color/white" />
+        
+        <TextView
+            android:id="@+id/contactPhone_dialMode_directinform_TextView"
+            android:layout_margin="10dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/contactPhone_dialMode_selectPopupWindow_informTextView_text"
+            android:textColor="@android:color/white" />
+        
+        <TextView
+            android:id="@+id/contactPhone_dialMode_callbackinform_TextView"
+            android:layout_margin="10dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/contactPhone_dialMode_selectPopupWindow_callback_informTextView_text"
+            android:textColor="@android:color/white" />
 
         <LinearLayout
             android:layout_width="fill_parent"

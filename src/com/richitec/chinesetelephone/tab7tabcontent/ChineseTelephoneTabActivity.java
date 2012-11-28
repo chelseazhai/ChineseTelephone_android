@@ -4,23 +4,22 @@ import android.app.AlertDialog;
 import android.app.TabActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
+import android.widget.TabWidget;
+import android.widget.TextView;
 
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.account.AccountSettingActivity;
 import com.richitec.chinesetelephone.assist.SettingActivity;
-import com.richitec.chinesetelephone.constant.TelUser;
 import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
+import com.richitec.chinesetelephone.utils.AppUpdateManager;
+import com.richitec.chinesetelephone.utils.SipRegisterManager;
 import com.richitec.commontoolkit.customcomponent.CommonTabSpecIndicator;
-import com.richitec.commontoolkit.user.User;
-import com.richitec.commontoolkit.utils.DataStorageUtils;
-import com.richitec.commontoolkit.utils.VersionUtils;
-import com.rictitec.chinesetelephone.utils.SipRegisterManager;
 
 public class ChineseTelephoneTabActivity extends TabActivity {
 
@@ -34,7 +33,7 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 			{ R.string.more_tab7nav_title, R.drawable.more_tab_icon } };
 
 	// current tab index, default is contact list tab
-	private int _mCurrentTabIndex = 2;
+	private int _mCurrentTabIndex = 1;
 	
 	private AlertDialog dialog;
 	
@@ -91,8 +90,6 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 				// TODO Auto-generated method stub
 				//regist sip account
 				SipRegisterManager.registSip(sipRegistrationStateListener);
-				/*SipRegisterManager sipManager = new SipRegisterManager(ChineseTelephoneTabActivity.this);
-				sipManager.registSip(null);*/
 			}
 		};
 		Thread registSipThread = new Thread(registSipRunnable);
@@ -100,7 +97,7 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 		
 		dialog = new AlertDialog.Builder(ChineseTelephoneTabActivity.this)
 		.setTitle(R.string.alert_title)
-		.setMessage("网络电话登录失败，请重新登录！")
+		.setMessage(R.string.sip_account_regist_fail)
 		.setPositiveButton(ChineseTelephoneTabActivity.this.getString(R.string.ok),
 				new DialogInterface.OnClickListener() {
 					@Override
@@ -180,6 +177,16 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 		// set current tab and tab image
 		_tabHost.setCurrentTab(_mCurrentTabIndex);
 		
+		/*TabWidget tabWidget = this.getTabWidget();
+		int count = tabWidget.getChildCount();
+		  for (int i = 0; i < count; i++) {
+		   View view = tabWidget.getChildTabViewAt(i);   
+		   final TextView tv = (TextView) view.findViewById(android.R.id.title);
+		   tv.setTextSize(15);
+		  }*/
+		
+		AppUpdateManager updateManager = new AppUpdateManager(this);
+        updateManager.checkVersion(false);	
 	}
 	
 	@Override

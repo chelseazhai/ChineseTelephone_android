@@ -4,7 +4,7 @@
     <string name="app_name">ChineseTelephone</string>
 
     <!-- Chinese telephone tab activity -->
-    <string name="menu_settings">Settings</string>
+    
     <string name="title_activity_chinese_telephone_tab">ChineseTelephoneTabActivity</string>
     <string name="title_setting">SettingActivity</string>
     <string name="title_activity_account_setting">AccountSettingActivity</string>
@@ -13,56 +13,63 @@
 
     <!-- call record history list activity -->
     <string name="title_activity_call_record_history_list_tab_content">CallRecordHistoryListActivity</string>
-    <string name="call_record_history_list_tab_title">Recent</string>
-    <string name="call_record_history_list_nav_title">Call Record</string>
+    <string name="call_record_history_list_tab_title">最近通话</string>
+    <string name="call_record_history_list_nav_title">最近通话</string>
     <string name="outgoingCall_imageView_content_description">outgoing call image view</string>
     <string name="recordDetail_imageButton_content_description">call record detail info image button</string>
 
     <!-- dial tab content activity -->
     <string name="title_activity_dial_tab_content">DialTabContentActivity</string>
-    <string name="dial_tab_title">Dial</string>
+    <string name="dial_tab_title">拨号</string>
     <string name="dialBtn_imageView_content_description">dial button image view</string>
 
     <!-- contact list tab content activity -->
     <string name="title_activity_contact_list_tab_content">ContactListTabContentActivity</string>
-    <string name="contact_search_editText_hint">Search contacts</string>
-    <string name="contact_list_tab7nav_title">Contacts</string>
+    <string name="contact_search_editText_hint">查找联系人</string>
+    <string name="contact_list_tab7nav_title">联系人</string>
     <string name="addressBook_contact_avatar_imageView_content_description">contact avatar image view</string>
-    <string name="contact_hasNoPhone_alertDialog_title">Contact has no phone</string>
-    <string name="contact_hasNoPhone_alertDialog_reselectBtn_title">Reselect</string>
-    <string name="contactPhone_dialMode_selectPopupWindow_titleTextView_text">Select dial mode of connect ***</string>
-    <string name="contactPhone_dialMode_selectPopupWindow_directdialBtn_title">DirectDial</string>
-    <string name="contactPhone_dialMode_selectPopupWindow_callbackBtn_title">Callback</string>
-    <string name="contactPhone_dialMode_selectPopupWindow_cancelBtn_title">Cancel</string>
-    <string name="contactPhone_dialMode_selectPopupWindow_contactPhones_4select">phones for selecting</string>
-    <string name="contactPhones_selectPopupWindow_titleTextView_text">Select ***\'s phone to</string>
-    <string name="contactPhones_selectPopupWindow_4directdial">direct dial</string>
-    <string name="contactPhones_selectPopupWindow_4callback">callback</string>
-    <string name="contactPhones_selectPopupWindow_cancelBtn_title">Cancel</string>
+    <string name="contact_hasNoPhone_alertDialog_title">此联系人没有号码</string>
+    <string name="contact_hasNoPhone_alertDialog_reselectBtn_title">重新选择</string>
+    <string name="contactPhone_dialMode_selectPopupWindow_titleTextView_text">请选择拨打模式以联系 ***</string>
+    <string name="contactPhone_dialMode_selectPopupWindow_directdialBtn_title">直拨</string>
+    <string name="contactPhone_dialMode_selectPopupWindow_callbackBtn_title">回拨</string>
+    <string name="contactPhone_dialMode_selectPopupWindow_cancelBtn_title">取 消</string>
+    <string name="contactPhone_dialMode_selectPopupWindow_contactPhones_4select">个号码供选择</string>
+    <string name="contactPhones_selectPopupWindow_titleTextView_text">选择 ***的电话</string>
+    <string name="contactPhones_selectPopupWindow_4directdial">直拨</string>
+    <string name="contactPhones_selectPopupWindow_4callback">回拨</string>
+    <string name="contactPhones_selectPopupWindow_cancelBtn_title">取 消</string>
+    <string name="contactPhone_dialMode_selectPopupWindow_informTextView_text">直拨：网速快时选用，在家一般用直拨，拨号快接通率高资费省</string>
+    <string name="contactPhone_dialMode_selectPopupWindow_callback_informTextView_text">回拨：网速慢直播声音断续时选用，出门一般用回拨，通话质量好且省流量</string>
 
     <!-- more activity -->
     <string name="title_activity_more_tab_content">MoreTabContentActivity</string>
-    <string name="more_tab7nav_title">More</string>
+    <string name="more_tab7nav_title">更多</string>
 
     <!-- outgoing call activity -->
     <string name="title_activity_outgoing_call">OutgoingCallActivity</string>
     <string name="outgoingCallBG_imageView_content_description">outgoing call background image view</string>
-    <string name="outgoing_call_unknownState">Unknown</string>
-    <string name="outgoing_call_trying">Calling &#8230;</string>
-    <string name="outgoing_call_earlyMedia7RemoteRing">Ring &#8230;</string>
-    <string name="outgoing_call_failed">Call failed</string>
-    <string name="end_outgoing_call">Call ending</string>
-    <string name="outgoing_call_ended">Call ended</string>
+    <string name="outgoing_call_unknownState">未知</string>
+    <string name="outgoing_call_trying">正在呼叫中  &#8230;</string>
+    <string name="outgoing_call_earlyMedia7RemoteRing">等待对方接听 &#8230;</string>
+    <string name="outgoing_call_failed">拨打失败</string>
+    <string name="end_outgoing_call">正在结束通话</string>
+    <string name="outgoing_call_ended">通话已结束</string>
     <string name="callControllerItem_imageView_content_description">call controller image view</string>
-    <string name="callController_contactItem_text">Contact</string>
-    <string name="callController_handfreeItem_text">Handfree</string>
-    <string name="callController_muteItem_text">Mute</string>
-    <string name="callController_keyboardItem_text">Keyboard</string>
+    <string name="callController_contactItem_text">联系人</string>
+    <string name="callController_handfreeItem_text">扬声器</string>
+    <string name="callController_muteItem_text">静  音</string>
+    <string name="callController_keyboardItem_text">键  盘</string>
     <string name="endCall_imageView_content_description">end call image button</string>
     <string name="hideKeyboard_imageView_content_description">hide keyboard image button</string>
     <string name="sending_request">正在发送请求</string>
 
+    <!-- version upgrade -->
+    <string name="detect_new_version" formatted="false">发现新版本【%s】，\n是否升级？\n本次更新内容：\n%s</string>
+    <string name="upgrade">升级</string>
+    
     <!-- setting -->
+    <string name="menu_settings">更多设置</string>
     <string name="account">账户</string>
     <string name="account_setting_item">账户设置</string>
     <string name="account_changePSW_item">修改密码</string>
@@ -94,7 +101,7 @@
     <string name="manual_login_rbtn_title">手动登录</string>
     <string name="exit_program_messge">确定要注销并退出程序？</string>
     <string name="exit">确定要退出程序？</string>
-    <string name="invite_friend">邀请好友</string>
+    <string name="invite_friend">邀请好友赚话费</string>
     <string name="add_contact">添加联系人</string>
     <string name="add_new_contact_item">添加新联系人</string>
     <string name="add_exist_contact_item">添加现有联系人</string>
@@ -112,7 +119,9 @@
     <string name="invite_title">邀请好友</string>
     <string name="select_phone_to_invite">请选择***的号码：</string>
     <string name="pls_choose_invite_people">请选择邀请人</string>
-    <string name="sip_account_regist_fail">账户登录失败，请重试</string>
+    <string name="sip_account_regist_fail">网络电话登录失败，请重新登录！</string>
+    <string name="no_new_version">目前已经是最新版本</string>
+    <string name="phone_not_null">手机号不能为空</string>
     <!-- dial preference  -->
     <string name="dia_preference_title">拨号方式设置</string>
     <string name="choose_direct_dial">固定选择直拨</string>
@@ -231,7 +240,6 @@
     <string name="phone_number_not_exist">手机号码不存在！</string>
     <string name="get_psw_error">操作出错，请重试</string>
     <string name="get_psw_finish">你的密码将会通过短信发送给您，现在将返回登陆界面，请通过新密码登陆，登陆后请自行修改密码</string>
-    <string name="hello_world">Hello world!</string>
     <string name="title_activity_remain_money">RemainMoneyActivity</string>
 
 </resources>
