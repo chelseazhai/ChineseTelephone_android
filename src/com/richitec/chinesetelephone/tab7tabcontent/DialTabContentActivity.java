@@ -389,7 +389,8 @@ public class DialTabContentActivity extends NavigationActivity {
 
 				String _calleeName = View.VISIBLE == _dialPhoneOwnershipTextView
 						.getVisibility() ? _dialPhoneOwnershipTextView
-						.getText().toString() : "Unknown";
+						.getText().toString() : getResources().getString(
+						R.string.dial_phone_callee_unknown);
 
 				@SuppressWarnings("unchecked")
 				List<String> _calleePhones = (List<String>) CommonUtils

@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.content.Intent;
+import android.media.AudioManager;
 import android.provider.CallLog;
+import android.util.Log;
 
 import com.richitec.chinesetelephone.call.OutgoingCallActivity;
 import com.richitec.chinesetelephone.sip.SipCallMode;
@@ -73,27 +75,32 @@ public abstract class BaseSipServices implements ISipServices {
 	}
 
 	@Override
-	public void muteSipVoiceCall() {
-		// TODO Auto-generated method stub
+	public void muteSipVoiceCall(AudioManager audioManager) {
+		Log.d("@@", "setSipVoiceCallUsingLoudspeaker");
 
+		// mute current sip voice call
+		audioManager.setMicrophoneMute(true);
 	}
 
 	@Override
-	public void unmuteSipVoiceCall() {
-		// TODO Auto-generated method stub
-
+	public void unmuteSipVoiceCall(AudioManager audioManager) {
+		// unmute current sip voice call
+		audioManager.setMicrophoneMute(false);
 	}
 
 	@Override
-	public void setSipVoiceCallUsingLoudspeaker() {
-		// TODO Auto-generated method stub
+	public void setSipVoiceCallUsingLoudspeaker(AudioManager audioManager) {
+		Log.d("@@", "setSipVoiceCallUsingLoudspeaker");
 
+		// set current sip voice call loudspeaker
+		audioManager.setMode(AudioManager.MODE_IN_CALL);
+		audioManager.setSpeakerphoneOn(true);
 	}
 
 	@Override
-	public void setSipVoiceCallUsingEarphone() {
-		// TODO Auto-generated method stub
-
+	public void setSipVoiceCallUsingEarphone(AudioManager audioManager) {
+		// set current sip voice call earphone
+		audioManager.setSpeakerphoneOn(false);
 	}
 
 	public SipInviteStateListener getSipInviteStateListener() {

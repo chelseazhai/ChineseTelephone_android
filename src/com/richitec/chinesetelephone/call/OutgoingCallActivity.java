@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
+import android.content.Context;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -45,6 +47,9 @@ public class OutgoingCallActivity extends Activity implements
 	// outgoing call phone number
 	private String _mCalleePhone;
 
+	// audio manager
+	private AudioManager _mAudioManager;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -79,6 +84,10 @@ public class OutgoingCallActivity extends Activity implements
 				Log.e(LOG_TAG, "Get sip services error, sip services is null");
 			}
 		}
+
+		// init audio manager
+		_mAudioManager = (AudioManager) this
+				.getSystemService(Context.AUDIO_SERVICE);
 
 		// set wallpaper as outgoing call background
 		((ImageView) findViewById(R.id.outgoingcall_background_imageView))
@@ -371,16 +380,16 @@ public class OutgoingCallActivity extends Activity implements
 
 			case 2:
 				// mute or unmute current sip voice call
-				_smSipServices.muteSipVoiceCall();
-				// _smSipServices.unmuteSipVoiceCall();
+				_smSipServices.muteSipVoiceCall(_mAudioManager);
+				// _smSipServices.unmuteSipVoiceCall(_mAudioManager);
 
 				break;
 
 			case 3:
 			default:
 				// set current sip voice call loudspeaker or earphone
-				_smSipServices.setSipVoiceCallUsingLoudspeaker();
-				// _smSipServices.setSipVoiceCallUsingEarphone();
+				_smSipServices.setSipVoiceCallUsingLoudspeaker(_mAudioManager);
+				// _smSipServices.setSipVoiceCallUsingEarphone(_mAudioManager);
 
 				break;
 			}
