@@ -103,7 +103,7 @@ public class RemainMoneyActivity extends NavigationActivity {
 						responseResult.getResponseText());
 				balance = RemainMoneyActivity.formatRemainMoney(data.getDouble("balance")+"");
 				
-				int callTime = (int) (balance*10);		        
+				int callTime = (int) (balance*10/2);		        
 		        int backcallTime = (int) (balance*6);
 		        
 		        ((TextView)findViewById(R.id.remain_money)).setText(String.valueOf(balance)+getString(R.string.yuan));
