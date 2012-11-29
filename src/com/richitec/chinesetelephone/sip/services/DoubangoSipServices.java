@@ -192,7 +192,7 @@ public class DoubangoSipServices extends BaseSipServices implements
 			String calleePhone) {
 		Log.d(LOG_TAG, "Not implement make callback sip voice call now");
 
-		return true;
+		return false;
 	}
 
 	@Override
@@ -228,6 +228,13 @@ public class DoubangoSipServices extends BaseSipServices implements
 		}
 
 		return _ret;
+	}
+
+	@Override
+	public void sentDTMF(String dtmfCode) {
+		// send dtmf
+		Log.d(LOG_TAG, "Doubango send dtmf not implement, dtmf code = "
+				+ dtmfCode);
 	}
 
 	// inner class

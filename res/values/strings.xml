@@ -20,8 +20,11 @@
 
     <!-- dial tab content activity -->
     <string name="title_activity_dial_tab_content">DialTabContentActivity</string>
+
     <string name="dial_tab_title">拨号</string>
     <string name="dialBtn_imageView_content_description">dial button image view</string>
+    <string name="dialBtn_imageButton_content_description">dial button image button</string>
+    <string name="dial_phone_callee_unknown">未知联系人</string>
 
     <!-- contact list tab content activity -->
     <string name="title_activity_contact_list_tab_content">ContactListTabContentActivity</string>
@@ -250,5 +253,6 @@
     <string name="title_activity_remain_money">RemainMoneyActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_invite_friend">InviteFriendActivity</string>
+    <string name="keyboardBtn_imageButton_content_description">keyboard button image button</string>
 
 </resources>

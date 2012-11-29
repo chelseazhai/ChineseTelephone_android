@@ -13,4 +13,10 @@
     <!-- call controller -->
     <dimen name="callController_gridView_marginTop7Bottom">58dp</dimen>
 
+    <!-- outgoing call keyboard -->
+    <dimen name="keyboard_gridView_marginTop7Bottom">42dp</dimen>
+
+    <!-- outgoing call keyboard phone button -->
+    <dimen name="keyboardBtn_imageView_height">64dp</dimen>
+
 </resources>

@@ -4,6 +4,7 @@
     <!-- transparent color -->
     <color name="threequarters_gray_transparent">#b0565656</color>
     <color name="half_transparent">#80000000</color>
+    <color name="half_lightgray_transparent">#80808080</color>
     <color name="half_blue_transparent">#8000008b</color>
     <color name="quarter_transparent">#30000000</color>
     <color name="threequarters_transparent">#b0000000</color>
