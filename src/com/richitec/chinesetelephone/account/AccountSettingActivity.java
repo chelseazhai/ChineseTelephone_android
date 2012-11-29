@@ -111,7 +111,8 @@ public class AccountSettingActivity extends Activity {
 		TelUserBean user = (TelUserBean) UserManager.getInstance().getUser();
 		Log.d(SystemConstants.TAG, "user: " + user.toString());
 		DataStorageUtils.putObject(User.username.name(), user.getName());
-		DataStorageUtils.putObject(TelUser.countryCode.name(), user.getCountryCode());
+		DataStorageUtils.putObject(TelUser.countryCode.name(), user.getRegistCountryCode());
+		DataStorageUtils.putObject(TelUser.dialCountryCode.name(), user.getDialCountryCode());
 		
 		if (user.isRememberPwd()) {
 			DataStorageUtils.putObject(TelUser.vosphone.name(), user.getVosphone());
@@ -148,12 +149,12 @@ public class AccountSettingActivity extends Activity {
         countryCodeManager = CountryCodeManager.getInstance();
         TelUserBean user = (TelUserBean) UserManager.getInstance().getUser();
         
-        if(user.getCountryCode()==null||user.getCountryCode().equals("")){
+        if(user.getRegistCountryCode()==null||user.getRegistCountryCode().equals("")){
 	        ((Button)findViewById(R.id.account_choose_country_btn))
 	        		.setText(countryCodeManager.getCountryName(0));
         }
         else{
-        	lastSelectCountryCode = countryCodeManager.getCountryIndex(user.getCountryCode());
+        	lastSelectCountryCode = countryCodeManager.getCountryIndex(user.getRegistCountryCode());
         	((Button)findViewById(R.id.account_choose_country_btn))
     				.setText(countryCodeManager.getCountryName(lastSelectCountryCode));
         }
@@ -257,8 +258,11 @@ public class AccountSettingActivity extends Activity {
 				getString(R.string.logining), true);
 		
 		TelUserBean telUserBean = (TelUserBean) UserManager.getInstance().getUser();
-		telUserBean.setRememberPwd(isRemember);
-		telUserBean.setCountryCode(countrycode);
+		telUserBean.setRememberPwd(isRemember);		
+		telUserBean.setRegistCountryCode(countrycode);
+		
+		if(telUserBean.getDialCountryCode()==null||telUserBean.getDialCountryCode().equals(""))
+			telUserBean.setDialCountryCode(countrycode);
 		
 		//unregitst sip account first
 		SipUtils.unregisterSipAccount(null);
@@ -269,7 +273,7 @@ public class AccountSettingActivity extends Activity {
     	HashMap<String,String> params = new HashMap<String,String>();
 		params.put("loginName", telUserBean.getName());
 		params.put("loginPwd", telUserBean.getPassword());
-		params.put("countryCode", telUserBean.getCountryCode());
+		params.put("countryCode", telUserBean.getRegistCountryCode());
 		params.put("brand", Build.BRAND);
 		params.put("model", Build.MODEL);
 		params.put("release", Build.VERSION.RELEASE);

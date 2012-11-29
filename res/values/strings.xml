@@ -1,10 +1,10 @@
 <resources>
 
     <!-- Chinese telephone project -->
-    <string name="app_name">ChineseTelephone</string>
+    <string name="app_name">UUTalk</string>
 
     <!-- Chinese telephone tab activity -->
-    
+
     <string name="title_activity_chinese_telephone_tab">ChineseTelephoneTabActivity</string>
     <string name="title_setting">SettingActivity</string>
     <string name="title_activity_account_setting">AccountSettingActivity</string>
@@ -67,7 +67,7 @@
     <!-- version upgrade -->
     <string name="detect_new_version" formatted="false">发现新版本【%s】，\n是否升级？\n本次更新内容：\n%s</string>
     <string name="upgrade">升级</string>
-    
+
     <!-- setting -->
     <string name="menu_settings">更多设置</string>
     <string name="account">账户</string>
@@ -82,6 +82,7 @@
     <string name="back">返回</string>
     <string name="setting_dial_item">拨打设置</string>
     <string name="setting_areacode_item">本地区号设置</string>
+    <string name="setting_countrycode_item">默认国家号设置</string>
     <string name="setting_setup_item">启动设置</string>
     <string name="setting_set_auth_number">绑定号码设置</string>
     <string name="setting_logout_item">注销登录并退出</string>
@@ -90,9 +91,11 @@
     <string name="help_update_item">软件升级</string>
     <string name="help_about_item">关于我们</string>
     <string name="change_account_title">切换账户</string>
-    <string name="set_area_code">区号设置</string>
+ <string name="set_area_code">区号设置</string>
+    <string name="set_dialcountry_code">默认国家号设置</string>
     <string name="invalid_areacode">请输入正确的区号</string>
     <string name="null_areacode">区号不能为空</string>
+    <string name="dialcountry_country_code_inform">提示：当您在拨打电话时未加国家号码，将会自动在您拨打的号码前添加默认国家号。</string>
     <string name="is_auto_launch">是否开机启动?</string>
     <string name="yes">是</string>
     <string name="no">否</string>
@@ -116,13 +119,17 @@
     <string name="get_bind_phone_message">绑定手机号：</string>
     <string name="get_bind_country_message">国家号：</string>
     <string name="setup_popwin_title">启动方式设置</string>
-    <string name="invite_title">邀请好友</string>
+    <string name="invite_friend_title">邀请好友</string>
+    <string name="sms_invite_title">短信邀请</string>
     <string name="select_phone_to_invite">请选择***的号码：</string>
     <string name="pls_choose_invite_people">请选择邀请人</string>
     <string name="sip_account_regist_fail">网络电话登录失败，请重新登录！</string>
-    <string name="no_new_version">目前已经是最新版本</string>
+    <string name="no_new_version">当前版本为***，已经是最新版本</string>
     <string name="phone_not_null">手机号不能为空</string>
-    <!-- dial preference  -->
+    <string name="invite_pattern_title">请选择邀请方式</string>
+    <string name="sms_invite_pattern">短信邀请</string>
+    <string name="invite_benefit_inform">邀请的好友注册成功，将会增加1元话费到您的账户中；之后好友每次充值，您的账户将增加充值费用3%的话费</string>
+    <!-- dial preference -->
     <string name="dia_preference_title">拨号方式设置</string>
     <string name="choose_direct_dial">固定选择直拨</string>
     <string name="choose_back_dial">固定选择回拨</string>
@@ -144,7 +151,7 @@
     <string name="new_psw_error">新密码为空，或者两次输入不一致</string>
     <string name="server_error">服务器出错，请重试</string>
     <string name="change_psw_success">修改密码成功</string>
-    <!-- get remain money-->
+    <!-- get remain money -->
     <string name="get_remain_money_title">查询余额</string>
     <string name="get_balance_error">查询出错，请重试</string>
     <string name="remain_balance_textfield">账户余额：</string>
@@ -154,28 +161,28 @@
     <string name="yuan">元</string>
     <string name="minute">分钟</string>
     <!-- alipay -->
-	<string name="confirm_install_hint">"安装提示"</string>	
-	<string name="confirm_install">"为保证您的交易安全，需要您安装支付宝安全支付服务，才能进行付款。\n\n点击确定，立即安装。"</string>
-	<string name="confirm_update_hint">"更新提示"</string>	
-	<string name="confirm_update">"为保证您的交易安全，请您更新支付宝安全支付服务，让您的交易更加安全。\n\n点击确定，立即安装。"</string>
-	<string name="Ensure">确定</string>
-	<string name="Cancel">取消</string>
-	<string name="check_sign_failed">您的订单信息已被非法篡改。</string>    
-	<string name="ensure_charge_title">充值确认</string>
-	<string name="charge_alipay_hint">确认充值***元？\n点击确定将会从您的支付宝中扣除相应费用！！</string>
-	<string name="charge_title_popwin">充值</string>
-	<string name="charge_textfield_popwin">充值金额：</string>
-	<string name="charge_pattern_title">请选择充值方式</string>
-	<string name="alipay_pattern">支付宝充值</string>
-	<string name="charge_100">充值100元</string>
-	<string name="charge_50">充值50元</string>
-	<string name="charge_30">充值30元</string>
-	<string name="charge_other">其他</string> 
-	<string name="charge_back">其他充值方式</string>
-	<string name="input_valid_charge_money">请输入正确充值金额</string>
-	<string name="process_charge_pls_wait">正在进行交易，请稍等</string>
-	<string name="is_charging">正在支付</string>
-	
+    <string name="confirm_install_hint">"安装提示"</string>
+    <string name="confirm_install">"为保证您的交易安全，需要您安装支付宝安全支付服务，才能进行付款。\n\n点击确定，立即安装。"</string>
+    <string name="confirm_update_hint">"更新提示"</string>
+    <string name="confirm_update">"为保证您的交易安全，请您更新支付宝安全支付服务，让您的交易更加安全。\n\n点击确定，立即安装。"</string>
+    <string name="Ensure">确定</string>
+    <string name="Cancel">取消</string>
+    <string name="check_sign_failed">您的订单信息已被非法篡改。</string>
+    <string name="ensure_charge_title">充值确认</string>
+    <string name="charge_alipay_hint">确认充值***元？\n点击确定将会从您的支付宝中扣除相应费用！！</string>
+    <string name="charge_title_popwin">充值</string>
+    <string name="charge_textfield_popwin">充值金额：</string>
+    <string name="charge_pattern_title">请选择充值方式</string>
+    <string name="alipay_pattern">支付宝充值</string>
+    <string name="charge_100">充值100元</string>
+    <string name="charge_50">充值50元</string>
+    <string name="charge_30">充值30元</string>
+    <string name="charge_other">其他</string>
+    <string name="charge_back">其他充值方式</string>
+    <string name="input_valid_charge_money">请输入正确充值金额</string>
+    <string name="process_charge_pls_wait">正在进行交易，请稍等</string>
+    <string name="is_charging">正在支付</string>
+
     <!-- account setting -->
     <string name="forget_psw"><u>忘记密码</u></string>
     <string name="welcome">欢迎登录</string>
@@ -241,5 +248,7 @@
     <string name="get_psw_error">操作出错，请重试</string>
     <string name="get_psw_finish">你的密码将会通过短信发送给您，现在将返回登陆界面，请通过新密码登陆，登陆后请自行修改密码</string>
     <string name="title_activity_remain_money">RemainMoneyActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_invite_friend">InviteFriendActivity</string>
 
 </resources>

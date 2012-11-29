@@ -3,17 +3,26 @@ package com.richitec.chinesetelephone.bean;
 import com.richitec.commontoolkit.user.UserBean;
 
 public class TelUserBean extends UserBean{
-	private String countryCode = "";
+	private String registcountryCode = "";
+	private String dialcountryCode="";
 	private String areaCode = "";
 	private String vosphone = "";
 	private String vosphone_pwd = "";
 	
-	public String getCountryCode(){
-		return countryCode;
+	public String getDialCountryCode(){
+		return dialcountryCode;
 	}
 	
-	public void setCountryCode(String code){
-		this.countryCode = code;
+	public void setDialCountryCode(String code){
+		this.dialcountryCode = code;
+	}
+	
+	public String getRegistCountryCode(){
+		return registcountryCode;
+	}
+	
+	public void setRegistCountryCode(String code){
+		this.registcountryCode = code;
 	}
 	
 	public String getAreaCode() {
@@ -43,7 +52,8 @@ public class TelUserBean extends UserBean{
 	public String toString(){
 		String s = super.toString();
 		StringBuilder builder = new StringBuilder();
-		builder.append("countryCode: ").append(countryCode).append("\n");
+		builder.append("countryCode: ").append(registcountryCode).append("\n");
+		builder.append("dialcountryCode: ").append(dialcountryCode).append("\n");
 		builder.append("areaCode: ").append(areaCode).append("\n");
 		builder.append("vosphone: ").append(vosphone).append("\n");
 		builder.append("vosphone_pwd: ").append(vosphone_pwd).append("\n");

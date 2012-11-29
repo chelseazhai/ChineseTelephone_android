@@ -6,12 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
-import android.widget.TabWidget;
-import android.widget.TextView;
-
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.account.AccountSettingActivity;
 import com.richitec.chinesetelephone.assist.SettingActivity;

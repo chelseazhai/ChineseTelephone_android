@@ -61,7 +61,7 @@ public class RemainMoneyActivity extends NavigationActivity {
 	private void getRemainMoney(){
     	TelUserBean userBean = (TelUserBean) UserManager.getInstance().getUser();
     	String username = userBean.getName();
-    	String countryCode = userBean.getCountryCode();
+    	String countryCode = userBean.getRegistCountryCode();
     	
     	progressDialog = ProgressDialog.show(this, null,
 				getString(R.string.sending_request), true);

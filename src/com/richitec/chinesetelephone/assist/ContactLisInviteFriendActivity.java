@@ -96,7 +96,7 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 		Log.d("inviteLink", inviteLink);
 
 		// set title
-		setTitle(R.string.invite_title);
+		setTitle(R.string.sms_invite_title);
 		
 		_mInviteFriendsInfo = new ArrayList<ContactBean>();
 
