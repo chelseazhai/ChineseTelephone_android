@@ -81,7 +81,7 @@ public abstract class BaseSipServices implements ISipServices {
 				TelUserBean telUser = (TelUserBean) UserManager.getInstance().getUser();
 				calleePhone = telUser.getDialCountryCode() + calleePhone;
 			}
-			Log.d("calleePhone", calleePhone);
+
 			// make direct dial sip voice call
 			_makeSipVoiceCallResult = makeDirectDialSipVoiceCall(calleeName,
 					calleePhone);
