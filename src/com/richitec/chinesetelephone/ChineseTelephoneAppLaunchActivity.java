@@ -69,7 +69,13 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 		userBean.setUserKey(userkey);
 		userBean.setPassword(password);
 		userBean.setRegistCountryCode(countrycode);
-		userBean.setDialCountryCode(dialcountrycode);
+		
+		if(dialcountrycode==null||dialcountrycode.trim().equals("")){
+			userBean.setDialCountryCode(countrycode);
+		}
+		else{
+			userBean.setDialCountryCode(dialcountrycode);
+		}
 		if (password != null && !password.equals("") && userkey != null && !userkey.equals("")) {
 			userBean.setRememberPwd(true);
 		}

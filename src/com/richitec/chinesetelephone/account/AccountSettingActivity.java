@@ -261,8 +261,9 @@ public class AccountSettingActivity extends Activity {
 		telUserBean.setRememberPwd(isRemember);		
 		telUserBean.setRegistCountryCode(countrycode);
 		
-		if(telUserBean.getDialCountryCode()==null||telUserBean.getDialCountryCode().equals(""))
+		if(telUserBean.getDialCountryCode()==null||telUserBean.getDialCountryCode().trim().equals("")){
 			telUserBean.setDialCountryCode(countrycode);
+		}
 		
 		//unregitst sip account first
 		SipUtils.unregisterSipAccount(null);

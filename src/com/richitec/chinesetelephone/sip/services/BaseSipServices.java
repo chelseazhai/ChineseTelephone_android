@@ -3,10 +3,10 @@ package com.richitec.chinesetelephone.sip.services;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.provider.CallLog;
-import android.util.Log;
 
 import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.call.OutgoingCallActivity;
@@ -26,6 +26,20 @@ public abstract class BaseSipServices implements ISipServices {
 	
 	private static String[] PhoneNumberFilterPrefix = { "17909", "11808",
 		"12593", "17951", "17911", "+"};
+
+	// audio manager
+	private AudioManager _mAudioManager;
+
+	// current sip voice call using loudspeaker flag
+	private Boolean _mIsSipVoiceCallUsingLoudspeaker;
+
+	public BaseSipServices() {
+		super();
+
+		// init audio manager
+		_mAudioManager = (AudioManager) AppLaunchActivity.getAppContext()
+				.getSystemService(Context.AUDIO_SERVICE);
+	}
 
 	// make direct dial sip voice call
 	public abstract boolean makeDirectDialSipVoiceCall(String calleeName,
@@ -67,7 +81,7 @@ public abstract class BaseSipServices implements ISipServices {
 				TelUserBean telUser = (TelUserBean) UserManager.getInstance().getUser();
 				calleePhone = telUser.getDialCountryCode() + calleePhone;
 			}
-			Log.d("calleePhone", calleePhone);
+
 			// make direct dial sip voice call
 			_makeSipVoiceCallResult = makeDirectDialSipVoiceCall(calleeName,
 					calleePhone);
@@ -84,39 +98,34 @@ public abstract class BaseSipServices implements ISipServices {
 		// hangup current sip voice call and get its result
 		boolean _hangupCurrentSipVoiceCallResult = hangupSipVoiceCall();
 
-		// after hangup current sip voice call
-		afterHangupSipVoiceCall(callDuration);
+		// after hangup current sip voice call, update current sip voice call
+		// call log
+		updateSipVoiceCallLog(callDuration);
 
 		return _hangupCurrentSipVoiceCallResult;
 	}
 
 	@Override
-	public void muteSipVoiceCall(AudioManager audioManager) {
-		Log.d("@@", "setSipVoiceCallUsingLoudspeaker");
-
-		// mute current sip voice call
-		audioManager.setMicrophoneMute(true);
-	}
-
-	@Override
-	public void unmuteSipVoiceCall(AudioManager audioManager) {
-		// unmute current sip voice call
-		audioManager.setMicrophoneMute(false);
-	}
-
-	@Override
-	public void setSipVoiceCallUsingLoudspeaker(AudioManager audioManager) {
-		Log.d("@@", "setSipVoiceCallUsingLoudspeaker");
+	public void setSipVoiceCallUsingLoudspeaker() {
+		// update current sip voice call using loudspeaker flag
+		_mIsSipVoiceCallUsingLoudspeaker = true;
 
 		// set current sip voice call loudspeaker
-		audioManager.setMode(AudioManager.MODE_IN_CALL);
-		audioManager.setSpeakerphoneOn(true);
+		// set mode
+		_mAudioManager.setMode(AudioManager.MODE_NORMAL);
+
+		// open speaker
+		_mAudioManager.setSpeakerphoneOn(true);
 	}
 
 	@Override
-	public void setSipVoiceCallUsingEarphone(AudioManager audioManager) {
+	public void setSipVoiceCallUsingEarphone() {
+		// update current sip voice call using loudspeaker flag
+		_mIsSipVoiceCallUsingLoudspeaker = false;
+
 		// set current sip voice call earphone
-		audioManager.setSpeakerphoneOn(false);
+		// close speaker
+		_mAudioManager.setSpeakerphoneOn(false);
 	}
 
 	public SipInviteStateListener getSipInviteStateListener() {
@@ -126,6 +135,23 @@ public abstract class BaseSipServices implements ISipServices {
 	public void setSipInviteStateListener(
 			SipInviteStateListener sipInviteStateListener) {
 		this._mSipInviteStateListener = sipInviteStateListener;
+	}
+
+	// check current sip voice call is using loudspeaker
+	public Boolean isSipVoiceCallUsingLoudspeaker() {
+		return null == _mIsSipVoiceCallUsingLoudspeaker ? false
+				: _mIsSipVoiceCallUsingLoudspeaker;
+	}
+
+	// update current sip voice call call log
+	public void updateSipVoiceCallLog(Long sipVoiceCallDuration) {
+		// generate for updating call log values
+		Map<String, String> _updateValues = new HashMap<String, String>();
+		_updateValues.put(CallLog.Calls.DURATION,
+				sipVoiceCallDuration.toString());
+
+		// sip voice call log: sip voice call duration
+		CallLogManager.updateCallLog(_mSipVoiceCallLogId, _updateValues);
 	}
 
 	// before make sip voice call
@@ -162,24 +188,9 @@ public abstract class BaseSipServices implements ISipServices {
 			// sip voice call failed
 			getSipInviteStateListener().onCallFailed();
 
-			// generate for updating call log values
-			Map<String, String> _updateValues = new HashMap<String, String>();
-			_updateValues.put(CallLog.Calls.DURATION, "-1");
-
-			// update sip voice call log
-			CallLogManager.updateCallLog(_mSipVoiceCallLogId, _updateValues);
+			// update sip voice call failed call log
+			updateSipVoiceCallLog(-1L);
 		}
-	}
-
-	// after hangup current sip voice call
-	private void afterHangupSipVoiceCall(Long sipVoiceCallDuration) {
-		// generate for updating call log values
-		Map<String, String> _updateValues = new HashMap<String, String>();
-		_updateValues.put(CallLog.Calls.DURATION,
-				sipVoiceCallDuration.toString());
-
-		// sip voice call log: sip voice call duration
-		CallLogManager.updateCallLog(_mSipVoiceCallLogId, _updateValues);
 	}
 
 }

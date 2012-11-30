@@ -51,18 +51,20 @@
             android:layout_marginTop="10dp"
             >
 
-        <EditText
-            android:id="@+id/set_countrycode_editText"
-            android:layout_width="fill_parent"
-            android:layout_height="35dp"
-            android:layout_margin="10dp"
-            android:background="@drawable/textfield_selector"
-            android:textColor="@android:color/black"
-            android:ellipsize="end"
-            android:inputType="number">
-
-            <requestFocus />
-        </EditText>
+	        <Button
+	            android:id="@+id/set_dial_country_btn"
+	            android:layout_width="fill_parent"
+	            android:layout_height="40dp"
+	            android:text=""
+	            android:textSize="17dp"
+	            android:paddingLeft="10dp"
+	            android:paddingRight="5dp"
+	            android:layout_marginLeft="15dp"
+	            android:layout_marginRight="15dp"
+	            android:gravity="left|center_vertical"
+	            android:background="@drawable/btn_bg"
+	            android:drawableRight="@drawable/down_into_icon"
+	            />
         
         </LinearLayout>
         

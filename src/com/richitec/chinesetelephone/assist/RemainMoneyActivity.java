@@ -41,9 +41,7 @@ public class RemainMoneyActivity extends NavigationActivity {
         //MyToast.show(this, "balance:"+balance, Toast.LENGTH_SHORT);
         
         String username = UserManager.getInstance().getUser().getName();      
-        ((TextView)findViewById(R.id.uername)).setText(username);
-        
-        //getRemainMoney();       
+        ((TextView)findViewById(R.id.uername)).setText(username);    
     }
     
     @Override

@@ -32,6 +32,7 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.call.ContactPhoneDialModeSelectpopupWindow;
+import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.utils.CommonUtils;
@@ -61,7 +62,7 @@ public class DialTabContentActivity extends NavigationActivity {
 	private TextView _mDialPhoneTextView;
 
 	// dial phone button dtmf sound pool map
-	private static SparseArray<Integer> _mDialPhoneBtnDTMFSoundPoolMap;
+	private static SparseArray<Integer> _dialPhoneBtnDTMFSoundPoolMap;
 
 	// audio manager
 	private AudioManager _mAudioManager;
@@ -69,13 +70,24 @@ public class DialTabContentActivity extends NavigationActivity {
 	// init dial phone button dtmf sound pool map
 	public static void initDialPhoneBtnDTMFSoundPoolMap(Context context) {
 		// define dial phone button dtmf sound pool map
-		_mDialPhoneBtnDTMFSoundPoolMap = new SparseArray<Integer>();
+		_dialPhoneBtnDTMFSoundPoolMap = new SparseArray<Integer>();
 
 		// add sound
 		for (int i = 0; i < DIALPHONEBUTTON_DTMFARRAY.length; i++) {
-			_mDialPhoneBtnDTMFSoundPoolMap.put(i, SOUND_POOL.load(context,
+			_dialPhoneBtnDTMFSoundPoolMap.put(i, SOUND_POOL.load(context,
 					DIALPHONEBUTTON_DTMFARRAY[i], i + 1));
 		}
+	}
+
+	// get dial phone button dtmf sound pool map
+	public static SparseArray<Integer> getDialPhoneBtnDTMFSoundPoolMap() {
+		// check dial phone button dtmf sound pool map
+		if (null == _dialPhoneBtnDTMFSoundPoolMap) {
+			// init dial phone button dtmf sound pool map if it is null
+			initDialPhoneBtnDTMFSoundPoolMap(AppLaunchActivity.getAppContext());
+		}
+
+		return _dialPhoneBtnDTMFSoundPoolMap;
 	}
 
 	@Override
@@ -219,7 +231,7 @@ public class DialTabContentActivity extends NavigationActivity {
 				.getStreamVolume(AudioManager.STREAM_MUSIC);
 
 		// play dial phone button dtmf sound with index
-		SOUND_POOL.play(_mDialPhoneBtnDTMFSoundPoolMap.get(dialPhoneBtnIndex),
+		SOUND_POOL.play(_dialPhoneBtnDTMFSoundPoolMap.get(dialPhoneBtnIndex),
 				_volume, _volume, 0, 0, 1f);
 	}
 

@@ -1,7 +1,5 @@
 package com.richitec.chinesetelephone.sip.services;
 
-import android.media.AudioManager;
-
 import com.richitec.chinesetelephone.sip.SipCallMode;
 import com.richitec.chinesetelephone.sip.SipRegisterBean;
 import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
@@ -24,16 +22,16 @@ public interface ISipServices {
 	public boolean hangupSipVoiceCall(Long callDuration);
 
 	// mute current sip voice call
-	public void muteSipVoiceCall(AudioManager audioManager);
+	public void muteSipVoiceCall();
 
 	// unmute current sip voice call
-	public void unmuteSipVoiceCall(AudioManager audioManager);
+	public void unmuteSipVoiceCall();
 
 	// set current sip voice call using loudspeaker
-	public void setSipVoiceCallUsingLoudspeaker(AudioManager audioManager);
+	public void setSipVoiceCallUsingLoudspeaker();
 
 	// set current sip voice call using earphone
-	public void setSipVoiceCallUsingEarphone(AudioManager audioManager);
+	public void setSipVoiceCallUsingEarphone();
 
 	// send dtmf
 	public void sentDTMF(String dtmfCode);
