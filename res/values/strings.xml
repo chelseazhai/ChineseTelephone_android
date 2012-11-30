@@ -74,10 +74,11 @@
     <!-- setting -->
     <string name="menu_settings">更多设置</string>
     <string name="account">账户</string>
-    <string name="account_setting_item">账户设置</string>
+    <string name="account_invite_friend_item">邀请好友赚话费</string>
+    <string name="account_setting_item">切换账户</string>
     <string name="account_changePSW_item">修改密码</string>
     <string name="account_getPSW_item">找回密码</string>
-    <string name="account_charge_item">充值</string>
+    <string name="account_charge_item">账户充值</string>
     <string name="search">查询</string>
     <string name="search_remainmoney_item">查询余额</string>
     <string name="search_authnumber_item">查询认证号</string>
@@ -94,11 +95,13 @@
     <string name="help_update_item">软件升级</string>
     <string name="help_about_item">关于我们</string>
     <string name="change_account_title">切换账户</string>
- <string name="set_area_code">区号设置</string>
     <string name="set_dialcountry_code">默认国家号设置</string>
-    <string name="invalid_areacode">请输入正确的区号</string>
-    <string name="null_areacode">区号不能为空</string>
+<!-- 
+<string name="set_area_code">区号设置</string>
+<string name="invalid_areacode">请输入正确的区号</string>
+<string name="null_areacode">区号不能为空</string> -->
     <string name="dialcountry_country_code_inform">提示：当您在拨打电话时未加国家号码，将会自动在您拨打的号码前添加默认国家号。</string>
+    <string name="bind_number_inform">提示：通过设置绑定号码，使用回拨功能时将会回拨绑定的号码</string>
     <string name="is_auto_launch">是否开机启动?</string>
     <string name="yes">是</string>
     <string name="no">否</string>
@@ -107,7 +110,6 @@
     <string name="manual_login_rbtn_title">手动登录</string>
     <string name="exit_program_messge">确定要注销并退出程序？</string>
     <string name="exit">确定要退出程序？</string>
-    <string name="invite_friend">邀请好友赚话费</string>
     <string name="add_contact">添加联系人</string>
     <string name="add_new_contact_item">添加新联系人</string>
     <string name="add_exist_contact_item">添加现有联系人</string>

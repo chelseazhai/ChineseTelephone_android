@@ -89,8 +89,8 @@ public class SettingActivity extends NavigationActivity {
 			R.layout.setup_preference_popupwindow_layout,
 			LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT
 			);
-	private final SetAuthNumberPopupWindow setAuthNumberPopupWindow = new SetAuthNumberPopupWindow(
-			R.layout.set_auth_number_popupwindow_layout,
+	private final SetBindNumberPopupWindow setAuthNumberPopupWindow = new SetBindNumberPopupWindow(
+			R.layout.set_bind_number_popupwindow_layout,
 			LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 
     @Override
@@ -101,6 +101,9 @@ public class SettingActivity extends NavigationActivity {
         
         LinearLayout inviteFriend = (LinearLayout) findViewById(R.id.account_invite_btn);        
         inviteFriend.setOnClickListener(inviteFriendListener);
+        
+        LinearLayout chargeAccount = (LinearLayout) findViewById(R.id.account_charge_btn);        
+        chargeAccount.setOnClickListener(chargeAccountListener);
         
         LinearLayout changeAccount = (LinearLayout) findViewById(R.id.account_setting_btn);        
         changeAccount.setOnClickListener(changeAccountListener);
@@ -249,7 +252,10 @@ public class SettingActivity extends NavigationActivity {
     public void setDialCountryCode(View v){
     	TelUserBean telUser = (TelUserBean) UserManager.getInstance().getUser();
 		String dialcountrycode = telUser.getDialCountryCode();
-    	((EditText)setDialCountryCodePopupWindow.getContentView().findViewById(R.id.set_countrycode_editText)).setText(dialcountrycode);
+		int dialCountryIndex = countryCodeManager.getCountryIndex(dialcountrycode);
+		((Button)(setDialCountryCodePopupWindow.getContentView().findViewById(R.id.set_dial_country_btn)))
+				.setText(countryCodeManager.getCountryName(dialCountryIndex));
+		setDialCountryCodePopupWindow.setSelectDialCountryCode(dialCountryIndex);
     	setDialCountryCodePopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
     }
     
@@ -391,7 +397,7 @@ public class SettingActivity extends NavigationActivity {
 		}
     	
     };
-    
+    //change to another account
     private OnClickListener changeAccountListener = new OnClickListener(){
 
 		@Override
@@ -411,6 +417,16 @@ public class SettingActivity extends NavigationActivity {
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			inviteFriend(null);
+		}
+    	
+    };
+    // charging money to account
+    private OnClickListener chargeAccountListener = new OnClickListener(){
+
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			SettingActivity.this.pushActivity(AccountChargeActivity.class);
 		}
     	
     };
@@ -934,6 +950,7 @@ public class SettingActivity extends NavigationActivity {
 	}*/
 	
 	class SetDialCountryCodePopupWindow extends CommonPopupWindow {
+		private int lastDialCountryCodeSelect = 0;
 		
 		public SetDialCountryCodePopupWindow(int resource, int width,
 				int height, boolean focusable, boolean isBindDefListener) {
@@ -945,8 +962,10 @@ public class SettingActivity extends NavigationActivity {
 			super(resource, width, height);
 			TelUserBean telUser = (TelUserBean) UserManager.getInstance().getUser();
 			String dialcountrycode = telUser.getDialCountryCode();
-			if(dialcountrycode!=null&&!dialcountrycode.equals(""))
-				((EditText)getContentView().findViewById(R.id.set_countrycode_editText)).setText(dialcountrycode);
+			int dialCountryIndex = countryCodeManager.getCountryIndex(dialcountrycode);
+			lastDialCountryCodeSelect = dialCountryIndex;
+			((Button)(this.getContentView().findViewById(R.id.set_dial_country_btn)))
+    				.setText(countryCodeManager.getCountryName(dialCountryIndex));
 		}
 		
 		@Override
@@ -957,12 +976,45 @@ public class SettingActivity extends NavigationActivity {
 					.setOnClickListener(new SetDialCountryCodeConfirmBtnOnClickListener());
 			((Button)getContentView().findViewById(R.id.set_countrycode_cancelBtn)).setOnClickListener(
 					new SetDialCountryCodeCancelBtnOnClickListener());
+			((Button)(this.getContentView().findViewById(R.id.set_dial_country_btn)))
+					.setOnClickListener(new OnClickListener(){
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							chooseCountry(v);
+						}						
+			});
 		}
+		
+		public void chooseCountry(View v){
+	    	AlertDialog.Builder chooseCountryDialogBuilder = new AlertDialog.Builder(SettingActivity.this);
+	    	chooseCountryDialogBuilder.setTitle(R.string.countrycode_list);
+	    	chooseCountryDialogBuilder.setSingleChoiceItems(
+	    			countryCodeManager.getCountryNameList(), lastDialCountryCodeSelect, new chooseCountryListener());
+	    	chooseCountryDialogBuilder.setNegativeButton(R.string.cancel, null);
+	    	chooseCountryDialog= chooseCountryDialogBuilder.create();
+	    	chooseCountryDialog.show();
+	    }
+		
+		class chooseCountryListener implements DialogInterface.OnClickListener{
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				lastDialCountryCodeSelect = which;
+				((Button)(SetDialCountryCodePopupWindow.this.getContentView()
+						.findViewById(R.id.set_dial_country_btn)))
+						.setText(countryCodeManager.getCountryName(which));
+				chooseCountryDialog.dismiss();
+			}    	
+	    }
 		
 		@Override
 		protected void resetPopupWindow() {
 			// hide contact phones select phone list view
-			((EditText)getContentView().findViewById(R.id.set_countrycode_editText)).setText("");
+		}
+		
+		public void setSelectDialCountryCode(int s){
+			lastDialCountryCodeSelect = s;
 		}
 		
 		// inner class
@@ -972,21 +1024,12 @@ public class SettingActivity extends NavigationActivity {
 			@Override
 			public void onClick(View v) {		
 				// dismiss contact phone select popup window		
-				String dialcountrycode = ((EditText)getContentView().
-							findViewById(R.id.set_countrycode_editText)).getEditableText().toString().trim();
+				String dialcountrycode = countryCodeManager.getCountryCode(
+		    			((Button)SetDialCountryCodePopupWindow.this.getContentView().
+		    					findViewById(R.id.set_dial_country_btn))
+		    				.getText().toString().trim());
 				
-				if(!dialcountrycode.matches("(^[0-9]*)")){
-					MyToast.show(SettingActivity.this, R.string.invalid_areacode, Toast.LENGTH_SHORT);
-					return;
-				}
-				if(dialcountrycode==null||dialcountrycode.equals("")){
-					MyToast.show(SettingActivity.this, R.string.null_areacode, Toast.LENGTH_SHORT);
-					return;
-				}
-				InputMethodManager imm = (InputMethodManager)getSystemService(
-						Context.INPUT_METHOD_SERVICE); 
-				imm.hideSoftInputFromWindow(((EditText) getContentView().findViewById(R.id.set_countrycode_editText))
-						.getWindowToken(),0);
+				Log.d("dialcountrycode", dialcountrycode);
 				setDialCountryCode(dialcountrycode);
 				dismiss();
 			}
@@ -999,11 +1042,6 @@ public class SettingActivity extends NavigationActivity {
 			@Override
 			public void onClick(View v) {
 				// dismiss contact phone select popup window
-				InputMethodManager imm = (InputMethodManager)getSystemService(
-				 		Context.INPUT_METHOD_SERVICE); 
-				imm.hideSoftInputFromWindow(((EditText) getContentView()
-						.findViewById(R.id.set_countrycode_editText))
-	    		 		.getWindowToken(),0);
 				dismiss();
 			}
 		
@@ -1086,16 +1124,16 @@ public class SettingActivity extends NavigationActivity {
 		}
     }
 	
-	class SetAuthNumberPopupWindow extends CommonPopupWindow {
+	class SetBindNumberPopupWindow extends CommonPopupWindow {
 		private int lastSelectCountryCode = 0;
 		
 		
-		public SetAuthNumberPopupWindow(int resource, int width,
+		public SetBindNumberPopupWindow(int resource, int width,
 				int height, boolean focusable, boolean isBindDefListener) {
 			super(resource, width, height, focusable, isBindDefListener);
 		}
 		
-		public SetAuthNumberPopupWindow(int resource, int width,
+		public SetBindNumberPopupWindow(int resource, int width,
 				int height) {
 			super(resource, width, height);
 			((Button)(this.getContentView().findViewById(R.id.setAuth_choose_country_btn)))
@@ -1107,9 +1145,9 @@ public class SettingActivity extends NavigationActivity {
 		protected void bindPopupWindowComponentsListener() {
 			// bind contact phone select cancel button click listener
 			((Button) getContentView().findViewById(R.id.set_auth_confirmBtn))
-					.setOnClickListener(new SetAuthCodeConfirmBtnOnClickListener());
+					.setOnClickListener(new SetBindNumberConfirmBtnOnClickListener());
 			((Button)getContentView().findViewById(R.id.set_auth_cancelBtn))
-					.setOnClickListener(new SetAuthCodeCancelBtnOnClickListener());
+					.setOnClickListener(new SetBindNumberCancelBtnOnClickListener());
 			((Button)(this.getContentView().findViewById(R.id.setAuth_choose_country_btn)))
 					.setOnClickListener(new OnClickListener(){
 						@Override
@@ -1123,7 +1161,7 @@ public class SettingActivity extends NavigationActivity {
 		@Override
 		protected void resetPopupWindow() {
 			// hide contact phones select phone list view
-			((EditText)(SetAuthNumberPopupWindow.this.getContentView()
+			((EditText)(SetBindNumberPopupWindow.this.getContentView()
 					.findViewById(R.id.set_auth_number_editText))).setText("");
 		}
 		
@@ -1142,7 +1180,7 @@ public class SettingActivity extends NavigationActivity {
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
 				lastSelectCountryCode = which;
-				((Button)(SetAuthNumberPopupWindow.this.getContentView()
+				((Button)(SetBindNumberPopupWindow.this.getContentView()
 						.findViewById(R.id.setAuth_choose_country_btn)))
 						.setText(countryCodeManager.getCountryName(which));
 				chooseCountryDialog.dismiss();
@@ -1151,20 +1189,20 @@ public class SettingActivity extends NavigationActivity {
 		
 		// inner class
 		// contact phone select phone button on click listener
-		class SetAuthCodeConfirmBtnOnClickListener implements OnClickListener {
+		class SetBindNumberConfirmBtnOnClickListener implements OnClickListener {
 		
 			@Override
 			public void onClick(View v) {		
 				// dismiss contact phone select popup window		
 				//saveDialPreference();
-				String phone = ((EditText)(SetAuthNumberPopupWindow.this.getContentView()
+				String phone = ((EditText)(SetBindNumberPopupWindow.this.getContentView()
 								.findViewById(R.id.set_auth_number_editText))).getText().toString().trim();
 				String countrycode = countryCodeManager.getCountryCode(
-		    			((Button)SetAuthNumberPopupWindow.this.getContentView().
+		    			((Button)SetBindNumberPopupWindow.this.getContentView().
 		    					findViewById(R.id.setAuth_choose_country_btn))
 		    				.getText().toString().trim());
 				if(phone!=null&&!phone.equals("")){
-					setAuthNumber(phone,countrycode);
+					setBindNumber(phone,countrycode);
 					dismiss();
 				}	
 				else{
@@ -1174,7 +1212,7 @@ public class SettingActivity extends NavigationActivity {
 		}
 		
 		// contact phone select cancel button on click listener
-		class SetAuthCodeCancelBtnOnClickListener implements OnClickListener {
+		class SetBindNumberCancelBtnOnClickListener implements OnClickListener {
 			@Override
 			public void onClick(View v) {
 				// dismiss contact phone select popup window
@@ -1183,8 +1221,7 @@ public class SettingActivity extends NavigationActivity {
 		}
     }
 	
-	public void setAuthNumber(String phone,String country){
-		Log.d("$$$$$", phone+":"+country);
+	private void setBindNumber(String phone,String country){
 		progressDialog = ProgressDialog.show(this, null,
 				getString(R.string.sending_request), true);
     	TelUserBean userBean = (TelUserBean) UserManager.getInstance().getUser();

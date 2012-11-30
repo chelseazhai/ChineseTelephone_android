@@ -28,6 +28,17 @@
                 android:textSize="20sp" />
         </LinearLayout>
         
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|left"
+            android:layout_marginLeft="10dp" 
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/bind_number_inform"
+            android:textColor="@color/red"
+            />
+        
         <Button
             android:id="@+id/setAuth_choose_country_btn"
             android:layout_width="fill_parent"
@@ -42,7 +53,6 @@
             android:gravity="left|center_vertical"
             android:background="@drawable/btn_bg"
             android:drawableRight="@drawable/down_into_icon"
-            android:onClick="chooseCountry_set_auth_number"
             />
 
         <LinearLayout

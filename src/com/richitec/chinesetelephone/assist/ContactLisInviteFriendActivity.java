@@ -92,8 +92,6 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 		setContentView(R.layout.contact_list_invite_friend_activity_layout);
 		
 		inviteLink = getIntent().getStringExtra("inviteLink");
-		
-		Log.d("inviteLink", inviteLink);
 
 		// set title
 		setTitle(R.string.sms_invite_title);

@@ -48,7 +48,48 @@
                         android:layout_marginLeft="10.0dp"
                         android:gravity="center_vertical"
                         android:layout_weight="1.0"
-                        android:text="@string/invite_friend"
+                        android:text="@string/account_invite_friend_item"
+                        android:textColor="@color/dark_dim_gray"
+                        />
+                    <ImageView 
+                        android:layout_width="12.0dp"
+                        android:layout_height="12.0dp"
+                        android:layout_marginRight="10.0dp"
+                        android:src="@drawable/into_icon"
+                        />                   
+                </LinearLayout>
+                
+		        <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1.0dp"
+                    android:background="@drawable/setting_line_img" 
+                    />
+		        
+		        <LinearLayout 
+                    android:id="@+id/account_charge_btn"
+                    android:background="@drawable/setting_bottom_item_bg"
+                    android:clickable="true"
+                    android:layout_width="fill_parent"
+                    android:layout_height="50.0dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    >
+                    
+                    <ImageView 
+                        android:layout_width="30.0dp"
+                        android:layout_height="30.0dp"
+                        android:layout_marginLeft="10.0dp"
+                        android:src="@drawable/charge"
+                        />
+                    
+                    <TextView
+                        android:textSize="18.0sp" 
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" 
+                        android:layout_marginLeft="10.0dp"
+                        android:gravity="center_vertical"
+                        android:layout_weight="1.0"
+                        android:text="@string/account_charge_item"
                         android:textColor="@color/dark_dim_gray"
                         />
                     <ImageView 
