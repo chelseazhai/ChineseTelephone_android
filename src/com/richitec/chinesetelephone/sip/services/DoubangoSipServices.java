@@ -231,6 +231,18 @@ public class DoubangoSipServices extends BaseSipServices implements
 	}
 
 	@Override
+	public void muteSipVoiceCall() {
+		// mute current sip voice call
+		Log.d(LOG_TAG, "Doubango mute current sip voice call not implement");
+	}
+
+	@Override
+	public void unmuteSipVoiceCall() {
+		// unmute current sip voice call
+		Log.d(LOG_TAG, "Doubango unmute current sip voice call not implement");
+	}
+
+	@Override
 	public void sentDTMF(String dtmfCode) {
 		// send dtmf
 		Log.d(LOG_TAG, "Doubango send dtmf not implement, dtmf code = "
