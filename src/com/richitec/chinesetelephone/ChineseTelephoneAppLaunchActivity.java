@@ -59,6 +59,7 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 		String userkey = DataStorageUtils.getString(User.userkey.name());
 		String password = DataStorageUtils.getString(User.password.name());
 		String countrycode = DataStorageUtils.getString(TelUser.countryCode.name());
+		String dialcountrycode = DataStorageUtils.getString(TelUser.dialCountryCode.name());
 		String areacode = DataStorageUtils.getString(TelUser.areaCode.name());
 		String vosphone = DataStorageUtils.getString(TelUser.vosphone.name());
 		String vosphone_psw = DataStorageUtils.getString(TelUser.vosphone_pwd.name());
@@ -67,7 +68,8 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 		userBean.setName(userName);
 		userBean.setUserKey(userkey);
 		userBean.setPassword(password);
-		userBean.setCountryCode(countrycode);
+		userBean.setRegistCountryCode(countrycode);
+		userBean.setDialCountryCode(dialcountrycode);
 		if (password != null && !password.equals("") && userkey != null && !userkey.equals("")) {
 			userBean.setRememberPwd(true);
 		}

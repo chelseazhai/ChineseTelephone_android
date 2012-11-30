@@ -73,8 +73,12 @@ public class SettingActivity extends NavigationActivity {
 			R.layout.get_psw_popupwindow_layout,
 			LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT
 			);	
-	private final SetAreaCodePopupWindow setAreaCodePopupWindow = new SetAreaCodePopupWindow(
+	/*private final SetAreaCodePopupWindow setAreaCodePopupWindow = new SetAreaCodePopupWindow(
 			R.layout.set_areacode_popupwindow_layout,
+			LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT
+			);*/
+	private final SetDialCountryCodePopupWindow setDialCountryCodePopupWindow = new SetDialCountryCodePopupWindow(
+			R.layout.set_dialcountrycode_popupwindow_layout,
 			LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT
 			);
 	private final SetDialPreferencePopupWindow setDialPreferencePopupWin = new SetDialPreferencePopupWindow(
@@ -144,7 +148,7 @@ public class SettingActivity extends NavigationActivity {
 				getString(R.string.sending_request), true);
     	TelUserBean userBean = (TelUserBean) UserManager.getInstance().getUser();
     	String username = userBean.getName();
-    	String countrycode = userBean.getCountryCode();
+    	String countrycode = userBean.getRegistCountryCode();
 		HashMap<String,String> params = new HashMap<String,String>();
 		params.put("username", username);
 		params.put("countryCode", countrycode);
@@ -238,8 +242,15 @@ public class SettingActivity extends NavigationActivity {
     	this.getParent().onBackPressed();
     }
     
-    public void setAreaCode(View v){
+    /*public void setAreaCode(View v){
     	setAreaCodePopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
+    }*/
+    
+    public void setDialCountryCode(View v){
+    	TelUserBean telUser = (TelUserBean) UserManager.getInstance().getUser();
+		String dialcountrycode = telUser.getDialCountryCode();
+    	((EditText)setDialCountryCodePopupWindow.getContentView().findViewById(R.id.set_countrycode_editText)).setText(dialcountrycode);
+    	setDialCountryCodePopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
     }
     
     public void setSetupPreference(View v){
@@ -261,7 +272,7 @@ public class SettingActivity extends NavigationActivity {
 				getString(R.string.sending_request), true);
     	TelUserBean userBean = (TelUserBean) UserManager.getInstance().getUser();
     	String username = userBean.getName();
-    	String countrycode = userBean.getCountryCode();
+    	String countrycode = userBean.getRegistCountryCode();
 		HashMap<String,String> params = new HashMap<String,String>();
 		params.put("username", username);
 		params.put("countryCode", countrycode);
@@ -277,13 +288,9 @@ public class SettingActivity extends NavigationActivity {
 
 			inviteLink = responseResult.getResponseText();			
 			dismiss();
-			/*Intent intent = new Intent();
-	        intent.setAction(Intent.ACTION_PICK);
-	        intent.setData(ContactsContract.Contacts.CONTENT_URI);
-	        startActivityForResult(intent, 0);*/
 			HashMap<String,Object> params = new HashMap<String,Object>();
 			params.put("inviteLink", inviteLink);
-			SettingActivity.this.pushActivity(ContactLisInviteFriendActivity.class,params);
+			SettingActivity.this.pushActivity(InviteFriendActivity.class,params);
 		}
 
 		@Override
@@ -445,7 +452,7 @@ public class SettingActivity extends NavigationActivity {
     	
     	TelUserBean userBean = (TelUserBean) UserManager.getInstance().getUser();	
     	String oldmd5 = StringUtils.md5(oldpsw);
-    	String countrycode = userBean.getCountryCode();
+    	String countrycode = userBean.getRegistCountryCode();
     	String username = userBean.getName();
     	if(!newpsw.equals(confirm)){
     		MyToast.show(this, R.string.new_confirm_not_equal, Toast.LENGTH_SHORT);
@@ -511,7 +518,7 @@ public class SettingActivity extends NavigationActivity {
 	};
 	
 	private void getPSW(String phone){
-		String countryCode = ((TelUserBean)UserManager.getInstance().getUser()).getCountryCode();
+		String countryCode = ((TelUserBean)UserManager.getInstance().getUser()).getRegistCountryCode();
 		
 		progressDialog = ProgressDialog.show(this, null,
 				getString(R.string.sending_request), true);
@@ -524,10 +531,16 @@ public class SettingActivity extends NavigationActivity {
 				HttpRequestType.ASYNCHRONOUS, onFinishGetPSW);
 	}
 	
-	private void setAreaCode(String areacode){
+	/*private void setAreaCode(String areacode){
 		TelUserBean telUserBean = (TelUserBean) UserManager.getInstance().getUser();
 		telUserBean.setAreaCode(areacode);
 		DataStorageUtils.putObject(TelUser.areaCode.name(), areacode);
+	}*/
+	
+	private void setDialCountryCode(String dialcountryCode){
+		TelUserBean telUserBean = (TelUserBean) UserManager.getInstance().getUser();
+		telUserBean.setDialCountryCode(dialcountryCode);
+		DataStorageUtils.putObject(TelUser.dialCountryCode.name(), dialcountryCode);
 	}
 	
 	private OnHttpRequestListener onFinishGetPSW = new OnHttpRequestListener(){
@@ -842,7 +855,7 @@ public class SettingActivity extends NavigationActivity {
 	
 	}
 
-	class SetAreaCodePopupWindow extends CommonPopupWindow {
+	/*class SetAreaCodePopupWindow extends CommonPopupWindow {
 		
 		public SetAreaCodePopupWindow(int resource, int width,
 				int height, boolean focusable, boolean isBindDefListener) {
@@ -912,6 +925,84 @@ public class SettingActivity extends NavigationActivity {
 				 		Context.INPUT_METHOD_SERVICE); 
 				imm.hideSoftInputFromWindow(((EditText) getContentView()
 						.findViewById(R.id.set_areacode_editText))
+	    		 		.getWindowToken(),0);
+				dismiss();
+			}
+		
+		}
+	
+	}*/
+	
+	class SetDialCountryCodePopupWindow extends CommonPopupWindow {
+		
+		public SetDialCountryCodePopupWindow(int resource, int width,
+				int height, boolean focusable, boolean isBindDefListener) {
+			super(resource, width, height, focusable, isBindDefListener);
+		}
+		
+		public SetDialCountryCodePopupWindow(int resource, int width,
+				int height) {
+			super(resource, width, height);
+			TelUserBean telUser = (TelUserBean) UserManager.getInstance().getUser();
+			String dialcountrycode = telUser.getDialCountryCode();
+			if(dialcountrycode!=null&&!dialcountrycode.equals(""))
+				((EditText)getContentView().findViewById(R.id.set_countrycode_editText)).setText(dialcountrycode);
+		}
+		
+		@Override
+		protected void bindPopupWindowComponentsListener() {
+		
+			// bind contact phone select cancel button click listener
+			((Button) getContentView().findViewById(R.id.set_countrycode_confirmBtn))
+					.setOnClickListener(new SetDialCountryCodeConfirmBtnOnClickListener());
+			((Button)getContentView().findViewById(R.id.set_countrycode_cancelBtn)).setOnClickListener(
+					new SetDialCountryCodeCancelBtnOnClickListener());
+		}
+		
+		@Override
+		protected void resetPopupWindow() {
+			// hide contact phones select phone list view
+			((EditText)getContentView().findViewById(R.id.set_countrycode_editText)).setText("");
+		}
+		
+		// inner class
+		// contact phone select phone button on click listener
+		class SetDialCountryCodeConfirmBtnOnClickListener implements OnClickListener {
+		
+			@Override
+			public void onClick(View v) {		
+				// dismiss contact phone select popup window		
+				String dialcountrycode = ((EditText)getContentView().
+							findViewById(R.id.set_countrycode_editText)).getEditableText().toString().trim();
+				
+				if(!dialcountrycode.matches("(^[0-9]*)")){
+					MyToast.show(SettingActivity.this, R.string.invalid_areacode, Toast.LENGTH_SHORT);
+					return;
+				}
+				if(dialcountrycode==null||dialcountrycode.equals("")){
+					MyToast.show(SettingActivity.this, R.string.null_areacode, Toast.LENGTH_SHORT);
+					return;
+				}
+				InputMethodManager imm = (InputMethodManager)getSystemService(
+						Context.INPUT_METHOD_SERVICE); 
+				imm.hideSoftInputFromWindow(((EditText) getContentView().findViewById(R.id.set_countrycode_editText))
+						.getWindowToken(),0);
+				setDialCountryCode(dialcountrycode);
+				dismiss();
+			}
+		
+		}
+		
+		// contact phone select cancel button on click listener
+		class SetDialCountryCodeCancelBtnOnClickListener implements OnClickListener {
+		
+			@Override
+			public void onClick(View v) {
+				// dismiss contact phone select popup window
+				InputMethodManager imm = (InputMethodManager)getSystemService(
+				 		Context.INPUT_METHOD_SERVICE); 
+				imm.hideSoftInputFromWindow(((EditText) getContentView()
+						.findViewById(R.id.set_countrycode_editText))
 	    		 		.getWindowToken(),0);
 				dismiss();
 			}
@@ -1098,7 +1189,7 @@ public class SettingActivity extends NavigationActivity {
 				getString(R.string.sending_request), true);
     	TelUserBean userBean = (TelUserBean) UserManager.getInstance().getUser();
     	String username = userBean.getName();
-    	String oldCountryCode = userBean.getCountryCode();
+    	String oldCountryCode = userBean.getRegistCountryCode();
 		HashMap<String,String> params = new HashMap<String,String>();
 		params.put("username", username);
 		params.put("countryCode", oldCountryCode);

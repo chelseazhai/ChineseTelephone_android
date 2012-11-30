@@ -8,7 +8,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/threequarters_transparent"
+        android:background="@color/threequarters_gray_transparent"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingBottom="14dp"
@@ -53,27 +53,26 @@
             <Button
                 android:id="@+id/contactPhone_dialMode_select_directdialBtn"
                 android:layout_width="fill_parent"
-                android:layout_height="40dp"
-                android:layout_margin="5dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/popupwindow_common_btn_bg"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="@string/contactPhone_dialMode_selectPopupWindow_directdialBtn_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/black"
-                android:background="@drawable/btn_bg"
+                android:textColor="@drawable/component_normal7pressed_textcolor"
                 android:textStyle="bold" />
 
             <Button
                 android:id="@+id/contactPhone_dialMode_select_callbackBtn"
                 android:layout_width="fill_parent"
-                android:layout_height="40dp"
-                android:layout_margin="5dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/popupwindow_common_btn_bg"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="@string/contactPhone_dialMode_selectPopupWindow_callbackBtn_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/black"
-                android:background="@drawable/btn_bg"
+                android:textColor="@drawable/component_normal7pressed_textcolor"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -84,6 +83,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="14dp"
+            android:background="@drawable/popupwindow_cancel_btn_bg"
             android:text="@string/contactPhone_dialMode_selectPopupWindow_cancelBtn_title"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/white"

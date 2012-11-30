@@ -26,28 +26,29 @@ public class AppUpdateManager {
 	public void checkVersion(boolean isFromSetting) {
 		this.isFromSetting = isFromSetting;
 		if (VersionUtils.checkVersion) {
-			VersionUtils.localVersion = VersionUtils.currentVersionName(context);
-			VersionUtils.updateURL = context.getString(R.string.appvcenter_url) + context.getString(R.string.app_download_url);
-			HttpUtils.getRequest(context.getString(R.string.appvcenter_url)
-					+ context.getString(R.string.app_version_url), null, null,
-					HttpRequestType.ASYNCHRONOUS, onFinishedGetVersion);
+			checkVersion();
 		}
 		else{
 			if(isFromSetting){
-				VersionUtils.localVersion = VersionUtils.currentVersionName(context);
-				VersionUtils.updateURL = context.getString(R.string.appvcenter_url) + context.getString(R.string.app_download_url);
-				HttpUtils.getRequest(context.getString(R.string.appvcenter_url)
-						+ context.getString(R.string.app_version_url), null, null,
-						HttpRequestType.ASYNCHRONOUS, onFinishedGetVersion);
+				checkVersion();
 			}
 		}
+	}
+	
+	private void checkVersion(){
+		VersionUtils.localVersion = VersionUtils.currentVersionName(context);
+		VersionUtils.updateURL = context.getString(R.string.appvcenter_url) + context.getString(R.string.app_download_url);
+		HttpUtils.getRequest(context.getString(R.string.appvcenter_url)
+				+ context.getString(R.string.app_version_url), null, null,
+				HttpRequestType.ASYNCHRONOUS, onFinishedGetVersion);
 	}
 	
 	private void noNewVersionDialog(){
 		new AlertDialog.Builder(context)
 		.setTitle(R.string.alert_title)
-		.setMessage(R.string.no_new_version)
-		.setPositiveButton(context.getString(R.string.cancel),
+		.setMessage(context.getString(R.string.no_new_version).
+					replace("***", VersionUtils.localVersion))
+		.setPositiveButton(context.getString(R.string.ok),
 				null)
 		.show();
 	}

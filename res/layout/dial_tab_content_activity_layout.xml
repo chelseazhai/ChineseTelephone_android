@@ -60,7 +60,7 @@
             android:layout_marginRight="0.5dp"
             android:layout_weight="1"
             android:background="@drawable/dial_call_btn_bg"
-            android:contentDescription="@string/dialBtn_imageView_content_description"
+            android:contentDescription="@string/dialBtn_imageButton_content_description"
             android:src="@drawable/img_dial_call_btn" />
 
         <include

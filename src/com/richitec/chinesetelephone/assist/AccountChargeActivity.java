@@ -97,7 +97,7 @@ public class AccountChargeActivity extends NavigationActivity {
 	private void getRemainMoney(){
     	TelUserBean userBean = (TelUserBean) UserManager.getInstance().getUser();
     	String username = userBean.getName();
-    	String countryCode = userBean.getCountryCode();
+    	String countryCode = userBean.getRegistCountryCode();
     	
     	mProgress = ProgressDialog.show(this, null,
 				getString(R.string.sending_request), true);
@@ -187,7 +187,7 @@ public class AccountChargeActivity extends NavigationActivity {
 			
 			TelUserBean telUser = (TelUserBean) UserManager.getInstance().getUser();
 			HashMap<String,String> params = new HashMap<String,String>();
-	    	params.put("countryCode", telUser.getCountryCode());
+	    	params.put("countryCode", telUser.getRegistCountryCode());
 			
 	    	HttpUtils.postSignatureRequest(getString(R.string.server_url)+getString(R.string.get_seller_partner_key), 
 					PostRequestFormat.URLENCODED, params,

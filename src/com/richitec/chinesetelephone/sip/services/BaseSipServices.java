@@ -4,13 +4,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.content.Intent;
+import android.media.AudioManager;
 import android.provider.CallLog;
+import android.util.Log;
 
+import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.call.OutgoingCallActivity;
 import com.richitec.chinesetelephone.sip.SipCallMode;
 import com.richitec.chinesetelephone.sip.listeners.SipInviteStateListener;
 import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
 import com.richitec.commontoolkit.calllog.CallLogManager;
+import com.richitec.commontoolkit.user.UserManager;
 
 public abstract class BaseSipServices implements ISipServices {
 
@@ -19,6 +23,9 @@ public abstract class BaseSipServices implements ISipServices {
 
 	// sip invite listener
 	private SipInviteStateListener _mSipInviteStateListener;
+	
+	private static String[] PhoneNumberFilterPrefix = { "17909", "11808",
+		"12593", "17951", "17911", "+"};
 
 	// make direct dial sip voice call
 	public abstract boolean makeDirectDialSipVoiceCall(String calleeName,
@@ -50,6 +57,17 @@ public abstract class BaseSipServices implements ISipServices {
 
 		case DIRECT_CALL:
 		default:
+			for (String prefix : PhoneNumberFilterPrefix) {
+				int index = calleePhone.indexOf(prefix);
+				if (index == 0 && prefix.length() < calleePhone.length()) {
+					calleePhone = calleePhone.substring(prefix.length());
+				}
+			}
+			if(calleePhone.matches("(^[0]\\d{2,3}\\d{7,8})|(^[1][\\d]{10})|(\\d{9})")){
+				TelUserBean telUser = (TelUserBean) UserManager.getInstance().getUser();
+				calleePhone = telUser.getDialCountryCode() + calleePhone;
+			}
+			Log.d("calleePhone", calleePhone);
 			// make direct dial sip voice call
 			_makeSipVoiceCallResult = makeDirectDialSipVoiceCall(calleeName,
 					calleePhone);
@@ -70,6 +88,35 @@ public abstract class BaseSipServices implements ISipServices {
 		afterHangupSipVoiceCall(callDuration);
 
 		return _hangupCurrentSipVoiceCallResult;
+	}
+
+	@Override
+	public void muteSipVoiceCall(AudioManager audioManager) {
+		Log.d("@@", "setSipVoiceCallUsingLoudspeaker");
+
+		// mute current sip voice call
+		audioManager.setMicrophoneMute(true);
+	}
+
+	@Override
+	public void unmuteSipVoiceCall(AudioManager audioManager) {
+		// unmute current sip voice call
+		audioManager.setMicrophoneMute(false);
+	}
+
+	@Override
+	public void setSipVoiceCallUsingLoudspeaker(AudioManager audioManager) {
+		Log.d("@@", "setSipVoiceCallUsingLoudspeaker");
+
+		// set current sip voice call loudspeaker
+		audioManager.setMode(AudioManager.MODE_IN_CALL);
+		audioManager.setSpeakerphoneOn(true);
+	}
+
+	@Override
+	public void setSipVoiceCallUsingEarphone(AudioManager audioManager) {
+		// set current sip voice call earphone
+		audioManager.setSpeakerphoneOn(false);
 	}
 
 	public SipInviteStateListener getSipInviteStateListener() {

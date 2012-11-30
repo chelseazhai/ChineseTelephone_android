@@ -110,7 +110,7 @@ public class AliPayManager {
 		params.put("total_fee", p.getPrice());
     	params.put("out_trade_no", out_trade_no);
     	params.put("content", orderInfo);
-    	params.put("countryCode", userBean.getCountryCode());
+    	params.put("countryCode", userBean.getRegistCountryCode());
 		
     	HttpUtils.postSignatureRequest(activity.getString(R.string.server_url)+activity.getString(R.string.alipay_sign), 
 				PostRequestFormat.URLENCODED, params,

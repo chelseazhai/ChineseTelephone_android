@@ -4,5 +4,6 @@ public enum TelUser {
 	countryCode,
 	areaCode,
 	vosphone,
-	vosphone_pwd
+	vosphone_pwd,
+	dialCountryCode
 }

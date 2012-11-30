@@ -209,7 +209,7 @@ public class DialTabContentActivity extends NavigationActivity {
 		return new DialPhoneButtonAdapter(this, _dialPhoneButtonDataList,
 				R.layout.dial_phone_btn_layout,
 				new String[] { DIAL_PHONE_BUTTON },
-				new int[] { R.id.dialBtn_imageView });
+				new int[] { R.id.dialBtn_imageBtn });
 	}
 
 	// play dial phone button dtmf sound
@@ -459,7 +459,8 @@ public class DialTabContentActivity extends NavigationActivity {
 
 				String _calleeName = View.VISIBLE == _dialPhoneOwnershipTextView
 						.getVisibility() ? _dialPhoneOwnershipTextView
-						.getText().toString() : "未知联系人";
+						.getText().toString() : getResources().getString(
+						R.string.dial_phone_callee_unknown);
 
 				@SuppressWarnings("unchecked")
 				List<String> _calleePhones = (List<String>) CommonUtils
