@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -25,6 +28,7 @@ import android.widget.TextView;
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.sip.listeners.SipInviteStateListener;
 import com.richitec.chinesetelephone.sip.services.BaseSipServices;
+import com.richitec.chinesetelephone.tab7tabcontent.DialTabContentActivity;
 
 public class OutgoingCallActivity extends Activity implements
 		SipInviteStateListener {
@@ -44,11 +48,24 @@ public class OutgoingCallActivity extends Activity implements
 	public static final String OUTGOING_CALL_PHONE = "outgoing_call_phone";
 	public static final String OUTGOING_CALL_OWNERSHIP = "outgoing_call_ownership";
 
+	// sound pool
+	private static final SoundPool SOUND_POOL = new SoundPool(1,
+			AudioManager.STREAM_MUSIC, 0);
+
 	// outgoing call phone number
 	private String _mCalleePhone;
 
 	// audio manager
 	private AudioManager _mAudioManager;
+
+	// call duration timer
+	private final Timer CALLDURATION_TIMER = new Timer();
+
+	// call duration time and set default value is 0
+	private Long _mCallDutation = 0L;
+
+	// update call duration time handle
+	private final Handler UPDATE_CALLDURATIONTIME_HANDLE = new Handler();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -144,8 +161,53 @@ public class OutgoingCallActivity extends Activity implements
 
 	@Override
 	public void onCallSpeaking() {
-		// update call state textView text
-		((TextView) findViewById(R.id.callState_textView)).setText("speaking");
+		// check current sip voice call using loudspeaker
+		if (_smSipServices.isSipVoiceCallUsingLoudspeaker()) {
+			// set current sip voice call loudspeaker
+			// set mode
+			_mAudioManager.setMode(AudioManager.MODE_NORMAL);
+
+			// open speaker
+			_mAudioManager.setSpeakerphoneOn(true);
+		}
+
+		// increase call duration time per second using timer task
+		CALLDURATION_TIMER.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				// increase call duration time
+				_mCallDutation += 1L;
+
+				// update call duration time
+				UPDATE_CALLDURATIONTIME_HANDLE.post(new Runnable() {
+
+					// 60 seconds per minute
+					Integer SECONDS_PER_MINUTE = 60;
+
+					@Override
+					public void run() {
+						// get call duration minutes and seconds
+						Long _durationMinutes = _mCallDutation
+								/ SECONDS_PER_MINUTE;
+						Integer _durationSeconds = (int) (_mCallDutation % SECONDS_PER_MINUTE);
+
+						// format call duration
+						StringBuilder _callDurationTimeFormat = new StringBuilder();
+						_callDurationTimeFormat
+								.append(_durationMinutes <= 9 ? "0"
+										+ _durationMinutes : _durationMinutes)
+								.append(":")
+								.append(_durationSeconds <= 9 ? "0"
+										+ _durationSeconds : _durationSeconds);
+
+						// update call state textView text using call duration
+						((TextView) findViewById(R.id.callState_textView))
+								.setText(_callDurationTimeFormat);
+					}
+				});
+			}
+		}, 0, 1000);
 	}
 
 	@Override
@@ -163,23 +225,14 @@ public class OutgoingCallActivity extends Activity implements
 		// update call state textView text
 		((TextView) findViewById(R.id.callState_textView))
 				.setText(R.string.end_outgoing_call);
+
+		onCallTerminated();
 	}
 
 	@Override
 	public void onCallTerminated() {
-		// delayed one second to back
-		new Handler().postDelayed(new Runnable() {
-
-			@Override
-			public void run() {
-				// update call state textView text
-				((TextView) findViewById(R.id.callState_textView))
-						.setText(R.string.outgoing_call_ended);
-
-				// finish outgoing call activity
-				finish();
-			}
-		}, 1000);
+		// terminate current sip voice call
+		terminateSipVoiceCall(SipVoiceCallTerminatedType.PASSIVE);
 	}
 
 	// init outgoing call activity sip services
@@ -356,6 +409,62 @@ public class OutgoingCallActivity extends Activity implements
 		}
 	}
 
+	// terminate sip voice call
+	private void terminateSipVoiceCall(SipVoiceCallTerminatedType terminatedType) {
+		// check sip voice call terminated type
+		switch (terminatedType) {
+		case INITIATIVE:
+			// hangup current sip voice call
+			if (!_smSipServices.hangupSipVoiceCall(_mCallDutation)) {
+				// cancel call duration timer
+				CALLDURATION_TIMER.cancel();
+
+				// force finish outgoing call activity
+				finish();
+
+				// return immediately
+				return;
+			} else {
+				// update call state textView text
+				((TextView) findViewById(R.id.callState_textView))
+						.setText(R.string.end_outgoing_call);
+			}
+
+			break;
+
+		case PASSIVE:
+		default:
+			// update call log call duration time
+			_smSipServices.updateSipVoiceCallLog(_mCallDutation);
+
+			break;
+		}
+
+		// cancel call duration timer
+		CALLDURATION_TIMER.cancel();
+
+		// delayed 0.4 second to terminating
+		new Handler().postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				// update call state textView text
+				((TextView) findViewById(R.id.callState_textView))
+						.setText(R.string.outgoing_call_ended);
+
+				// delayed 0.8 second to back
+				new Handler().postDelayed(new Runnable() {
+
+					@Override
+					public void run() {
+						// finish outgoing call activity
+						finish();
+					}
+				}, 800);
+			}
+		}, 400);
+	}
+
 	// inner class
 	// call controller gridView on item click listener
 	class CallControllerGridViewOnItemClickListener implements
@@ -380,21 +489,21 @@ public class OutgoingCallActivity extends Activity implements
 
 			case 2:
 				// mute or unmute current sip voice call
-				_smSipServices.muteSipVoiceCall(_mAudioManager);
-				// _smSipServices.unmuteSipVoiceCall(_mAudioManager);
+				_smSipServices.setSipVoiceCallUsingEarphone();
+				// _smSipServices.muteSipVoiceCall();
+				// _smSipServices.unmuteSipVoiceCall();
 
 				break;
 
 			case 3:
 			default:
 				// set current sip voice call loudspeaker or earphone
-				_smSipServices.setSipVoiceCallUsingLoudspeaker(_mAudioManager);
-				// _smSipServices.setSipVoiceCallUsingEarphone(_mAudioManager);
+				_smSipServices.setSipVoiceCallUsingLoudspeaker();
+				// _smSipServices.setSipVoiceCallUsingEarphone();
 
 				break;
 			}
 		}
-
 	}
 
 	// keyboard button on click listener
@@ -435,7 +544,14 @@ public class OutgoingCallActivity extends Activity implements
 			_dtmfTextView.setText(_keyboardPhoneStringBuilder);
 
 			// play keyboard phone button dtmf sound
-			// playDialPhoneBtnDTMFSound((Integer) v.getTag());
+			// get volume
+			float _volume = _mAudioManager
+					.getStreamVolume(AudioManager.STREAM_MUSIC);
+
+			// play dial phone button dtmf sound with index
+			SOUND_POOL.play(DialTabContentActivity
+					.getDialPhoneBtnDTMFSoundPoolMap()
+					.get((Integer) v.getTag()), _volume, _volume, 0, 0, 1f);
 
 			// send dtmf
 			_smSipServices.sentDTMF(_clickedPhoneNumber);
@@ -447,18 +563,8 @@ public class OutgoingCallActivity extends Activity implements
 
 		@Override
 		public void onClick(View v) {
-			// hangup current sip voice call
-			if (!_smSipServices.hangupSipVoiceCall(88L)) {
-				// force finish outgoing call activity
-				finish();
-			} else {
-				// update call state textView text
-				((TextView) findViewById(R.id.callState_textView))
-						.setText(R.string.end_outgoing_call);
-
-				// sip voice call terminated
-				onCallTerminated();
-			}
+			// terminate current sip voice call
+			terminateSipVoiceCall(SipVoiceCallTerminatedType.INITIATIVE);
 		}
 
 	}
@@ -472,6 +578,12 @@ public class OutgoingCallActivity extends Activity implements
 			show6hideKeyboard(false);
 		}
 
+	}
+
+	// sip voice call terminated type
+	enum SipVoiceCallTerminatedType {
+		// initiative or passive
+		INITIATIVE, PASSIVE
 	}
 
 }

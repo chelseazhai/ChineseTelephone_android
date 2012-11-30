@@ -75,10 +75,11 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="24dp"
                 android:layout_marginRight="24dp"
-                android:background="@android:color/white"
+                android:background="@drawable/contactphones_select_phoneslistview_bg"
                 android:cacheColorHint="@android:color/transparent"
                 android:fadingEdge="none"
                 android:listSelector="@android:color/transparent"
+                android:scrollbars="none"
                 android:visibility="gone" >
             </ListView>
         </FrameLayout>
