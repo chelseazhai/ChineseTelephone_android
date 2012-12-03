@@ -149,4 +149,50 @@
         </RelativeLayout>
     </RelativeLayout>
 
+    <SlidingDrawer
+        android:id="@+id/contactslist_slidingDrawer"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:content="@+id/contactslist_slidingDrawer_content"
+        android:handle="@+id/handle" >
+
+        <Button
+            android:id="@+id/handle"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="@string/contactslist_slidingDrawer_handleBtn_text" />
+
+        <LinearLayout
+            android:id="@+id/contactslist_slidingDrawer_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@android:color/white"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/hide_contactslist_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/hidecontactslist_button_text" />
+
+            <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" >
+
+                <ListView
+                    android:id="@+id/contactInAB_listView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:cacheColorHint="@android:color/transparent"
+                    android:divider="@drawable/img_addressbook_contact_listview_divider_bg"
+                    android:fadingEdge="none"
+                    android:headerDividersEnabled="true"
+                    android:listSelector="@android:color/transparent" >
+                </ListView>
+            </FrameLayout>
+        </LinearLayout>
+    </SlidingDrawer>
+
 </FrameLayout>
