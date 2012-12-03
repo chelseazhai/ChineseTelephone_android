@@ -14,8 +14,10 @@ import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -23,6 +25,7 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.richitec.chinesetelephone.R;
@@ -34,6 +37,10 @@ public class OutgoingCallActivity extends Activity implements
 		SipInviteStateListener {
 
 	private static final String LOG_TAG = "OutgoingCallActivity";
+
+	// call controller gridView keys
+	public static final String CALL_CONTROLLER_ITEM_BACKGROUND = "call_controller_item_background";
+	public static final String CALL_CONTROLLER_ITEM_ONTOUCHLISTENER = "call_controller_item_onTouchListener";
 
 	// keyboard gridView keys
 	public static final String KEYBOARD_BUTTON_CODE = "keyboard_button_code";
@@ -243,11 +250,12 @@ public class OutgoingCallActivity extends Activity implements
 	// generate call controller adapter
 	private ListAdapter generateCallControllerAdapter() {
 		// call controller item adapter data key
-		final String CALL_CONTROLLER_ITEM_BACKGROUND = "call_controller_item_background";
+		final String CALL_CONTROLLER_ITEM_PARENTRELATIVELAYOUT = "call_controller_item_parentRelativeLayout";
 		final String CALL_CONTROLLER_ITEM_ICON = "call_controller_item_icon";
 		final String CALL_CONTROLLER_ITEM_LABEL = "call_controller_item_label";
 
-		// define call controller gridView content
+		// define call controller gridView content and mute or unmute, setting
+		// using loudspeaker or earphone on touch listener
 		final int[][] _callControllerGridViewContentArray = new int[][] {
 				{ R.drawable.callcontroller_contactitem6keyboard_1btn_bg,
 						R.drawable.img_callcontroller_contactitem_normal,
@@ -262,6 +270,10 @@ public class OutgoingCallActivity extends Activity implements
 						R.drawable.img_callcontroller_handfreeitem_normal,
 						R.string.callController_handfreeItem_text } };
 
+		final OnTouchListener[] _callControllerGridViewOnTouchListenerArray = new OnTouchListener[] {
+				new Mute6UnmuteCallControllerGridViewOnTouchListener(),
+				new SetUsingLoudspeaker6EarphoneCallControllerGridViewOnTouchListener() };
+
 		// set call controller data list
 		List<Map<String, ?>> _callControllerDataList = new ArrayList<Map<String, ?>>();
 
@@ -270,8 +282,21 @@ public class OutgoingCallActivity extends Activity implements
 			Map<String, Object> _dataMap = new HashMap<String, Object>();
 
 			// put value
-			_dataMap.put(CALL_CONTROLLER_ITEM_BACKGROUND,
+			// generate call controller item parent relative layout data map
+			Map<String, Object> _callControllerItemParentRelaviteLayoutData = new HashMap<String, Object>();
+
+			// put call controller item data value
+			_callControllerItemParentRelaviteLayoutData.put(
+					CALL_CONTROLLER_ITEM_BACKGROUND,
 					_callControllerGridViewContentArray[i][0]);
+			if (2 <= i && 3 >= i) {
+				_callControllerItemParentRelaviteLayoutData.put(
+						CALL_CONTROLLER_ITEM_ONTOUCHLISTENER,
+						_callControllerGridViewOnTouchListenerArray[i - 2]);
+			}
+
+			_dataMap.put(CALL_CONTROLLER_ITEM_PARENTRELATIVELAYOUT,
+					_callControllerItemParentRelaviteLayoutData);
 			_dataMap.put(CALL_CONTROLLER_ITEM_ICON,
 					_callControllerGridViewContentArray[i][1]);
 			_dataMap.put(CALL_CONTROLLER_ITEM_LABEL,
@@ -285,7 +310,7 @@ public class OutgoingCallActivity extends Activity implements
 				this,
 				_callControllerDataList,
 				R.layout.call_controller_item,
-				new String[] { CALL_CONTROLLER_ITEM_BACKGROUND,
+				new String[] { CALL_CONTROLLER_ITEM_PARENTRELATIVELAYOUT,
 						CALL_CONTROLLER_ITEM_ICON, CALL_CONTROLLER_ITEM_LABEL },
 				new int[] { R.id.callController_item_relativeLayout,
 						R.id.callController_item_iconImgView,
@@ -443,7 +468,7 @@ public class OutgoingCallActivity extends Activity implements
 		// cancel call duration timer
 		CALLDURATION_TIMER.cancel();
 
-		// delayed 0.4 second to terminating
+		// delayed 0.5 second to terminating
 		new Handler().postDelayed(new Runnable() {
 
 			@Override
@@ -452,7 +477,7 @@ public class OutgoingCallActivity extends Activity implements
 				((TextView) findViewById(R.id.callState_textView))
 						.setText(R.string.outgoing_call_ended);
 
-				// delayed 0.8 second to back
+				// delayed 0.6 second to back
 				new Handler().postDelayed(new Runnable() {
 
 					@Override
@@ -460,9 +485,9 @@ public class OutgoingCallActivity extends Activity implements
 						// finish outgoing call activity
 						finish();
 					}
-				}, 800);
+				}, 600);
 			}
-		}, 400);
+		}, 500);
 	}
 
 	// inner class
@@ -488,22 +513,85 @@ public class OutgoingCallActivity extends Activity implements
 				break;
 
 			case 2:
-				// mute or unmute current sip voice call
-				_smSipServices.setSipVoiceCallUsingEarphone();
-				// _smSipServices.muteSipVoiceCall();
-				// _smSipServices.unmuteSipVoiceCall();
+				Log.e(LOG_TAG,
+						"Mute or unmute call controller gridView item on item click listener error");
 
 				break;
 
 			case 3:
-			default:
-				// set current sip voice call loudspeaker or earphone
-				_smSipServices.setSipVoiceCallUsingLoudspeaker();
-				// _smSipServices.setSipVoiceCallUsingEarphone();
+				Log.e(LOG_TAG,
+						"Handfree or cancel handfree call controller gridView item on item click listener error");
 
 				break;
 			}
 		}
+	}
+
+	// mute and unmute call controller gridView on item touch listener
+	class Mute6UnmuteCallControllerGridViewOnTouchListener implements
+			OnTouchListener {
+
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			if (MotionEvent.ACTION_DOWN == event.getAction()) {
+				// check current sip voice call is muted
+				// muted now, unmute it
+				if (_smSipServices.isSipVoiceCallMuted()) {
+					// update background resource
+					((RelativeLayout) v)
+							.setBackgroundResource(R.drawable.callcontroller_muteitem6keyboard_9btn_bg);
+
+					// unmute current sip voice call
+					_smSipServices.unmuteSipVoiceCall();
+				}
+				// unmuted now, mute it
+				else {
+					// update background resource
+					((RelativeLayout) v)
+							.setBackgroundResource(R.drawable.callcontroller_unmuteitem6keyboard_9btn_bg);
+
+					// mute current sip voice call
+					_smSipServices.muteSipVoiceCall();
+				}
+			}
+
+			return true;
+		}
+
+	}
+
+	// set using loudspeaker and earphone call controller gridView on item touch
+	// listener
+	class SetUsingLoudspeaker6EarphoneCallControllerGridViewOnTouchListener
+			implements OnTouchListener {
+
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			if (MotionEvent.ACTION_DOWN == event.getAction()) {
+				// check current sip voice call using loudspeaker or earphone
+				// using loudspeaker now, set using earphone
+				if (_smSipServices.isSipVoiceCallUsingLoudspeaker()) {
+					// update background resource
+					((RelativeLayout) v)
+							.setBackgroundResource(R.drawable.callcontroller_handfreeitem6keyboard_poundbtn_bg);
+
+					// set using earphone
+					_smSipServices.setSipVoiceCallUsingEarphone();
+				}
+				// using earphone now, set using loudspeaker
+				else {
+					// update background resource
+					((RelativeLayout) v)
+							.setBackgroundResource(R.drawable.callcontroller_cancelhandfreeitem6keyboard_poundbtn_bg);
+
+					// set using loudspeaker
+					_smSipServices.setSipVoiceCallUsingLoudspeaker();
+				}
+			}
+
+			return true;
+		}
+
 	}
 
 	// keyboard button on click listener

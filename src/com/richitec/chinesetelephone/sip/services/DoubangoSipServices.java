@@ -232,12 +232,18 @@ public class DoubangoSipServices extends BaseSipServices implements
 
 	@Override
 	public void muteSipVoiceCall() {
+		// update current sip voice call muted flag
+		setSipVoiceCallMuted(true);
+
 		// mute current sip voice call
 		Log.d(LOG_TAG, "Doubango mute current sip voice call not implement");
 	}
 
 	@Override
 	public void unmuteSipVoiceCall() {
+		// update current sip voice call muted flag
+		setSipVoiceCallMuted(false);
+
 		// unmute current sip voice call
 		Log.d(LOG_TAG, "Doubango unmute current sip voice call not implement");
 	}

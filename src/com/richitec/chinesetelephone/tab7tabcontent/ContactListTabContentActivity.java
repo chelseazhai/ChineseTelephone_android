@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -27,6 +28,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -359,6 +361,13 @@ public class ContactListTabContentActivity extends NavigationActivity {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
+			// hide input method manager not always
+			((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
+					.hideSoftInputFromWindow(
+							((EditText) findViewById(R.id.contact_search_editText))
+									.getWindowToken(),
+							InputMethodManager.HIDE_NOT_ALWAYS);
+
 			// get the click item view data: contact object
 			ContactBean _clickItemViewData = _mPresentContactsInABInfoArray
 					.get((int) id);

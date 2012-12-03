@@ -25,6 +25,9 @@ public abstract class BaseSipServices implements ISipServices {
 	// audio manager
 	private AudioManager _mAudioManager;
 
+	// current sip voice call is muted flag
+	private Boolean _mIsSipVoiceCallMuted;
+
 	// current sip voice call using loudspeaker flag
 	private Boolean _mIsSipVoiceCallUsingLoudspeaker;
 
@@ -119,6 +122,16 @@ public abstract class BaseSipServices implements ISipServices {
 	public void setSipInviteStateListener(
 			SipInviteStateListener sipInviteStateListener) {
 		this._mSipInviteStateListener = sipInviteStateListener;
+	}
+
+	// update current sip voice call muted flag
+	public void setSipVoiceCallMuted(Boolean muting) {
+		_mIsSipVoiceCallMuted = muting;
+	}
+
+	// check current sip voice call is muted
+	public Boolean isSipVoiceCallMuted() {
+		return null == _mIsSipVoiceCallMuted ? false : _mIsSipVoiceCallMuted;
 	}
 
 	// check current sip voice call is using loudspeaker

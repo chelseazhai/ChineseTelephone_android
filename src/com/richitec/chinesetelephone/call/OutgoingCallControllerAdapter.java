@@ -6,6 +6,7 @@ import java.util.Map;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,17 +32,29 @@ public class OutgoingCallControllerAdapter extends CommonListAdapter {
 		// relativeLayout
 		if (view instanceof RelativeLayout) {
 			try {
-				// define item data integer and convert item data to integer
-				Integer _itemDataInteger = (Integer) _itemData;
+				// define item data map and convert item data to map
+				@SuppressWarnings("unchecked")
+				Map<String, Object> _itemDataMap = (Map<String, Object>) _itemData;
 
-				// set call controller item background resource
-				((RelativeLayout) view).setBackgroundResource(_itemDataInteger);
+				// get item data map values
+				Integer _itemBackgroundResource = (Integer) _itemDataMap
+						.get(OutgoingCallActivity.CALL_CONTROLLER_ITEM_BACKGROUND);
+				OnTouchListener _itemOnTouchListener = (OnTouchListener) _itemDataMap
+						.get(OutgoingCallActivity.CALL_CONTROLLER_ITEM_ONTOUCHLISTENER);
+
+				// set call controller item background resource and on touch
+				// listener
+				((RelativeLayout) view)
+						.setBackgroundResource(_itemBackgroundResource);
+				if (null != _itemOnTouchListener) {
+					((RelativeLayout) view)
+							.setOnTouchListener(_itemOnTouchListener);
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 
-				Log.e(LOG_TAG,
-						"Convert item data to integer error, item data = "
-								+ _itemData);
+				Log.e(LOG_TAG, "Convert item data to map error, item data = "
+						+ _itemData);
 			}
 		}
 		// textView
