@@ -56,6 +56,8 @@
     <string name="callController_muteItem_text">Mute</string>
     <string name="callController_keyboardItem_text">Keyboard</string>
     <string name="endCall_imageView_content_description">end call image button</string>
+    <string name="contactslist_slidingDrawer_handleBtn_text">contacts list sliding drawer handle button text</string>
+    <string name="hidecontactslist_button_text">Back</string>
     <string name="hideKeyboard_imageView_content_description">hide keyboard image button</string>
     <string name="keyboardBtn_imageButton_content_description">keyboard button image button</string>
 

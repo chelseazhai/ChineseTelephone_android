@@ -21,17 +21,23 @@ import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.SlidingDrawer;
 import android.widget.TextView;
 
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.sip.listeners.SipInviteStateListener;
 import com.richitec.chinesetelephone.sip.services.BaseSipServices;
+import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity;
+import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity.ContactsInABListViewQuickAlphabetBarOnTouchListener;
 import com.richitec.chinesetelephone.tab7tabcontent.DialTabContentActivity;
+import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar;
 
 public class OutgoingCallActivity extends Activity implements
 		SipInviteStateListener {
@@ -126,6 +132,21 @@ public class OutgoingCallActivity extends Activity implements
 		// set call controller gridView on item click listener
 		_callControllerGridView
 				.setOnItemClickListener(new CallControllerGridViewOnItemClickListener());
+
+		// add hide contacts list button on click listener
+		((Button) findViewById(R.id.hide_contactslist_button))
+				.setOnClickListener(new HideContactsListOnClickListener());
+
+		// get contacts in address book list view
+		ListView _abContactsListView = (ListView) findViewById(R.id.contactInAB_listView);
+
+		// set contact in address book listView adapter
+		_abContactsListView.setAdapter(ContactListTabContentActivity
+				.getInABContactAdapter(this));
+		// init address book contacts listView quick alphabet bar and add on
+		// touch listener
+		new ListViewQuickAlphabetBar(_abContactsListView)
+				.setOnTouchListener(new ContactsInABListViewQuickAlphabetBarOnTouchListener());
 
 		// set keyboard gridView adapter
 		((GridView) findViewById(R.id.keyboard_gridView))
@@ -502,7 +523,9 @@ public class OutgoingCallActivity extends Activity implements
 			switch (position) {
 			case 0:
 				// show contacts list
-				Log.d(LOG_TAG, "Show contacts list, not implement now");
+				// open contacts list sliding drawer
+				((SlidingDrawer) findViewById(R.id.contactslist_slidingDrawer))
+						.animateOpen();
 
 				break;
 
@@ -525,6 +548,19 @@ public class OutgoingCallActivity extends Activity implements
 				break;
 			}
 		}
+	}
+
+	// hide contacts list on click listener
+	class HideContactsListOnClickListener implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			// hide contacts list
+			// close contacts list sliding drawer
+			((SlidingDrawer) findViewById(R.id.contactslist_slidingDrawer))
+					.animateClose();
+		}
+
 	}
 
 	// mute and unmute call controller gridView on item touch listener

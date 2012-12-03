@@ -42,6 +42,7 @@ import android.widget.TextView;
 
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.call.ContactPhoneDialModeSelectpopupWindow;
+import com.richitec.chinesetelephone.call.OutgoingCallActivity;
 import com.richitec.chinesetelephone.sip.SipCallMode;
 import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
@@ -62,7 +63,7 @@ public class ContactListTabContentActivity extends NavigationActivity {
 	private ListView _mABContactsListView;
 
 	// all address book name phonetic sorted contacts detail info list
-	private static List<ContactBean> _mAllNamePhoneticSortedContactsInfoArray;
+	private static List<ContactBean> _smAllNamePhoneticSortedContactsInfoArray;
 
 	// present contacts in address book detail info list
 	private List<ContactBean> _mPresentContactsInABInfoArray;
@@ -72,8 +73,22 @@ public class ContactListTabContentActivity extends NavigationActivity {
 
 	// init all name phonetic sorted contacts info array
 	public static void initNamePhoneticSortedContactsInfoArray() {
-		_mAllNamePhoneticSortedContactsInfoArray = AddressBookManager
+		_smAllNamePhoneticSortedContactsInfoArray = AddressBookManager
 				.getInstance().getAllNamePhoneticSortedContactsInfoArray();
+	}
+
+	// get in address book contact adapter
+	public static ListAdapter getInABContactAdapter(
+			Context outgoingCallActivityContext) {
+		// check all address book name phonetic sorted contacts detail info list
+		if (null == _smAllNamePhoneticSortedContactsInfoArray) {
+			// init first
+			initNamePhoneticSortedContactsInfoArray();
+		}
+
+		return generateInABContactAdapter(
+				(OutgoingCallActivity) outgoingCallActivityContext, false,
+				_smAllNamePhoneticSortedContactsInfoArray);
 	}
 
 	@Override
@@ -87,14 +102,14 @@ public class ContactListTabContentActivity extends NavigationActivity {
 		setTitle(R.string.contact_list_tab7nav_title);
 
 		// init present contacts in address book detail info array
-		_mPresentContactsInABInfoArray = _mAllNamePhoneticSortedContactsInfoArray;
+		_mPresentContactsInABInfoArray = _smAllNamePhoneticSortedContactsInfoArray;
 
-		// init contacts in address book list view
-		_mABContactsListView = (ListView) findViewById(R.id.contactInAB_listView);
+		// get contacts in address book list view
+		_mABContactsListView = (ListView) findViewById(R.id.contactInABInTab_listView);
 
 		// set contacts in address book listView adapter
-		_mABContactsListView
-				.setAdapter(generateInABContactAdapter(_mPresentContactsInABInfoArray));
+		_mABContactsListView.setAdapter(generateInABContactAdapter(this, true,
+				_mPresentContactsInABInfoArray));
 		// init address book contacts listView quick alphabet bar and add on
 		// touch listener
 		new ListViewQuickAlphabetBar(_mABContactsListView)
@@ -116,8 +131,13 @@ public class ContactListTabContentActivity extends NavigationActivity {
 		return true;
 	}
 
+	public ContactSearchStatus getContactSearchStatus() {
+		return _mContactSearchStatus;
+	}
+
 	// generate in address book contact adapter
-	private ListAdapter generateInABContactAdapter(
+	private static ListAdapter generateInABContactAdapter(
+			Context activityContext, Boolean contactListViewInTab,
 			List<ContactBean> presentContactsInAB) {
 		// in address book contacts adapter data keys
 		final String PRESENT_CONTACT_PHOTO = "present_contact_photo";
@@ -141,10 +161,14 @@ public class ContactListTabContentActivity extends NavigationActivity {
 					.getExtension().get(
 							AddressBookManager.PHONENUMBER_MATCHING_INDEXES);
 
+			// define contact search status
+			ContactSearchStatus _contactSearchStatus = ContactSearchStatus.NONESEARCH;
+
 			// set data
 			// define contact photo bitmap
-			Bitmap _contactPhotoBitmap = ((BitmapDrawable) getResources()
-					.getDrawable(R.drawable.img_default_avatar)).getBitmap();
+			Bitmap _contactPhotoBitmap = ((BitmapDrawable) activityContext
+					.getResources().getDrawable(R.drawable.img_default_avatar))
+					.getBitmap();
 
 			// check contact photo data
 			if (null != _contact.getPhoto()) {
@@ -173,9 +197,17 @@ public class ContactListTabContentActivity extends NavigationActivity {
 			// set photo
 			_dataMap.put(PRESENT_CONTACT_PHOTO, _contactPhotoBitmap);
 
+			// check contact listView in tab activity and update contact search
+			// status
+			if (true == contactListViewInTab) {
+				// update search status
+				_contactSearchStatus = ((ContactListTabContentActivity) activityContext)
+						.getContactSearchStatus();
+			}
+
 			// check contact search status
-			if (ContactSearchStatus.SEARCHBYNAME == _mContactSearchStatus
-					|| ContactSearchStatus.SEARCHBYCHINESENAME == _mContactSearchStatus) {
+			if (ContactSearchStatus.SEARCHBYNAME == _contactSearchStatus
+					|| ContactSearchStatus.SEARCHBYCHINESENAME == _contactSearchStatus) {
 				// get display name
 				SpannableString _displayName = new SpannableString(
 						_contact.getDisplayName());
@@ -183,9 +215,10 @@ public class ContactListTabContentActivity extends NavigationActivity {
 				// set attributed
 				for (int i = 0; i < _nameMatchingIndexes.size(); i++) {
 					// get key and value
-					Integer _nameCharMatchedPos = getRealPositionInContactDisplayName(
-							_contact.getDisplayName(),
-							_nameMatchingIndexes.keyAt(i));
+					Integer _nameCharMatchedPos = ((ContactListTabContentActivity) activityContext)
+							.getRealPositionInContactDisplayName(
+									_contact.getDisplayName(),
+									_nameMatchingIndexes.keyAt(i));
 					Integer _nameCharMatchedLength = _nameMatchingIndexes
 							.get(_nameMatchingIndexes.keyAt(i));
 
@@ -203,7 +236,7 @@ public class ContactListTabContentActivity extends NavigationActivity {
 			} else {
 				_dataMap.put(PRESENT_CONTACT_NAME, _contact.getDisplayName());
 			}
-			if (ContactSearchStatus.SEARCHBYPHONE == _mContactSearchStatus) {
+			if (ContactSearchStatus.SEARCHBYPHONE == _contactSearchStatus) {
 				// get format phone number string
 				SpannableString _formatPhoneNumberString = new SpannableString(
 						_contact.getFormatPhoneNumbers());
@@ -248,11 +281,13 @@ public class ContactListTabContentActivity extends NavigationActivity {
 		}
 
 		// get address book contacts listView adapter
-		AddressBookContactAdapter _addressBookContactsListViewAdapter = (AddressBookContactAdapter) ((ListView) findViewById(R.id.contactInAB_listView))
-				.getAdapter();
+		AddressBookContactAdapter _addressBookContactsListViewAdapter = (AddressBookContactAdapter) ((ListView) (contactListViewInTab ? ((ContactListTabContentActivity) activityContext)
+				.findViewById(R.id.contactInABInTab_listView)
+				: ((OutgoingCallActivity) activityContext)
+						.findViewById(R.id.contactInAB_listView))).getAdapter();
 
 		return null == _addressBookContactsListViewAdapter ? new AddressBookContactAdapter(
-				this, _addressBookContactsPresentDataList,
+				activityContext, _addressBookContactsPresentDataList,
 				R.layout.addressbook_contact_layout, new String[] {
 						PRESENT_CONTACT_PHOTO, PRESENT_CONTACT_NAME,
 						PRESENT_CONTACT_PHONES }, new int[] {
@@ -314,8 +349,8 @@ public class ContactListTabContentActivity extends NavigationActivity {
 	}
 
 	// contacts in address book listView quick alphabet bar on touch listener
-	class ContactsInABListViewQuickAlphabetBarOnTouchListener extends
-			OnTouchListener {
+	public static class ContactsInABListViewQuickAlphabetBarOnTouchListener
+			extends OnTouchListener {
 
 		@Override
 		protected boolean onTouch(RelativeLayout alphabetRelativeLayout,
@@ -445,13 +480,14 @@ public class ContactListTabContentActivity extends NavigationActivity {
 
 			case NONESEARCH:
 			default:
-				_mPresentContactsInABInfoArray = _mAllNamePhoneticSortedContactsInfoArray;
+				_mPresentContactsInABInfoArray = _smAllNamePhoneticSortedContactsInfoArray;
 				break;
 			}
 
 			// update contacts in address book listView adapter
-			_mABContactsListView
-					.setAdapter(generateInABContactAdapter(_mPresentContactsInABInfoArray));
+			_mABContactsListView.setAdapter(generateInABContactAdapter(
+					ContactListTabContentActivity.this, true,
+					_mPresentContactsInABInfoArray));
 		}
 
 		@Override
