@@ -169,13 +169,19 @@
             android:background="@android:color/white"
             android:orientation="vertical" >
 
-            <Button
-                android:id="@+id/hide_contactslist_button"
-                android:layout_width="wrap_content"
+            <FrameLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="6dp"
-                android:layout_marginTop="4dp"
-                android:text="@string/hidecontactslist_button_text" />
+                android:background="@drawable/img_contactslist_slidingdrawer_handleparentframelayout_bg" >
+
+                <Button
+                    android:id="@+id/hide_contactslist_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/hidecontactslist_button_text" />
+            </FrameLayout>
 
             <FrameLayout
                 android:layout_width="fill_parent"
