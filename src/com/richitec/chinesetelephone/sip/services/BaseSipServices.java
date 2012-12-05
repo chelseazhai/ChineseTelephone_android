@@ -98,6 +98,12 @@ public abstract class BaseSipServices implements ISipServices {
 
 	@Override
 	public boolean hangupSipVoiceCall(Long callDuration) {
+		// check current sip voice call using earphone
+		if (!isSipVoiceCallUsingLoudspeaker()) {
+			// close speaker
+			_mAudioManager.setSpeakerphoneOn(false);
+		}
+
 		// hangup current sip voice call and get its result
 		boolean _hangupCurrentSipVoiceCallResult = hangupSipVoiceCall();
 

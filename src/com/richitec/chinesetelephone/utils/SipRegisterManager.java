@@ -8,7 +8,7 @@ import com.richitec.commontoolkit.user.UserManager;
 
 public class SipRegisterManager {
 	
-	public static void registSip(SipRegistrationStateListener sipRegistStateListener){
+	public static void registSip(SipRegistrationStateListener sipRegistStateListener, String vosServerAddress){
 		
 		TelUserBean userBean = (TelUserBean) UserManager.getInstance().getUser();	
 		String sipName = userBean.getVosphone();
@@ -22,7 +22,7 @@ public class SipRegisterManager {
 			// set test sip account
 			_sipAccount.setSipUserName(sipName);
 			_sipAccount.setSipPwd(sipPsw);
-			_sipAccount.setSipServer("112.132.217.13");
+			_sipAccount.setSipServer(vosServerAddress);
 			_sipAccount.setSipDomain("richitec.com");
 			_sipAccount.setSipRealm("richitec.com");
 		

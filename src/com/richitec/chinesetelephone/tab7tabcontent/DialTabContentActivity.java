@@ -163,23 +163,6 @@ public class DialTabContentActivity extends NavigationActivity {
     	this.getParent().onBackPressed();
     }
 
-	// @Override
-	// protected void onDestroy() {
-	// // stop the engine
-	// if (NGN_ENGINE.isStarted()) {
-	// NGN_ENGINE.stop();
-	// }
-	//
-	// // release doubango ngn registration state broadcast receiver
-	// if (_mRegistrationStateBroadcastReceiver != null) {
-	// unregisterReceiver(_mRegistrationStateBroadcastReceiver);
-	//
-	// _mRegistrationStateBroadcastReceiver = null;
-	// }
-	//
-	// super.onDestroy();
-	// }
-
 	// generate dial phone button adapter
 	private ListAdapter generateDialPhoneButtonAdapter() {
 		// dial phone button adapter data key

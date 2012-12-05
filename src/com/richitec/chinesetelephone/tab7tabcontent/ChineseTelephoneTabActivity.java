@@ -85,7 +85,7 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 			public void run() {
 				// TODO Auto-generated method stub
 				//regist sip account
-				SipRegisterManager.registSip(sipRegistrationStateListener);
+				SipRegisterManager.registSip(sipRegistrationStateListener, getString(R.string.vos_server));
 			}
 		};
 		Thread registSipThread = new Thread(registSipRunnable);
