@@ -45,8 +45,8 @@
     <string name="title_activity_outgoing_call">OutgoingCallActivity</string>
     <string name="outgoingCallBG_imageView_content_description">outgoing call background image view</string>
     <string name="outgoing_call_unknownState">Unknown</string>
-    <string name="outgoing_call_trying">Calling &#8230;</string>
-    <string name="outgoing_call_earlyMedia7RemoteRing">Ring &#8230;</string>
+    <string name="outgoing_call_trying">Calling, please wait &#8230;</string>
+    <string name="outgoing_call_earlyMedia7RemoteRing">Ringing &#8230;</string>
     <string name="outgoing_call_failed">Call failed</string>
     <string name="end_outgoing_call">Call ending</string>
     <string name="outgoing_call_ended">Call ended</string>
@@ -55,10 +55,16 @@
     <string name="callController_handfreeItem_text">Handfree</string>
     <string name="callController_muteItem_text">Mute</string>
     <string name="callController_keyboardItem_text">Keyboard</string>
-    <string name="endCall_imageView_content_description">end call image button</string>
+    <string name="callbackWaiting_imageView_content_description">callback waiting image view</string>
+    <string name="send_callbackCallRequest_succeed">Call submit</string>
+    <string name="send_callbackCallRequest_failed">Call failed</string>
+    <string name="callbackWaiting_textView_succeed">Call Request submit succeed, your telephone number(***) will be ring later, please accept first and then system will connect phone *** for you</string>
+    <string name="callbackWaiting_textView_failed">Call Request submit failed, please make your network keeping alive</string>
+    <string name="back4waitingCallbackCall_imageButton_content_description">back for waiting callback call image button</string>
+    <string name="endCall_imageButton_content_description">end call image button</string>
     <string name="contactslist_slidingDrawer_handleBtn_text">contacts list sliding drawer handle button text</string>
     <string name="hidecontactslist_button_text">Back</string>
     <string name="hideKeyboard_imageView_content_description">hide keyboard image button</string>
-    <string name="keyboardBtn_imageButton_content_description">keyboard button image button</string>
+    <string name="keyboardBtn_imageButton_content_description">keyboard image button</string>
 
 </resources>

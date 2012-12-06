@@ -203,14 +203,6 @@ public class DoubangoSipServices extends BaseSipServices implements
 	}
 
 	@Override
-	public boolean makeCallbackSipVoiceCall(String calleeName,
-			String calleePhone) {
-		Log.d(LOG_TAG, "Not implement make callback sip voice call now");
-
-		return false;
-	}
-
-	@Override
 	public boolean hangupSipVoiceCall() {
 		// define return result
 		boolean _ret = false;

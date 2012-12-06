@@ -22,4 +22,8 @@
     <!-- outgoing call keyboard phone button -->
     <dimen name="keyboardBtn_imageView_height">60dp</dimen>
 
+    <!-- outgoing call callback waiting -->
+    <dimen name="callbackWaiting_relativeLayout_marginTop7Bottom">22dp</dimen>
+    <dimen name="callbackWaiting_relativeLayout_marginLeft7Right">10dp</dimen>
+
 </resources>

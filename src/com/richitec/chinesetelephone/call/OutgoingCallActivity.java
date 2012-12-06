@@ -7,6 +7,9 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+
 import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
@@ -25,6 +28,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -32,12 +36,15 @@ import android.widget.SlidingDrawer;
 import android.widget.TextView;
 
 import com.richitec.chinesetelephone.R;
+import com.richitec.chinesetelephone.sip.SipCallMode;
+import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.chinesetelephone.sip.listeners.SipInviteStateListener;
 import com.richitec.chinesetelephone.sip.services.BaseSipServices;
 import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity;
 import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity.ContactsInABListViewQuickAlphabetBarOnTouchListener;
 import com.richitec.chinesetelephone.tab7tabcontent.DialTabContentActivity;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar;
+import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
 
 public class OutgoingCallActivity extends Activity implements
 		SipInviteStateListener {
@@ -55,9 +62,11 @@ public class OutgoingCallActivity extends Activity implements
 	public static final String KEYBOARD_BUTTON_ONCLICKLISTENER = "keyboard_button_onClickListener";
 
 	// sip services
-	private static BaseSipServices _smSipServices;
+	private static final BaseSipServices SIPSERVICES = SipUtils
+			.getSipServices();
 
 	// outgoing call activity onCreate param key
+	public static final String OUTGOING_CALL_MODE = "outgoing_call_mode";
 	public static final String OUTGOING_CALL_PHONE = "outgoing_call_phone";
 	public static final String OUTGOING_CALL_OWNERSHIP = "outgoing_call_ownership";
 
@@ -80,6 +89,9 @@ public class OutgoingCallActivity extends Activity implements
 	// update call duration time handle
 	private final Handler UPDATE_CALLDURATIONTIME_HANDLE = new Handler();
 
+	// send callback sip voice call http request listener
+	private final SendCallbackSipVoiceCallHttpRequestListener SEND_CALLBACKSIPVOICECALL_HTTPREQUESTLISTENER = new SendCallbackSipVoiceCallHttpRequestListener();
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -90,11 +102,22 @@ public class OutgoingCallActivity extends Activity implements
 		// set content view
 		setContentView(R.layout.outgoing_call_activity_layout);
 
+		// define outgoing call mode, callback
+		SipCallMode _outgoingCallMode = SipCallMode.CALLBACK;
+
+		// set sip services sip invite state listener
+		SIPSERVICES.setSipInviteStateListener(this);
+
 		// get the intent parameter data
 		Bundle _data = getIntent().getExtras();
 
 		// check the data bundle and get call phone
 		if (null != _data) {
+			// check and reset outgoing call mode
+			if (null != _data.get(OUTGOING_CALL_MODE)) {
+				_outgoingCallMode = (SipCallMode) _data.get(OUTGOING_CALL_MODE);
+			}
+
 			// init outgoing call phone and set callee textView text
 			if (null != _data.getString(OUTGOING_CALL_PHONE)) {
 				_mCalleePhone = _data.getString(OUTGOING_CALL_PHONE);
@@ -104,14 +127,6 @@ public class OutgoingCallActivity extends Activity implements
 								.getString(OUTGOING_CALL_OWNERSHIP) ? _data
 								.getString(OUTGOING_CALL_OWNERSHIP)
 								: _mCalleePhone);
-			}
-
-			// check sip services
-			if (null != _smSipServices) {
-				// set sip services sip invite state listener
-				_smSipServices.setSipInviteStateListener(this);
-			} else {
-				Log.e(LOG_TAG, "Get sip services error, sip services is null");
 			}
 		}
 
@@ -152,6 +167,13 @@ public class OutgoingCallActivity extends Activity implements
 		((GridView) findViewById(R.id.keyboard_gridView))
 				.setAdapter(generateKeyboardAdapter());
 
+		// get back for waiting callback call button
+		ImageButton _back4waitingCallbackCallImgBtn = (ImageButton) findViewById(R.id.back4waiting_callbackCall_button);
+
+		// bind back for waiting callback call button on click listener
+		_back4waitingCallbackCallImgBtn
+				.setOnClickListener(new Back4WaitingCallbackCallBtnOnClickListener());
+
 		// bind hangup outgoing call button on click listener
 		((ImageButton) findViewById(R.id.hangup_button))
 				.setOnClickListener(new HangupOutgoingCallBtnOnClickListener());
@@ -159,6 +181,25 @@ public class OutgoingCallActivity extends Activity implements
 		// bind hide keyboard button on click listener
 		((ImageButton) findViewById(R.id.hideKeyboard_button))
 				.setOnClickListener(new HideKeyboardBtnOnClickListener());
+
+		// check outgoing call mode
+		switch (_outgoingCallMode) {
+		case DIRECT_CALL:
+			// hide back for waiting callback call button, show call controller
+			// gridView and call controller footer linearLayout
+			_back4waitingCallbackCallImgBtn.setVisibility(View.GONE);
+
+			_callControllerGridView.setVisibility(View.VISIBLE);
+			((LinearLayout) findViewById(R.id.callController_footerLinearLayout))
+					.setVisibility(View.VISIBLE);
+
+			break;
+
+		case CALLBACK:
+		default:
+			// nothing to do
+			break;
+		}
 	}
 
 	@Override
@@ -190,7 +231,7 @@ public class OutgoingCallActivity extends Activity implements
 	@Override
 	public void onCallSpeaking() {
 		// check current sip voice call using loudspeaker
-		if (_smSipServices.isSipVoiceCallUsingLoudspeaker()) {
+		if (SIPSERVICES.isSipVoiceCallUsingLoudspeaker()) {
 			// set current sip voice call loudspeaker
 			// set mode
 			_mAudioManager.setMode(AudioManager.MODE_NORMAL);
@@ -263,9 +304,13 @@ public class OutgoingCallActivity extends Activity implements
 		terminateSipVoiceCall(SipVoiceCallTerminatedType.PASSIVE);
 	}
 
-	// init outgoing call activity sip services
-	public static void initSipServices(BaseSipServices sipServices) {
-		_smSipServices = sipServices;
+	// // init outgoing call activity sip services
+	// public static void initSipServices(BaseSipServices sipServices) {
+	// _smSipServices = sipServices;
+	// }
+
+	public SendCallbackSipVoiceCallHttpRequestListener getSendCallbackSipVoiceCallHttpRequestListener() {
+		return SEND_CALLBACKSIPVOICECALL_HTTPREQUESTLISTENER;
 	}
 
 	// generate call controller adapter
@@ -461,7 +506,7 @@ public class OutgoingCallActivity extends Activity implements
 		switch (terminatedType) {
 		case INITIATIVE:
 			// hangup current sip voice call
-			if (!_smSipServices.hangupSipVoiceCall(_mCallDutation)) {
+			if (!SIPSERVICES.hangupSipVoiceCall(_mCallDutation)) {
 				// cancel call duration timer
 				CALLDURATION_TIMER.cancel();
 
@@ -481,7 +526,7 @@ public class OutgoingCallActivity extends Activity implements
 		case PASSIVE:
 		default:
 			// update call log call duration time
-			_smSipServices.updateSipVoiceCallLog(_mCallDutation);
+			SIPSERVICES.updateSipVoiceCallLog(_mCallDutation);
 
 			break;
 		}
@@ -572,13 +617,13 @@ public class OutgoingCallActivity extends Activity implements
 			if (MotionEvent.ACTION_DOWN == event.getAction()) {
 				// check current sip voice call is muted
 				// muted now, unmute it
-				if (_smSipServices.isSipVoiceCallMuted()) {
+				if (SIPSERVICES.isSipVoiceCallMuted()) {
 					// update background resource
 					((RelativeLayout) v)
 							.setBackgroundResource(R.drawable.callcontroller_muteitem6keyboard_9btn_bg);
 
 					// unmute current sip voice call
-					_smSipServices.unmuteSipVoiceCall();
+					SIPSERVICES.unmuteSipVoiceCall();
 				}
 				// unmuted now, mute it
 				else {
@@ -587,7 +632,7 @@ public class OutgoingCallActivity extends Activity implements
 							.setBackgroundResource(R.drawable.callcontroller_unmuteitem6keyboard_9btn_bg);
 
 					// mute current sip voice call
-					_smSipServices.muteSipVoiceCall();
+					SIPSERVICES.muteSipVoiceCall();
 				}
 			}
 
@@ -606,13 +651,13 @@ public class OutgoingCallActivity extends Activity implements
 			if (MotionEvent.ACTION_DOWN == event.getAction()) {
 				// check current sip voice call using loudspeaker or earphone
 				// using loudspeaker now, set using earphone
-				if (_smSipServices.isSipVoiceCallUsingLoudspeaker()) {
+				if (SIPSERVICES.isSipVoiceCallUsingLoudspeaker()) {
 					// update background resource
 					((RelativeLayout) v)
 							.setBackgroundResource(R.drawable.callcontroller_handfreeitem6keyboard_poundbtn_bg);
 
 					// set using earphone
-					_smSipServices.setSipVoiceCallUsingEarphone();
+					SIPSERVICES.setSipVoiceCallUsingEarphone();
 				}
 				// using earphone now, set using loudspeaker
 				else {
@@ -621,7 +666,7 @@ public class OutgoingCallActivity extends Activity implements
 							.setBackgroundResource(R.drawable.callcontroller_cancelhandfreeitem6keyboard_poundbtn_bg);
 
 					// set using loudspeaker
-					_smSipServices.setSipVoiceCallUsingLoudspeaker();
+					SIPSERVICES.setSipVoiceCallUsingLoudspeaker();
 				}
 			}
 
@@ -678,8 +723,19 @@ public class OutgoingCallActivity extends Activity implements
 					.get((Integer) v.getTag()), _volume, _volume, 0, 0, 1f);
 
 			// send dtmf
-			_smSipServices.sentDTMF(_clickedPhoneNumber);
+			SIPSERVICES.sentDTMF(_clickedPhoneNumber);
 		}
+	}
+
+	// back for waiting callback call button on click listener
+	class Back4WaitingCallbackCallBtnOnClickListener implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			// finish outgoing call activity
+			finish();
+		}
+
 	}
 
 	// hangup outgoing call button on click listener
@@ -700,6 +756,64 @@ public class OutgoingCallActivity extends Activity implements
 		public void onClick(View v) {
 			// hide keyboard gridView and hide keyboard image button
 			show6hideKeyboard(false);
+		}
+
+	}
+
+	// send callback sip voice call http request listener
+	class SendCallbackSipVoiceCallHttpRequestListener extends
+			OnHttpRequestListener {
+
+		@Override
+		public void onFinished(HttpRequest request, HttpResponse response) {
+			// check send callback sip voice call request response
+			checkSendCallbackSipVoiceCallRequestResponse(true);
+		}
+
+		@Override
+		public void onFailed(HttpRequest request, HttpResponse response) {
+			Log.e(LOG_TAG, "Send callback sip voice call http request failed");
+
+			// check send callback sip voice call request response
+			checkSendCallbackSipVoiceCallRequestResponse(false);
+		}
+
+		// check send callback sip voice call request response
+		private void checkSendCallbackSipVoiceCallRequestResponse(
+				Boolean isSuccess) {
+			// generate send callback sip voice call state tip text id, callback
+			// waiting imageView image resource id and callback waiting textView
+			// text
+			Integer _sendCallbackSipVoiceCallStateTipTextId = R.string.send_callbackCallRequest_failed;
+			Integer _callbackCallWaitingImageViewImgResId = android.R.drawable.star_big_off;
+			String _callbackCallWaitingTextViewText = getResources().getString(
+					R.string.callbackWaiting_textView_failed);
+
+			// update send callback sip voice call state tip text id, callback
+			// waiting imageView image resource id and callback waiting textView
+			// text
+			if (isSuccess) {
+				_sendCallbackSipVoiceCallStateTipTextId = R.string.send_callbackCallRequest_succeed;
+				_callbackCallWaitingImageViewImgResId = android.R.drawable.star_big_on;
+				_callbackCallWaitingTextViewText = getResources().getString(
+						R.string.callbackWaiting_textView_succeed);
+			}
+
+			// update call state textView text
+			((TextView) findViewById(R.id.callState_textView))
+					.setText(_sendCallbackSipVoiceCallStateTipTextId);
+
+			// show callback waiting relativeLayout
+			((RelativeLayout) findViewById(R.id.callbackWaiting_relativeLayout))
+					.setVisibility(View.VISIBLE);
+
+			// update callback waiting imageView image resource
+			((ImageView) findViewById(R.id.callbackWaiting_imageView))
+					.setImageResource(_callbackCallWaitingImageViewImgResId);
+
+			// update callback waiting textView text
+			((TextView) findViewById(R.id.callbackWaiting_textView))
+					.setText(_callbackCallWaitingTextViewText);
 		}
 
 	}

@@ -68,45 +68,98 @@
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/outgoingCall_footerLinearLayout"
+        <FrameLayout
+            android:id="@+id/outgoingCall_footerFrameLayout"
             android:layout_width="fill_parent"
             android:layout_height="80dp"
             android:layout_alignParentBottom="true"
             android:background="@drawable/img_outgoingcall_header7footer_bg"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
             android:padding="16dp" >
 
             <ImageButton
-                android:id="@+id/hangup_button"
+                android:id="@+id/back4waiting_callbackCall_button"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_weight="1.07"
-                android:background="@drawable/hangup_btn_bg"
-                android:contentDescription="@string/endCall_imageView_content_description"
-                android:src="@drawable/img_hangup_btn_long" />
+                android:background="@drawable/hangup6back4waitingcallbackcall_btn_bg"
+                android:contentDescription="@string/back4waitingCallbackCall_imageButton_content_description"
+                android:src="@drawable/img_back4waiting_callbackcall_btn" />
 
-            <ImageButton
-                android:id="@+id/hideKeyboard_button"
+            <LinearLayout
+                android:id="@+id/callController_footerLinearLayout"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/hidekeyboard_btn_bg"
-                android:contentDescription="@string/hideKeyboard_imageView_content_description"
-                android:src="@drawable/img_hidekeyboard_btn"
-                android:visibility="gone" />
-        </LinearLayout>
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:visibility="gone" >
+
+                <ImageButton
+                    android:id="@+id/hangup_button"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1.07"
+                    android:background="@drawable/hangup6back4waitingcallbackcall_btn_bg"
+                    android:contentDescription="@string/endCall_imageButton_content_description"
+                    android:src="@drawable/img_hangup_btn_long" />
+
+                <ImageButton
+                    android:id="@+id/hideKeyboard_button"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/hidekeyboard_btn_bg"
+                    android:contentDescription="@string/hideKeyboard_imageView_content_description"
+                    android:src="@drawable/img_hidekeyboard_btn"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </FrameLayout>
 
         <RelativeLayout
             android:id="@+id/outgoingCall_centerRelativeLayout"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_above="@id/outgoingCall_footerLinearLayout"
+            android:layout_above="@id/outgoingCall_footerFrameLayout"
             android:layout_below="@id/outgoingCall_headerLinearLayout"
             android:background="@android:color/transparent"
             android:padding="16dp" >
+
+            <RelativeLayout
+                android:id="@+id/callbackWaiting_relativeLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="@dimen/callbackWaiting_relativeLayout_marginTop7Bottom"
+                android:layout_marginLeft="@dimen/callbackWaiting_relativeLayout_marginLeft7Right"
+                android:layout_marginRight="@dimen/callbackWaiting_relativeLayout_marginLeft7Right"
+                android:layout_marginTop="@dimen/callbackWaiting_relativeLayout_marginTop7Bottom"
+                android:background="@drawable/callbackwaiting_relativelayout_bg"
+                android:padding="2dp"
+                android:visibility="gone" >
+
+                <TextView
+                    android:id="@+id/callbackWaiting_textView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_horizontal|bottom"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/white" />
+
+                <ImageView
+                    android:id="@+id/callbackWaiting_imageView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_above="@id/callbackWaiting_textView"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"
+                    android:layout_marginTop="28dp"
+                    android:contentDescription="@string/callbackWaiting_imageView_content_description"
+                    android:scaleType="fitStart" />
+            </RelativeLayout>
 
             <GridView
                 android:id="@+id/callController_gridView"
@@ -124,7 +177,8 @@
                 android:listSelector="@android:color/transparent"
                 android:numColumns="2"
                 android:scrollbars="none"
-                android:verticalSpacing="1dp" >
+                android:verticalSpacing="1dp"
+                android:visibility="gone" >
             </GridView>
 
             <GridView

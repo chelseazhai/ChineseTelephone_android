@@ -3,6 +3,7 @@ package com.richitec.chinesetelephone.sip;
 import android.util.Log;
 
 import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
+import com.richitec.chinesetelephone.sip.services.BaseSipServices;
 import com.richitec.chinesetelephone.sip.services.DoubangoSipServices;
 import com.richitec.chinesetelephone.sip.services.ISipServices;
 
@@ -10,6 +11,11 @@ public class SipUtils {
 
 	// sip services
 	private static final ISipServices sipServices = new DoubangoSipServices();
+
+	// get base sip services
+	public static BaseSipServices getSipServices() {
+		return (BaseSipServices) sipServices;
+	}
 
 	// register sip account
 	public static void registerSipAccount(SipRegisterBean sipAccount,
