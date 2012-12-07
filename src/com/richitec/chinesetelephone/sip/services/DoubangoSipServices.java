@@ -38,13 +38,13 @@ public class DoubangoSipServices extends BaseSipServices implements
 	private BroadcastReceiver _mRegistrationStateBroadcastReceiver;
 
 	// doubango ngn sip register intent filter
-	private final IntentFilter _mSipRegisterIntentFilter = new IntentFilter();
+	private final IntentFilter SIPEGISTER_INTENTFILTER = new IntentFilter();
 
 	// doubango ngn audio/video session state broadcast receiver
 	private BroadcastReceiver _mAVSessionStateBroadcastReceiver;
 
 	// doubango ngn sip invite intent filter
-	private final IntentFilter _mSipInviteIntentFilter = new IntentFilter();
+	private final IntentFilter SIPINVITE_INTENTFILTER = new IntentFilter();
 
 	// doubango current sip voice call ngn audio session
 	private NgnAVSession _mSipVoiceCallSession;
@@ -53,11 +53,11 @@ public class DoubangoSipServices extends BaseSipServices implements
 		super();
 
 		// add sip register intent filter action
-		_mSipRegisterIntentFilter
+		SIPEGISTER_INTENTFILTER
 				.addAction(NgnRegistrationEventArgs.ACTION_REGISTRATION_EVENT);
 
 		// add sip invite intent filter action
-		_mSipInviteIntentFilter
+		SIPINVITE_INTENTFILTER
 				.addAction(NgnInviteEventArgs.ACTION_INVITE_EVENT);
 	}
 
@@ -72,9 +72,8 @@ public class DoubangoSipServices extends BaseSipServices implements
 		_mRegistrationStateBroadcastReceiver = new RegistrationStateBroadcastReceiver();
 
 		// register sip registration state broadcast receiver
-		AppLaunchActivity.getAppContext()
-				.registerReceiver(_mRegistrationStateBroadcastReceiver,
-						_mSipRegisterIntentFilter);
+		AppLaunchActivity.getAppContext().registerReceiver(
+				_mRegistrationStateBroadcastReceiver, SIPEGISTER_INTENTFILTER);
 
 		// starts ngn engine
 		if (!NGN_ENGINE.isStarted()) {
@@ -163,7 +162,7 @@ public class DoubangoSipServices extends BaseSipServices implements
 
 		// register doubango ngn audio/video session state receiver
 		AppLaunchActivity.getAppContext().registerReceiver(
-				_mAVSessionStateBroadcastReceiver, _mSipInviteIntentFilter);
+				_mAVSessionStateBroadcastReceiver, SIPINVITE_INTENTFILTER);
 
 		// get doubango ngn sip service
 		INgnSipService _sipService = NGN_ENGINE.getSipService();
@@ -268,12 +267,9 @@ public class DoubangoSipServices extends BaseSipServices implements
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			// get the action
-			String _action = intent.getAction();
-
 			// check the action for ngn registration Event
 			if (NgnRegistrationEventArgs.ACTION_REGISTRATION_EVENT
-					.equals(_action)) {
+					.equals(intent.getAction())) {
 				// get ngn registration event arguments
 				NgnRegistrationEventArgs _ngnRegistrationEventArgs = intent
 						.getParcelableExtra(NgnEventArgs.EXTRA_EMBEDDED);
@@ -333,11 +329,9 @@ public class DoubangoSipServices extends BaseSipServices implements
 			if (null == _mSipVoiceCallSession) {
 				Log.e(LOG_TAG, "Doubango ngn audio/video session is null");
 			} else {
-				// get the action
-				String _action = intent.getAction();
-
 				// check the action for ngn invite event
-				if (NgnInviteEventArgs.ACTION_INVITE_EVENT.equals(_action)) {
+				if (NgnInviteEventArgs.ACTION_INVITE_EVENT.equals(intent
+						.getAction())) {
 					// default sip code
 					short _defSipCode = 200;
 

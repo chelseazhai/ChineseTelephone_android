@@ -11,11 +11,15 @@ import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -94,6 +98,9 @@ public class OutgoingCallActivity extends Activity implements
 	// send callback sip voice call http request listener
 	private final SendCallbackSipVoiceCallHttpRequestListener SEND_CALLBACKSIPVOICECALL_HTTPREQUESTLISTENER = new SendCallbackSipVoiceCallHttpRequestListener();
 
+	// phone state broadcast receiver
+	private BroadcastReceiver _mPhoneStateBroadcastReceiver;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -109,6 +116,18 @@ public class OutgoingCallActivity extends Activity implements
 
 		// set sip services sip invite state listener
 		SIPSERVICES.setSipInviteStateListener(this);
+
+		// define phone state intent filter and default filter action is phone
+		// state
+		IntentFilter _phoneStateIntentFilter = new IntentFilter(
+				"android.intent.action.PHONE_STATE");
+
+		// add phone state intent filter action, new outgoing call
+		_phoneStateIntentFilter.addAction(Intent.ACTION_NEW_OUTGOING_CALL);
+
+		// set phone state broadcast receiver and register it
+		_mPhoneStateBroadcastReceiver = new PhoneStateBroadcastReceiver();
+		registerReceiver(_mPhoneStateBroadcastReceiver, _phoneStateIntentFilter);
 
 		// get the intent parameter data
 		Bundle _data = getIntent().getExtras();
@@ -819,6 +838,40 @@ public class OutgoingCallActivity extends Activity implements
 			// show callback waiting relativeLayout
 			((RelativeLayout) findViewById(R.id.callbackWaiting_relativeLayout))
 					.setVisibility(View.VISIBLE);
+		}
+
+	}
+
+	// phone state broadcast receiver
+	class PhoneStateBroadcastReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// check the action for phone state
+			if (Intent.ACTION_NEW_OUTGOING_CALL.equals(intent.getAction())) {
+				// outgoing call
+				Log.d(LOG_TAG, "Hava a outgoing call");
+
+				//
+			} else {
+				// incoming call
+				// get telephone manager
+				TelephonyManager _telephoneManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+
+				// check incoming call state
+				switch (_telephoneManager.getCallState()) {
+				case TelephonyManager.CALL_STATE_RINGING:
+					// finish outgoing call activity for making callback sip
+					// voice call if has incoming call
+					finish();
+
+					break;
+
+				default:
+					// nothing to do
+					break;
+				}
+			}
 		}
 
 	}
