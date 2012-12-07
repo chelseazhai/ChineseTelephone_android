@@ -17,5 +17,5 @@
     <string name="app_download_url">/downloadapp/2/android</string>
     <string name="app_version_url">/version/2/android</string>
     <string name="appvcenter_url">http://www.uu-talk.com/appvcenter</string>
-    <string name="vos_server">103.20.193.172</string>
+    <string name="vos_server">vos.uu-talk.com</string>
 </resources>
