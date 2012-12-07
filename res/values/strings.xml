@@ -68,6 +68,14 @@
     <string name="hidecontactslist_button_text">Back</string>
     <string name="hideKeyboard_imageView_content_description">hide keyboard image button</string>
     <string name="sending_request">正在发送请求</string>
+    <string name="callbackWaiting_imageView_content_description">callback waiting image view</string>
+    <string name="send_callbackCallRequest_succeed">Call submit</string>
+    <string name="send_callbackCallRequest_failed">Call failed</string>
+    <string name="callbackWaiting_textView_succeed">Call Request submit succeed, your telephone number(***) will be ring later, please accept first and then system will connect phone *** for you</string>
+    <string name="callbackWaiting_textView_failed">Call Request submit failed, please make your network keeping alive</string>
+    <string name="back4waitingCallbackCall_imageButton_content_description">back for waiting callback call image button</string>
+    <string name="endCall_imageButton_content_description">end call image button</string>
+    <string name="keyboardBtn_imageButton_content_description">keyboard image button</string>
 
     <!-- version upgrade -->
     <string name="detect_new_version" formatted="false">发现新版本【%s】，\n是否升级？\n本次更新内容：\n%s</string>
@@ -258,6 +266,5 @@
     <string name="title_activity_remain_money">RemainMoneyActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_invite_friend">InviteFriendActivity</string>
-    <string name="keyboardBtn_imageButton_content_description">keyboard button image button</string>
 
 </resources>

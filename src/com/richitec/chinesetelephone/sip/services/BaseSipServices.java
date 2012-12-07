@@ -6,7 +6,9 @@ import java.util.Map;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.os.Handler;
 import android.provider.CallLog;
+import android.util.Log;
 
 import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.call.OutgoingCallActivity;
@@ -15,8 +17,13 @@ import com.richitec.chinesetelephone.sip.listeners.SipInviteStateListener;
 import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
 import com.richitec.commontoolkit.calllog.CallLogManager;
 import com.richitec.commontoolkit.user.UserManager;
+import com.richitec.commontoolkit.utils.HttpUtils;
+import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
+import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
 
 public abstract class BaseSipServices implements ISipServices {
+
+	private static final String LOG_TAG = "BaseSipServices";
 
 	// sip voice call log id
 	private Long _mSipVoiceCallLogId;
@@ -48,52 +55,44 @@ public abstract class BaseSipServices implements ISipServices {
 	public abstract boolean makeDirectDialSipVoiceCall(String calleeName,
 			String calleePhone);
 
-	// make callback sip voice call
-	public abstract boolean makeCallbackSipVoiceCall(String calleeName,
-			String calleePhone);
-
 	// hangup current sip voice call
 	public abstract boolean hangupSipVoiceCall();
 
 	@Override
-	public void makeSipVoiceCall(String calleeName, String calleePhone,
-			SipCallMode callMode) {
+	public void makeSipVoiceCall(final String calleeName,
+			final String calleePhone, final SipCallMode callMode) {
 		// before make sip voice call
-		beforeMakeSipVoiceCall(calleeName, calleePhone);
+		beforeMakeSipVoiceCall(calleeName, calleePhone, callMode);
 
-		// check call mode and get make sip voice call result
-		boolean _makeSipVoiceCallResult;
+		// new handle post delay 0.5 second to execute make sip voice call
+		new Handler().postDelayed(new Runnable() {
 
-		switch (callMode) {
-		case CALLBACK:
-			// make callback sip voice call
-			_makeSipVoiceCallResult = makeCallbackSipVoiceCall(calleeName,
-					calleePhone);
+			@Override
+			public void run() {
+				// check call mode and get make sip voice call result
+				boolean _makeSipVoiceCallResult = false;
 
-			break;
+				switch (callMode) {
+				case CALLBACK:
+					// make callback sip voice call
+					_makeSipVoiceCallResult = makeCallbackSipVoiceCall(
+							calleeName, calleePhone);
 
-		case DIRECT_CALL:
-		default:
-			for (String prefix : PhoneNumberFilterPrefix) {
-				int index = calleePhone.indexOf(prefix);
-				if (index == 0 && prefix.length() < calleePhone.length()) {
-					calleePhone = calleePhone.substring(prefix.length());
+					break;
+
+				case DIRECT_CALL:
+				default:
+					// make direct dial sip voice call
+					_makeSipVoiceCallResult = makeDirectDialSipVoiceCall(
+							calleeName, calleePhone);
+
+					break;
 				}
+
+				// after make sip voice call
+				afterMakeSipVoiceCall(_makeSipVoiceCallResult);
 			}
-			if(calleePhone.matches("(^[0]\\d{2,3}\\d{7,8})|(^[1][\\d]{10})|(\\d{9})")){
-				TelUserBean telUser = (TelUserBean) UserManager.getInstance().getUser();
-				calleePhone = telUser.getDialCountryCode() + calleePhone;
-			}
-
-			// make direct dial sip voice call
-			_makeSipVoiceCallResult = makeDirectDialSipVoiceCall(calleeName,
-					calleePhone);
-
-			break;
-		}
-
-		// after make sip voice call
-		afterMakeSipVoiceCall(_makeSipVoiceCallResult);
+		}, 500);
 	}
 
 	@Override
@@ -143,7 +142,7 @@ public abstract class BaseSipServices implements ISipServices {
 
 	public void setSipInviteStateListener(
 			SipInviteStateListener sipInviteStateListener) {
-		this._mSipInviteStateListener = sipInviteStateListener;
+		_mSipInviteStateListener = sipInviteStateListener;
 	}
 
 	// update current sip voice call muted flag
@@ -174,7 +173,15 @@ public abstract class BaseSipServices implements ISipServices {
 	}
 
 	// before make sip voice call
-	private void beforeMakeSipVoiceCall(String calleeName, String calleePhone) {
+	private void beforeMakeSipVoiceCall(String calleeName, String calleePhone,
+			SipCallMode callMode) {
+		// init sip services
+		// OutgoingCallActivity.initSipServices(this);
+
+		// insert sip voice call log
+		_mSipVoiceCallLogId = CallLogManager.insertCallLog(calleeName,
+				calleePhone);
+
 		// start outgoing call activity and set parameters
 		// define the outgoing call intent
 		Intent _outgoingCallIntent = new Intent(
@@ -183,33 +190,64 @@ public abstract class BaseSipServices implements ISipServices {
 		// set it as an new task
 		_outgoingCallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-		// set outgoing call callee phone and callee name
+		// set outgoing call mode, callee phone and callee name
+		_outgoingCallIntent.putExtra(OutgoingCallActivity.OUTGOING_CALL_MODE,
+				callMode);
 		_outgoingCallIntent.putExtra(OutgoingCallActivity.OUTGOING_CALL_PHONE,
 				calleePhone);
 		_outgoingCallIntent.putExtra(
 				OutgoingCallActivity.OUTGOING_CALL_OWNERSHIP, calleeName);
 
-		// init sip services
-		OutgoingCallActivity.initSipServices(this);
-
 		// start outgoing call activity
 		AppLaunchActivity.getAppContext().startActivity(_outgoingCallIntent);
-
-		// insert sip voice call log
-		_mSipVoiceCallLogId = CallLogManager.insertCallLog(calleeName,
-				calleePhone);
 	}
 
 	// after make sip voice call
 	private void afterMakeSipVoiceCall(boolean makeCallResult) {
 		// check make call result and update call failed call log
 		if (!makeCallResult) {
-			// sip voice call failed
-			getSipInviteStateListener().onCallFailed();
+			// get sip invite state listener
+			SipInviteStateListener _sipInviteStateListener = getSipInviteStateListener();
+
+			// check sip invite state listener
+			if (null != _sipInviteStateListener) {
+				// sip voice call failed
+				_sipInviteStateListener.onCallFailed();
+			} else {
+				Log.e(LOG_TAG,
+						"Get sip invite state listener error, sip invite listener = "
+								+ _sipInviteStateListener);
+			}
 
 			// update sip voice call failed call log
 			updateSipVoiceCallLog(-1L);
 		}
+	}
+
+	// make callback sip voice call
+	private boolean makeCallbackSipVoiceCall(String calleeName,
+			String calleePhone) {
+		// define send callback sip voice call http request listener
+		OnHttpRequestListener _sendCallbackSipVoiceCallHttpRequestListener = null;
+
+		// update send callback sip voice call http request listener
+		try {
+			_sendCallbackSipVoiceCallHttpRequestListener = ((OutgoingCallActivity) getSipInviteStateListener())
+					.getSendCallbackSipVoiceCallHttpRequestListener();
+		} catch (Exception e) {
+			Log.e(LOG_TAG,
+					"Get send callback sip voice call http request listener error, sip invite state listener = "
+							+ getSipInviteStateListener()
+							+ " and exception = "
+							+ e.getMessage());
+		}
+
+		// send callback sip voice call post request
+		HttpUtils.getRequest("http://baidu.com", null, null,
+				HttpRequestType.ASYNCHRONOUS,
+				_sendCallbackSipVoiceCallHttpRequestListener);
+
+		return true;
 	}
 
 }
