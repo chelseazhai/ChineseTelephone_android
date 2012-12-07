@@ -80,7 +80,7 @@
                 android:id="@+id/back4waiting_callbackCall_button"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:background="@drawable/hangup6back4waitingcallbackcall_btn_bg"
+                android:background="@drawable/back4waitingcallbackcall_btn_bg"
                 android:contentDescription="@string/back4waitingCallbackCall_imageButton_content_description"
                 android:src="@drawable/img_back4waiting_callbackcall_btn" />
 
@@ -97,7 +97,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_weight="1.07"
-                    android:background="@drawable/hangup6back4waitingcallbackcall_btn_bg"
+                    android:background="@drawable/hangup_btn_bg"
                     android:contentDescription="@string/endCall_imageButton_content_description"
                     android:src="@drawable/img_hangup_btn_long" />
 
@@ -132,8 +132,7 @@
                 android:layout_marginLeft="@dimen/callbackWaiting_relativeLayout_marginLeft7Right"
                 android:layout_marginRight="@dimen/callbackWaiting_relativeLayout_marginLeft7Right"
                 android:layout_marginTop="@dimen/callbackWaiting_relativeLayout_marginTop7Bottom"
-                android:background="@drawable/callbackwaiting_relativelayout_bg"
-                android:padding="2dp"
+                android:background="@drawable/img_callbackwaiting_relativelayout_bg"
                 android:visibility="gone" >
 
                 <TextView
@@ -154,11 +153,11 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_above="@id/callbackWaiting_textView"
-                    android:layout_marginLeft="80dp"
-                    android:layout_marginRight="80dp"
+                    android:layout_marginLeft="70dp"
+                    android:layout_marginRight="70dp"
                     android:layout_marginTop="28dp"
                     android:contentDescription="@string/callbackWaiting_imageView_content_description"
-                    android:scaleType="fitStart" />
+                    android:scaleType="centerInside" />
             </RelativeLayout>
 
             <GridView
