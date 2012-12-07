@@ -36,6 +36,7 @@ import android.widget.SlidingDrawer;
 import android.widget.TextView;
 
 import com.richitec.chinesetelephone.R;
+import com.richitec.chinesetelephone.R.drawable;
 import com.richitec.chinesetelephone.sip.SipCallMode;
 import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.chinesetelephone.sip.listeners.SipInviteStateListener;
@@ -43,6 +44,7 @@ import com.richitec.chinesetelephone.sip.services.BaseSipServices;
 import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity;
 import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity.ContactsInABListViewQuickAlphabetBarOnTouchListener;
 import com.richitec.chinesetelephone.tab7tabcontent.DialTabContentActivity;
+import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpResponseResult;
 import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
@@ -765,6 +767,15 @@ public class OutgoingCallActivity extends Activity implements
 	class SendCallbackSipVoiceCallHttpRequestListener extends
 			OnHttpRequestListener {
 
+		// define send callback sip voice call state tip text id, callback
+		// waiting imageView image resource id and callback waiting textView
+		// text
+		Integer _sendCallbackSipVoiceCallStateTipTextId = R.string.send_callbackCallRequest_failed;
+		Integer _callbackCallWaitingImageViewImgResId = drawable.img_sendcallbackcall_failed;
+		String _callbackCallWaitingTextViewText = AppLaunchActivity
+				.getAppContext().getResources()
+				.getString(R.string.callbackWaiting_textView_failed);
+
 		@Override
 		public void onFinished(HttpResponseResult responseResult) {
 			// check send callback sip voice call request response
@@ -782,31 +793,21 @@ public class OutgoingCallActivity extends Activity implements
 		// check send callback sip voice call request response
 		private void checkSendCallbackSipVoiceCallRequestResponse(
 				Boolean isSuccess) {
-			// generate send callback sip voice call state tip text id, callback
-			// waiting imageView image resource id and callback waiting textView
-			// text
-			Integer _sendCallbackSipVoiceCallStateTipTextId = R.string.send_callbackCallRequest_failed;
-			Integer _callbackCallWaitingImageViewImgResId = android.R.drawable.star_big_off;
-			String _callbackCallWaitingTextViewText = getResources().getString(
-					R.string.callbackWaiting_textView_failed);
-
 			// update send callback sip voice call state tip text id, callback
 			// waiting imageView image resource id and callback waiting textView
 			// text
 			if (isSuccess) {
 				_sendCallbackSipVoiceCallStateTipTextId = R.string.send_callbackCallRequest_succeed;
-				_callbackCallWaitingImageViewImgResId = android.R.drawable.star_big_on;
-				_callbackCallWaitingTextViewText = getResources().getString(
-						R.string.callbackWaiting_textView_succeed);
+				_callbackCallWaitingImageViewImgResId = drawable.img_sendcallbackcall_succeed;
+				_callbackCallWaitingTextViewText = getResources()
+						.getString(R.string.callbackWaiting_textView_succeed)
+						.replaceFirst("\\*\\*\\*", "caller")
+						.replace("***", _mCalleePhone);
 			}
 
 			// update call state textView text
 			((TextView) findViewById(R.id.callState_textView))
 					.setText(_sendCallbackSipVoiceCallStateTipTextId);
-
-			// show callback waiting relativeLayout
-			((RelativeLayout) findViewById(R.id.callbackWaiting_relativeLayout))
-					.setVisibility(View.VISIBLE);
 
 			// update callback waiting imageView image resource
 			((ImageView) findViewById(R.id.callbackWaiting_imageView))
@@ -815,6 +816,10 @@ public class OutgoingCallActivity extends Activity implements
 			// update callback waiting textView text
 			((TextView) findViewById(R.id.callbackWaiting_textView))
 					.setText(_callbackCallWaitingTextViewText);
+
+			// show callback waiting relativeLayout
+			((RelativeLayout) findViewById(R.id.callbackWaiting_relativeLayout))
+					.setVisibility(View.VISIBLE);
 		}
 
 	}
