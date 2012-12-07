@@ -98,12 +98,12 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(
-							DialogInterface arg0, int arg1) {
+							DialogInterface dialog, int arg1) {
 						Intent intent = new Intent(ChineseTelephoneTabActivity.this, 
 								AccountSettingActivity.class);
 						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						startActivity(intent);
-						arg0.dismiss();
+						dialog.dismiss();
 						ChineseTelephoneTabActivity.this.finish();					
 					}
 				}).create();

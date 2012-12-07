@@ -44,6 +44,7 @@ import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivit
 import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity.ContactsInABListViewQuickAlphabetBarOnTouchListener;
 import com.richitec.chinesetelephone.tab7tabcontent.DialTabContentActivity;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar;
+import com.richitec.commontoolkit.utils.HttpUtils.HttpResponseResult;
 import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
 
 public class OutgoingCallActivity extends Activity implements
@@ -765,13 +766,13 @@ public class OutgoingCallActivity extends Activity implements
 			OnHttpRequestListener {
 
 		@Override
-		public void onFinished(HttpRequest request, HttpResponse response) {
+		public void onFinished(HttpResponseResult responseResult) {
 			// check send callback sip voice call request response
 			checkSendCallbackSipVoiceCallRequestResponse(true);
 		}
 
 		@Override
-		public void onFailed(HttpRequest request, HttpResponse response) {
+		public void onFailed(HttpResponseResult responseResult) {
 			Log.e(LOG_TAG, "Send callback sip voice call http request failed");
 
 			// check send callback sip voice call request response

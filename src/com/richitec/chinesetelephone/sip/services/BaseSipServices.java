@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.provider.CallLog;
 import android.util.Log;
 
+import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.call.OutgoingCallActivity;
 import com.richitec.chinesetelephone.sip.SipCallMode;
@@ -20,6 +21,7 @@ import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.HttpUtils;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
 import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
+import com.richitec.commontoolkit.utils.HttpUtils.PostRequestFormat;
 
 public abstract class BaseSipServices implements ISipServices {
 
@@ -230,10 +232,20 @@ public abstract class BaseSipServices implements ISipServices {
 		// define send callback sip voice call http request listener
 		OnHttpRequestListener _sendCallbackSipVoiceCallHttpRequestListener = null;
 
+		OutgoingCallActivity oca = null;
 		// update send callback sip voice call http request listener
 		try {
-			_sendCallbackSipVoiceCallHttpRequestListener = ((OutgoingCallActivity) getSipInviteStateListener())
+			oca = (OutgoingCallActivity) getSipInviteStateListener();
+			_sendCallbackSipVoiceCallHttpRequestListener = oca
 					.getSendCallbackSipVoiceCallHttpRequestListener();
+			TelUserBean user = (TelUserBean) UserManager.getInstance().getUser();
+			HashMap<String, String> params = new HashMap<String, String>();
+			params.put("callee", calleePhone);
+			params.put("countryCode", user.getRegistCountryCode());
+			params.put("vosPhoneNumber", user.getVosphone());
+			params.put("vosPhonePassword", user.getVosphone_pwd());
+			// send callback sip voice call post request
+			HttpUtils.postSignatureRequest(oca.getString(R.string.server_url) + oca.getString(R.string.callback_url), PostRequestFormat.URLENCODED, params, null, HttpRequestType.ASYNCHRONOUS, _sendCallbackSipVoiceCallHttpRequestListener);
 		} catch (Exception e) {
 			Log.e(LOG_TAG,
 					"Get send callback sip voice call http request listener error, sip invite state listener = "
@@ -242,10 +254,6 @@ public abstract class BaseSipServices implements ISipServices {
 							+ e.getMessage());
 		}
 
-		// send callback sip voice call post request
-		HttpUtils.getRequest("http://baidu.com", null, null,
-				HttpRequestType.ASYNCHRONOUS,
-				_sendCallbackSipVoiceCallHttpRequestListener);
 
 		return true;
 	}
