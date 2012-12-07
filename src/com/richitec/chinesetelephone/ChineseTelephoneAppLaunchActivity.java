@@ -63,12 +63,16 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 		String areacode = DataStorageUtils.getString(TelUser.areaCode.name());
 		String vosphone = DataStorageUtils.getString(TelUser.vosphone.name());
 		String vosphone_psw = DataStorageUtils.getString(TelUser.vosphone_pwd.name());
+		String bindPhone = DataStorageUtils.getString(TelUser.bindphone.name());
+		String bindPhoneCountryCode = DataStorageUtils.getString(TelUser.bindphone_country_code.name());
 		
 		TelUserBean userBean = new TelUserBean();
 		userBean.setName(userName);
 		userBean.setUserKey(userkey);
 		userBean.setPassword(password);
 		userBean.setRegistCountryCode(countrycode);
+		userBean.setBindPhone(bindPhone);
+		userBean.setBindPhoneCountryCode(bindPhoneCountryCode);
 		
 		if(dialcountrycode==null||dialcountrycode.trim().equals("")){
 			userBean.setDialCountryCode(countrycode);

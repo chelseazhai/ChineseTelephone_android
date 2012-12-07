@@ -8,6 +8,8 @@ public class TelUserBean extends UserBean{
 	private String areaCode = "";
 	private String vosphone = "";
 	private String vosphone_pwd = "";
+	private String bindPhone = "";
+	private String bindPhoneCountryCode = "";
 	
 	public String getDialCountryCode(){
 		return dialcountryCode;
@@ -49,6 +51,22 @@ public class TelUserBean extends UserBean{
 		this.vosphone_pwd = vosphone_pwd;
 	}
 
+	public String getBindPhone() {
+		return bindPhone;
+	}
+
+	public void setBindPhone(String bindPhone) {
+		this.bindPhone = bindPhone;
+	}
+
+	public String getBindPhoneCountryCode() {
+		return bindPhoneCountryCode;
+	}
+
+	public void setBindPhoneCountryCode(String bindPhoneCountryCode) {
+		this.bindPhoneCountryCode = bindPhoneCountryCode;
+	}
+
 	public String toString(){
 		String s = super.toString();
 		StringBuilder builder = new StringBuilder();
@@ -57,7 +75,8 @@ public class TelUserBean extends UserBean{
 		builder.append("areaCode: ").append(areaCode).append("\n");
 		builder.append("vosphone: ").append(vosphone).append("\n");
 		builder.append("vosphone_pwd: ").append(vosphone_pwd).append("\n");
-		
+		builder.append("bindphone: ").append(bindPhone).append("\n");
+		builder.append("bindphone country code: ").append(bindPhoneCountryCode).append("\n");
 		return s + builder.toString();
 	}
 }

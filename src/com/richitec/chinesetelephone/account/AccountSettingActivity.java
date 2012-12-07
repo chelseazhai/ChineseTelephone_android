@@ -120,12 +120,16 @@ public class AccountSettingActivity extends Activity {
 			DataStorageUtils
 					.putObject(User.password.name(), user.getPassword());
 			DataStorageUtils.putObject(User.userkey.name(), user.getUserKey());
+			DataStorageUtils.putObject(TelUser.bindphone.name(), user.getBindPhone());
+			DataStorageUtils.putObject(TelUser.bindphone_country_code.name(), user.getBindPhoneCountryCode());
+			
 		} else {
 			DataStorageUtils.putObject(User.password.name(), "");
 			DataStorageUtils.putObject(TelUser.vosphone.name(), "");
 			DataStorageUtils.putObject(TelUser.vosphone_pwd.name(), "");
 			DataStorageUtils.putObject(User.userkey.name(), "");
-			//user.setPassword("");
+			DataStorageUtils.putObject(TelUser.bindphone.name(), "");
+			DataStorageUtils.putObject(TelUser.bindphone_country_code.name(), "");
 		}
 	}
 
@@ -310,11 +314,14 @@ public class AccountSettingActivity extends Activity {
 			UserManager.getInstance().setUserKey(userKey);
 			String vosphone = data.getString("vosphone");
 			String vosphone_psw = data.getString("vosphone_pwd");
+			String bindPhone = data.getString("bindphone");
+			String bindPhoneCountryCode = data.getString("bindphone_country_code");
 			
 			TelUserBean telUser = (TelUserBean)UserManager.getInstance().getUser();
 			telUser.setVosphone(vosphone);
 			telUser.setVosphone_pwd(vosphone_psw);
-			
+			telUser.setBindPhone(bindPhone);
+			telUser.setBindPhoneCountryCode(bindPhoneCountryCode);
 			saveUserAccount();
 			
 			closeProgressDialog();

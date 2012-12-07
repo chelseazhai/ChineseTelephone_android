@@ -71,7 +71,7 @@
     <string name="callbackWaiting_imageView_content_description">callback waiting image view</string>
     <string name="send_callbackCallRequest_succeed">回拨请求已提交</string>
     <string name="send_callbackCallRequest_failed">回拨请求失败</string>
-    <string name="callbackWaiting_textView_succeed">回拨请求提交成功，您稍后将接到回拨电话，接听后系统将为您接通对方号码。</string>
+    <string name="callbackWaiting_textView_succeed">回拨请求提交成功，您的号码(%s)稍后将接到回拨电话，接听后系统将为您接通%s。</string>
     <string name="callbackWaiting_textView_failed">回拨请求提交失败，请检查您的网络是否通畅。</string>
     <string name="back4waitingCallbackCall_imageButton_content_description">back for waiting callback call image button</string>
     <string name="endCall_imageButton_content_description">end call image button</string>
