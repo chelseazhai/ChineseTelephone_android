@@ -143,7 +143,6 @@
     <string name="phone_not_null">手机号不能为空</string>
     <string name="invite_pattern_title">请选择邀请方式</string>
     <string name="sms_invite_pattern">短信邀请</string>
-    <string name="invite_benefit_inform">邀请的好友注册成功，将会增加1元话费到您的账户中；之后好友每次充值，您的账户将增加充值费用3%的话费</string>
     <!-- dial preference -->
     <string name="dia_preference_title">拨号方式设置</string>
     <string name="choose_direct_dial">固定选择直拨</string>

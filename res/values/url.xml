@@ -14,6 +14,7 @@
     <string name="getInviteLink">/profile/getRegInviteLink</string>
     <string name="setBindPhone">/profile/setBindPhone</string>
     <string name="getBindPhone">/profile/getBindPhone</string>
+    <string name="getRegInviteDescription_url">/profile/regInviteDesc</string>
     <string name="callback_url">/callop/callback</string>
     <string name="app_download_url">/downloadapp/2/android</string>
     <string name="app_version_url">/version/2/android</string>

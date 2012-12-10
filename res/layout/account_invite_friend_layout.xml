@@ -5,10 +5,10 @@
     android:orientation="vertical" >
     
     	<TextView 
+    	    android:id="@+id/invite_reg_descirption_tv"
     	    android:layout_width="fill_parent"
     	    android:layout_height="wrap_content"
     	    android:gravity="center_vertical|left"
-    	    android:text="@string/invite_benefit_inform"
     	    android:layout_marginTop="10dp"
     	    android:layout_marginLeft="15dp"
     	    android:layout_marginRight="15dp"
