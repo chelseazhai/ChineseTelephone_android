@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- <string name="server_url">http://192.168.1.143:8080/angola</string> -->
+
+    <!-- <string name="server_url">http://192.168.1.141:8080/angola</string> -->
     <string name="server_url">http://www.uu-talk.com/angola</string>
     <string name="retrieve_auth_code_url">/user/getPhoneCode</string>
     <string name="check_auth_code_url">/user/checkPhoneCode</string>
@@ -20,4 +21,5 @@
     <string name="app_version_url">/version/2/android</string>
     <string name="appvcenter_url">http://www.uu-talk.com/appvcenter</string>
     <string name="vos_server">vos.uu-talk.com</string>
+
 </resources>
