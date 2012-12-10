@@ -229,6 +229,14 @@ public class OutgoingCallActivity extends Activity implements
 	}
 
 	@Override
+	protected void onDestroy() {
+		// unregister phone state broadcast receiver
+		unregisterReceiver(_mPhoneStateBroadcastReceiver);
+
+		super.onDestroy();
+	}
+
+	@Override
 	public void onCallInitializing() {
 		// update call state textView text
 		((TextView) findViewById(R.id.callState_textView))
@@ -350,10 +358,10 @@ public class OutgoingCallActivity extends Activity implements
 				{ R.drawable.callcontroller_keyboarditem6keyboard_3btn_bg,
 						R.drawable.img_callcontroller_keyboarditem_normal,
 						R.string.callController_keyboardItem_text },
-				{ R.drawable.callcontroller_muteitem6keyboard_9btn_bg,
+				{ R.drawable.callcontroller_muteitem_bg,
 						R.drawable.img_callcontroller_muteitem_normal,
 						R.string.callController_muteItem_text },
-				{ R.drawable.callcontroller_handfreeitem6keyboard_poundbtn_bg,
+				{ R.drawable.callcontroller_handfreeitem_bg,
 						R.drawable.img_callcontroller_handfreeitem_normal,
 						R.string.callController_handfreeItem_text } };
 
@@ -447,14 +455,13 @@ public class OutgoingCallActivity extends Activity implements
 			case 9:
 				// set bottom left keyboard button background
 				_valueMap.put(KEYBOARD_BUTTON_BGRESOURCE,
-						R.drawable.callcontroller_muteitem6keyboard_9btn_bg);
+						R.drawable.callcontroller_keyboard_starbtn_bg);
 				break;
 
 			case 11:
 				// set bottom right keyboard button background
-				_valueMap
-						.put(KEYBOARD_BUTTON_BGRESOURCE,
-								R.drawable.callcontroller_handfreeitem6keyboard_poundbtn_bg);
+				_valueMap.put(KEYBOARD_BUTTON_BGRESOURCE,
+						R.drawable.callcontroller_keyboard_poundbtn_bg);
 				break;
 
 			default:
@@ -641,7 +648,7 @@ public class OutgoingCallActivity extends Activity implements
 				if (SIPSERVICES.isSipVoiceCallMuted()) {
 					// update background resource
 					((RelativeLayout) v)
-							.setBackgroundResource(R.drawable.callcontroller_muteitem6keyboard_9btn_bg);
+							.setBackgroundResource(R.drawable.callcontroller_muteitem_bg);
 
 					// unmute current sip voice call
 					SIPSERVICES.unmuteSipVoiceCall();
@@ -650,7 +657,7 @@ public class OutgoingCallActivity extends Activity implements
 				else {
 					// update background resource
 					((RelativeLayout) v)
-							.setBackgroundResource(R.drawable.callcontroller_unmuteitem6keyboard_9btn_bg);
+							.setBackgroundResource(R.drawable.callcontroller_unmuteitem_bg);
 
 					// mute current sip voice call
 					SIPSERVICES.muteSipVoiceCall();
@@ -675,7 +682,7 @@ public class OutgoingCallActivity extends Activity implements
 				if (SIPSERVICES.isSipVoiceCallUsingLoudspeaker()) {
 					// update background resource
 					((RelativeLayout) v)
-							.setBackgroundResource(R.drawable.callcontroller_handfreeitem6keyboard_poundbtn_bg);
+							.setBackgroundResource(R.drawable.callcontroller_handfreeitem_bg);
 
 					// set using earphone
 					SIPSERVICES.setSipVoiceCallUsingEarphone();
@@ -684,7 +691,7 @@ public class OutgoingCallActivity extends Activity implements
 				else {
 					// update background resource
 					((RelativeLayout) v)
-							.setBackgroundResource(R.drawable.callcontroller_cancelhandfreeitem6keyboard_poundbtn_bg);
+							.setBackgroundResource(R.drawable.callcontroller_cancelhandfreeitem_bg);
 
 					// set using loudspeaker
 					SIPSERVICES.setSipVoiceCallUsingLoudspeaker();
