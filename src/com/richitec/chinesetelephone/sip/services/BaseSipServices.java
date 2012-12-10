@@ -73,12 +73,23 @@ public abstract class BaseSipServices implements ISipServices {
 			public void run() {
 				// check call mode and get make sip voice call result
 				boolean _makeSipVoiceCallResult = false;
-
+				String checkedCalleePhone = new String(calleePhone);
+				for (String prefix : PhoneNumberFilterPrefix) {
+					int index = calleePhone.indexOf(prefix);
+					if (index == 0 && prefix.length() < calleePhone.length()) {
+						checkedCalleePhone = calleePhone.substring(prefix.length());
+					}
+				}
+				if(calleePhone.matches("(^[0]\\d{2,3}\\d{7,8})|(^[1][\\d]{10})|(\\d{9})")){
+					TelUserBean telUser = (TelUserBean) UserManager.getInstance().getUser();
+					checkedCalleePhone = telUser.getDialCountryCode() + calleePhone;
+				}
+				
 				switch (callMode) {
 				case CALLBACK:
 					// make callback sip voice call
 					_makeSipVoiceCallResult = makeCallbackSipVoiceCall(
-							calleeName, calleePhone);
+							calleeName, checkedCalleePhone);
 
 					break;
 
@@ -86,7 +97,7 @@ public abstract class BaseSipServices implements ISipServices {
 				default:
 					// make direct dial sip voice call
 					_makeSipVoiceCallResult = makeDirectDialSipVoiceCall(
-							calleeName, calleePhone);
+							calleeName, checkedCalleePhone);
 
 					break;
 				}

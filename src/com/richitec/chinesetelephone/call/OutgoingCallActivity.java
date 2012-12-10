@@ -42,6 +42,7 @@ import android.widget.TextView;
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.R.drawable;
 import com.richitec.chinesetelephone.bean.TelUserBean;
+import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.sip.SipCallMode;
 import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.chinesetelephone.sip.listeners.SipInviteStateListener;
@@ -806,7 +807,9 @@ public class OutgoingCallActivity extends Activity implements
 		@Override
 		public void onFailed(HttpResponseResult responseResult) {
 			Log.e(LOG_TAG, "Send callback sip voice call http request failed");
-
+			Log.d(SystemConstants.TAG, "SendCallbackSipVoiceCallHttpRequestListener - status code: " + responseResult.getStatusCode() + " text: " + responseResult.getResponseText());
+			
+			
 			// check send callback sip voice call request response
 			checkSendCallbackSipVoiceCallRequestResponse(false);
 		}
