@@ -15,6 +15,7 @@ import com.richitec.chinesetelephone.tab7tabcontent.DialTabContentActivity;
 import com.richitec.chinesetelephone.utils.DialPreferenceManager;
 import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
+import com.richitec.commontoolkit.addressbook.ContactSyncService;
 import com.richitec.commontoolkit.user.User;
 import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
@@ -29,6 +30,9 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 
 	@Override
 	public Intent intentActivity() {
+		Intent service = new Intent(this, ContactSyncService.class);
+		startService(service);
+		
 		// go to Chinese telephone main tab activity
 		loadAccount();
 		

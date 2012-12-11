@@ -15,6 +15,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -43,12 +45,14 @@ import android.widget.TextView;
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.call.ContactPhoneDialModeSelectpopupWindow;
 import com.richitec.chinesetelephone.call.OutgoingCallActivity;
+import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.sip.SipCallMode;
 import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.addressbook.ContactBean;
+import com.richitec.commontoolkit.addressbook.ContactSyncService;
 import com.richitec.commontoolkit.customadapter.CommonListAdapter;
 import com.richitec.commontoolkit.customcomponent.CommonPopupWindow;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar;
@@ -122,6 +126,8 @@ public class ContactListTabContentActivity extends NavigationActivity {
 		// bind contact search editText text watcher
 		((EditText) findViewById(R.id.contact_search_editText))
 				.addTextChangedListener(new ContactSearchEditTextTextWatcher());
+		
+		ContactSyncService.setHandler(new UpdateABListHandler());
 	}
 
 	@Override
@@ -638,7 +644,7 @@ public class ContactListTabContentActivity extends NavigationActivity {
 			public void onClick(View v) {
 				// get phone button text
 				String _selectedPhone = (String) ((Button) v).getText();
-
+				_selectedPhone = AddressBookManager.filterNumber(_selectedPhone);
 				// dismiss contact phone select popup window
 				dismiss();
 
@@ -658,7 +664,7 @@ public class ContactListTabContentActivity extends NavigationActivity {
 					int position, long id) {
 				// get phone listView item data
 				String _selectedPhone = (String) ((TextView) view).getText();
-
+				_selectedPhone = AddressBookManager.filterNumber(_selectedPhone);
 				// dismiss contact phone select popup window
 				dismiss();
 
@@ -683,4 +689,58 @@ public class ContactListTabContentActivity extends NavigationActivity {
 
 	}
 
+	class UpdateABListHandler extends Handler {
+
+		public UpdateABListHandler() {
+			super();
+		}
+
+		public void handleMessage(Message msg) {
+			int type = msg.what;
+			// Log.d("Contact", "getMessage : " + type);
+
+			if (type == 1) {
+				// contacts have been create or delete
+				AddressBookManager.getInstance().copyAllContactsInfo(
+						_smAllNamePhoneticSortedContactsInfoArray);
+			}
+
+			String searchString = ((EditText) ContactListTabContentActivity.this
+					.findViewById(R.id.contact_search_editText)).getText()
+					.toString();
+			// Log.d("ContactSelectActivity", "searchString ：" + searchString);
+			// Log.d("ContactSelectActivity", "searchStatus ：" +
+			// _mContactSearchStatus);
+			switch (_mContactSearchStatus) {
+			case SEARCHBYNAME:
+				_mPresentContactsInABInfoArray = AddressBookManager
+						.getInstance().getContactsByName(
+								searchString.toString());
+				break;
+
+			case SEARCHBYCHINESENAME:
+				_mPresentContactsInABInfoArray = AddressBookManager
+						.getInstance().getContactsByChineseName(
+								searchString.toString());
+				break;
+
+			case SEARCHBYPHONE:
+				_mPresentContactsInABInfoArray = AddressBookManager
+						.getInstance().getContactsByPhone(
+								searchString.toString());
+				break;
+
+			case NONESEARCH:
+			default:
+				_mPresentContactsInABInfoArray = _smAllNamePhoneticSortedContactsInfoArray;
+				break;
+			}
+			// update contacts in address book listView adapter
+			Log.d(SystemConstants.TAG, "_mPresentContactsInABInfoArray: " + _mPresentContactsInABInfoArray);
+			_mABContactsListView
+					.setAdapter(generateInABContactAdapter(ContactListTabContentActivity.this, true,
+							_mPresentContactsInABInfoArray));
+
+		}
+	}
 }

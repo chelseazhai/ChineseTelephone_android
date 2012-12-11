@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.richitec.chinesetelephone"
     android:versionCode="1"
-    android:versionName="0.3.5" >
+    android:versionName="0.3.6" >
 
     <uses-sdk
         android:minSdkVersion="7"
@@ -110,6 +110,7 @@
             android:name=".assist.InviteFriendActivity"
             android:label="@string/title_activity_invite_friend" >
         </activity>
+        <service android:name="com.richitec.commontoolkit.addressbook.ContactSyncService"></service>
     </application>
 
 </manifest>
