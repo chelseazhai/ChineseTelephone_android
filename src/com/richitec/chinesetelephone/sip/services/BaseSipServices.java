@@ -190,9 +190,6 @@ public abstract class BaseSipServices implements ISipServices {
 	// before make sip voice call
 	private void beforeMakeSipVoiceCall(String calleeName, String calleePhone,
 			SipCallMode callMode) {
-		// init sip services
-		// OutgoingCallActivity.initSipServices(this);
-
 		// insert sip voice call log
 		_mSipVoiceCallLogId = CallLogManager.insertCallLog(calleeName,
 				calleePhone);

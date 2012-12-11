@@ -48,6 +48,10 @@ public class DialTabContentActivity extends NavigationActivity {
 	public static final String DIAL_PHONE_BUTTON_ONCLICKLISTENER = "dial_phone_button_onClickListener";
 	public static final String DIAL_PHONE_BUTTON_ONLONGCLICKLISTENER = "dial_phone_button_onLongClickListener";
 
+	// contact phone number country prefixes array
+	public static final String[] CONTACT_PHONENUMBER_COUNTRYPREFIXES = new String[] {
+			"+86", "+0086", "86", "0086" };
+
 	// define dial phone button dtmf sound
 	private static final int[] DIALPHONEBUTTON_DTMFARRAY = { R.raw.dtmf_1,
 			R.raw.dtmf_2, R.raw.dtmf_3, R.raw.dtmf_4, R.raw.dtmf_5,
@@ -257,13 +261,29 @@ public class DialTabContentActivity extends NavigationActivity {
 			// get dial phone ownership textView
 			TextView _dialPhoneOwnershipTextView = (TextView) findViewById(R.id.dial_phone_ownership_textView);
 
+			// define dial phone format string
+			String _dialPhoneFormatString = s.toString();
+
+			// format dial phone string
+			for (String countryPrefix : CONTACT_PHONENUMBER_COUNTRYPREFIXES) {
+				// check dial phone start with country prefix
+				if (_dialPhoneFormatString.startsWith(countryPrefix)) {
+					// reset dial phone format string
+					_dialPhoneFormatString = _dialPhoneFormatString
+							.substring(countryPrefix.length());
+
+					// break immediately
+					break;
+				}
+			}
+
 			// get address book manager reference
 			AddressBookManager _addressBookManager = AddressBookManager
 					.getInstance();
 
 			// check dial phone has ownership
 			Long _dialPhoneOwnershipId = _addressBookManager
-					.isContactWithPhoneInAddressBook(s.toString());
+					.isContactWithPhoneInAddressBook(_dialPhoneFormatString);
 			if (null != _dialPhoneOwnershipId) {
 				// set dial phone ownership textView text and show it
 				_dialPhoneOwnershipTextView.setText(_addressBookManager
