@@ -281,7 +281,7 @@ public class OutgoingCallActivity extends Activity implements
 			@Override
 			public void run() {
 				// increase call duration time
-				_mCallDutation += 1L;
+				_mCallDutation++;
 
 				// update call duration time
 				UPDATE_CALLDURATIONTIME_HANDLE.post(new Runnable() {
