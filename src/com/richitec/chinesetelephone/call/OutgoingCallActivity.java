@@ -101,6 +101,10 @@ public class OutgoingCallActivity extends Activity implements
 	// phone state broadcast receiver
 	private BroadcastReceiver _mPhoneStateBroadcastReceiver;
 
+	// hangup and hide keyboard image button
+	private ImageButton _mHangupBtn;
+	private ImageButton _mHideKeyboardBtn;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -195,12 +199,14 @@ public class OutgoingCallActivity extends Activity implements
 		_back4waitingCallbackCallImgBtn
 				.setOnClickListener(new Back4WaitingCallbackCallBtnOnClickListener());
 
-		// bind hangup outgoing call button on click listener
-		((ImageButton) findViewById(R.id.hangup_button))
+		// set hangup outgoing call button and bind its on click listener
+		_mHangupBtn = (ImageButton) findViewById(R.id.hangup_button);
+		_mHangupBtn
 				.setOnClickListener(new HangupOutgoingCallBtnOnClickListener());
 
-		// bind hide keyboard button on click listener
-		((ImageButton) findViewById(R.id.hideKeyboard_button))
+		// set hide keyboard button and bind its on click listener
+		_mHideKeyboardBtn = (ImageButton) findViewById(R.id.hideKeyboard_button);
+		_mHideKeyboardBtn
 				.setOnClickListener(new HideKeyboardBtnOnClickListener());
 
 		// check outgoing call mode
@@ -332,11 +338,6 @@ public class OutgoingCallActivity extends Activity implements
 		// terminate current sip voice call
 		terminateSipVoiceCall(SipVoiceCallTerminatedType.PASSIVE);
 	}
-
-	// // init outgoing call activity sip services
-	// public static void initSipServices(BaseSipServices sipServices) {
-	// _smSipServices = sipServices;
-	// }
 
 	public SendCallbackSipVoiceCallHttpRequestListener getSendCallbackSipVoiceCallHttpRequestListener() {
 		return SEND_CALLBACKSIPVOICECALL_HTTPREQUESTLISTENER;
@@ -487,9 +488,8 @@ public class OutgoingCallActivity extends Activity implements
 
 	// show or hide keyboard
 	private void show6hideKeyboard(boolean isShowKeyboard) {
-		// get hide keyboard image button, keyboard gridView, call controller
-		// gridView and dtmf textView text
-		ImageButton _hideKeyboardImgBtn = (ImageButton) findViewById(R.id.hideKeyboard_button);
+		// get keyboard gridView, call controller gridView and dtmf textView
+		// text
 		GridView _keyboardGridView = (GridView) findViewById(R.id.keyboard_gridView);
 		GridView _callControllerGridView = (GridView) findViewById(R.id.callController_gridView);
 		TextView _dtmfTextView = (TextView) findViewById(R.id.dtmf_textView);
@@ -497,29 +497,27 @@ public class OutgoingCallActivity extends Activity implements
 		// check is show keyboard
 		if (isShowKeyboard) {
 			// show hide keyboard image button
-			_hideKeyboardImgBtn.setVisibility(View.VISIBLE);
+			_mHideKeyboardBtn.setVisibility(View.VISIBLE);
 
 			// show keyboard gridView and hide call controller gridView
 			_keyboardGridView.setVisibility(View.VISIBLE);
 			_callControllerGridView.setVisibility(View.GONE);
 
 			// reset hangup image button source image
-			((ImageButton) findViewById(R.id.hangup_button))
-					.setImageResource(R.drawable.img_hangup_btn_short);
+			_mHangupBtn.setImageResource(R.drawable.img_hangup_btn_short);
 
 			// clear dtmf textView text
 			_dtmfTextView.setText("");
 		} else {
 			// hide hide keyboard image button
-			_hideKeyboardImgBtn.setVisibility(View.GONE);
+			_mHideKeyboardBtn.setVisibility(View.GONE);
 
 			// hide keyboard gridView and show call controller gridView
 			_keyboardGridView.setVisibility(View.GONE);
 			_callControllerGridView.setVisibility(View.VISIBLE);
 
 			// reset hangup image button source image
-			((ImageButton) findViewById(R.id.hangup_button))
-					.setImageResource(R.drawable.img_hangup_btn_long);
+			_mHangupBtn.setImageResource(R.drawable.img_hangup_btn_long);
 
 			// show callee textView and hide dtmf textView
 			((TextView) findViewById(R.id.callee_textView))
@@ -530,6 +528,15 @@ public class OutgoingCallActivity extends Activity implements
 
 	// terminate sip voice call
 	private void terminateSipVoiceCall(SipVoiceCallTerminatedType terminatedType) {
+		// update outgoingCall activity UI
+		// disable hangup and hide keyboard button
+		if (_mHangupBtn.isShown()) {
+			_mHangupBtn.setEnabled(false);
+		}
+		if (_mHideKeyboardBtn.isShown()) {
+			_mHideKeyboardBtn.setEnabled(false);
+		}
+
 		// check sip voice call terminated type
 		switch (terminatedType) {
 		case INITIATIVE:
