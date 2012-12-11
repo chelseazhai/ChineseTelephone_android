@@ -6,6 +6,7 @@ import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
 import com.richitec.chinesetelephone.sip.services.BaseSipServices;
 import com.richitec.chinesetelephone.sip.services.DoubangoSipServices;
 import com.richitec.chinesetelephone.sip.services.ISipServices;
+import com.richitec.commontoolkit.addressbook.AddressBookManager;
 
 public class SipUtils {
 
@@ -41,7 +42,7 @@ public class SipUtils {
 		Log.d("SipUtils", "makeSipVoiceCall - callee name = " + calleeName
 				+ " , phone number = " + calleePhone + " and call mode = "
 				+ callMode);
-
+		
 		sipServices.makeSipVoiceCall(calleeName, calleePhone, callMode);
 	}
 

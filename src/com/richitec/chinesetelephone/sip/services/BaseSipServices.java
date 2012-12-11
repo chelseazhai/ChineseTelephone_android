@@ -16,6 +16,7 @@ import com.richitec.chinesetelephone.call.OutgoingCallActivity;
 import com.richitec.chinesetelephone.sip.SipCallMode;
 import com.richitec.chinesetelephone.sip.listeners.SipInviteStateListener;
 import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
+import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.calllog.CallLogManager;
 import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.HttpUtils;
@@ -74,6 +75,7 @@ public abstract class BaseSipServices implements ISipServices {
 				// check call mode and get make sip voice call result
 				boolean _makeSipVoiceCallResult = false;
 				String checkedCalleePhone = new String(calleePhone);
+				checkedCalleePhone = AddressBookManager.filterNumber(checkedCalleePhone);
 				for (String prefix : PhoneNumberFilterPrefix) {
 					int index = calleePhone.indexOf(prefix);
 					if (index == 0 && prefix.length() < calleePhone.length()) {
