@@ -75,7 +75,7 @@ public abstract class BaseSipServices implements ISipServices {
 				// check call mode and get make sip voice call result
 				boolean _makeSipVoiceCallResult = false;
 				String checkedCalleePhone = new String(calleePhone);
-				checkedCalleePhone = AddressBookManager.filterNumber(checkedCalleePhone);
+				checkedCalleePhone = AddressBookManager.filterNumber(checkedCalleePhone, AddressBookManager.FILTER_ONLY_IP_PREFIX);
 				for (String prefix : PhoneNumberFilterPrefix) {
 					int index = calleePhone.indexOf(prefix);
 					if (index == 0 && prefix.length() < calleePhone.length()) {
