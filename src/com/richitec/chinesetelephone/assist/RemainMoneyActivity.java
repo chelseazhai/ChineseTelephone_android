@@ -38,8 +38,6 @@ public class RemainMoneyActivity extends NavigationActivity {
         
         setTitle(R.string.get_remain_money_title);
 
-        //MyToast.show(this, "balance:"+balance, Toast.LENGTH_SHORT);
-        
         String username = UserManager.getInstance().getUser().getName();      
         ((TextView)findViewById(R.id.uername)).setText(username);    
     }
@@ -82,12 +80,7 @@ public class RemainMoneyActivity extends NavigationActivity {
 	
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			/*Intent intent = new Intent(RemainMoneyActivity.this,AccountChargeActivity.class);
-			intent.putExtra("nav_back_btn_default_title",getString(R.string.back));
-			startActivity(intent);*/
 			RemainMoneyActivity.this.pushActivity(AccountChargeActivity.class);
-			//RemainMoneyActivity.this.pushActivity(activityClass)
 		}
 	};
 	private OnHttpRequestListener onFinishedGetBalance = new OnHttpRequestListener() {
@@ -101,15 +94,9 @@ public class RemainMoneyActivity extends NavigationActivity {
 						responseResult.getResponseText());
 				balance = RemainMoneyActivity.formatRemainMoney(data.getDouble("balance")+"");
 				
-				int callTime = (int) (balance*10/2);		        
-		        int backcallTime = (int) (balance*6);
-		        
 		        ((TextView)findViewById(R.id.remain_money)).setText(String.valueOf(balance)+getString(R.string.yuan));
-		        ((TextView)findViewById(R.id.direct_call)).setText(String.valueOf(callTime)+getString(R.string.minute));
-		        ((TextView)findViewById(R.id.back_call)).setText(String.valueOf(backcallTime)+getString(R.string.minute));
 				
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

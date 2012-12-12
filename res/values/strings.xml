@@ -129,7 +129,7 @@
     <string name="pls_input_phone">请输入电话号码</string>
     <string name="set_bind_number_title">设置绑定号码</string>
     <string name="set_bind_number_message">绑定号码：</string>
-    <string name="set_bind_number_success">绑定号码成！</string>
+    <string name="set_bind_number_success">绑定号码成功！</string>
     <string name="get_bind_phone_title">已绑定号码</string>
     <string name="get_bind_phone_message">绑定手机号：</string>
     <string name="get_bind_country_message">国家号：</string>
@@ -143,6 +143,7 @@
     <string name="phone_not_null">手机号不能为空</string>
     <string name="invite_pattern_title">请选择邀请方式</string>
     <string name="sms_invite_pattern">短信邀请</string>
+    <string name="get_bindphone_failed">因网络原因，无法获取绑定号码</string>
     <!-- dial preference -->
     <string name="dia_preference_title">拨号方式设置</string>
     <string name="choose_direct_dial">固定选择直拨</string>
@@ -169,9 +170,6 @@
     <string name="get_remain_money_title">查询余额</string>
     <string name="get_balance_error">查询出错，请重试</string>
     <string name="remain_balance_textfield">账户余额：</string>
-    <string name="direct_call_textfield">可直拨通话：</string>
-    <string name="back_call_textfield">可回拨通话：</string>
-    <string name="sms_textfield">可发送短信：</string>
     <string name="yuan">元</string>
     <string name="minute">分钟</string>
     <string name="charge_history">充值记录</string>

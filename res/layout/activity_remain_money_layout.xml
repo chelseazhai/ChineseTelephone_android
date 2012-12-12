@@ -82,60 +82,6 @@
             android:layout_width="fill_parent"
             android:layout_height="1.0dp"
             android:background="@drawable/setting_line_img" />
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            android:padding="10dp" >
-
-            <TextView
-                android:layout_width="130dp"
-                android:layout_height="30dp"
-                android:gravity="right|center_vertical"
-                android:text="@string/direct_call_textfield"
-                android:textColor="@color/dark_dim_gray"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/direct_call"
-                android:layout_width="fill_parent"
-                android:layout_height="30dp"
-                android:layout_marginLeft="10dp"
-                android:gravity="left|center_vertical"
-                android:text=""
-                android:textColor="@color/dodger_blue"
-                android:textSize="18dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            android:padding="10dp" >
-
-            <TextView
-                android:layout_width="130dp"
-                android:layout_height="30dp"
-                android:gravity="right|center_vertical"
-                android:text="@string/back_call_textfield"
-                android:textColor="@color/dark_dim_gray"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/back_call"
-                android:layout_width="fill_parent"
-                android:layout_height="30dp"
-                android:layout_marginLeft="10dp"
-                android:gravity="left|center_vertical"
-                android:text=""
-                android:textColor="@color/dodger_blue"
-                android:textSize="18dp" />
-        </LinearLayout>
     </LinearLayout>
 
     <TextView
