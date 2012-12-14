@@ -154,10 +154,9 @@
                     android:layout_alignParentLeft="true"
                     android:background="@drawable/regist_btn_bg"
                     android:onClick="onRegist"
-                    android:paddingBottom="18dp"
                     android:text="@string/regist_btn_title"
                     android:textColor="@android:color/white"
-                    android:textSize="16dp" />
+                    android:textSize="13sp" />
 
                 <Button
                     android:id="@+id/account_login_btn"
@@ -166,10 +165,9 @@
                     android:layout_alignParentRight="true"
                     android:background="@drawable/login_btn_bg"
                     android:onClick="onLogin"
-                    android:paddingBottom="18dp"
                     android:text="@string/login_btn_title"
                     android:textColor="@android:color/white"
-                    android:textSize="16dp" />
+                    android:textSize="13sp" />
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
