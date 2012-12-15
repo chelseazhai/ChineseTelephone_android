@@ -199,8 +199,9 @@
     <string name="charging_now">正在完成充值…</string>
     <string name="charge_successfully">充值成功！</string>
     <string name="charge_failed_no_account_exist">充值失败，账户不存在！</string>
-    <string name="charge_failed_invalid_card_number">充值失败，卡号不正确！</string>
-    <string name="charge_failed">充值失败，请重试！</string>
+    <string name="charge_failed_invalid_card_number">充值失败，卡号或密码不正确！</string>
+    <string name="card_already_used">对不起，充值卡已被使用！</string>
+    <string name="charge_failed">充值操作失败，请稍后重试！</string>
     <string name="input_valid_charge_money">请输入正确充值金额</string>
     <string name="process_charge_pls_wait">正在进行交易，请稍等</string>
     <string name="is_charging">正在支付</string>

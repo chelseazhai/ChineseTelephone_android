@@ -109,8 +109,8 @@ public class AccountChargeActivity extends NavigationActivity {
 		String username = userBean.getName();
 		String countryCode = userBean.getRegistCountryCode();
 
-//		mProgress = ProgressDialog.show(this, null,
-//				getString(R.string.sending_request), true);
+		// mProgress = ProgressDialog.show(this, null,
+		// getString(R.string.sending_request), true);
 
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("username", username);
@@ -513,6 +513,10 @@ public class AccountChargeActivity extends NavigationActivity {
 			return;
 		}
 
+		((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
+				.hideSoftInputFromWindow(pwdET.getWindowToken(),
+						InputMethodManager.HIDE_NOT_ALWAYS);
+
 		mProgress = ProgressDialog.show(this, null,
 				getString(R.string.charging_now));
 		TelUserBean user = (TelUserBean) UserManager.getInstance().getUser();
@@ -527,7 +531,7 @@ public class AccountChargeActivity extends NavigationActivity {
 	}
 
 	private OnHttpRequestListener onFinishedCharge = new OnHttpRequestListener() {
-		
+
 		@Override
 		public void onFinished(HttpResponseResult responseResult) {
 			closeProgress();
@@ -549,31 +553,34 @@ public class AccountChargeActivity extends NavigationActivity {
 								}
 							}).show();
 		}
-		
+
 		@Override
 		public void onFailed(HttpResponseResult responseResult) {
 			closeProgress();
 			int status = responseResult.getStatusCode();
-			Log.d(SystemConstants.TAG, "status code: " + status + " response: " + responseResult.getResponseText());
+			Log.d(SystemConstants.TAG, "status code: " + status);
 			switch (status) {
 			case HttpStatus.SC_NOT_FOUND:
-				Toast.makeText(AccountChargeActivity.this,
+				MyToast.show(AccountChargeActivity.this,
 						R.string.charge_failed_no_account_exist,
-						Toast.LENGTH_SHORT).show();
+						Toast.LENGTH_SHORT);
 				break;
 
 			case HttpStatus.SC_BAD_REQUEST:
-				Toast.makeText(AccountChargeActivity.this,
+				MyToast.show(AccountChargeActivity.this,
 						R.string.charge_failed_invalid_card_number,
-						Toast.LENGTH_SHORT).show();
+						Toast.LENGTH_SHORT);
 				break;
-
+			case HttpStatus.SC_CONFLICT:
+				MyToast.show(AccountChargeActivity.this,
+						R.string.card_already_used, Toast.LENGTH_SHORT);
+				break;
 			default:
-				Toast.makeText(AccountChargeActivity.this,
-						R.string.charge_failed, Toast.LENGTH_SHORT).show();
+				MyToast.show(AccountChargeActivity.this,
+						R.string.charge_failed, Toast.LENGTH_SHORT);
 				break;
 			}
-			
+
 		}
 	};
 
