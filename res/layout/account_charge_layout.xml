@@ -285,11 +285,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:visibility="gone" >
 
         <EditText
             android:id="@+id/card_number_et"
@@ -315,11 +316,22 @@
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:layout_marginTop="15dp"
-            android:background="@drawable/login_btn_bg"
+            android:background="@drawable/regist_btn_bg"
             android:onClick="onDoCardChargeClick"
             android:text="@string/charge"
-			android:textSize="13sp"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:textSize="13sp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/login_btn_bg"
+            android:gravity="center"
+            android:onClick="backMainChargeAction"
+            android:text="@string/charge_back"
+            android:textColor="@android:color/white"
+            android:textSize="13sp" />
     </LinearLayout>
 
 </LinearLayout>
