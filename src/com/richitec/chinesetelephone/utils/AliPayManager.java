@@ -107,6 +107,7 @@ public class AliPayManager {
 		//String signType = getSignType();
 		//get sign form server
 		HashMap<String,String> params = new HashMap<String,String>();
+		params.put("charge_money_id", String.valueOf(p.getChargeMoneyId()));
 		params.put("total_fee", p.getPrice());
     	params.put("out_trade_no", out_trade_no);
     	params.put("content", orderInfo);

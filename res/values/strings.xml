@@ -205,7 +205,7 @@
     <string name="input_valid_charge_money">请输入正确充值金额</string>
     <string name="process_charge_pls_wait">正在进行交易，请稍等</string>
     <string name="is_charging">正在支付</string>
-
+	<string name="get_alipay_info_from_server_failed">获取支付宝信息失败，请重试</string>
     <!-- account setting -->
     <string name="forget_psw"><u>忘记密码</u></string>
     <string name="welcome">欢迎登录</string>

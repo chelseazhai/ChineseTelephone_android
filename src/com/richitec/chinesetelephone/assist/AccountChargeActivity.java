@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,9 +22,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +41,7 @@ import com.richitec.chinesetelephone.alipay.ResultChecker;
 import com.richitec.chinesetelephone.bean.ProductBean;
 import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.constant.AliPay;
+import com.richitec.chinesetelephone.constant.ChargeMoneyConstants;
 import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.utils.AliPayManager;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
@@ -51,14 +56,33 @@ import com.richitec.commontoolkit.utils.MyToast;
 
 public class AccountChargeActivity extends NavigationActivity {
 	private static MobileSecurePayHelper mspHelper = null;
-	private LinearLayout mainLayout;
-	private LinearLayout contentLayout;
+	private View mainLayout;
+	private View contentLayout;
 	private ProgressDialog mProgress = null;
 	private final String TAG = "AccountChargeActivity";
 
-	private ChargeMoneyPopupWindow chargeMoneyPopupWindow = new ChargeMoneyPopupWindow(
-			R.layout.charge_money_popupwindow_layout, LayoutParams.FILL_PARENT,
-			LayoutParams.FILL_PARENT);
+//	private ChargeMoneyPopupWindow chargeMoneyPopupWindow = new ChargeMoneyPopupWindow(
+//			R.layout.charge_money_popupwindow_layout, LayoutParams.FILL_PARENT,
+//			LayoutParams.FILL_PARENT);
+
+	private ChargeMoneyListAdapter chargeMoneyListAdapter;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.account_charge_layout);
+
+		mspHelper = new MobileSecurePayHelper(AccountChargeActivity.this);
+
+		setTitle(R.string.charge_title_popwin);
+
+		chargeMoneyListAdapter = new ChargeMoneyListAdapter(this);
+		ListView chargeMoneyList = (ListView) findViewById(R.id.alipay_charge_money_list);
+		chargeMoneyList.setAdapter(chargeMoneyListAdapter);
+		chargeMoneyList.setOnItemClickListener(onChargeMoneySelectedListener);
+		
+		getRemainMoney();
+	}
 
 	// close the progress bar
 	// 关闭进度框
@@ -73,12 +97,12 @@ public class AccountChargeActivity extends NavigationActivity {
 		}
 	}
 
-	private void chargeMoney(double money) {
+	private void chargeMoney(final int chargeMoneyId, double money) {
 		boolean isMobile_spExist = mspHelper.detectMobile_sp();
 		if (!isMobile_spExist)
 			return;
 
-		chargeMoneyPopupWindow.dismiss();
+//		chargeMoneyPopupWindow.dismiss();
 		final double m = money;
 
 		AlertDialog.Builder tDialog = new AlertDialog.Builder(this);
@@ -94,6 +118,7 @@ public class AccountChargeActivity extends NavigationActivity {
 					public void onClick(DialogInterface dialog, int which) {
 						// TODO Auto-generated method stub
 						ProductBean p = new ProductBean();
+						p.setChargeMoneyId(chargeMoneyId);
 						p.setBody(AliPay.aliPayBody);
 						p.setSubject(AliPay.aliPaySubject);
 						p.setPrice(m + "");
@@ -171,28 +196,14 @@ public class AccountChargeActivity extends NavigationActivity {
 		}
 	}
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.account_charge_layout);
-
-		mspHelper = new MobileSecurePayHelper(AccountChargeActivity.this);
-
-		// MyToast.show(this, "balance:"+balance, Toast.LENGTH_SHORT);
-
-		setTitle(R.string.charge_title_popwin);
-		getRemainMoney();
-	}
-
 	public void aliPayBtnAction(View v) {
 		boolean isMobile_spExist = mspHelper.detectMobile_sp();
 		if (!isMobile_spExist)
 			return;
 
+		mProgress = ProgressDialog.show(this, null,
+				getString(R.string.sending_request), true);
 		if (PartnerConfig.PARTNER.equals("")) {
-
-			mProgress = ProgressDialog.show(this, null,
-					getString(R.string.sending_request), true);
 
 			TelUserBean telUser = (TelUserBean) UserManager.getInstance()
 					.getUser();
@@ -204,19 +215,59 @@ public class AccountChargeActivity extends NavigationActivity {
 					PostRequestFormat.URLENCODED, params, null,
 					HttpRequestType.ASYNCHRONOUS, onGetPrivateKeyListener);
 		} else {
-			mainLayout = (LinearLayout) findViewById(R.id.main_charge_layout);
-			mainLayout.setVisibility(View.GONE);
-			contentLayout = (LinearLayout) findViewById(R.id.alipay_charge_content);
-			contentLayout.setVisibility(View.VISIBLE);
+			fetchChargeMoneyList();
 		}
 	}
+
+	private void showAlipayChargeContent() {
+		mainLayout = findViewById(R.id.main_charge_layout);
+		mainLayout.setVisibility(View.GONE);
+		contentLayout = findViewById(R.id.alipay_charge_content);
+		contentLayout.setVisibility(View.VISIBLE);
+	}
+
+	private void fetchChargeMoneyList() {
+		TelUserBean telUser = (TelUserBean) UserManager.getInstance().getUser();
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("countryCode", telUser.getRegistCountryCode());
+		HttpUtils.postSignatureRequest(getString(R.string.server_url)
+				+ getString(R.string.getChargeMoneyList_url),
+				PostRequestFormat.URLENCODED, params, null,
+				HttpRequestType.ASYNCHRONOUS, onFinishedFetchChargeMoneyList);
+	}
+
+	private OnHttpRequestListener onFinishedFetchChargeMoneyList = new OnHttpRequestListener() {
+
+		@Override
+		public void onFinished(HttpResponseResult responseResult) {
+			closeProgress();
+			try {
+				JSONArray data = new JSONArray(responseResult.getResponseText());
+				chargeMoneyListAdapter.setData(data);
+				showAlipayChargeContent();
+			} catch (JSONException e) {
+				e.printStackTrace();
+				MyToast.show(AccountChargeActivity.this,
+						R.string.get_alipay_info_from_server_failed,
+						Toast.LENGTH_SHORT);
+			}
+
+		}
+
+		@Override
+		public void onFailed(HttpResponseResult responseResult) {
+			closeProgress();
+			MyToast.show(AccountChargeActivity.this,
+					R.string.get_alipay_info_from_server_failed,
+					Toast.LENGTH_SHORT);
+		}
+	};
 
 	private OnHttpRequestListener onGetPrivateKeyListener = new OnHttpRequestListener() {
 
 		@Override
 		public void onFinished(HttpResponseResult responseResult) {
-			// TODO Auto-generated method stub
-			closeProgress();
+
 			TelUserBean telUser = (TelUserBean) UserManager.getInstance()
 					.getUser();
 			String encryStr = responseResult.getResponseText();
@@ -233,22 +284,22 @@ public class AccountChargeActivity extends NavigationActivity {
 				PartnerConfig.SELLER = sellerId;
 				// PartnerConfig.RSA_PRIVATE = private_key;
 
-				mainLayout = (LinearLayout) findViewById(R.id.main_charge_layout);
-				mainLayout.setVisibility(View.GONE);
-				contentLayout = (LinearLayout) findViewById(R.id.alipay_charge_content);
-				contentLayout.setVisibility(View.VISIBLE);
+				fetchChargeMoneyList();
 
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+				closeProgress();
+				MyToast.show(AccountChargeActivity.this,
+						R.string.get_alipay_info_from_server_failed,
+						Toast.LENGTH_SHORT);
 			}
 		}
 
 		@Override
 		public void onFailed(HttpResponseResult responseResult) {
-			// TODO Auto-generated method stub
 			closeProgress();
-			MyToast.show(AccountChargeActivity.this, "获取秘钥错误，请重试",
+			MyToast.show(AccountChargeActivity.this,
+					R.string.get_alipay_info_from_server_failed,
 					Toast.LENGTH_SHORT);
 		}
 
@@ -263,164 +314,78 @@ public class AccountChargeActivity extends NavigationActivity {
 		contentLayout = null;
 	}
 
-	public void charge100Action(View v) {
-		boolean isMobile_spExist = mspHelper.detectMobile_sp();
-		if (!isMobile_spExist)
-			return;
-
-		AlertDialog.Builder tDialog = new AlertDialog.Builder(this);
-		tDialog.setIcon(R.drawable.alipay_install_info);
-		tDialog.setTitle(getString(R.string.ensure_charge_title));
-		tDialog.setMessage(getString(R.string.charge_alipay_hint).replace(
-				"***", 100 + ""));
-		tDialog.setNegativeButton(getString(R.string.cancel), null);
-		tDialog.setPositiveButton(getString(R.string.ok),
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-						ProductBean p = new ProductBean();
-						p.setBody(AliPay.aliPayBody);
-						p.setSubject(AliPay.aliPaySubject);
-						p.setPrice(100 + "");
-						charging(p);
-					}
-				});
-		tDialog.show();
-
-	}
-
-	public void charge50Action(View v) {
-		boolean isMobile_spExist = mspHelper.detectMobile_sp();
-		if (!isMobile_spExist)
-			return;
-
-		AlertDialog.Builder tDialog = new AlertDialog.Builder(this);
-		tDialog.setIcon(R.drawable.alipay_install_info);
-		tDialog.setTitle(getString(R.string.ensure_charge_title));
-		tDialog.setMessage(getString(R.string.charge_alipay_hint).replace(
-				"***", 50 + ""));
-		tDialog.setNegativeButton(getString(R.string.cancel), null);
-		tDialog.setPositiveButton(getString(R.string.ok),
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-						ProductBean p = new ProductBean();
-						p.setBody(AliPay.aliPayBody);
-						p.setSubject(AliPay.aliPaySubject);
-						p.setPrice(50 + "");
-						charging(p);
-					}
-				});
-		tDialog.show();
-	}
-
-	public void charge30Action(View v) {
-		boolean isMobile_spExist = mspHelper.detectMobile_sp();
-		if (!isMobile_spExist)
-			return;
-
-		AlertDialog.Builder tDialog = new AlertDialog.Builder(this);
-		tDialog.setIcon(R.drawable.alipay_install_info);
-		tDialog.setTitle(getString(R.string.ensure_charge_title));
-		tDialog.setMessage(getString(R.string.charge_alipay_hint).replace(
-				"***", 30 + ""));
-		tDialog.setNegativeButton(getString(R.string.cancel), null);
-		tDialog.setPositiveButton(getString(R.string.ok),
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-						ProductBean p = new ProductBean();
-						p.setBody(AliPay.aliPayBody);
-						p.setSubject(AliPay.aliPaySubject);
-						p.setPrice(30 + "");
-						charging(p);
-					}
-				});
-		tDialog.show();
-	}
-
-	public void chargeOtherAction(View v) {
-		chargeMoneyPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
-	}
-
-	class ChargeMoneyPopupWindow extends CommonPopupWindow {
-
-		public ChargeMoneyPopupWindow(int resource, int width, int height,
-				boolean focusable, boolean isBindDefListener) {
-			super(resource, width, height, focusable, isBindDefListener);
-		}
-
-		public ChargeMoneyPopupWindow(int resource, int width, int height) {
-			super(resource, width, height);
-		}
-
-		@Override
-		protected void bindPopupWindowComponentsListener() {
-
-			// bind contact phone select cancel button click listener
-			((Button) getContentView().findViewById(R.id.charge_confirmBtn))
-					.setOnClickListener(new ChargeConfirmBtnOnClickListener());
-			((Button) getContentView().findViewById(R.id.charge_cancelBtn))
-					.setOnClickListener(new ChargeCancelBtnOnClickListener());
-		}
-
-		@Override
-		protected void resetPopupWindow() {
-			// hide contact phones select phone list view
-			((EditText) getContentView().findViewById(
-					R.id.charge_money_editText)).setText("");
-		}
-
-		// inner class
-		// contact phone select phone button on click listener
-		class ChargeConfirmBtnOnClickListener implements OnClickListener {
-
-			@Override
-			public void onClick(View v) {
-				// dismiss contact phone select popup window
-				String chargeStr = ((EditText) getContentView().findViewById(
-						R.id.charge_money_editText)).getEditableText()
-						.toString().trim();
-				try {
-					double charge = Double.parseDouble(chargeStr);
-					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-					imm.hideSoftInputFromWindow(((EditText) getContentView()
-							.findViewById(R.id.charge_money_editText))
-							.getWindowToken(), 0);
-					chargeMoney(charge);
-				} catch (Exception e) {
-					MyToast.show(AccountChargeActivity.this,
-							R.string.input_valid_charge_money,
-							Toast.LENGTH_SHORT);
-					return;
-				}
-			}
-
-		}
-
-		// contact phone select cancel button on click listener
-		class ChargeCancelBtnOnClickListener implements OnClickListener {
-
-			@Override
-			public void onClick(View v) {
-				// dismiss contact phone select popup window
-				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-				imm.hideSoftInputFromWindow(
-						((EditText) getContentView().findViewById(
-								R.id.charge_money_editText)).getWindowToken(),
-						0);
-				dismiss();
-			}
-
-		}
-
-	}
+//	public void chargeOtherAction(View v) {
+//		chargeMoneyPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
+//	}
+//
+//	class ChargeMoneyPopupWindow extends CommonPopupWindow {
+//
+//		public ChargeMoneyPopupWindow(int resource, int width, int height,
+//				boolean focusable, boolean isBindDefListener) {
+//			super(resource, width, height, focusable, isBindDefListener);
+//		}
+//
+//		public ChargeMoneyPopupWindow(int resource, int width, int height) {
+//			super(resource, width, height);
+//		}
+//
+//		@Override
+//		protected void bindPopupWindowComponentsListener() {
+//
+//			// bind contact phone select cancel button click listener
+//			((Button) getContentView().findViewById(R.id.charge_confirmBtn))
+//					.setOnClickListener(new ChargeConfirmBtnOnClickListener());
+//			((Button) getContentView().findViewById(R.id.charge_cancelBtn))
+//					.setOnClickListener(new ChargeCancelBtnOnClickListener());
+//		}
+//
+//		@Override
+//		protected void resetPopupWindow() {
+//			// hide contact phones select phone list view
+//			((EditText) getContentView().findViewById(
+//					R.id.charge_money_editText)).setText("");
+//		}
+//
+//		// inner class
+//		class ChargeConfirmBtnOnClickListener implements OnClickListener {
+//
+//			@Override
+//			public void onClick(View v) {
+//				String chargeStr = ((EditText) getContentView().findViewById(
+//						R.id.charge_money_editText)).getEditableText()
+//						.toString().trim();
+//				try {
+//					double charge = Double.parseDouble(chargeStr);
+//					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//					imm.hideSoftInputFromWindow(((EditText) getContentView()
+//							.findViewById(R.id.charge_money_editText))
+//							.getWindowToken(), 0);
+//					chargeMoney(charge);
+//				} catch (Exception e) {
+//					MyToast.show(AccountChargeActivity.this,
+//							R.string.input_valid_charge_money,
+//							Toast.LENGTH_SHORT);
+//					return;
+//				}
+//			}
+//
+//		}
+//
+//		class ChargeCancelBtnOnClickListener implements OnClickListener {
+//
+//			@Override
+//			public void onClick(View v) {
+//				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//				imm.hideSoftInputFromWindow(
+//						((EditText) getContentView().findViewById(
+//								R.id.charge_money_editText)).getWindowToken(),
+//						0);
+//				dismiss();
+//			}
+//
+//		}
+//
+//	}
 
 	// the handler use to receive the pay result.
 	// 这里接收支付结果，支付宝手机端同步通知
@@ -490,9 +455,9 @@ public class AccountChargeActivity extends NavigationActivity {
 	};
 
 	public void onCardChargeBtnClick(View v) {
-		mainLayout = (LinearLayout) findViewById(R.id.main_charge_layout);
+		mainLayout = findViewById(R.id.main_charge_layout);
 		mainLayout.setVisibility(View.GONE);
-		contentLayout = (LinearLayout) findViewById(R.id.card_charge_content);
+		contentLayout = findViewById(R.id.card_charge_content);
 		contentLayout.setVisibility(View.VISIBLE);
 	}
 
@@ -581,6 +546,24 @@ public class AccountChargeActivity extends NavigationActivity {
 				break;
 			}
 
+		}
+	};
+	
+	private OnItemClickListener onChargeMoneySelectedListener = new OnItemClickListener() {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			JSONObject chargeMoneyObj = (JSONObject) chargeMoneyListAdapter.getItem(position);
+			if (chargeMoneyObj != null) {
+				try {
+					int chargeMoneyId = chargeMoneyObj.getInt(ChargeMoneyConstants.id.name());
+					double chargeMoney = chargeMoneyObj.getDouble(ChargeMoneyConstants.charge_money.name());
+					chargeMoney(chargeMoneyId, chargeMoney);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	};
 

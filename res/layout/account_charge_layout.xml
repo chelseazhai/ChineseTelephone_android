@@ -115,170 +115,36 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/alipay_charge_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:orientation="vertical"
         android:visibility="gone" >
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="10dp"
-            android:gravity="center_vertical"
-            android:text="@string/alipay_pattern"
-            android:textColor="@color/dodger_blue"
-            android:textSize="20dp" />
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1.0dp"
-            android:background="@drawable/setting_line_img" />
-
-        <LinearLayout
-            android:id="@+id/charge_100_btn"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/setting_middle_item_bg"
-            android:clickable="true"
-            android:gravity="center_vertical"
-            android:onClick="charge100Action"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1.0"
-                android:gravity="center_vertical"
-                android:text="@string/charge_100"
-                android:textColor="@color/dark_dim_gray"
-                android:textSize="20dp" />
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/imgright" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1.0dp"
-            android:background="@drawable/setting_line_img" />
-
-        <LinearLayout
-            android:id="@+id/charge_50_btn"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/setting_middle_item_bg"
-            android:clickable="true"
-            android:gravity="center_vertical"
-            android:onClick="charge50Action"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1.0"
-                android:gravity="center_vertical"
-                android:text="@string/charge_50"
-                android:textColor="@color/dark_dim_gray"
-                android:textSize="20dp" />
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/imgright" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1.0dp"
-            android:background="@drawable/setting_line_img" />
-
-        <LinearLayout
-            android:id="@+id/charge_30_btn"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/setting_middle_item_bg"
-            android:clickable="true"
-            android:gravity="center_vertical"
-            android:onClick="charge30Action"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1.0"
-                android:gravity="center_vertical"
-                android:text="@string/charge_30"
-                android:textColor="@color/dark_dim_gray"
-                android:textSize="20dp" />
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/imgright" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1.0dp"
-            android:background="@drawable/setting_line_img" />
-
-        <LinearLayout
-            android:id="@+id/charge_other_btn"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/setting_middle_item_bg"
-            android:clickable="true"
-            android:gravity="center_vertical"
-            android:onClick="chargeOtherAction"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1.0"
-                android:gravity="center_vertical"
-                android:text="@string/charge_other"
-                android:textColor="@color/dark_dim_gray"
-                android:textSize="20dp" />
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/imgright" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1.0dp"
-            android:background="@drawable/setting_line_img" />
+        <ListView
+            android:id="@+id/alipay_charge_money_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/back_main_charge_btn"
+            android:dividerHeight="1dp" />
 
         <Button
             android:id="@+id/back_main_charge_btn"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="60dp"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="10dp"
             android:background="@drawable/login_btn_bg"
             android:gravity="center"
             android:onClick="backMainChargeAction"
             android:text="@string/charge_back"
             android:textColor="@android:color/white"
             android:textSize="13sp" />
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/card_charge_content"
