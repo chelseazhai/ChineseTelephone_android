@@ -19,6 +19,7 @@ import com.richitec.chinesetelephone.alipay.Rsa;
 import com.richitec.chinesetelephone.bean.ProductBean;
 import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.constant.AliPay;
+import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.HttpUtils;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;

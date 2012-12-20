@@ -23,6 +23,7 @@ public class SipRegisterManager {
 			_sipAccount.setSipUserName(sipName);
 			_sipAccount.setSipPwd(sipPsw);
 			_sipAccount.setSipServer(vosServerAddress);
+			_sipAccount.setSipPort(7788);
 			_sipAccount.setSipDomain("richitec.com");
 			_sipAccount.setSipRealm("richitec.com");
 		

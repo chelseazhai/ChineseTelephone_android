@@ -182,7 +182,7 @@
     <string name="Cancel">取消</string>
     <string name="check_sign_failed">您的订单信息已被非法篡改。</string>
     <string name="ensure_charge_title">充值确认</string>
-    <string name="charge_alipay_hint">确认充值***元？\n点击确定将会从您的支付宝中扣除相应费用！！</string>
+    <string name="charge_alipay_hint">您将充值***元\n点击确定进入支付宝完成充值。</string>
     <string name="charge_title_popwin">充值</string>
     <string name="charge_textfield_popwin">充值金额：</string>
     <string name="charge_pattern_title">请选择充值方式</string>
@@ -206,6 +206,7 @@
     <string name="process_charge_pls_wait">正在进行交易，请稍等</string>
     <string name="is_charging">正在支付</string>
 	<string name="get_alipay_info_from_server_failed">获取支付宝信息失败，请重试</string>
+	<string name="alipay_info_check_failed">支付宝信息验证失败，请稍后重试！</string>
     <!-- account setting -->
     <string name="forget_psw"><u>忘记密码</u></string>
     <string name="welcome">欢迎登录</string>

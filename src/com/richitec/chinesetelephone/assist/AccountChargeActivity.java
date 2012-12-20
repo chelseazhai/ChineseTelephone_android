@@ -2,8 +2,6 @@ package com.richitec.chinesetelephone.assist;
 
 import java.util.HashMap;
 
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,16 +15,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,7 +38,6 @@ import com.richitec.chinesetelephone.constant.ChargeMoneyConstants;
 import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.utils.AliPayManager;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
-import com.richitec.commontoolkit.customcomponent.CommonPopupWindow;
 import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.HttpUtils;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
@@ -60,10 +52,6 @@ public class AccountChargeActivity extends NavigationActivity {
 	private View contentLayout;
 	private ProgressDialog mProgress = null;
 	private final String TAG = "AccountChargeActivity";
-
-//	private ChargeMoneyPopupWindow chargeMoneyPopupWindow = new ChargeMoneyPopupWindow(
-//			R.layout.charge_money_popupwindow_layout, LayoutParams.FILL_PARENT,
-//			LayoutParams.FILL_PARENT);
 
 	private ChargeMoneyListAdapter chargeMoneyListAdapter;
 
@@ -102,14 +90,12 @@ public class AccountChargeActivity extends NavigationActivity {
 		if (!isMobile_spExist)
 			return;
 
-//		chargeMoneyPopupWindow.dismiss();
-		final double m = money;
-
+		final String price = String.format("%.2f", money);
 		AlertDialog.Builder tDialog = new AlertDialog.Builder(this);
 		tDialog.setIcon(R.drawable.alipay_install_info);
 		tDialog.setTitle(getString(R.string.ensure_charge_title));
 		tDialog.setMessage(getString(R.string.charge_alipay_hint).replace(
-				"***", money + ""));
+				"***", price));
 		tDialog.setNegativeButton(getString(R.string.cancel), null);
 		tDialog.setPositiveButton(getString(R.string.ok),
 				new DialogInterface.OnClickListener() {
@@ -121,7 +107,7 @@ public class AccountChargeActivity extends NavigationActivity {
 						p.setChargeMoneyId(chargeMoneyId);
 						p.setBody(AliPay.aliPayBody);
 						p.setSubject(AliPay.aliPaySubject);
-						p.setPrice(m + "");
+						p.setPrice(price);
 						charging(p);
 					}
 				});
@@ -189,8 +175,8 @@ public class AccountChargeActivity extends NavigationActivity {
 			mProgress = BaseHelper.showProgress(this, null,
 					getString(R.string.is_charging), false, true);
 		} else {
-			BaseHelper.showDialog(this, "提示",
-					"缺少partner或者seller，请在PartnerConfig.java中增加。",
+			BaseHelper.showDialog(this, getString(R.string.alert_title),
+					getString(R.string.alipay_info_check_failed),
 					R.drawable.infoicon);
 			return;
 		}
@@ -313,79 +299,6 @@ public class AccountChargeActivity extends NavigationActivity {
 
 		contentLayout = null;
 	}
-
-//	public void chargeOtherAction(View v) {
-//		chargeMoneyPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
-//	}
-//
-//	class ChargeMoneyPopupWindow extends CommonPopupWindow {
-//
-//		public ChargeMoneyPopupWindow(int resource, int width, int height,
-//				boolean focusable, boolean isBindDefListener) {
-//			super(resource, width, height, focusable, isBindDefListener);
-//		}
-//
-//		public ChargeMoneyPopupWindow(int resource, int width, int height) {
-//			super(resource, width, height);
-//		}
-//
-//		@Override
-//		protected void bindPopupWindowComponentsListener() {
-//
-//			// bind contact phone select cancel button click listener
-//			((Button) getContentView().findViewById(R.id.charge_confirmBtn))
-//					.setOnClickListener(new ChargeConfirmBtnOnClickListener());
-//			((Button) getContentView().findViewById(R.id.charge_cancelBtn))
-//					.setOnClickListener(new ChargeCancelBtnOnClickListener());
-//		}
-//
-//		@Override
-//		protected void resetPopupWindow() {
-//			// hide contact phones select phone list view
-//			((EditText) getContentView().findViewById(
-//					R.id.charge_money_editText)).setText("");
-//		}
-//
-//		// inner class
-//		class ChargeConfirmBtnOnClickListener implements OnClickListener {
-//
-//			@Override
-//			public void onClick(View v) {
-//				String chargeStr = ((EditText) getContentView().findViewById(
-//						R.id.charge_money_editText)).getEditableText()
-//						.toString().trim();
-//				try {
-//					double charge = Double.parseDouble(chargeStr);
-//					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//					imm.hideSoftInputFromWindow(((EditText) getContentView()
-//							.findViewById(R.id.charge_money_editText))
-//							.getWindowToken(), 0);
-//					chargeMoney(charge);
-//				} catch (Exception e) {
-//					MyToast.show(AccountChargeActivity.this,
-//							R.string.input_valid_charge_money,
-//							Toast.LENGTH_SHORT);
-//					return;
-//				}
-//			}
-//
-//		}
-//
-//		class ChargeCancelBtnOnClickListener implements OnClickListener {
-//
-//			@Override
-//			public void onClick(View v) {
-//				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//				imm.hideSoftInputFromWindow(
-//						((EditText) getContentView().findViewById(
-//								R.id.charge_money_editText)).getWindowToken(),
-//						0);
-//				dismiss();
-//			}
-//
-//		}
-//
-//	}
 
 	// the handler use to receive the pay result.
 	// 这里接收支付结果，支付宝手机端同步通知
