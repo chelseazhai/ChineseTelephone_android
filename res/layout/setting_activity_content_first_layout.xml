@@ -194,6 +194,7 @@
                     android:clickable="true"
                     android:layout_width="fill_parent"
                     android:layout_height="50.0dp"
+                    android:visibility="gone"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
                     >

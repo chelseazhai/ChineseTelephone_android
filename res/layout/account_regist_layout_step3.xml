@@ -53,7 +53,7 @@
         <LinearLayout 
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/textfeild_nor"
+            android:background="@drawable/textfield_selector"
             android:layout_margin="5dp"
             android:orientation="horizontal"
             >
@@ -82,7 +82,7 @@
         <LinearLayout 
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/textfeild_nor"
+            android:background="@drawable/textfield_selector"
             android:layout_margin="5dp"
             android:orientation="horizontal"
             >

@@ -52,7 +52,7 @@
                 <TextView
                     android:layout_width="80dp"
                     android:layout_height="40dp"
-                    android:gravity="center_vertical|right"
+                    android:gravity="center"
                     android:text="@string/account_name"
                     android:textSize="17sp" />
 
@@ -79,7 +79,7 @@
                 <TextView
                     android:layout_width="80dp"
                     android:layout_height="40dp"
-                    android:gravity="center_vertical|right"
+                    android:gravity="center"
                     android:text="@string/account_psw"
                     android:textSize="17sp" />
 
@@ -123,6 +123,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:layout_alignParentRight="true"
+                    android:visibility="gone"
                     android:layout_marginLeft="3dp"
                     android:autoLink="web"
                     android:clickable="true"
@@ -135,6 +136,7 @@
                 <ImageView
                     android:layout_width="23dp"
                     android:layout_height="23dp"
+                    android:visibility="gone"
                     android:layout_toLeftOf="@id/account_forget_psw_btn"
                     android:clickable="true"
                     android:onClick="onForgetPSWBtnClick"

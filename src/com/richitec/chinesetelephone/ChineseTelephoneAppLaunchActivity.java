@@ -2,7 +2,10 @@ package com.richitec.chinesetelephone;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.widget.Toast;
+
 import com.richitec.chinesetelephone.account.AccountSettingActivity;
 import com.richitec.chinesetelephone.bean.DialPreferenceBean;
 import com.richitec.chinesetelephone.bean.TelUserBean;
@@ -20,6 +23,7 @@ import com.richitec.commontoolkit.user.User;
 import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.DataStorageUtils;
+import com.richitec.commontoolkit.utils.MyToast;
 
 public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 
@@ -32,16 +36,17 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 	public Intent intentActivity() {
 		Intent service = new Intent(this, ContactSyncService.class);
 		startService(service);
-		
+
 		// go to Chinese telephone main tab activity
 		loadAccount();
-		
+
 		UserBean userBean = UserManager.getInstance().getUser();
-		if(userBean.getPassword()!=null&&!userBean.getPassword().equals("")
-				&&userBean.getUserKey()!=null&&!userBean.getUserKey().equals("")){
+		if (userBean.getPassword() != null
+				&& !userBean.getPassword().equals("")
+				&& userBean.getUserKey() != null
+				&& !userBean.getUserKey().equals("")) {
 			return new Intent(this, ChineseTelephoneTabActivity.class);
-		}
-		else{
+		} else {
 			return new Intent(this, AccountSettingActivity.class);
 		}
 	}
@@ -57,20 +62,25 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 
 		// init dial phone button dtmf sound pool map
 		DialTabContentActivity.initDialPhoneBtnDTMFSoundPoolMap(this);
+
 	}
-	
+
 	private void loadAccount() {
 		String userName = DataStorageUtils.getString(User.username.name());
 		String userkey = DataStorageUtils.getString(User.userkey.name());
 		String password = DataStorageUtils.getString(User.password.name());
-		String countrycode = DataStorageUtils.getString(TelUser.countryCode.name());
-		String dialcountrycode = DataStorageUtils.getString(TelUser.dialCountryCode.name());
+		String countrycode = DataStorageUtils.getString(TelUser.countryCode
+				.name());
+		String dialcountrycode = DataStorageUtils
+				.getString(TelUser.dialCountryCode.name());
 		String areacode = DataStorageUtils.getString(TelUser.areaCode.name());
 		String vosphone = DataStorageUtils.getString(TelUser.vosphone.name());
-		String vosphone_psw = DataStorageUtils.getString(TelUser.vosphone_pwd.name());
+		String vosphone_psw = DataStorageUtils.getString(TelUser.vosphone_pwd
+				.name());
 		String bindPhone = DataStorageUtils.getString(TelUser.bindphone.name());
-		String bindPhoneCountryCode = DataStorageUtils.getString(TelUser.bindphone_country_code.name());
-		
+		String bindPhoneCountryCode = DataStorageUtils
+				.getString(TelUser.bindphone_country_code.name());
+
 		TelUserBean userBean = new TelUserBean();
 		userBean.setName(userName);
 		userBean.setUserKey(userkey);
@@ -78,31 +88,34 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 		userBean.setRegistCountryCode(countrycode);
 		userBean.setBindPhone(bindPhone);
 		userBean.setBindPhoneCountryCode(bindPhoneCountryCode);
-		
-		if(dialcountrycode==null||dialcountrycode.trim().equals("")){
+
+		if (dialcountrycode == null || dialcountrycode.trim().equals("")) {
 			userBean.setDialCountryCode(countrycode);
-		}
-		else{
+		} else {
 			userBean.setDialCountryCode(dialcountrycode);
 		}
-		if (password != null && !password.equals("") && userkey != null && !userkey.equals("")) {
+		if (password != null && !password.equals("") && userkey != null
+				&& !userkey.equals("")) {
 			userBean.setRememberPwd(true);
 		}
 		userBean.setAreaCode(areacode);
 		userBean.setVosphone(vosphone);
 		userBean.setVosphone_pwd(vosphone_psw);
 		UserManager.getInstance().setUser(userBean);
-		Log.d(SystemConstants.TAG+" load account: ", userBean.toString());
-		//保存拨打设置属性
-		DialPreferenceBean dialBean = DialPreferenceManager.getInstance().getDialPreferenceBean();
-		String dialPattern = DataStorageUtils.getString(DialPreference.DialSetting.dialPattern.name());
-		if(dialPattern!=null)
+		Log.d(SystemConstants.TAG + " load account: ", userBean.toString());
+		// 保存拨打设置属性
+		DialPreferenceBean dialBean = DialPreferenceManager.getInstance()
+				.getDialPreferenceBean();
+		String dialPattern = DataStorageUtils
+				.getString(DialPreference.DialSetting.dialPattern.name());
+		if (dialPattern != null)
 			dialBean.setDialPattern(dialPattern);
-		String answerPattern = DataStorageUtils.getString(DialPreference.DialSetting.answerPattern.name());
-		if(answerPattern!=null)
+		String answerPattern = DataStorageUtils
+				.getString(DialPreference.DialSetting.answerPattern.name());
+		if (answerPattern != null)
 			dialBean.setAnswerPattern(answerPattern);
-		
-		//Log.d("LoadDialSetting", dialPattern+":"+answerPattern);
+
+		// Log.d("LoadDialSetting", dialPattern+":"+answerPattern);
 	}
 
 }
