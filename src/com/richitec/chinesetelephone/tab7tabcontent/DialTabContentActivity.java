@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -30,6 +31,7 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.call.ContactPhoneDialModeSelectpopupWindow;
 import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
@@ -37,7 +39,6 @@ import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.utils.CommonUtils;
 import com.richitec.commontoolkit.utils.DpPixUtils;
-import com.richitec.internationalcode.AreaAbbreviation;
 
 public class DialTabContentActivity extends NavigationActivity {
 
@@ -265,11 +266,7 @@ public class DialTabContentActivity extends NavigationActivity {
 			// get dial phone has ownership
 			@SuppressWarnings("unchecked")
 			Long _dialPhoneOwnershipId = _addressBookManager
-					.isContactWithPhoneInAddressBook(s.toString(), null,
-							(List<AreaAbbreviation>) CommonUtils
-									.array2List(new AreaAbbreviation[] {
-											AreaAbbreviation.CN,
-											AreaAbbreviation.AO }));
+					.isContactWithPhoneInAddressBook(s.toString());
 
 			// check dial phone has ownership
 			if (null != _dialPhoneOwnershipId) {
