@@ -1286,4 +1286,8 @@ public class SettingActivity extends NavigationActivity {
 					Toast.LENGTH_SHORT);
 		}
 	};
+	
+	public void onClickMySuiteAction(View v) {
+		pushActivity(MySuitesActivity.class);
+	}
 }

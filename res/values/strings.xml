@@ -88,6 +88,7 @@
     <string name="account_changePSW_item">修改密码</string>
     <string name="account_getPSW_item">找回密码</string>
     <string name="account_charge_item">账户充值</string>
+    <string name="my_suites_item">我的套餐</string>
     <string name="search">查询</string>
     <string name="search_remainmoney_item">查询余额</string>
     <string name="search_authnumber_item">查询认证号</string>

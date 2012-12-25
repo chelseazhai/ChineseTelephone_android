@@ -111,6 +111,7 @@
         </activity>
         <service android:name="com.richitec.commontoolkit.addressbook.ContactSyncService"></service>
         <activity android:name=".account.AccountDirectRegisterActivity" android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <activity android:name=".assist.MySuitesActivity" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
