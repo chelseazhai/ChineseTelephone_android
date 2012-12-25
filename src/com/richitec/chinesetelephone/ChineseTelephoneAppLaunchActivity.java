@@ -42,11 +42,12 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 		SipRegisterBean _sipAccount = new SipRegisterBean();
 
 		// set test sip account
-		_sipAccount.setSipUserName("8003");
-		_sipAccount.setSipPwd("123789");
-		_sipAccount.setSipServer("210.56.60.150");
+		_sipAccount.setSipUserName("9001");
+		_sipAccount.setSipPwd("9001");
+		_sipAccount.setSipServer("103.20.193.172");
 		_sipAccount.setSipDomain("richitec.com");
 		_sipAccount.setSipRealm("richitec.com");
+		_sipAccount.setSipPort(7788);
 
 		// register sip account
 		SipUtils.registerSipAccount(_sipAccount,

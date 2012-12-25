@@ -369,8 +369,6 @@ public class DoubangoSipServices extends BaseSipServices implements
 						case EARLY_MEDIA:
 							_sipInviteStateListener.onCallEarlyMedia();
 
-							_sipInviteStateListener.onCallEarlyMedia();
-
 							break;
 
 						case INCALL:

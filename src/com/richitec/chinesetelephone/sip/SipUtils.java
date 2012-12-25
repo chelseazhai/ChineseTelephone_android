@@ -4,13 +4,13 @@ import android.util.Log;
 
 import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
 import com.richitec.chinesetelephone.sip.services.BaseSipServices;
-import com.richitec.chinesetelephone.sip.services.DoubangoSipServices;
 import com.richitec.chinesetelephone.sip.services.ISipServices;
+import com.richitec.chinesetelephone.sip.services.SipDroidSipServices;
 
 public class SipUtils {
 
 	// sip services
-	private static final ISipServices sipServices = new DoubangoSipServices();
+	private static final ISipServices sipServices = new /* DoubangoSipServices() */SipDroidSipServices();
 
 	// get base sip services
 	public static BaseSipServices getSipServices() {
