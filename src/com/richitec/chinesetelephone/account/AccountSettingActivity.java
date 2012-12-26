@@ -18,6 +18,7 @@ import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.DataStorageUtils;
 import com.richitec.commontoolkit.utils.HttpUtils;
 import com.richitec.commontoolkit.utils.MyToast;
+import com.richitec.commontoolkit.utils.StringUtils;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpResponseResult;
 import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
@@ -268,7 +269,10 @@ public class AccountSettingActivity extends Activity {
 
 		if (!useSavedPsw) {
 			// Log.d("SETUser", "set user");
-			UserManager.getInstance().setUser(username, psw);
+			TelUserBean user = new TelUserBean();
+			user.setName(username);
+			user.setPassword(StringUtils.md5(psw));
+			UserManager.getInstance().setUser(user);
 		}
 
 		progressDialog = ProgressDialog.show(this, null,
@@ -327,7 +331,7 @@ public class AccountSettingActivity extends Activity {
 	public void loginSuccess(JSONObject data) {
 		try {
 			String userKey = data.getString("userkey");
-			UserManager.getInstance().setUserKey(userKey);
+//			UserManager.getInstance().setUserKey(userKey);
 			String vosphone = data.getString("vosphone");
 			String vosphone_psw = data.getString("vosphone_pwd");
 			String bindPhone = data.getString("bindphone");
@@ -336,6 +340,7 @@ public class AccountSettingActivity extends Activity {
 
 			TelUserBean telUser = (TelUserBean) UserManager.getInstance()
 					.getUser();
+			telUser.setUserKey(userKey);
 			telUser.setVosphone(vosphone);
 			telUser.setVosphone_pwd(vosphone_psw);
 			telUser.setBindPhone(bindPhone);
