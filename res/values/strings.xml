@@ -106,11 +106,7 @@
     <string name="help_about_item">关于我们</string>
     <string name="change_account_title">切换账户</string>
     <string name="set_dialcountry_code">默认国家号设置</string>
-    <!--
-<string name="set_area_code">区号设置</string>
-<string name="invalid_areacode">请输入正确的区号</string>
-<string name="null_areacode">区号不能为空</string>
-    -->
+
     <string name="dialcountry_country_code_inform">提示：当您在拨打电话时未加国家号码，将会自动在您拨打的号码前添加默认国家号。</string>
     <string name="bind_number_inform">提示：通过设置绑定号码，使用回拨功能时将会回拨绑定的号码</string>
     <string name="is_auto_launch">是否开机启动?</string>
@@ -277,4 +273,13 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_invite_friend">InviteFriendActivity</string>
 
+    <!-- suites  -->
+    <string name="my_suite">我的套餐</string>
+    <string name="all_suite">所有套餐</string>
+    <string name="description">描述：</string>
+    <string name="rent_fee_per_month">月租金：</string>
+    <string name="unsubscribe">退订</string>
+    <string name="subscribe">订购</string>
+    <string name="available_time">生效时间：</string>
+    <string name="expire_time">失效时间：</string>
 </resources>
