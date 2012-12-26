@@ -279,6 +279,9 @@ public class OutgoingCallActivity extends Activity implements
 			_mAudioManager.setSpeakerphoneOn(true);
 		}
 
+		// clear call duration time
+		_mCallDutation = 0L;
+
 		// increase call duration time per second using timer task
 		CALLDURATION_TIMER.schedule(new TimerTask() {
 
