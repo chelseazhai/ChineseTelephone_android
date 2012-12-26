@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MySuitesListAdapter extends BaseExpandableListAdapter {
@@ -129,10 +130,32 @@ public class MySuitesListAdapter extends BaseExpandableListAdapter {
 	@Override
 	public View getGroupView(int groupPosition, boolean isExpanded,
 			View convertView, ViewGroup parent) {
+		HeaderViewHolder viewHolder = null;
+		if (convertView == null) {
+			viewHolder = new HeaderViewHolder();
+			convertView = inflater.inflate(R.layout.suite_header_item_layout,
+					null);
+			viewHolder.header = (TextView) convertView
+					.findViewById(R.id.suite_header);
+			viewHolder.expandIcon = (ImageView) convertView
+					.findViewById(R.id.expand_flag_icon);
+			convertView.setTag(viewHolder);
+		} else {
+			viewHolder = (HeaderViewHolder) convertView.getTag();
+		}
+
 		if (groupPosition == 0) {
-
+			viewHolder.header.setText(R.string.my_suite);
 		} else if (groupPosition == 1) {
+			viewHolder.header.setText(R.string.all_suite);
+		}
 
+		if (isExpanded) {
+			viewHolder.expandIcon
+					.setImageResource(R.drawable.navigation_expand);
+		} else {
+			viewHolder.expandIcon
+					.setImageResource(R.drawable.navigation_next_item);
 		}
 		return convertView;
 	}
@@ -163,6 +186,7 @@ public class MySuitesListAdapter extends BaseExpandableListAdapter {
 
 	final class HeaderViewHolder {
 		public TextView header;
+		public ImageView expandIcon;
 	}
 
 }

@@ -24,6 +24,6 @@
         android:layout_height="30dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/1_navigation_next_item" />
+        android:src="@drawable/navigation_next_item" />
 
 </RelativeLayout>
