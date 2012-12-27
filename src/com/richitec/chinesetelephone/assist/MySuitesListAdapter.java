@@ -4,16 +4,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.richitec.chinesetelephone.R;
-import com.richitec.chinesetelephone.constant.SuiteConstant;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.richitec.chinesetelephone.R;
+import com.richitec.chinesetelephone.constant.SuiteConstant;
+import com.richitec.commontoolkit.utils.MyToast;
 
 public class MySuitesListAdapter extends BaseExpandableListAdapter {
 	private LayoutInflater inflater;
@@ -65,19 +69,103 @@ public class MySuitesListAdapter extends BaseExpandableListAdapter {
 	public View getChildView(int groupPosition, int childPosition,
 			boolean isLastChild, View convertView, ViewGroup parent) {
 		if (groupPosition == 0) {
-			convertView = getMySuiteItemView(childPosition, convertView);
+			convertView = getMySuiteItemView(groupPosition, childPosition, convertView);
 		} else if (groupPosition == 1) {
-			convertView = getAllSuiteItemView(childPosition, convertView);
+			convertView = getAllSuiteItemView(groupPosition, childPosition, convertView);
 		}
 		return convertView;
 	}
 
-	private View getMySuiteItemView(int childPosition, View convertView) {
+	private View getMySuiteItemView(int groupPosition, int childPosition, View convertView) {
+		MySuiteItemViewHolder viewHolder = null;
+		if (convertView == null) {
+			viewHolder = new MySuiteItemViewHolder();
+			convertView = inflater.inflate(R.layout.my_suite_item_layout,
+					null);
+			viewHolder.descTV = (TextView) convertView.findViewById(R.id.my_suite_desc);
+			viewHolder.rentFeeTV = (TextView) convertView.findViewById(R.id.rent_fee);
+			viewHolder.availableTimeTV = (TextView) convertView.findViewById(R.id.available_time_tv);
+			viewHolder.expireTimeTV = (TextView) convertView.findViewById(R.id.expire_time_tv);
+			viewHolder.unsubscribeBt = (Button) convertView.findViewById(R.id.unsubscribe_button);
+			convertView.setTag(viewHolder);
+		} else {
+			viewHolder = (MySuiteItemViewHolder) convertView.getTag();
+		}
+		
+		final JSONObject suiteItem = (JSONObject) getChild(groupPosition, childPosition);
+		if (suiteItem != null) {
+			try {
+				viewHolder.descTV.setText(suiteItem.getString(SuiteConstant.comment.name()));
+				viewHolder.rentFeeTV.setText(suiteItem.getString(SuiteConstant.rentMoney.name()));
+				String availableTime = suiteItem.getString(SuiteConstant.availableTime.name());
+				viewHolder.availableTimeTV.setText(availableTime);
+				
+				String expireTime = suiteItem.getString(SuiteConstant.expireTime.name());
+				if (expireTime.equals("never")) {
+					viewHolder.expireTimeTV.setText(R.string.never_expire);
+				} else {
+					viewHolder.expireTimeTV.setText(expireTime);
+				}
 
+				viewHolder.unsubscribeBt.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						try {
+							String orderId = suiteItem.getString(SuiteConstant.orderId.name());
+							MyToast.show(context, "order id: " + orderId, Toast.LENGTH_SHORT);
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+						
+					}
+				});
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
 		return convertView;
 	}
 
-	private View getAllSuiteItemView(int childPosition, View convertView) {
+	private View getAllSuiteItemView(int groupPosition, int childPosition, View convertView) {
+		AllSuiteItemViewHolder viewHolder = null;
+		if (convertView == null) {
+			viewHolder = new AllSuiteItemViewHolder();
+			convertView = inflater.inflate(R.layout.all_suite_item_layout,
+					null);
+			viewHolder.descTV = (TextView) convertView.findViewById(R.id.suite_desc);
+			viewHolder.rentFeeTV = (TextView) convertView.findViewById(R.id.rent_fee);
+			viewHolder.subscribeBt = (Button) convertView.findViewById(R.id.subscribe_button);
+			convertView.setTag(viewHolder);
+		} else {
+			viewHolder = (AllSuiteItemViewHolder) convertView.getTag();
+		}
+		
+		final JSONObject suiteItem = (JSONObject) getChild(groupPosition, childPosition);
+		if (suiteItem != null) {
+			try {
+				viewHolder.descTV.setText(suiteItem.getString(SuiteConstant.comment.name()));
+				viewHolder.rentFeeTV.setText(suiteItem.getString(SuiteConstant.rentMoney.name()));
+				
+				viewHolder.subscribeBt.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						try {
+							String suiteId = suiteItem.getString(SuiteConstant.suiteId.name());
+							MyToast.show(context, "suite id: " + suiteId, Toast.LENGTH_SHORT);
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				});
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
 		return convertView;
 	}
 
@@ -177,11 +265,13 @@ public class MySuitesListAdapter extends BaseExpandableListAdapter {
 		public TextView rentFeeTV;
 		public TextView availableTimeTV;
 		public TextView expireTimeTV;
+		public Button unsubscribeBt;
 	}
 
 	final class AllSuiteItemViewHolder {
 		public TextView descTV;
 		public TextView rentFeeTV;
+		public Button subscribeBt;
 	}
 
 	final class HeaderViewHolder {

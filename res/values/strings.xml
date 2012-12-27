@@ -280,6 +280,9 @@
     <string name="rent_fee_per_month">月租金：</string>
     <string name="unsubscribe">退订</string>
     <string name="subscribe">订购</string>
-    <string name="available_time">生效时间：</string>
-    <string name="expire_time">失效时间：</string>
+    <string name="available_time">启用日期：</string>
+    <string name="expire_time">终止日期：</string>
+    <string name="never_expire">无</string>
+    <string name="get_suite_failed">获取套餐失败！</string>
+    <string name="getting_suite">正在获取套餐列表…</string>
 </resources>
