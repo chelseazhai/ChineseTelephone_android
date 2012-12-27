@@ -15,13 +15,11 @@ import org.doubango.ngn.utils.NgnUriUtils;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.util.Log;
 
 import com.richitec.chinesetelephone.sip.SipRegisterBean;
 import com.richitec.chinesetelephone.sip.listeners.SipInviteStateListener;
 import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
-import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
 
 public class DoubangoSipServices extends BaseSipServices implements
 		ISipServices {
@@ -30,21 +28,6 @@ public class DoubangoSipServices extends BaseSipServices implements
 
 	// doubango ngn engine instance
 	private final NgnEngine NGN_ENGINE = NgnEngine.getInstance();
-
-	// sip registration state listener
-	private SipRegistrationStateListener _mSipRegistrationStateListener;
-
-	// doubango ngn registration state broadcast receiver
-	private BroadcastReceiver _mRegistrationStateBroadcastReceiver;
-
-	// doubango ngn sip register intent filter
-	private final IntentFilter SIPEGISTER_INTENTFILTER = new IntentFilter();
-
-	// doubango ngn audio/video session state broadcast receiver
-	private BroadcastReceiver _mAVSessionStateBroadcastReceiver;
-
-	// doubango ngn sip invite intent filter
-	private final IntentFilter SIPINVITE_INTENTFILTER = new IntentFilter();
 
 	// doubango current sip voice call ngn audio session
 	private NgnAVSession _mSipVoiceCallSession;
@@ -72,8 +55,8 @@ public class DoubangoSipServices extends BaseSipServices implements
 		_mRegistrationStateBroadcastReceiver = new RegistrationStateBroadcastReceiver();
 
 		// register sip registration state broadcast receiver
-		AppLaunchActivity.getAppContext().registerReceiver(
-				_mRegistrationStateBroadcastReceiver, SIPEGISTER_INTENTFILTER);
+		APP_CONTEXT.registerReceiver(_mRegistrationStateBroadcastReceiver,
+				SIPEGISTER_INTENTFILTER);
 
 		// starts ngn engine
 		if (!NGN_ENGINE.isStarted()) {
@@ -126,7 +109,7 @@ public class DoubangoSipServices extends BaseSipServices implements
 			_configurationService.commit();
 
 			// sip account register
-			_sipService.register(AppLaunchActivity.getAppContext());
+			_sipService.register(APP_CONTEXT);
 		}
 	}
 
@@ -143,8 +126,8 @@ public class DoubangoSipServices extends BaseSipServices implements
 
 		// release doubango ngn registration state broadcast receiver
 		if (null != _mRegistrationStateBroadcastReceiver) {
-			AppLaunchActivity.getAppContext().unregisterReceiver(
-					_mRegistrationStateBroadcastReceiver);
+			APP_CONTEXT
+					.unregisterReceiver(_mRegistrationStateBroadcastReceiver);
 
 			_mRegistrationStateBroadcastReceiver = null;
 		}
@@ -161,15 +144,15 @@ public class DoubangoSipServices extends BaseSipServices implements
 		_mAVSessionStateBroadcastReceiver = new AVSessionStateBroadcastReceiver();
 
 		// register doubango ngn audio/video session state receiver
-		AppLaunchActivity.getAppContext().registerReceiver(
-				_mAVSessionStateBroadcastReceiver, SIPINVITE_INTENTFILTER);
+		APP_CONTEXT.registerReceiver(_mAVSessionStateBroadcastReceiver,
+				SIPINVITE_INTENTFILTER);
 
 		// get doubango ngn sip service
 		INgnSipService _sipService = NGN_ENGINE.getSipService();
 
 		// re-register
 		if (!_sipService.isRegistered()) {
-			_sipService.register(AppLaunchActivity.getAppContext());
+			_sipService.register(APP_CONTEXT);
 		}
 
 		// check register status
@@ -216,14 +199,6 @@ public class DoubangoSipServices extends BaseSipServices implements
 		} else {
 			Log.e(LOG_TAG,
 					"Doubango ngn audio/video session is null, force finish outgoing call activity");
-		}
-
-		// release doubango ngn audio/video session state broadcast receiver
-		if (null != _mAVSessionStateBroadcastReceiver) {
-			AppLaunchActivity.getAppContext().unregisterReceiver(
-					_mAVSessionStateBroadcastReceiver);
-
-			_mAVSessionStateBroadcastReceiver = null;
 		}
 
 		// release doubango ngn audio/video session

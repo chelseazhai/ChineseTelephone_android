@@ -7,39 +7,19 @@ import org.sipdroid.sipua.ui.Settings;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences.Editor;
+import android.media.AudioManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.richitec.chinesetelephone.sip.SipRegisterBean;
 import com.richitec.chinesetelephone.sip.listeners.SipInviteStateListener;
 import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
-import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
 
 public class SipDroidSipServices extends BaseSipServices implements
 		ISipServices {
 
 	private static final String LOG_TAG = "SipDroidSipServices";
-
-	// application context
-	private static final Context APP_CONTEXT = AppLaunchActivity
-			.getAppContext();
-
-	// sip registration state listener
-	private SipRegistrationStateListener _mSipRegistrationStateListener;
-
-	// sipdroid registration state broadcast receiver
-	private BroadcastReceiver _mRegistrationStateBroadcastReceiver;
-
-	// sipdroid sip register intent filter
-	private final IntentFilter SIPEGISTER_INTENTFILTER = new IntentFilter();
-
-	// sipdroid audio/video session state broadcast receiver
-	private BroadcastReceiver _mAVSessionStateBroadcastReceiver;
-
-	// sipdroid sip invite intent filter
-	private final IntentFilter SIPINVITE_INTENTFILTER = new IntentFilter();
 
 	public SipDroidSipServices() {
 		super();
@@ -118,8 +98,17 @@ public class SipDroidSipServices extends BaseSipServices implements
 		APP_CONTEXT.registerReceiver(_mAVSessionStateBroadcastReceiver,
 				SIPINVITE_INTENTFILTER);
 
-		// sipdroid make an new sip voice call
-		_ret = Receiver.engine(APP_CONTEXT).call(calleePhone, true);
+		// check sipdroid engine sip account is registered
+		if (Receiver.engine(APP_CONTEXT).isRegistered()) {
+			// sipdroid make an new sip voice call
+			_ret = Receiver.engine(APP_CONTEXT).call(calleePhone, true);
+		} else {
+			// register again
+			Receiver.engine(APP_CONTEXT).registerMore();
+
+			// call failed
+			getSipInviteStateListener().onCallFailed();
+		}
 
 		return _ret;
 
@@ -128,31 +117,61 @@ public class SipDroidSipServices extends BaseSipServices implements
 	@Override
 	public boolean hangupSipVoiceCall() {
 		// define return result
-		boolean _ret = false;
+		boolean _ret = true;
 
 		// sipdroid hangup current sip voice call
 		Receiver.engine(APP_CONTEXT).rejectcall();
-		_ret = true;
+
+		// check sipdroid engine sip account is registered
+		if (!Receiver.engine(APP_CONTEXT).isRegistered()) {
+			_ret = false;
+		}
 
 		return _ret;
 	}
 
 	@Override
 	public void muteSipVoiceCall() {
-		// TODO Auto-generated method stub
+		// update current sip voice call muted flag
+		setSipVoiceCallMuted(true);
 
+		// sipdroid mute current sip voice call
+		Receiver.engine(APP_CONTEXT).togglemute();
 	}
 
 	@Override
 	public void unmuteSipVoiceCall() {
-		// TODO Auto-generated method stub
+		// update current sip voice call muted flag
+		setSipVoiceCallMuted(false);
 
+		// sipdroid unmute current sip voice call
+		Receiver.engine(APP_CONTEXT).togglemute();
 	}
 
 	@Override
 	public void sentDTMF(String dtmfCode) {
-		// TODO Auto-generated method stub
+		// sipdroid send dtmf to current sip voice call
+		Log.d(LOG_TAG,
+				"Send dtmf to current sip voice call not implement, dtmf code = "
+						+ dtmfCode);
+	}
 
+	@Override
+	public void setSipVoiceCallUsingLoudspeaker() {
+		// do super
+		super.setSipVoiceCallUsingLoudspeaker();
+
+		// sipdroid set current sip voice call in normal
+		Receiver.engine(APP_CONTEXT).speaker(AudioManager.MODE_NORMAL);
+	}
+
+	@Override
+	public void setSipVoiceCallUsingEarphone() {
+		// do super
+		super.setSipVoiceCallUsingEarphone();
+
+		// sipdroid set current sip voice call in call
+		Receiver.engine(APP_CONTEXT).speaker(AudioManager.MODE_IN_CALL);
 	}
 
 	// inner class

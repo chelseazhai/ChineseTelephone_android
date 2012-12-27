@@ -3,8 +3,10 @@ package com.richitec.chinesetelephone.sip.services;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.os.Handler;
 import android.provider.CallLog;
@@ -13,6 +15,7 @@ import android.util.Log;
 import com.richitec.chinesetelephone.call.OutgoingCallActivity;
 import com.richitec.chinesetelephone.sip.SipCallMode;
 import com.richitec.chinesetelephone.sip.listeners.SipInviteStateListener;
+import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
 import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
 import com.richitec.commontoolkit.calllog.CallLogManager;
 import com.richitec.commontoolkit.utils.HttpUtils;
@@ -22,6 +25,25 @@ import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
 public abstract class BaseSipServices implements ISipServices {
 
 	private static final String LOG_TAG = "BaseSipServices";
+
+	// application context
+	protected static final Context APP_CONTEXT = AppLaunchActivity
+			.getAppContext();
+
+	// sip registration state listener
+	protected SipRegistrationStateListener _mSipRegistrationStateListener;
+
+	// sip registration state broadcast receiver
+	protected BroadcastReceiver _mRegistrationStateBroadcastReceiver;
+
+	// sip register intent filter
+	protected final IntentFilter SIPEGISTER_INTENTFILTER = new IntentFilter();
+
+	// sip audio/video session state broadcast receiver
+	protected BroadcastReceiver _mAVSessionStateBroadcastReceiver;
+
+	// sip invite intent filter
+	protected final IntentFilter SIPINVITE_INTENTFILTER = new IntentFilter();
 
 	// sip voice call log id
 	private Long _mSipVoiceCallLogId;
@@ -138,6 +160,10 @@ public abstract class BaseSipServices implements ISipServices {
 	public void setSipInviteStateListener(
 			SipInviteStateListener sipInviteStateListener) {
 		_mSipInviteStateListener = sipInviteStateListener;
+	}
+
+	public BroadcastReceiver getAVSessionStateBroadcastReceiver() {
+		return _mAVSessionStateBroadcastReceiver;
 	}
 
 	// update current sip voice call muted flag
