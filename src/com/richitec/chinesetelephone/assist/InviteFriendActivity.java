@@ -11,8 +11,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.richitec.chinesetelephone.R;
-import com.richitec.chinesetelephone.bean.TelUserBean;
+import com.richitec.chinesetelephone.constant.TelUser;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
+import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.HttpUtils;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
@@ -37,9 +38,9 @@ public class InviteFriendActivity extends NavigationActivity {
 	}
 
 	private void loadDescription() {
-		TelUserBean user = (TelUserBean) UserManager.getInstance().getUser();
+		UserBean user =  UserManager.getInstance().getUser();
 		HashMap<String, String> params = new HashMap<String, String>();
-		params.put("countryCode", user.getRegistCountryCode());
+		params.put("countryCode", (String) user.getValue(TelUser.countryCode.name()));
 		HttpUtils.postSignatureRequest(getString(R.string.server_url)
 				+ getString(R.string.getRegInviteDescription_url),
 				PostRequestFormat.URLENCODED, params, null,

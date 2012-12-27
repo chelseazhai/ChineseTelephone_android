@@ -4,25 +4,7 @@ import java.util.HashMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import com.richitec.chinesetelephone.R;
-import com.richitec.chinesetelephone.assist.SettingActivity;
-import com.richitec.chinesetelephone.bean.TelUserBean;
-import com.richitec.chinesetelephone.constant.SystemConstants;
-import com.richitec.chinesetelephone.constant.TelUser;
-import com.richitec.chinesetelephone.sip.SipUtils;
-import com.richitec.chinesetelephone.tab7tabcontent.ChineseTelephoneTabActivity;
-import com.richitec.chinesetelephone.utils.AppUpdateManager;
-import com.richitec.chinesetelephone.utils.CountryCodeManager;
-import com.richitec.commontoolkit.user.User;
-import com.richitec.commontoolkit.user.UserManager;
-import com.richitec.commontoolkit.utils.DataStorageUtils;
-import com.richitec.commontoolkit.utils.HttpUtils;
-import com.richitec.commontoolkit.utils.MyToast;
-import com.richitec.commontoolkit.utils.StringUtils;
-import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
-import com.richitec.commontoolkit.utils.HttpUtils.HttpResponseResult;
-import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
-import com.richitec.commontoolkit.utils.HttpUtils.PostRequestFormat;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -42,6 +24,26 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.richitec.chinesetelephone.R;
+import com.richitec.chinesetelephone.assist.SettingActivity;
+import com.richitec.chinesetelephone.constant.SystemConstants;
+import com.richitec.chinesetelephone.constant.TelUser;
+import com.richitec.chinesetelephone.sip.SipUtils;
+import com.richitec.chinesetelephone.tab7tabcontent.ChineseTelephoneTabActivity;
+import com.richitec.chinesetelephone.utils.AppUpdateManager;
+import com.richitec.chinesetelephone.utils.CountryCodeManager;
+import com.richitec.commontoolkit.user.User;
+import com.richitec.commontoolkit.user.UserBean;
+import com.richitec.commontoolkit.user.UserManager;
+import com.richitec.commontoolkit.utils.DataStorageUtils;
+import com.richitec.commontoolkit.utils.HttpUtils;
+import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
+import com.richitec.commontoolkit.utils.HttpUtils.HttpResponseResult;
+import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
+import com.richitec.commontoolkit.utils.HttpUtils.PostRequestFormat;
+import com.richitec.commontoolkit.utils.MyToast;
+import com.richitec.commontoolkit.utils.StringUtils;
 
 public class AccountSettingActivity extends Activity {
 	private ProgressDialog progressDialog;
@@ -109,26 +111,26 @@ public class AccountSettingActivity extends Activity {
 
 	private void saveUserAccount() {
 		Log.d(SystemConstants.TAG, "save user account");
-		TelUserBean user = (TelUserBean) UserManager.getInstance().getUser();
+		UserBean user = UserManager.getInstance().getUser();
 		Log.d(SystemConstants.TAG, "user: " + user.toString());
 		DataStorageUtils.putObject(User.username.name(), user.getName());
 		DataStorageUtils.putObject(TelUser.countryCode.name(),
-				user.getRegistCountryCode());
+				user.getValue(TelUser.countryCode.name()));
 		DataStorageUtils.putObject(TelUser.dialCountryCode.name(),
-				user.getDialCountryCode());
+				user.getValue(TelUser.dialCountryCode.name()));
 
 		if (user.isRememberPwd()) {
 			DataStorageUtils.putObject(TelUser.vosphone.name(),
-					user.getVosphone());
+					user.getValue(TelUser.vosphone.name()));
 			DataStorageUtils.putObject(TelUser.vosphone_pwd.name(),
-					user.getVosphone_pwd());
+					user.getValue(TelUser.vosphone_pwd.name()));
 			DataStorageUtils
 					.putObject(User.password.name(), user.getPassword());
 			DataStorageUtils.putObject(User.userkey.name(), user.getUserKey());
 			DataStorageUtils.putObject(TelUser.bindphone.name(),
-					user.getBindPhone());
+					user.getValue(TelUser.bindphone.name()));
 			DataStorageUtils.putObject(TelUser.bindphone_country_code.name(),
-					user.getBindPhoneCountryCode());
+					user.getValue(TelUser.bindphone_country_code.name()));
 
 		} else {
 			DataStorageUtils.putObject(User.password.name(), "");
@@ -160,15 +162,15 @@ public class AccountSettingActivity extends Activity {
 		}
 
 		countryCodeManager = CountryCodeManager.getInstance();
-		TelUserBean user = (TelUserBean) UserManager.getInstance().getUser();
-
-		if (user.getRegistCountryCode() == null
-				|| user.getRegistCountryCode().equals("")) {
+		UserBean user = UserManager.getInstance().getUser();
+		String countryCode = (String) user.getValue(TelUser.countryCode.name());
+		if (countryCode == null || countryCode.equals("")) {
 			((Button) findViewById(R.id.account_choose_country_btn))
 					.setText(countryCodeManager.getCountryName(0));
 		} else {
-			lastSelectCountryCode = countryCodeManager.getCountryIndex(user
-					.getRegistCountryCode());
+			lastSelectCountryCode = countryCodeManager
+					.getCountryIndex((String) user.getValue(TelUser.countryCode
+							.name()));
 			((Button) findViewById(R.id.account_choose_country_btn))
 					.setText(countryCodeManager
 							.getCountryName(lastSelectCountryCode));
@@ -268,8 +270,7 @@ public class AccountSettingActivity extends Activity {
 		}
 
 		if (!useSavedPsw) {
-			// Log.d("SETUser", "set user");
-			TelUserBean user = new TelUserBean();
+			UserBean user = new UserBean();
 			user.setName(username);
 			user.setPassword(StringUtils.md5(psw));
 			UserManager.getInstance().setUser(user);
@@ -278,14 +279,13 @@ public class AccountSettingActivity extends Activity {
 		progressDialog = ProgressDialog.show(this, null,
 				getString(R.string.logining), true);
 
-		TelUserBean telUserBean = (TelUserBean) UserManager.getInstance()
-				.getUser();
+		UserBean telUserBean = UserManager.getInstance().getUser();
 		telUserBean.setRememberPwd(isRemember);
-		telUserBean.setRegistCountryCode(countrycode);
-
-		if (telUserBean.getDialCountryCode() == null
-				|| telUserBean.getDialCountryCode().trim().equals("")) {
-			telUserBean.setDialCountryCode(countrycode);
+		telUserBean.setValue(TelUser.countryCode.name(), countrycode);
+		String dialCountryCode = (String) telUserBean
+				.getValue(TelUser.dialCountryCode.name());
+		if (dialCountryCode == null || dialCountryCode.trim().equals("")) {
+			telUserBean.setValue(TelUser.dialCountryCode.name(), countrycode);
 		}
 
 		// unregitst sip account first
@@ -293,11 +293,12 @@ public class AccountSettingActivity extends Activity {
 		loginAccount(telUserBean);
 	}
 
-	private void loginAccount(TelUserBean telUserBean) {
+	private void loginAccount(UserBean telUserBean) {
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("loginName", telUserBean.getName());
 		params.put("loginPwd", telUserBean.getPassword());
-		params.put("countryCode", telUserBean.getRegistCountryCode());
+		params.put("countryCode",
+				(String) telUserBean.getValue(TelUser.countryCode.name()));
 		params.put("brand", Build.BRAND);
 		params.put("model", Build.MODEL);
 		params.put("release", Build.VERSION.RELEASE);
@@ -331,20 +332,19 @@ public class AccountSettingActivity extends Activity {
 	public void loginSuccess(JSONObject data) {
 		try {
 			String userKey = data.getString("userkey");
-//			UserManager.getInstance().setUserKey(userKey);
 			String vosphone = data.getString("vosphone");
 			String vosphone_psw = data.getString("vosphone_pwd");
 			String bindPhone = data.getString("bindphone");
 			String bindPhoneCountryCode = data
 					.getString("bindphone_country_code");
 
-			TelUserBean telUser = (TelUserBean) UserManager.getInstance()
+			UserBean telUser = UserManager.getInstance()
 					.getUser();
 			telUser.setUserKey(userKey);
-			telUser.setVosphone(vosphone);
-			telUser.setVosphone_pwd(vosphone_psw);
-			telUser.setBindPhone(bindPhone);
-			telUser.setBindPhoneCountryCode(bindPhoneCountryCode);
+			telUser.setValue(TelUser.vosphone.name(), vosphone);
+			telUser.setValue(TelUser.vosphone_pwd.name(), vosphone_psw);
+			telUser.setValue(TelUser.bindphone.name(), bindPhone);
+			telUser.setValue(TelUser.bindphone_country_code.name(), bindPhoneCountryCode);
 			saveUserAccount();
 
 			closeProgressDialog();

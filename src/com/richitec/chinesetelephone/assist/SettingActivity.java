@@ -27,7 +27,6 @@ import android.widget.Toast;
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.account.AccountSettingActivity;
 import com.richitec.chinesetelephone.bean.DialPreferenceBean;
-import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.constant.DialPreference;
 import com.richitec.chinesetelephone.constant.LaunchSetting;
 import com.richitec.chinesetelephone.constant.TelUser;
@@ -148,10 +147,10 @@ public class SettingActivity extends NavigationActivity {
 	public void setAuthNumber(View v) {
 		progressDialog = ProgressDialog.show(this, null,
 				getString(R.string.sending_request), true);
-		TelUserBean userBean = (TelUserBean) UserManager.getInstance()
-				.getUser();
+		UserBean userBean = UserManager.getInstance().getUser();
 		String username = userBean.getName();
-		String countrycode = userBean.getRegistCountryCode();
+		String countrycode = (String) userBean.getValue(TelUser.countryCode
+				.name());
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("username", username);
 		params.put("countryCode", countrycode);
@@ -200,7 +199,8 @@ public class SettingActivity extends NavigationActivity {
 		@Override
 		public void onFailed(HttpResponseResult responseResult) {
 			dismiss();
-			MyToast.show(SettingActivity.this, R.string.get_bindphone_failed, Toast.LENGTH_SHORT);
+			MyToast.show(SettingActivity.this, R.string.get_bindphone_failed,
+					Toast.LENGTH_SHORT);
 			Button countryButton = (Button) setBindNumberPopupWindow
 					.getContentView().findViewById(
 							R.id.setAuth_choose_country_btn);
@@ -259,8 +259,9 @@ public class SettingActivity extends NavigationActivity {
 	 */
 
 	public void setDialCountryCode(View v) {
-		TelUserBean telUser = (TelUserBean) UserManager.getInstance().getUser();
-		String dialcountrycode = telUser.getDialCountryCode();
+		UserBean telUser = UserManager.getInstance().getUser();
+		String dialcountrycode = (String) telUser
+				.getValue(TelUser.dialCountryCode.name());
 		int dialCountryIndex = countryCodeManager
 				.getCountryIndex(dialcountrycode);
 		((Button) (setDialCountryCodePopupWindow.getContentView()
@@ -290,10 +291,10 @@ public class SettingActivity extends NavigationActivity {
 	public void inviteFriend(View v) {
 		progressDialog = ProgressDialog.show(this, null,
 				getString(R.string.sending_request), true);
-		TelUserBean userBean = (TelUserBean) UserManager.getInstance()
-				.getUser();
+		UserBean userBean = UserManager.getInstance().getUser();
 		String username = userBean.getName();
-		String countrycode = userBean.getRegistCountryCode();
+		String countrycode = (String) userBean.getValue(TelUser.countryCode
+				.name());
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("username", username);
 		params.put("countryCode", countrycode);
@@ -464,10 +465,10 @@ public class SettingActivity extends NavigationActivity {
 			return;
 		}
 
-		TelUserBean userBean = (TelUserBean) UserManager.getInstance()
-				.getUser();
+		UserBean userBean = UserManager.getInstance().getUser();
 		String oldmd5 = StringUtils.md5(oldpsw);
-		String countrycode = userBean.getRegistCountryCode();
+		String countrycode = (String) userBean.getValue(TelUser.countryCode
+				.name());
 		String username = userBean.getName();
 		if (!newpsw.equals(confirm)) {
 			MyToast.show(this, R.string.new_confirm_not_equal,
@@ -539,8 +540,8 @@ public class SettingActivity extends NavigationActivity {
 	};
 
 	private void getPSW(String phone) {
-		String countryCode = ((TelUserBean) UserManager.getInstance().getUser())
-				.getRegistCountryCode();
+		String countryCode = (String) (UserManager.getInstance().getUser())
+				.getValue(TelUser.countryCode.name());
 
 		progressDialog = ProgressDialog.show(this, null,
 				getString(R.string.sending_request), true);
@@ -561,9 +562,8 @@ public class SettingActivity extends NavigationActivity {
 	 */
 
 	private void setDialCountryCode(String dialcountryCode) {
-		TelUserBean telUserBean = (TelUserBean) UserManager.getInstance()
-				.getUser();
-		telUserBean.setDialCountryCode(dialcountryCode);
+		UserBean telUserBean = UserManager.getInstance().getUser();
+		telUserBean.setValue(TelUser.dialCountryCode.name(), dialcountryCode);
 		DataStorageUtils.putObject(TelUser.dialCountryCode.name(),
 				dialcountryCode);
 	}
@@ -607,8 +607,7 @@ public class SettingActivity extends NavigationActivity {
 		}
 
 		int loginPatternId = this.loginGroup.getCheckedRadioButtonId();
-		TelUserBean userBean = (TelUserBean) UserManager.getInstance()
-				.getUser();
+		UserBean userBean = UserManager.getInstance().getUser();
 
 		if (loginPatternId == R.id.auto_login_rbtn) {
 			if (!userBean.isRememberPwd()) {
@@ -616,9 +615,9 @@ public class SettingActivity extends NavigationActivity {
 				DataStorageUtils.putObject(User.password.name(),
 						userBean.getPassword());
 				DataStorageUtils.putObject(TelUser.vosphone.name(),
-						userBean.getVosphone());
+						userBean.getValue(TelUser.vosphone.name()));
 				DataStorageUtils.putObject(TelUser.vosphone_pwd.name(),
-						userBean.getVosphone_pwd());
+						userBean.getValue(TelUser.vosphone_pwd.name()));
 				DataStorageUtils.putObject(User.userkey.name(),
 						userBean.getUserKey());
 			}
@@ -970,9 +969,9 @@ public class SettingActivity extends NavigationActivity {
 
 		public SetDialCountryCodePopupWindow(int resource, int width, int height) {
 			super(resource, width, height);
-			TelUserBean telUser = (TelUserBean) UserManager.getInstance()
-					.getUser();
-			String dialcountrycode = telUser.getDialCountryCode();
+			UserBean telUser = UserManager.getInstance().getUser();
+			String dialcountrycode = (String) telUser
+					.getValue(TelUser.dialCountryCode.name());
 			int dialCountryIndex = countryCodeManager
 					.getCountryIndex(dialcountrycode);
 			lastDialCountryCodeSelect = dialCountryIndex;
@@ -1255,13 +1254,13 @@ public class SettingActivity extends NavigationActivity {
 	private void setBindNumber(String phone, String country) {
 		progressDialog = ProgressDialog.show(this, null,
 				getString(R.string.sending_request), true);
-		TelUserBean userBean = (TelUserBean) UserManager.getInstance()
-				.getUser();
+		UserBean userBean = UserManager.getInstance().getUser();
 		String username = userBean.getName();
-		String oldCountryCode = userBean.getRegistCountryCode();
+		String countryCode = (String) userBean.getValue(TelUser.countryCode
+				.name());
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("username", username);
-		params.put("countryCode", oldCountryCode);
+		params.put("countryCode", countryCode);
 		params.put("bindphone_country_code", country);
 		params.put("bindphone", phone);
 		HttpUtils.postSignatureRequest(getString(R.string.server_url)

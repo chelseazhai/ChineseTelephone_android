@@ -32,12 +32,13 @@ import com.richitec.chinesetelephone.alipay.MyRC4;
 import com.richitec.chinesetelephone.alipay.PartnerConfig;
 import com.richitec.chinesetelephone.alipay.ResultChecker;
 import com.richitec.chinesetelephone.bean.ProductBean;
-import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.constant.AliPay;
 import com.richitec.chinesetelephone.constant.ChargeMoneyConstants;
 import com.richitec.chinesetelephone.constant.SystemConstants;
+import com.richitec.chinesetelephone.constant.TelUser;
 import com.richitec.chinesetelephone.utils.AliPayManager;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
+import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.HttpUtils;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
@@ -68,7 +69,7 @@ public class AccountChargeActivity extends NavigationActivity {
 		ListView chargeMoneyList = (ListView) findViewById(R.id.alipay_charge_money_list);
 		chargeMoneyList.setAdapter(chargeMoneyListAdapter);
 		chargeMoneyList.setOnItemClickListener(onChargeMoneySelectedListener);
-		
+
 		getRemainMoney();
 	}
 
@@ -115,10 +116,10 @@ public class AccountChargeActivity extends NavigationActivity {
 	}
 
 	private void getRemainMoney() {
-		TelUserBean userBean = (TelUserBean) UserManager.getInstance()
-				.getUser();
+		UserBean userBean = UserManager.getInstance().getUser();
 		String username = userBean.getName();
-		String countryCode = userBean.getRegistCountryCode();
+		String countryCode = (String) userBean.getValue(TelUser.countryCode
+				.name());
 
 		// mProgress = ProgressDialog.show(this, null,
 		// getString(R.string.sending_request), true);
@@ -191,10 +192,10 @@ public class AccountChargeActivity extends NavigationActivity {
 				getString(R.string.sending_request), true);
 		if (PartnerConfig.PARTNER.equals("")) {
 
-			TelUserBean telUser = (TelUserBean) UserManager.getInstance()
-					.getUser();
+			UserBean telUser = UserManager.getInstance().getUser();
 			HashMap<String, String> params = new HashMap<String, String>();
-			params.put("countryCode", telUser.getRegistCountryCode());
+			params.put("countryCode",
+					(String) telUser.getValue(TelUser.countryCode.name()));
 
 			HttpUtils.postSignatureRequest(getString(R.string.server_url)
 					+ getString(R.string.get_seller_partner_key),
@@ -213,9 +214,10 @@ public class AccountChargeActivity extends NavigationActivity {
 	}
 
 	private void fetchChargeMoneyList() {
-		TelUserBean telUser = (TelUserBean) UserManager.getInstance().getUser();
+		UserBean telUser = UserManager.getInstance().getUser();
 		HashMap<String, String> params = new HashMap<String, String>();
-		params.put("countryCode", telUser.getRegistCountryCode());
+		params.put("countryCode",
+				(String) telUser.getValue(TelUser.countryCode.name()));
 		HttpUtils.postSignatureRequest(getString(R.string.server_url)
 				+ getString(R.string.getChargeMoneyList_url),
 				PostRequestFormat.URLENCODED, params, null,
@@ -254,8 +256,7 @@ public class AccountChargeActivity extends NavigationActivity {
 		@Override
 		public void onFinished(HttpResponseResult responseResult) {
 
-			TelUserBean telUser = (TelUserBean) UserManager.getInstance()
-					.getUser();
+			UserBean telUser = UserManager.getInstance().getUser();
 			String encryStr = responseResult.getResponseText();
 
 			String decryData = MyRC4.decryptPro(encryStr, telUser.getUserKey());
@@ -397,11 +398,11 @@ public class AccountChargeActivity extends NavigationActivity {
 
 		mProgress = ProgressDialog.show(this, null,
 				getString(R.string.charging_now));
-		TelUserBean user = (TelUserBean) UserManager.getInstance().getUser();
+		UserBean user =  UserManager.getInstance().getUser();
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("pin", cardNumber);
 		params.put("password", cardPwd);
-		params.put("countryCode", user.getRegistCountryCode());
+		params.put("countryCode", (String)user.getValue(TelUser.countryCode.name()));
 		HttpUtils.postSignatureRequest(getString(R.string.server_url)
 				+ getString(R.string.card_charge_url),
 				PostRequestFormat.URLENCODED, params, null,
@@ -461,17 +462,20 @@ public class AccountChargeActivity extends NavigationActivity {
 
 		}
 	};
-	
+
 	private OnItemClickListener onChargeMoneySelectedListener = new OnItemClickListener() {
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
-			JSONObject chargeMoneyObj = (JSONObject) chargeMoneyListAdapter.getItem(position);
+			JSONObject chargeMoneyObj = (JSONObject) chargeMoneyListAdapter
+					.getItem(position);
 			if (chargeMoneyObj != null) {
 				try {
-					int chargeMoneyId = chargeMoneyObj.getInt(ChargeMoneyConstants.id.name());
-					double chargeMoney = chargeMoneyObj.getDouble(ChargeMoneyConstants.charge_money.name());
+					int chargeMoneyId = chargeMoneyObj
+							.getInt(ChargeMoneyConstants.id.name());
+					double chargeMoney = chargeMoneyObj
+							.getDouble(ChargeMoneyConstants.charge_money.name());
 					chargeMoney(chargeMoneyId, chargeMoney);
 				} catch (JSONException e) {
 					e.printStackTrace();

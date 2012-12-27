@@ -17,9 +17,9 @@ import com.richitec.chinesetelephone.alipay.MobileSecurePayer;
 import com.richitec.chinesetelephone.alipay.PartnerConfig;
 import com.richitec.chinesetelephone.alipay.Rsa;
 import com.richitec.chinesetelephone.bean.ProductBean;
-import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.constant.AliPay;
-import com.richitec.chinesetelephone.constant.SystemConstants;
+import com.richitec.chinesetelephone.constant.TelUser;
+import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.HttpUtils;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
@@ -27,19 +27,17 @@ import com.richitec.commontoolkit.utils.HttpUtils.HttpResponseResult;
 import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
 import com.richitec.commontoolkit.utils.HttpUtils.PostRequestFormat;
 
-
 public class AliPayManager {
 	private String orderInfo;
 	private String out_trade_no;
 	private Handler handler;
 	private Activity activity;
-	
-	public AliPayManager(Handler h,Activity a){
+
+	public AliPayManager(Handler h, Activity a) {
 		handler = h;
 		activity = a;
 	}
-	
-	
+
 	public String getOrderInfo(ProductBean p) {
 		out_trade_no = getOutTradeNo(AliPay.aliPayType);
 		String strOrderInfo = "partner=" + "\"" + PartnerConfig.PARTNER + "\"";
@@ -56,24 +54,25 @@ public class AliPayManager {
 		strOrderInfo += "&";
 		strOrderInfo += "notify_url=" + "\""
 				+ URLEncoder.encode(p.getNotify_url()) + "\"";
-		
+
 		return strOrderInfo;
 	}
-	
+
 	public String getOutTradeNo(String type) {
-		
+
 		Date currTime = new Date();
 		SimpleDateFormat sf = new SimpleDateFormat("_yyyyMMdd_HHmmss_",
 				Locale.US);
-		String returnStr =  type + sf.format(currTime) + UserManager.getInstance().getUser().getName() + "_";
+		String returnStr = type + sf.format(currTime)
+				+ UserManager.getInstance().getUser().getName() + "_";
 
 		java.util.Random r = new java.util.Random();
-		
+
 		returnStr = returnStr + r.nextInt();
-		
+
 		return returnStr;
 	}
-	
+
 	public boolean checkInfo() {
 		String partner = PartnerConfig.PARTNER;
 		String seller = PartnerConfig.SELLER;
@@ -83,7 +82,7 @@ public class AliPayManager {
 
 		return true;
 	}
-	
+
 	/**
 	 * sign the order info. 对订单信息进行签名
 	 * 
@@ -96,45 +95,44 @@ public class AliPayManager {
 	public String sign(String content) {
 		return Rsa.sign(content, PartnerConfig.RSA_PRIVATE);
 	}
-	
+
 	public String getSignType() {
 		String getSignType = "sign_type=" + "\"" + "RSA" + "\"";
 		return getSignType;
 	}
-	
-	public boolean pay(ProductBean p){
-		TelUserBean userBean = (TelUserBean) UserManager.getInstance().getUser();
+
+	public boolean pay(ProductBean p) {
+		UserBean userBean = UserManager.getInstance().getUser();
 		orderInfo = getOrderInfo(p);
-		//String signType = getSignType();
-		//get sign form server
-		HashMap<String,String> params = new HashMap<String,String>();
+		// String signType = getSignType();
+		// get sign form server
+		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("charge_money_id", String.valueOf(p.getChargeMoneyId()));
 		params.put("total_fee", p.getPrice());
-    	params.put("out_trade_no", out_trade_no);
-    	params.put("content", orderInfo);
-    	params.put("countryCode", userBean.getRegistCountryCode());
-		
-    	HttpUtils.postSignatureRequest(activity.getString(R.string.server_url)+activity.getString(R.string.alipay_sign), 
-				PostRequestFormat.URLENCODED, params,
-				null, HttpRequestType.ASYNCHRONOUS, onAlipaySignFinishListener);	
-		
-		/*String strsign = sign(orderInfo);
-		Log.v("sign:", strsign);
-		// 对签名进行编码
-		strsign = URLEncoder.encode(strsign);
-		// 组装好参数
-		String info = orderInfo + "&sign=" + "\"" + strsign + "\"" + "&"
-				+ signType;
-		Log.v("orderInfo:", info);
-		
-		// 调用pay方法进行支付
-		MobileSecurePayer msp = new MobileSecurePayer();
-		boolean bRet = msp.pay(info, handler, AlixId.RQF_PAY, activity);
-		return bRet;*/
-    	return true;
+		params.put("out_trade_no", out_trade_no);
+		params.put("content", orderInfo);
+		params.put("countryCode",
+				(String) userBean.getValue(TelUser.countryCode.name()));
+
+		HttpUtils.postSignatureRequest(activity.getString(R.string.server_url)
+				+ activity.getString(R.string.alipay_sign),
+				PostRequestFormat.URLENCODED, params, null,
+				HttpRequestType.ASYNCHRONOUS, onAlipaySignFinishListener);
+
+		/*
+		 * String strsign = sign(orderInfo); Log.v("sign:", strsign); // 对签名进行编码
+		 * strsign = URLEncoder.encode(strsign); // 组装好参数 String info =
+		 * orderInfo + "&sign=" + "\"" + strsign + "\"" + "&" + signType;
+		 * Log.v("orderInfo:", info);
+		 * 
+		 * // 调用pay方法进行支付 MobileSecurePayer msp = new MobileSecurePayer();
+		 * boolean bRet = msp.pay(info, handler, AlixId.RQF_PAY, activity);
+		 * return bRet;
+		 */
+		return true;
 	}
-	
-	private OnHttpRequestListener onAlipaySignFinishListener = new OnHttpRequestListener(){
+
+	private OnHttpRequestListener onAlipaySignFinishListener = new OnHttpRequestListener() {
 
 		@Override
 		public void onFinished(HttpResponseResult responseResult) {
@@ -148,7 +146,7 @@ public class AliPayManager {
 			String info = orderInfo + "&sign=" + "\"" + strsign + "\"" + "&"
 					+ signType;
 			Log.v("orderInfo:", info);
-			
+
 			// 调用pay方法进行支付
 			MobileSecurePayer msp = new MobileSecurePayer();
 			msp.pay(info, handler, AlixId.RQF_PAY, activity);
@@ -162,7 +160,7 @@ public class AliPayManager {
 			msg.obj = "服务器签名错误，请重试";
 			handler.sendMessage(msg);
 		}
-		
+
 	};
-	
+
 }

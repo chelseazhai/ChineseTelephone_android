@@ -7,9 +7,6 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
-
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -41,8 +38,8 @@ import android.widget.TextView;
 
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.R.drawable;
-import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.constant.SystemConstants;
+import com.richitec.chinesetelephone.constant.TelUser;
 import com.richitec.chinesetelephone.sip.SipCallMode;
 import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.chinesetelephone.sip.listeners.SipInviteStateListener;
@@ -52,6 +49,7 @@ import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivit
 import com.richitec.chinesetelephone.tab7tabcontent.DialTabContentActivity;
 import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar;
+import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpResponseResult;
 import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
@@ -824,9 +822,11 @@ public class OutgoingCallActivity extends Activity implements
 		@Override
 		public void onFailed(HttpResponseResult responseResult) {
 			Log.e(LOG_TAG, "Send callback sip voice call http request failed");
-			Log.d(SystemConstants.TAG, "SendCallbackSipVoiceCallHttpRequestListener - status code: " + responseResult.getStatusCode() + " text: " + responseResult.getResponseText());
-			
-			
+			Log.d(SystemConstants.TAG,
+					"SendCallbackSipVoiceCallHttpRequestListener - status code: "
+							+ responseResult.getStatusCode() + " text: "
+							+ responseResult.getResponseText());
+
 			// check send callback sip voice call request response
 			checkSendCallbackSipVoiceCallRequestResponse(false);
 		}
@@ -840,10 +840,14 @@ public class OutgoingCallActivity extends Activity implements
 			if (isSuccess) {
 				_sendCallbackSipVoiceCallStateTipTextId = R.string.send_callbackCallRequest_succeed;
 				_callbackCallWaitingImageViewImgResId = drawable.img_sendcallbackcall_succeed;
-				TelUserBean user = (TelUserBean) UserManager.getInstance().getUser();
-				_callbackCallWaitingTextViewText = String.format(getResources()
-						.getString(R.string.callbackWaiting_textView_succeed), user.getBindPhoneCountryCode() + user.getBindPhone(), 
-						_mCalleePhone);
+				UserBean user = UserManager.getInstance().getUser();
+				_callbackCallWaitingTextViewText = String.format(
+						getResources().getString(
+								R.string.callbackWaiting_textView_succeed),
+						((String) user.getValue(TelUser.bindphone_country_code
+								.name()))
+								+ ((String) user.getValue(TelUser.bindphone
+										.name())), _mCalleePhone);
 			}
 
 			// update call state textView text

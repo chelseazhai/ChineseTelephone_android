@@ -2,13 +2,10 @@ package com.richitec.chinesetelephone;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.richitec.chinesetelephone.account.AccountSettingActivity;
 import com.richitec.chinesetelephone.bean.DialPreferenceBean;
-import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.constant.DialPreference;
 import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.constant.TelUser;
@@ -23,7 +20,6 @@ import com.richitec.commontoolkit.user.User;
 import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.DataStorageUtils;
-import com.richitec.commontoolkit.utils.MyToast;
 
 public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 
@@ -73,7 +69,6 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 				.name());
 		String dialcountrycode = DataStorageUtils
 				.getString(TelUser.dialCountryCode.name());
-		String areacode = DataStorageUtils.getString(TelUser.areaCode.name());
 		String vosphone = DataStorageUtils.getString(TelUser.vosphone.name());
 		String vosphone_psw = DataStorageUtils.getString(TelUser.vosphone_pwd
 				.name());
@@ -81,28 +76,28 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 		String bindPhoneCountryCode = DataStorageUtils
 				.getString(TelUser.bindphone_country_code.name());
 
-		TelUserBean userBean = new TelUserBean();
-		userBean.setName(userName);
-		userBean.setUserKey(userkey);
-		userBean.setPassword(password);
-		userBean.setRegistCountryCode(countrycode);
-		userBean.setBindPhone(bindPhone);
-		userBean.setBindPhoneCountryCode(bindPhoneCountryCode);
-
+		UserBean user = new UserBean();
+		user.setName(userName);
+		user.setUserKey(userkey);
+		user.setPassword(password);
+		user.setValue(TelUser.countryCode.name(), countrycode);
+		user.setValue(TelUser.bindphone.name(), bindPhone);
+		user.setValue(TelUser.bindphone_country_code.name(), bindPhoneCountryCode);
+		
+		
 		if (dialcountrycode == null || dialcountrycode.trim().equals("")) {
-			userBean.setDialCountryCode(countrycode);
+			user.setValue(TelUser.dialCountryCode.name(), countrycode);
 		} else {
-			userBean.setDialCountryCode(dialcountrycode);
+			user.setValue(TelUser.dialCountryCode.name(), dialcountrycode);
 		}
 		if (password != null && !password.equals("") && userkey != null
 				&& !userkey.equals("")) {
-			userBean.setRememberPwd(true);
+			user.setRememberPwd(true);
 		}
-		userBean.setAreaCode(areacode);
-		userBean.setVosphone(vosphone);
-		userBean.setVosphone_pwd(vosphone_psw);
-		UserManager.getInstance().setUser(userBean);
-		Log.d(SystemConstants.TAG + " load account: ", userBean.toString());
+		user.setValue(TelUser.vosphone.name(), vosphone);
+		user.setValue(TelUser.vosphone_pwd.name(), vosphone_psw);
+		UserManager.getInstance().setUser(user);
+		Log.d(SystemConstants.TAG + " load account: ", user.toString());
 		// 保存拨打设置属性
 		DialPreferenceBean dialBean = DialPreferenceManager.getInstance()
 				.getDialPreferenceBean();
@@ -115,7 +110,6 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 		if (answerPattern != null)
 			dialBean.setAnswerPattern(answerPattern);
 
-		// Log.d("LoadDialSetting", dialPattern+":"+answerPattern);
 	}
 
 }

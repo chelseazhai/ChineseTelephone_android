@@ -85,7 +85,8 @@ public class SipDroidSipServices extends BaseSipServices implements
 
 		// commit changes
 		_edit.commit();
-
+		
+		Receiver.mSipdroidEngine = null;
 		// sip account register
 		Receiver.engine(APP_CONTEXT).registerMore();
 	}
