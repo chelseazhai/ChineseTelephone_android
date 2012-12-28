@@ -1,145 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout 
-    android:layout_width = "fill_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginTop="10.0dp" 
-    xmlns:android="http://schemas.android.com/apk/res/android">
-		<TextView
-		               android:textSize="20.0sp" 
-		               android:layout_width="wrap_content"
-		               android:layout_height="wrap_content" 
-		               android:text="@string/help"
-		               android:gravity="center_vertical"
-		               android:layout_marginLeft="12.0dp"
-		               android:layout_marginRight="10.0dp"
-		               />
-		<LinearLayout 	
-		                android:background="@drawable/img_setting_content_bg"
-		                android:orientation="vertical"
-		                android:gravity="center"
-		                android:layout_width="fill_parent"
-		                android:layout_height="wrap_content"
-		                android:layout_marginLeft="10.0dp"
-		                android:layout_marginRight="10.0dp"
-		                >
-                
-                <LinearLayout 
-                    android:id="@+id/help_btn"
-                    android:background="@drawable/setting_top_item_bg"
-                    android:clickable="true"
-                    android:layout_width="fill_parent"
-                    android:layout_height="50.0dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    >
-                    
-                    <ImageView 
-                        android:layout_width="30.0dp"
-                        android:layout_height="30.0dp"
-                        android:layout_marginLeft="10.0dp"
-                        android:src="@drawable/help"
-                        />
-                    
-                    <TextView
-                        android:textSize="18.0sp" 
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" 
-                        android:layout_marginLeft="10.0dp"
-                        android:layout_weight="1.0"
-                        android:text="@string/help_item"
-                        android:textColor="@color/dark_dim_gray"
-                        android:gravity="center_vertical"
-                        />
-                    <ImageView 
-                        android:layout_width="12.0dp"
-                        android:layout_height="12.0dp"
-                        android:layout_marginRight="10.0dp"
-                        android:src="@drawable/into_icon"
-                        />                   
-                </LinearLayout>
-                
-                <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="1.0dp"
-                    android:background="@drawable/setting_line_img" 
-                    />
-                
-                <LinearLayout 
-                    android:id="@+id/help_update_btn"
-                    android:background="@drawable/setting_middle_item_bg"
-                    android:clickable="true"
-                    android:layout_width="fill_parent"
-                    android:layout_height="50.0dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:onClick="checkUpdateVersion"
-                    >
-                    
-                    <ImageView 
-                        android:layout_width="30.0dp"
-                        android:layout_height="30.0dp"
-                        android:layout_marginLeft="10.0dp"
-                        android:src="@drawable/help_update"
-                        />
-                    
-                    <TextView
-                        android:textSize="18.0sp" 
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" 
-                        android:layout_marginLeft="10.0dp"
-                        android:gravity="center_vertical"
-                        android:layout_weight="1.0"
-                        android:text="@string/help_update_item"
-                        android:textColor="@color/dark_dim_gray"
-                        />
-                    <ImageView 
-                        android:layout_width="12.0dp"
-                        android:layout_height="12.0dp"
-                        android:layout_marginRight="10.0dp"
-                        android:src="@drawable/into_icon"
-                        />                   
-                </LinearLayout>
-                
-                <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="1.0dp"
-                    android:background="@drawable/setting_line_img" 
-                    />
-                
-                <LinearLayout 
-                    android:id="@+id/help_about_btn"
-                    android:background="@drawable/setting_bottom_item_bg"
-                    android:clickable="true"
-                    android:layout_width="fill_parent"
-                    android:layout_height="50.0dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    >
-                    
-                    <ImageView 
-                        android:layout_width="30.0dp"
-                        android:layout_height="30.0dp"
-                        android:layout_marginLeft="10.0dp"
-                        android:src="@drawable/about"
-                        />
-                    
-                    <TextView
-                        android:textSize="18.0sp" 
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" 
-                        android:layout_marginLeft="10.0dp"
-                        android:gravity="center_vertical"
-                        android:layout_weight="1.0"
-                        android:text="@string/help_about_item"
-                        android:textColor="@color/dark_dim_gray"
-                        />
-                    <ImageView 
-                        android:layout_width="12.0dp"
-                        android:layout_height="12.0dp"
-                        android:layout_marginRight="10.0dp"
-                        android:src="@drawable/into_icon"
-                        />                   
-                </LinearLayout>
-            </LinearLayout>
+    android:layout_marginTop="10.0dp"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12.0dp"
+        android:layout_marginRight="10.0dp"
+        android:gravity="center_vertical"
+        android:text="@string/help"
+        android:textSize="20.0sp" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10.0dp"
+        android:layout_marginRight="10.0dp"
+        android:background="@drawable/img_setting_content_bg"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/help_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="50.0dp"
+            android:background="@drawable/setting_top_item_bg"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:layout_width="30.0dp"
+                android:layout_height="30.0dp"
+                android:layout_marginLeft="10.0dp"
+                android:src="@drawable/help" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10.0dp"
+                android:layout_weight="1.0"
+                android:gravity="center_vertical"
+                android:text="@string/help_item"
+                android:textColor="@color/dark_dim_gray"
+                android:textSize="18.0sp" />
+
+            <ImageView
+                android:layout_width="12.0dp"
+                android:layout_height="12.0dp"
+                android:layout_marginRight="10.0dp"
+                android:src="@drawable/into_icon" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dp"
+            android:background="@drawable/setting_line_img" />
+
+        <LinearLayout
+            android:id="@+id/help_update_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="50.0dp"
+            android:background="@drawable/setting_middle_item_bg"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:onClick="checkUpdateVersion"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:layout_width="30.0dp"
+                android:layout_height="30.0dp"
+                android:layout_marginLeft="10.0dp"
+                android:src="@drawable/help_update" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10.0dp"
+                android:layout_weight="1.0"
+                android:gravity="center_vertical"
+                android:text="@string/help_update_item"
+                android:textColor="@color/dark_dim_gray"
+                android:textSize="18.0sp" />
+
+            <ImageView
+                android:layout_width="12.0dp"
+                android:layout_height="12.0dp"
+                android:layout_marginRight="10.0dp"
+                android:src="@drawable/into_icon" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dp"
+            android:background="@drawable/setting_line_img" />
+
+        <LinearLayout
+            android:id="@+id/help_about_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="50.0dp"
+            android:background="@drawable/setting_bottom_item_bg"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:layout_width="30.0dp"
+                android:layout_height="30.0dp"
+                android:layout_marginLeft="10.0dp"
+                android:src="@drawable/ic_launcher" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10.0dp"
+                android:layout_weight="1.0"
+                android:gravity="center_vertical"
+                android:text="@string/help_about_item"
+                android:textColor="@color/dark_dim_gray"
+                android:textSize="18.0sp" />
+
+            <ImageView
+                android:layout_width="12.0dp"
+                android:layout_height="12.0dp"
+                android:layout_marginRight="10.0dp"
+                android:src="@drawable/into_icon" />
+        </LinearLayout>
+    </LinearLayout>
+
 </LinearLayout>
