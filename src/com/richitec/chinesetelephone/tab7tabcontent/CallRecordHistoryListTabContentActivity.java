@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import android.app.AlertDialog;
@@ -153,9 +154,9 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 
 		// call record initiate time day and time format, format unix timeStamp
 		final DateFormat _callRecordInitiateTimeDayFormat = new SimpleDateFormat(
-				"yy-MM-dd");
+				"yy-MM-dd", Locale.getDefault());
 		final DateFormat _callRecordInitiateTimeTimeFormat = new SimpleDateFormat(
-				"HH:mm:ss");
+				"HH:mm:ss", Locale.getDefault());
 
 		// format day and time
 		_ret.append(_callRecordInitiateTimeDayFormat.format(callDate))

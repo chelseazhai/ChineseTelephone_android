@@ -147,10 +147,11 @@ public class SipDroidSipServices extends BaseSipServices implements
 
 	@Override
 	public void sentDTMF(String dtmfCode) {
+		Log.d(LOG_TAG, "Send dtmf to current sip voice call, dtmf code = "
+				+ dtmfCode);
+
 		// sipdroid send dtmf to current sip voice call
-		Log.d(LOG_TAG,
-				"Send dtmf to current sip voice call not implement, dtmf code = "
-						+ dtmfCode);
+		Receiver.engine(APP_CONTEXT).info(dtmfCode.charAt(0), 250);
 	}
 
 	@Override
