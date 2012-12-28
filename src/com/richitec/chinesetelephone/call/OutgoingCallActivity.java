@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.apache.http.HttpStatus;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -847,7 +849,7 @@ public class OutgoingCallActivity extends Activity implements
 		@Override
 		public void onFinished(HttpResponseResult responseResult) {
 			// check send callback sip voice call request response
-			checkSendCallbackSipVoiceCallRequestResponse(true);
+			checkSendCallbackSipVoiceCallRequestResponse(responseResult.getStatusCode());
 		}
 
 		@Override
@@ -859,16 +861,16 @@ public class OutgoingCallActivity extends Activity implements
 							+ responseResult.getResponseText());
 
 			// check send callback sip voice call request response
-			checkSendCallbackSipVoiceCallRequestResponse(false);
+			checkSendCallbackSipVoiceCallRequestResponse(responseResult.getStatusCode());
 		}
 
 		// check send callback sip voice call request response
 		private void checkSendCallbackSipVoiceCallRequestResponse(
-				Boolean isSuccess) {
+				int status) {
 			// update send callback sip voice call state tip text id, callback
 			// waiting imageView image resource id and callback waiting textView
 			// text
-			if (isSuccess) {
+			if (status == HttpStatus.SC_OK) {
 				_sendCallbackSipVoiceCallStateTipTextId = R.string.send_callbackCallRequest_succeed;
 				_callbackCallWaitingImageViewImgResId = drawable.img_sendcallbackcall_succeed;
 				UserBean user = UserManager.getInstance().getUser();
@@ -879,6 +881,8 @@ public class OutgoingCallActivity extends Activity implements
 								.name()))
 								+ ((String) user.getValue(TelUser.bindphone
 										.name())), _mCalleePhone);
+			} else if (status == HttpStatus.SC_PAYMENT_REQUIRED) {
+				_sendCallbackSipVoiceCallStateTipTextId = R.string.no_enough_money;
 			}
 
 			// update call state textView text
