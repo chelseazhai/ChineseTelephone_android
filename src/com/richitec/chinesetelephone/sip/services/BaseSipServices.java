@@ -3,21 +3,25 @@ package com.richitec.chinesetelephone.sip.services;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.os.Handler;
 import android.provider.CallLog;
 import android.util.Log;
 
 import com.richitec.chinesetelephone.R;
-import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.call.OutgoingCallActivity;
+import com.richitec.chinesetelephone.constant.TelUser;
 import com.richitec.chinesetelephone.sip.SipCallMode;
 import com.richitec.chinesetelephone.sip.listeners.SipInviteStateListener;
+import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
 import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.calllog.CallLogManager;
+import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.HttpUtils;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
@@ -28,14 +32,33 @@ public abstract class BaseSipServices implements ISipServices {
 
 	private static final String LOG_TAG = "BaseSipServices";
 
+	// application context
+	protected static final Context APP_CONTEXT = AppLaunchActivity
+			.getAppContext();
+
+	// sip registration state listener
+	protected SipRegistrationStateListener _mSipRegistrationStateListener;
+
+	// sip registration state broadcast receiver
+	protected BroadcastReceiver _mRegistrationStateBroadcastReceiver;
+
+	// sip register intent filter
+	protected final IntentFilter SIPEGISTER_INTENTFILTER = new IntentFilter();
+
+	// sip audio/video session state broadcast receiver
+	protected BroadcastReceiver _mAVSessionStateBroadcastReceiver;
+
+	// sip invite intent filter
+	protected final IntentFilter SIPINVITE_INTENTFILTER = new IntentFilter();
+
 	// sip voice call log id
 	private Long _mSipVoiceCallLogId;
 
 	// sip invite listener
 	private SipInviteStateListener _mSipInviteStateListener;
-	
+
 	private static String[] PhoneNumberFilterPrefix = { "17909", "11808",
-		"12593", "17951", "17911", "+"};
+			"12593", "17951", "17911", "+" };
 
 	// audio manager
 	private AudioManager _mAudioManager;
@@ -75,18 +98,24 @@ public abstract class BaseSipServices implements ISipServices {
 				// check call mode and get make sip voice call result
 				boolean _makeSipVoiceCallResult = false;
 				String checkedCalleePhone = new String(calleePhone);
-				checkedCalleePhone = AddressBookManager.filterNumber(checkedCalleePhone, AddressBookManager.FILTER_ONLY_IP_PREFIX);
+				checkedCalleePhone = AddressBookManager.filterNumber(
+						checkedCalleePhone,
+						AddressBookManager.FILTER_ONLY_IP_PREFIX);
 				for (String prefix : PhoneNumberFilterPrefix) {
 					int index = calleePhone.indexOf(prefix);
 					if (index == 0 && prefix.length() < calleePhone.length()) {
-						checkedCalleePhone = calleePhone.substring(prefix.length());
+						checkedCalleePhone = calleePhone.substring(prefix
+								.length());
 					}
 				}
-				if(calleePhone.matches("(^[0]\\d{2,3}\\d{7,8})|(^[1][\\d]{10})|(\\d{9})")){
-					TelUserBean telUser = (TelUserBean) UserManager.getInstance().getUser();
-					checkedCalleePhone = telUser.getDialCountryCode() + calleePhone;
+				if (calleePhone
+						.matches("(^[0]\\d{2,3}\\d{7,8})|(^[1][\\d]{10})|(\\d{9})")) {
+					UserBean telUser = UserManager.getInstance().getUser();
+					checkedCalleePhone = (String) telUser
+							.getValue(TelUser.dialCountryCode.name())
+							+ calleePhone;
 				}
-				
+
 				switch (callMode) {
 				case CALLBACK:
 					// make callback sip voice call
@@ -158,6 +187,10 @@ public abstract class BaseSipServices implements ISipServices {
 	public void setSipInviteStateListener(
 			SipInviteStateListener sipInviteStateListener) {
 		_mSipInviteStateListener = sipInviteStateListener;
+	}
+
+	public BroadcastReceiver getAVSessionStateBroadcastReceiver() {
+		return _mAVSessionStateBroadcastReceiver;
 	}
 
 	// update current sip voice call muted flag
@@ -248,14 +281,21 @@ public abstract class BaseSipServices implements ISipServices {
 			oca = (OutgoingCallActivity) getSipInviteStateListener();
 			_sendCallbackSipVoiceCallHttpRequestListener = oca
 					.getSendCallbackSipVoiceCallHttpRequestListener();
-			TelUserBean user = (TelUserBean) UserManager.getInstance().getUser();
+			UserBean user = UserManager.getInstance().getUser();
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("callee", calleePhone);
-			params.put("countryCode", user.getRegistCountryCode());
-			params.put("vosPhoneNumber", user.getVosphone());
-			params.put("vosPhonePassword", user.getVosphone_pwd());
+			params.put("countryCode",
+					(String) user.getValue(TelUser.countryCode.name()));
+			params.put("vosPhoneNumber",
+					(String) user.getValue(TelUser.vosphone.name()));
+			params.put("vosPhonePassword",
+					(String) user.getValue(TelUser.vosphone_pwd.name()));
 			// send callback sip voice call post request
-			HttpUtils.postSignatureRequest(oca.getString(R.string.server_url) + oca.getString(R.string.callback_url), PostRequestFormat.URLENCODED, params, null, HttpRequestType.ASYNCHRONOUS, _sendCallbackSipVoiceCallHttpRequestListener);
+			HttpUtils.postSignatureRequest(oca.getString(R.string.server_url)
+					+ oca.getString(R.string.callback_url),
+					PostRequestFormat.URLENCODED, params, null,
+					HttpRequestType.ASYNCHRONOUS,
+					_sendCallbackSipVoiceCallHttpRequestListener);
 		} catch (Exception e) {
 			Log.e(LOG_TAG,
 					"Get send callback sip voice call http request listener error, sip invite state listener = "
@@ -263,7 +303,6 @@ public abstract class BaseSipServices implements ISipServices {
 							+ " and exception = "
 							+ e.getMessage());
 		}
-
 
 		return true;
 	}

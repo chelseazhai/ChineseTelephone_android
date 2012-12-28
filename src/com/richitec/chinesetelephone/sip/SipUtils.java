@@ -2,6 +2,7 @@ package com.richitec.chinesetelephone.sip;
 
 import android.util.Log;
 
+import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
 import com.richitec.chinesetelephone.sip.services.BaseSipServices;
 import com.richitec.chinesetelephone.sip.services.ISipServices;
@@ -21,6 +22,7 @@ public class SipUtils {
 	// register sip account
 	public static void registerSipAccount(SipRegisterBean sipAccount,
 			SipRegistrationStateListener sipRegistrationStateListener) {
+		Log.d(SystemConstants.TAG, "SipUtils - registerSipAccount");
 		sipServices
 				.registerSipAccount(sipAccount, sipRegistrationStateListener);
 	}

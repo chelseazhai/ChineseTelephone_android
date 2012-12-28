@@ -1,18 +1,22 @@
 package com.richitec.chinesetelephone.utils;
 
-import com.richitec.chinesetelephone.bean.TelUserBean;
+import android.util.Log;
+
+import com.richitec.chinesetelephone.constant.SystemConstants;
+import com.richitec.chinesetelephone.constant.TelUser;
 import com.richitec.chinesetelephone.sip.SipRegisterBean;
 import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
+import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
 
 public class SipRegisterManager {
 	
 	public static void registSip(SipRegistrationStateListener sipRegistStateListener, String vosServerAddress){
-		
-		TelUserBean userBean = (TelUserBean) UserManager.getInstance().getUser();	
-		String sipName = userBean.getVosphone();
-		String sipPsw = userBean.getVosphone_pwd();
+		Log.d(SystemConstants.TAG, "SipRegisterManager - registSip");
+		UserBean userBean = UserManager.getInstance().getUser();	
+		String sipName = (String) userBean.getValue(TelUser.vosphone.name());
+		String sipPsw = (String) userBean.getValue(TelUser.vosphone_pwd.name());
 		
 		if(sipName!=null&&!sipName.equals("")&&sipPsw!=null&&!sipPsw.equals("")){
 			// test by ares

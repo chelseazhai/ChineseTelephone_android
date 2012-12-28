@@ -7,9 +7,6 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
-
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -41,8 +38,8 @@ import android.widget.TextView;
 
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.R.drawable;
-import com.richitec.chinesetelephone.bean.TelUserBean;
 import com.richitec.chinesetelephone.constant.SystemConstants;
+import com.richitec.chinesetelephone.constant.TelUser;
 import com.richitec.chinesetelephone.sip.SipCallMode;
 import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.chinesetelephone.sip.listeners.SipInviteStateListener;
@@ -52,6 +49,7 @@ import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivit
 import com.richitec.chinesetelephone.tab7tabcontent.DialTabContentActivity;
 import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar;
+import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpResponseResult;
 import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
@@ -93,6 +91,9 @@ public class OutgoingCallActivity extends Activity implements
 	// call duration timer
 	private final Timer CALLDURATION_TIMER = new Timer();
 
+	// call duration timer task
+	private TimerTask _mCallDutationTimerTask;
+
 	// call duration time and set default value is 0
 	private Long _mCallDutation = 0L;
 
@@ -108,6 +109,9 @@ public class OutgoingCallActivity extends Activity implements
 	// hangup and hide keyboard image button
 	private ImageButton _mHangupBtn;
 	private ImageButton _mHideKeyboardBtn;
+
+	// sip voice call terminated type, default value is passive
+	private SipVoiceCallTerminatedType _mSipVoiceCallTerminatedType = SipVoiceCallTerminatedType.PASSIVE;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -279,14 +283,14 @@ public class OutgoingCallActivity extends Activity implements
 			_mAudioManager.setSpeakerphoneOn(true);
 		}
 
-		// clear call duration time
-		_mCallDutation = 0L;
-
 		// increase call duration time per second using timer task
 		CALLDURATION_TIMER.schedule(new TimerTask() {
 
 			@Override
 			public void run() {
+				// reset call duration timer task
+				_mCallDutationTimerTask = this;
+
 				// increase call duration time
 				_mCallDutation++;
 
@@ -342,8 +346,11 @@ public class OutgoingCallActivity extends Activity implements
 
 	@Override
 	public void onCallTerminated() {
-		// terminate current sip voice call
-		terminateSipVoiceCall(SipVoiceCallTerminatedType.PASSIVE);
+		// check sip voice call terminated type
+		if (SipVoiceCallTerminatedType.PASSIVE == _mSipVoiceCallTerminatedType) {
+			// terminate current sip voice call
+			terminateSipVoiceCall(SipVoiceCallTerminatedType.PASSIVE);
+		}
 	}
 
 	public SendCallbackSipVoiceCallHttpRequestListener getSendCallbackSipVoiceCallHttpRequestListener() {
@@ -535,6 +542,9 @@ public class OutgoingCallActivity extends Activity implements
 
 	// terminate sip voice call
 	private void terminateSipVoiceCall(SipVoiceCallTerminatedType terminatedType) {
+		// update sip voice call terminated type
+		_mSipVoiceCallTerminatedType = terminatedType;
+
 		// update outgoingCall activity UI
 		// disable hangup and hide keyboard button
 		if (_mHangupBtn.isShown()) {
@@ -544,13 +554,29 @@ public class OutgoingCallActivity extends Activity implements
 			_mHideKeyboardBtn.setEnabled(false);
 		}
 
+		// get and release sip services audio/video session state broadcast
+		// receiver
+		BroadcastReceiver _avSessionStateBroadcastReceiver = SIPSERVICES
+				.getAVSessionStateBroadcastReceiver();
+
+		// check sip audio/video session state broadcast receiver
+		if (null != _avSessionStateBroadcastReceiver) {
+			AppLaunchActivity.getAppContext().unregisterReceiver(
+					_avSessionStateBroadcastReceiver);
+
+			_avSessionStateBroadcastReceiver = null;
+		}
+
 		// check sip voice call terminated type
 		switch (terminatedType) {
 		case INITIATIVE:
 			// hangup current sip voice call
 			if (!SIPSERVICES.hangupSipVoiceCall(_mCallDutation)) {
-				// cancel call duration timer
-				CALLDURATION_TIMER.cancel();
+				// cancel call duration timer task
+				if (null != _mCallDutationTimerTask) {
+					_mCallDutationTimerTask.cancel();
+				}
+				// CALLDURATION_TIMER.cancel();
 
 				// force finish outgoing call activity
 				finish();
@@ -573,8 +599,11 @@ public class OutgoingCallActivity extends Activity implements
 			break;
 		}
 
-		// cancel call duration timer
-		CALLDURATION_TIMER.cancel();
+		// cancel call duration timer task
+		if (null != _mCallDutationTimerTask) {
+			_mCallDutationTimerTask.cancel();
+		}
+		// CALLDURATION_TIMER.cancel();
 
 		// delayed 0.5 second to terminating
 		new Handler().postDelayed(new Runnable() {
@@ -824,9 +853,11 @@ public class OutgoingCallActivity extends Activity implements
 		@Override
 		public void onFailed(HttpResponseResult responseResult) {
 			Log.e(LOG_TAG, "Send callback sip voice call http request failed");
-			Log.d(SystemConstants.TAG, "SendCallbackSipVoiceCallHttpRequestListener - status code: " + responseResult.getStatusCode() + " text: " + responseResult.getResponseText());
-			
-			
+			Log.d(SystemConstants.TAG,
+					"SendCallbackSipVoiceCallHttpRequestListener - status code: "
+							+ responseResult.getStatusCode() + " text: "
+							+ responseResult.getResponseText());
+
 			// check send callback sip voice call request response
 			checkSendCallbackSipVoiceCallRequestResponse(false);
 		}
@@ -840,10 +871,14 @@ public class OutgoingCallActivity extends Activity implements
 			if (isSuccess) {
 				_sendCallbackSipVoiceCallStateTipTextId = R.string.send_callbackCallRequest_succeed;
 				_callbackCallWaitingImageViewImgResId = drawable.img_sendcallbackcall_succeed;
-				TelUserBean user = (TelUserBean) UserManager.getInstance().getUser();
-				_callbackCallWaitingTextViewText = String.format(getResources()
-						.getString(R.string.callbackWaiting_textView_succeed), user.getBindPhoneCountryCode() + user.getBindPhone(), 
-						_mCalleePhone);
+				UserBean user = UserManager.getInstance().getUser();
+				_callbackCallWaitingTextViewText = String.format(
+						getResources().getString(
+								R.string.callbackWaiting_textView_succeed),
+						((String) user.getValue(TelUser.bindphone_country_code
+								.name()))
+								+ ((String) user.getValue(TelUser.bindphone
+										.name())), _mCalleePhone);
 			}
 
 			// update call state textView text
