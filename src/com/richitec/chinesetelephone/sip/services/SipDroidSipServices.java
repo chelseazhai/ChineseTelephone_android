@@ -105,13 +105,9 @@ public class SipDroidSipServices extends BaseSipServices implements
 		} else {
 			// register again
 			Receiver.engine(APP_CONTEXT).registerMore();
-
-			// call failed
-			getSipInviteStateListener().onCallFailed();
 		}
 
 		return _ret;
-
 	}
 
 	@Override

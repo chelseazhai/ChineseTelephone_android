@@ -562,7 +562,7 @@ public class OutgoingCallActivity extends Activity implements
 			AppLaunchActivity.getAppContext().unregisterReceiver(
 					_avSessionStateBroadcastReceiver);
 
-			_avSessionStateBroadcastReceiver = null;
+			SIPSERVICES.setAVSessionStateBroadcastReceiver(null);
 		}
 
 		// check sip voice call terminated type

@@ -166,6 +166,11 @@ public abstract class BaseSipServices implements ISipServices {
 		return _mAVSessionStateBroadcastReceiver;
 	}
 
+	public void setAVSessionStateBroadcastReceiver(
+			BroadcastReceiver avSessionStateBroadcastReceiver) {
+		_mAVSessionStateBroadcastReceiver = avSessionStateBroadcastReceiver;
+	}
+
 	// update current sip voice call muted flag
 	public void setSipVoiceCallMuted(Boolean muting) {
 		_mIsSipVoiceCallMuted = muting;
