@@ -15,7 +15,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
-import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.telephony.TelephonyManager;
@@ -79,10 +78,6 @@ public class OutgoingCallActivity extends Activity implements
 	public static final String OUTGOING_CALL_MODE = "outgoing_call_mode";
 	public static final String OUTGOING_CALL_PHONE = "outgoing_call_phone";
 	public static final String OUTGOING_CALL_OWNERSHIP = "outgoing_call_ownership";
-
-	// sound pool
-	private static final SoundPool SOUND_POOL = new SoundPool(1,
-			AudioManager.STREAM_MUSIC, 0);
 
 	// outgoing call phone number
 	private String _mCalleePhone;
@@ -566,7 +561,7 @@ public class OutgoingCallActivity extends Activity implements
 			AppLaunchActivity.getAppContext().unregisterReceiver(
 					_avSessionStateBroadcastReceiver);
 
-			_avSessionStateBroadcastReceiver = null;
+			SIPSERVICES.setAVSessionStateBroadcastReceiver(null);
 		}
 
 		// check sip voice call terminated type
@@ -785,15 +780,8 @@ public class OutgoingCallActivity extends Activity implements
 			// reset dtmf textView text
 			_dtmfTextView.setText(_keyboardPhoneStringBuilder);
 
-			// play keyboard phone button dtmf sound
-			// get volume
-			float _volume = _mAudioManager
-					.getStreamVolume(AudioManager.STREAM_MUSIC);
-
 			// play dial phone button dtmf sound with index
-			SOUND_POOL.play(DialTabContentActivity
-					.getDialPhoneBtnDTMFSoundPoolMap()
-					.get((Integer) v.getTag()), _volume, _volume, 0, 0, 1f);
+			DialTabContentActivity.playDTMFSound((Integer) v.getTag());
 
 			// send dtmf
 			SIPSERVICES.sentDTMF(_clickedPhoneNumber);

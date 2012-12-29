@@ -5,8 +5,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.util.Log;
@@ -152,9 +154,9 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 
 		// call record initiate time day and time format, format unix timeStamp
 		final DateFormat _callRecordInitiateTimeDayFormat = new SimpleDateFormat(
-				"yy-MM-dd");
+				"yy-MM-dd", Locale.getDefault());
 		final DateFormat _callRecordInitiateTimeTimeFormat = new SimpleDateFormat(
-				"HH:mm:ss");
+				"HH:mm:ss", Locale.getDefault());
 
 		// format day and time
 		_ret.append(_callRecordInitiateTimeDayFormat.format(callDate))
@@ -180,20 +182,38 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 					R.layout.contact_phone_dialmode_select_popupwindow_layout,
 					LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 
-			// set callee contact info
-			// generate callee phones
-			@SuppressWarnings("unchecked")
-			List<String> _calleePhones = (List<String>) CommonUtils
-					.array2List(new String[] { _clickItemViewData
-							.getCalleePhone() });
+			// get callee phone and name
+			String _calleePhone = _clickItemViewData.getCalleePhone();
+			String _calleeName = _clickItemViewData.getCalleeName();
 
-			// set callee contact info
-			_contactPhoneDialModeSelectPopupWindow.setCalleeContactInfo(
-					_clickItemViewData.getCalleeName(), _calleePhones);
+			// check callee phone
+			if (null == _calleePhone
+					|| _calleePhone.trim().equalsIgnoreCase("")) {
+				// show unknown callee phoneo alert dialog
+				new AlertDialog.Builder(
+						CallRecordHistoryListTabContentActivity.this)
+						.setTitle(_calleeName)
+						.setMessage(
+								R.string.unknownCalleePhone_alertDialog_message)
+						.setPositiveButton(
+								R.string.unknownCalleePhone_alertDialog_reselectBtn_title,
+								null).show();
+			} else {
+				// set callee contact info
+				// generate callee phones
+				@SuppressWarnings("unchecked")
+				List<String> _calleePhones = (List<String>) CommonUtils
+						.array2List(new String[] { _clickItemViewData
+								.getCalleePhone() });
 
-			// show contact phone dial mode select pupupWindow
-			_contactPhoneDialModeSelectPopupWindow.showAtLocation(parent,
-					Gravity.CENTER, 0, 0);
+				// set callee contact info
+				_contactPhoneDialModeSelectPopupWindow.setCalleeContactInfo(
+						_calleeName, _calleePhones);
+
+				// show contact phone dial mode select pupupWindow
+				_contactPhoneDialModeSelectPopupWindow.showAtLocation(parent,
+						Gravity.CENTER, 0, 0);
+			}
 		}
 
 	}
