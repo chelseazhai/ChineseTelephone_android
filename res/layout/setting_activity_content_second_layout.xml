@@ -27,7 +27,7 @@
             android:id="@+id/search_remainmoney_btn"
             android:layout_width="fill_parent"
             android:layout_height="50.0dp"
-            android:background="@drawable/setting_top_item_bg"
+            android:background="@drawable/setting_alone_item_bg"
             android:clickable="true"
             android:gravity="center_vertical"
             android:onClick="getRemainMoney"
