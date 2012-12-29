@@ -6,132 +6,137 @@
     android:gravity="center"
     android:orientation="vertical" >
 
-    <LinearLayout
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:background="@drawable/account_setting_bg"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="10dp" >
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/account_setting_bg"
             android:gravity="center"
-            android:text="@string/account_regist"
-            android:textSize="25sp" />
-
-        <Button
-            android:id="@+id/regist_choose_country_btn"
-            android:layout_width="fill_parent"
-            android:layout_height="55dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/select_country_btn_bg"
-            android:drawableRight="@drawable/down_into_icon"
-            android:gravity="left|center_vertical"
-            android:onClick="chooseCountry"
-            android:padding="15dp"
-            android:text="0086(China 中国)"
-            android:textSize="20dp" >
-        </Button>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@drawable/textfeild_selected"
-            android:orientation="horizontal" >
+            android:orientation="vertical"
+            android:padding="10dp" >
 
             <TextView
-                android:layout_width="80dp"
-                android:layout_height="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/getpsw_phone"
-                android:textColor="@color/dark_dim_gray"
-                android:textSize="17sp" />
-
-            <EditText
-                android:id="@+id/regist_phone_edittext"
-                android:layout_width="fill_parent"
-                android:layout_height="40dp"
-                android:background="@null"
-                android:ellipsize="end"
-                android:hint="@string/regist_step1_hint"
-                android:inputType="phone" />
-
-            <requestFocus />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@drawable/textfeild_nor"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="80dp"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:text="@string/account_psw"
-                android:textColor="@color/dark_dim_gray"
-                android:textSize="17sp" />
-
-            <EditText
-                android:id="@+id/regist_pwd_edittext"
-                android:layout_width="fill_parent"
-                android:layout_height="40dp"
-                android:background="@null"
-                android:ellipsize="end"
-                android:hint="@string/account_psw_hint"
-                android:inputType="textPassword" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@drawable/textfeild_nor"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="80dp"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:text="@string/verify_psw"
-                android:textColor="@color/dark_dim_gray"
-                android:textSize="17sp" />
-
-            <EditText
-                android:id="@+id/regist_pwd1_edittext"
-                android:layout_width="fill_parent"
-                android:layout_height="40dp"
-                android:background="@null"
-                android:ellipsize="end"
-                android:hint="@string/verify_psw_hint"
-                android:inputType="textPassword" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:gravity="center_vertical"
-            android:orientation="vertical" >
+                android:text="@string/account_regist"
+                android:textSize="25sp" />
 
             <Button
-                android:id="@+id/get_authcode_btn"
+                android:id="@+id/regist_choose_country_btn"
                 android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/login_btn_bg"
-                android:onClick="onRegisterAction"
-                android:text="@string/register"
-                android:textColor="@android:color/white"
-                android:textSize="13sp" />
+                android:layout_height="55dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/select_country_btn_bg"
+                android:drawableRight="@drawable/down_into_icon"
+                android:gravity="left|center_vertical"
+                android:onClick="chooseCountry"
+                android:padding="15dp"
+                android:text="0086(China 中国)"
+                android:textSize="20dp" >
+            </Button>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/textfeild_selected"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="@string/getpsw_phone"
+                    android:textColor="@color/dark_dim_gray"
+                    android:textSize="17sp" />
+
+                <EditText
+                    android:id="@+id/regist_phone_edittext"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:hint="@string/regist_step1_hint"
+                    android:inputType="phone" />
+
+                <requestFocus />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/textfeild_nor"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="@string/account_psw"
+                    android:textColor="@color/dark_dim_gray"
+                    android:textSize="17sp" />
+
+                <EditText
+                    android:id="@+id/regist_pwd_edittext"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:hint="@string/account_psw_hint"
+                    android:inputType="textPassword" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/textfeild_nor"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="@string/verify_psw"
+                    android:textColor="@color/dark_dim_gray"
+                    android:textSize="17sp" />
+
+                <EditText
+                    android:id="@+id/regist_pwd1_edittext"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:hint="@string/verify_psw_hint"
+                    android:inputType="textPassword" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical" >
+
+                <Button
+                    android:id="@+id/get_authcode_btn"
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/login_btn_bg"
+                    android:onClick="onRegisterAction"
+                    android:text="@string/register"
+                    android:textColor="@android:color/white"
+                    android:textSize="13sp" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

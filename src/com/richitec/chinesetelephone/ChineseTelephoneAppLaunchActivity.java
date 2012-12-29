@@ -2,6 +2,7 @@ package com.richitec.chinesetelephone;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.richitec.chinesetelephone.account.AccountSettingActivity;
@@ -112,4 +113,11 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 
 	}
 
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		System.exit(0);
+	}
+
+	
 }
