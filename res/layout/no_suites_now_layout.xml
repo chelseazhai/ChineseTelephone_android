@@ -4,12 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ExpandableListView
-        android:id="@+id/my_suites_listview"
+    <TextView
+        android:id="@+id/no_suite_now_textview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:indicatorLeft="15sp"
-        android:indicatorRight="15sp" >
-    </ExpandableListView>
+        android:layout_height="80dp"
+        android:gravity="center"
+        android:textSize="20sp" />
 
 </LinearLayout>

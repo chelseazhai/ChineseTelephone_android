@@ -277,8 +277,8 @@
     <!-- suites  -->
     <string name="my_suite">我的套餐</string>
     <string name="all_suite">所有套餐</string>
-    <string name="description">描述：</string>
-    <string name="rent_fee_per_month">月租金：</string>
+    <string name="description">说明：</string>
+    <string name="rent_fee_per_month">月租：</string>
     <string name="unsubscribe">退订</string>
     <string name="subscribe">订购</string>
     <string name="available_time">启用日期：</string>
@@ -286,4 +286,6 @@
     <string name="never_expire">无</string>
     <string name="get_suite_failed">获取套餐失败！</string>
     <string name="getting_suite">正在获取套餐列表…</string>
+    <string name="no_ordered_suites_now">您现在没有订购套餐</string>
+    <string name="no_suites_to_order_now">现在没有可供订购的套餐</string>
 </resources>
