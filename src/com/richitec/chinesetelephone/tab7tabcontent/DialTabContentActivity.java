@@ -5,15 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.content.Context;
 import android.graphics.Rect;
-import android.media.AudioManager;
-import android.media.SoundPool;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.util.SparseIntArray;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
@@ -28,11 +24,11 @@ import android.widget.Toast;
 
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.call.ContactPhoneDialModeSelectpopupWindow;
-import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.utils.CommonUtils;
 import com.richitec.commontoolkit.utils.DpPixUtils;
+import com.richitec.commontoolkit.utils.ToneGeneratorUtils;
 import com.richitec.internationalcode.AreaAbbreviation;
 
 public class DialTabContentActivity extends NavigationActivity {
@@ -45,60 +41,8 @@ public class DialTabContentActivity extends NavigationActivity {
 	public static final String DIAL_PHONE_BUTTON_ONCLICKLISTENER = "dial_phone_button_onClickListener";
 	public static final String DIAL_PHONE_BUTTON_ONLONGCLICKLISTENER = "dial_phone_button_onLongClickListener";
 
-	// define dial phone button dtmf sound
-	private static final int[] DIALPHONEBUTTON_DTMFARRAY = { R.raw.dtmf_1,
-			R.raw.dtmf_2, R.raw.dtmf_3, R.raw.dtmf_4, R.raw.dtmf_5,
-			R.raw.dtmf_6, R.raw.dtmf_7, R.raw.dtmf_8, R.raw.dtmf_9,
-			R.raw.dtmf_star, R.raw.dtmf_0, R.raw.dtmf_pound };
-
-	// sound pool
-	private static final SoundPool SOUND_POOL = new SoundPool(1,
-			AudioManager.STREAM_MUSIC, 0);
-
 	// dial phone textView
 	private TextView _mDialPhoneTextView;
-
-	// dial phone button dtmf sound pool map
-	private static SparseIntArray _dialPhoneBtnDTMFSoundPoolMap;
-
-	// audio manager
-	private static final AudioManager AUDIO_MANAGER = (AudioManager) AppLaunchActivity
-			.getAppContext().getSystemService(Context.AUDIO_SERVICE);
-
-	// init dial phone button dtmf sound pool map
-	public static void initDialPhoneBtnDTMFSoundPoolMap(Context context) {
-		// init dial phone button dtmf sound pool map
-		_dialPhoneBtnDTMFSoundPoolMap = new SparseIntArray();
-
-		// add sound
-		for (int i = 0; i < DIALPHONEBUTTON_DTMFARRAY.length; i++) {
-			_dialPhoneBtnDTMFSoundPoolMap.put(i, SOUND_POOL.load(context,
-					DIALPHONEBUTTON_DTMFARRAY[i], i + 1));
-		}
-	}
-
-	// play dtmf sound with resource id
-	public static void playDTMFSound(Integer dtmfSoundResId) {
-		// check dial phone button dtmf sound pool map
-		if (null == _dialPhoneBtnDTMFSoundPoolMap) {
-			// init dial phone button dtmf sound pool map if it is null
-			initDialPhoneBtnDTMFSoundPoolMap(AppLaunchActivity.getAppContext());
-		}
-
-		// check dtmf sound resource id
-		if (null == dtmfSoundResId || dtmfSoundResId < 0 || dtmfSoundResId > 11) {
-			Log.e(LOG_TAG, "Play DTMF sound error, dtmf sound resource id = "
-					+ dtmfSoundResId);
-		} else {
-			// get volume to music stream
-			float _volume = AUDIO_MANAGER
-					.getStreamVolume(AudioManager.STREAM_MUSIC);
-
-			// play dial phone button dtmf sound with index
-			SOUND_POOL.play(_dialPhoneBtnDTMFSoundPoolMap.get(dtmfSoundResId),
-					_volume, _volume, 0, 0, 1f);
-		}
-	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -307,7 +251,8 @@ public class DialTabContentActivity extends NavigationActivity {
 			_mDialPhoneTextView.setText(_dialPhoneStringBuilder);
 
 			// play dial phone button dtmf sound
-			playDTMFSound((Integer) v.getTag());
+			ToneGeneratorUtils.getInstance()
+					.playDTMFSound((Integer) v.getTag());
 		}
 
 	}
@@ -332,7 +277,8 @@ public class DialTabContentActivity extends NavigationActivity {
 				_mDialPhoneTextView.setText(_dialPhoneStringBuilder);
 
 				// play dial phone button dtmf sound
-				playDTMFSound((Integer) v.getTag());
+				ToneGeneratorUtils.getInstance().playDTMFSound(
+						(Integer) v.getTag());
 
 				_ret = true;
 			}

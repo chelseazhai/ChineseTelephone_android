@@ -9,7 +9,6 @@ import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
 import com.richitec.chinesetelephone.tab7tabcontent.ChineseTelephoneTabActivity;
 import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity;
-import com.richitec.chinesetelephone.tab7tabcontent.DialTabContentActivity;
 import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
 
@@ -33,9 +32,6 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 
 		// init all name phonetic sorted contacts info array
 		ContactListTabContentActivity.initNamePhoneticSortedContactsInfoArray();
-
-		// init dial phone button dtmf sound pool map
-		DialTabContentActivity.initDialPhoneBtnDTMFSoundPoolMap(this);
 
 		// test by ares
 		// generate sip register account

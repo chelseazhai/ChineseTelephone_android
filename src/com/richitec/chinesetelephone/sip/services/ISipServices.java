@@ -36,4 +36,7 @@ public interface ISipServices {
 	// send dtmf
 	public void sentDTMF(String dtmfCode);
 
+	// destroy sip engine
+	public void destroySipEngine();
+
 }

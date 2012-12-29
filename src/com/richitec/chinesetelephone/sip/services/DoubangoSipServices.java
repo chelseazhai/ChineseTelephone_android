@@ -236,6 +236,12 @@ public class DoubangoSipServices extends BaseSipServices implements
 				+ dtmfCode);
 	}
 
+	@Override
+	public void destroySipEngine() {
+		// destroy doubango sip engine
+		Log.d(LOG_TAG, "Destroy doubango sip engine not implement");
+	}
+
 	// inner class
 	// doubango ngn registration state broadcast receiver
 	class RegistrationStateBroadcastReceiver extends BroadcastReceiver {

@@ -2,7 +2,9 @@ package com.richitec.chinesetelephone.sip.services;
 
 import org.sipdroid.sipua.SipdroidEngine;
 import org.sipdroid.sipua.ui.Receiver;
+import org.sipdroid.sipua.ui.RegisterService;
 import org.sipdroid.sipua.ui.Settings;
+import org.sipdroid.sipua.ui.Sipdroid;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -151,6 +153,20 @@ public class SipDroidSipServices extends BaseSipServices implements
 
 		// sipdroid send dtmf to current sip voice call
 		Receiver.engine(APP_CONTEXT).info(dtmfCode.charAt(0), 250);
+	}
+
+	@Override
+	public void destroySipEngine() {
+		Sipdroid.on(APP_CONTEXT, false);
+
+		// process receiver
+		Receiver.pos(true);
+		Receiver.engine(APP_CONTEXT).halt();
+		Receiver.mSipdroidEngine = null;
+		Receiver.reRegister(0);
+
+		// stop register service
+		APP_CONTEXT.stopService(new Intent(APP_CONTEXT, RegisterService.class));
 	}
 
 	@Override
