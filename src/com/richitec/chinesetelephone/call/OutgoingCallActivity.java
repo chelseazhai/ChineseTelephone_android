@@ -47,13 +47,13 @@ import com.richitec.chinesetelephone.sip.listeners.SipInviteStateListener;
 import com.richitec.chinesetelephone.sip.services.BaseSipServices;
 import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity;
 import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity.ContactsInABListViewQuickAlphabetBarOnTouchListener;
-import com.richitec.chinesetelephone.tab7tabcontent.DialTabContentActivity;
 import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar;
 import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpResponseResult;
 import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
+import com.richitec.commontoolkit.utils.ToneGeneratorUtils;
 
 public class OutgoingCallActivity extends Activity implements
 		SipInviteStateListener {
@@ -781,9 +781,10 @@ public class OutgoingCallActivity extends Activity implements
 			_dtmfTextView.setText(_keyboardPhoneStringBuilder);
 
 			// play dial phone button dtmf sound with index
-			DialTabContentActivity.playDTMFSound((Integer) v.getTag());
+			ToneGeneratorUtils.getInstance()
+					.playDTMFSound((Integer) v.getTag());
 
-			// send dtmf
+			// send dtmf signal
 			SIPSERVICES.sentDTMF(_clickedPhoneNumber);
 		}
 	}

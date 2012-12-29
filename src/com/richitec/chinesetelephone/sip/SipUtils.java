@@ -33,11 +33,6 @@ public class SipUtils {
 		sipServices.unregisterSipAccount(sipRegistrationStateListener);
 	}
 
-	// destroy sip engine
-	public static void destroySipEngine() {
-		//
-	}
-
 	// make sip voice call
 	public static void makeSipVoiceCall(String calleeName, String calleePhone,
 			SipCallMode callMode) {
@@ -46,6 +41,11 @@ public class SipUtils {
 				+ callMode);
 		
 		sipServices.makeSipVoiceCall(calleeName, calleePhone, callMode);
+	}
+
+	// destroy sip engine
+	public static void destroySipEngine() {
+		sipServices.destroySipEngine();
 	}
 
 }

@@ -197,6 +197,7 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 						// TODO Auto-generated method stub
 						dialog.dismiss();
 						SipUtils.unregisterSipAccount(null);
+						SipUtils.destroySipEngine();
 						System.exit(0);
 					}
 				}
