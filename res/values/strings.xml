@@ -277,8 +277,8 @@
     <string name="title_activity_invite_friend">InviteFriendActivity</string>
 
     <!-- suites  -->
-    <string name="my_suite">我的套餐</string>
-    <string name="all_suite">所有套餐</string>
+    <string name="my_suite">已订购套餐</string>
+    <string name="all_suite">可订购套餐</string>
     <string name="description">说明：</string>
     <string name="rent_fee_per_month">月租：</string>
     <string name="unsubscribe">退订</string>

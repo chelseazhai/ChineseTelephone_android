@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.richitec.chinesetelephone.R;
+import com.richitec.chinesetelephone.assist.ChargeMoneyListAdapter.ViewHolder;
 import com.richitec.chinesetelephone.constant.SuiteConstant;
 import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.commontoolkit.utils.MyToast;
@@ -101,7 +102,13 @@ public class MySuitesListAdapter extends BaseExpandableListAdapter {
 	private View getMySuiteItemView(int groupPosition, int childPosition,
 			View convertView) {
 		Log.d(SystemConstants.TAG, "getAllSuiteItemView - group pos: " + groupPosition + " child pos: " + childPosition);
-		MySuiteItemViewHolder viewHolder = (MySuiteItemViewHolder) (convertView != null ? convertView.getTag() : null);
+		MySuiteItemViewHolder viewHolder = null;
+		Object tag = convertView != null ? convertView.getTag() : null;
+		if (tag != null) {
+			if (tag instanceof MySuiteItemViewHolder) {
+				viewHolder = (MySuiteItemViewHolder) tag;
+			}
+		}
 		if (viewHolder == null) {
 			viewHolder = new MySuiteItemViewHolder();
 			convertView = inflater.inflate(R.layout.my_suite_item_layout, null);
@@ -166,7 +173,13 @@ public class MySuitesListAdapter extends BaseExpandableListAdapter {
 	private View getAllSuiteItemView(int groupPosition, int childPosition,
 			View convertView) {
 		Log.d(SystemConstants.TAG, "getAllSuiteItemView - group pos: " + groupPosition + " child pos: " + childPosition);
-		AllSuiteItemViewHolder viewHolder = (AllSuiteItemViewHolder) (convertView != null ? convertView.getTag() : null);
+		AllSuiteItemViewHolder viewHolder = null;
+		Object tag = convertView != null ? convertView.getTag() : null;
+		if (tag != null) {
+			if (tag instanceof AllSuiteItemViewHolder) {
+				viewHolder = (AllSuiteItemViewHolder) tag;
+			}
+		}
 		if (viewHolder == null) {
 			viewHolder = new AllSuiteItemViewHolder();
 			convertView = inflater
