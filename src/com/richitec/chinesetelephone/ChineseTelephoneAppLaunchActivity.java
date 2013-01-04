@@ -57,9 +57,6 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 		// init all name phonetic sorted contacts info array
 		ContactListTabContentActivity.initNamePhoneticSortedContactsInfoArray();
 
-		// init dial phone button dtmf sound pool map
-		DialTabContentActivity.initDialPhoneBtnDTMFSoundPoolMap(this);
-
 	}
 
 	private void loadAccount() {
