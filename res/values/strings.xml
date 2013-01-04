@@ -109,7 +109,6 @@
     <string name="help_about_item">关于我们</string>
     <string name="change_account_title">切换账户</string>
     <string name="set_dialcountry_code">默认国家号设置</string>
-
     <string name="dialcountry_country_code_inform">提示：当您在拨打电话时未加国家号码，将会自动在您拨打的号码前添加默认国家号。</string>
     <string name="bind_number_inform">提示：通过设置绑定号码，使用回拨功能时将会回拨绑定的号码</string>
     <string name="is_auto_launch">是否开机启动?</string>
@@ -276,9 +275,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_invite_friend">InviteFriendActivity</string>
 
-    <!-- suites  -->
+    <!-- suites -->
     <string name="my_suite">已订购套餐</string>
-    <string name="all_suite">可订购套餐</string>
+    <string name="all_suite">全部套餐</string>
     <string name="description">说明：</string>
     <string name="rent_fee_per_month">月租：</string>
     <string name="unsubscribe">退订</string>
@@ -290,4 +289,17 @@
     <string name="getting_suite">正在获取套餐列表…</string>
     <string name="no_ordered_suites_now">您现在没有订购套餐</string>
     <string name="no_suites_to_order_now">现在没有可供订购的套餐</string>
+    <string name="open_at_once">立即生效（立即从您的账户里扣除套餐费）</string>
+    <string name="open_next_month">次月生效（次月1日从您的账户里扣除套餐费）</string>
+    <string name="select_time_to_open_suite">请选择套餐生效时间</string>
+    <string name="subscribing_suite">正在订购套餐…</string>
+    <string name="subscribe_suite_failed_check_network">套餐订购失败，请检查您的网络连接</string>
+    <string name="subscribe_suite_failed">套餐订购失败</string>
+    <string name="subscribe_suite_success">套餐订购成功</string>
+    <string name="sure_to_unsubscribe_suite">确定要退订套餐吗？(退订将在次月生效)</string>
+    <string name="unsubscribing_suite">正在退订套餐…</string>
+    <string name="unsubscribe_suite_failed_check_network">套餐退订失败，请检查您的网络连接</string>
+    <string name="unsubscribe_suite_failed">套餐退订失败</string>
+    <string name="unsubscribe_suite_success">套餐退订成功，下月起将不再扣除您的套餐费</string>
+
 </resources>

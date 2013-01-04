@@ -30,15 +30,15 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 
 	// current tab index, default is contact list tab
 	private int _mCurrentTabIndex = 1;
-	
+
 	private AlertDialog dialog;
-	
-	private SipRegistrationStateListener sipRegistrationStateListener = new SipRegistrationStateListener(){
+
+	private SipRegistrationStateListener sipRegistrationStateListener = new SipRegistrationStateListener() {
 
 		@Override
 		public void onRegisterSuccess() {
 			// TODO Auto-generated method stub
-			//do nothing
+			// do nothing
 			Log.d("ChineseTelephoneTabActivity", "regist success");
 		}
 
@@ -51,7 +51,7 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 		@Override
 		public void onUnRegisterSuccess() {
 			// TODO Auto-generated method stub
-			//sipRegistFail();
+			// sipRegistFail();
 			Log.d("ChineseTelephoneTabActivity", "unregist success");
 			sipRegistFail();
 		}
@@ -62,52 +62,59 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 			Log.d("ChineseTelephoneTabActivity", "unregist fail");
 			sipRegistFail();
 		}
-		
+
 	};
-	
-	private void sipRegistFail(){
-		dialog.show();
+
+	private void sipRegistFail() {
+		if (dialog != null) {
+			dialog.show();
+		}
 	}
-	
+
 	@Override
-	public void onDestroy(){
+	public void onDestroy() {
 		super.onDestroy();
-		dialog.dismiss();
-		dialog=null;
+		if (dialog != null) {
+			dialog.dismiss();
+		}
+		dialog = null;
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		Runnable registSipRunnable = new Runnable(){
+
+		Runnable registSipRunnable = new Runnable() {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				//regist sip account
-				SipRegisterManager.registSip(sipRegistrationStateListener, getString(R.string.vos_server));
+				// regist sip account
+				SipRegisterManager.registSip(sipRegistrationStateListener,
+						getString(R.string.vos_server));
 			}
 		};
 		Thread registSipThread = new Thread(registSipRunnable);
 		registSipThread.start();
-		
+
 		dialog = new AlertDialog.Builder(ChineseTelephoneTabActivity.this)
-		.setTitle(R.string.alert_title)
-		.setMessage(R.string.sip_account_regist_fail)
-		.setPositiveButton(ChineseTelephoneTabActivity.this.getString(R.string.ok),
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(
-							DialogInterface dialog, int arg1) {
-						Intent intent = new Intent(ChineseTelephoneTabActivity.this, 
-								AccountSettingActivity.class);
-						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-						startActivity(intent);
-						dialog.dismiss();
-						ChineseTelephoneTabActivity.this.finish();					
-					}
-				}).create();
-		
+				.setTitle(R.string.alert_title)
+				.setMessage(R.string.sip_account_regist_fail)
+				.setPositiveButton(
+						ChineseTelephoneTabActivity.this.getString(R.string.ok),
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int arg1) {
+								Intent intent = new Intent(
+										ChineseTelephoneTabActivity.this,
+										AccountSettingActivity.class);
+								intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+										| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+								startActivity(intent);
+								dialog.dismiss();
+								ChineseTelephoneTabActivity.this.finish();
+							}
+						}).create();
+
 		// set content view
 		setContentView(R.layout.chinese_telephone_tab_activity_layout);
 
@@ -165,43 +172,39 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 						new CommonTabSpecIndicator(this,
 								TAB_WIDGETITEM_CONTENTS[3][0],
 								TAB_WIDGETITEM_CONTENTS[3][1]))
-				.setContent(
-						new Intent().setClass(this,
-								SettingActivity.class));
+				.setContent(new Intent().setClass(this, SettingActivity.class));
 		_tabHost.addTab(_tabSpec);
 
 		// set current tab and tab image
 		_tabHost.setCurrentTab(_mCurrentTabIndex);
-		
-		/*TabWidget tabWidget = this.getTabWidget();
-		int count = tabWidget.getChildCount();
-		  for (int i = 0; i < count; i++) {
-		   View view = tabWidget.getChildTabViewAt(i);   
-		   final TextView tv = (TextView) view.findViewById(android.R.id.title);
-		   tv.setTextSize(15);
-		  }*/
-		
+
+		/*
+		 * TabWidget tabWidget = this.getTabWidget(); int count =
+		 * tabWidget.getChildCount(); for (int i = 0; i < count; i++) { View
+		 * view = tabWidget.getChildTabViewAt(i); final TextView tv = (TextView)
+		 * view.findViewById(android.R.id.title); tv.setTextSize(15); }
+		 */
+
 		AppUpdateManager updateManager = new AppUpdateManager(this);
-        updateManager.checkVersion(false);	
+		updateManager.checkVersion(false);
 	}
-	
+
 	@Override
-	public void onBackPressed(){
+	public void onBackPressed() {
 		new AlertDialog.Builder(this)
-		.setTitle(R.string.alert_title)
-		.setMessage(R.string.exit)
-		.setPositiveButton(R.string.ok, 
-				new DialogInterface.OnClickListener() {			
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-						dialog.dismiss();
-						SipUtils.unregisterSipAccount(null);
-						SipUtils.destroySipEngine();
-						System.exit(0);
-					}
-				}
-				)
-		.setNegativeButton(R.string.cancel, null).show();
+				.setTitle(R.string.alert_title)
+				.setMessage(R.string.exit)
+				.setPositiveButton(R.string.ok,
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								// TODO Auto-generated method stub
+								dialog.dismiss();
+								SipUtils.unregisterSipAccount(null);
+								SipUtils.destroySipEngine();
+								System.exit(0);
+							}
+						}).setNegativeButton(R.string.cancel, null).show();
 	}
 }

@@ -43,7 +43,7 @@ public class MySuitesActivity extends NavigationActivity {
 		refreshSuites();
 	}
 
-	private void refreshSuites() {
+	public void refreshSuites() {
 		progressDlg = ProgressDialog.show(MySuitesActivity.this, null,
 				getString(R.string.getting_suite));
 		HashMap<String, String> params = new HashMap<String, String>();

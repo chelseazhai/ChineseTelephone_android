@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="subscribe_suite_menu">
+        <item>@string/open_at_once</item>
+        <item>@string/open_next_month</item>
+        <item>@string/cancel</item>
+    </string-array>
+
+</resources>

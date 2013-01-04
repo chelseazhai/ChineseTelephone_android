@@ -1,10 +1,14 @@
 package com.richitec.chinesetelephone.assist;
 
+import java.util.HashMap;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,23 +17,32 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.richitec.chinesetelephone.R;
-import com.richitec.chinesetelephone.assist.ChargeMoneyListAdapter.ViewHolder;
 import com.richitec.chinesetelephone.constant.SuiteConstant;
 import com.richitec.chinesetelephone.constant.SystemConstants;
+import com.richitec.chinesetelephone.constant.TelUser;
+import com.richitec.commontoolkit.user.UserBean;
+import com.richitec.commontoolkit.user.UserManager;
+import com.richitec.commontoolkit.utils.HttpUtils;
+import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
+import com.richitec.commontoolkit.utils.HttpUtils.HttpResponseResult;
+import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
+import com.richitec.commontoolkit.utils.HttpUtils.PostRequestFormat;
 import com.richitec.commontoolkit.utils.MyToast;
 
 public class MySuitesListAdapter extends BaseExpandableListAdapter {
 	private LayoutInflater inflater;
-	private Context context;
-	private static int GroupCount = 2;
+	private MySuitesActivity activity;
+	private final static int GroupCount = 2;
 	private JSONObject suites;
+	private ProgressDialog progressDlg;
 
-	public MySuitesListAdapter(Context context) {
-		this.context = context;
+	public MySuitesListAdapter(MySuitesActivity context) {
+		this.activity = context;
 		inflater = LayoutInflater.from(context);
 		suites = new JSONObject();
 	}
@@ -95,13 +108,16 @@ public class MySuitesListAdapter extends BaseExpandableListAdapter {
 				convertView = getAllSuiteItemView(groupPosition, childPosition,
 						convertView);
 			}
+		} else {
+			return new LinearLayout(activity);
 		}
 		return convertView;
 	}
 
 	private View getMySuiteItemView(int groupPosition, int childPosition,
 			View convertView) {
-		Log.d(SystemConstants.TAG, "getAllSuiteItemView - group pos: " + groupPosition + " child pos: " + childPosition);
+		Log.d(SystemConstants.TAG, "getAllSuiteItemView - group pos: "
+				+ groupPosition + " child pos: " + childPosition);
 		MySuiteItemViewHolder viewHolder = null;
 		Object tag = convertView != null ? convertView.getTag() : null;
 		if (tag != null) {
@@ -151,11 +167,125 @@ public class MySuitesListAdapter extends BaseExpandableListAdapter {
 							@Override
 							public void onClick(View v) {
 								try {
-									String orderId = suiteItem
+									final String orderId = suiteItem
 											.getString(SuiteConstant.orderId
 													.name());
-									MyToast.show(context, "order id: "
-											+ orderId, Toast.LENGTH_SHORT);
+									new AlertDialog.Builder(activity)
+											.setTitle(R.string.alert_title)
+											.setMessage(
+													R.string.sure_to_unsubscribe_suite)
+											.setPositiveButton(
+													R.string.unsubscribe,
+													new DialogInterface.OnClickListener() {
+
+														@Override
+														public void onClick(
+																DialogInterface dialog,
+																int which) {
+															progressDlg = ProgressDialog
+																	.show(activity,
+																			null,
+																			activity.getString(R.string.unsubscribing_suite));
+															HashMap<String, String> params = new HashMap<String, String>();
+															UserBean user = UserManager
+																	.getInstance()
+																	.getUser();
+															params.put(
+																	"countryCode",
+																	(String) user
+																			.getValue(TelUser.countryCode
+																					.name()));
+															params.put(
+																	"orderSuiteId",
+																	orderId);
+															HttpUtils
+																	.postSignatureRequest(
+																			activity.getString(R.string.server_url)
+																					+ activity
+																							.getString(R.string.unsubscribe_suite_url),
+																			PostRequestFormat.URLENCODED,
+																			params,
+																			null,
+																			HttpRequestType.ASYNCHRONOUS,
+																			onFinishedUnsubscribeSuite);
+														}
+
+														private OnHttpRequestListener onFinishedUnsubscribeSuite = new OnHttpRequestListener() {
+
+															@Override
+															public void onFinished(
+																	HttpResponseResult responseResult) {
+																dismissDlg();
+																MyToast.show(activity, R.string.unsubscribe_suite_success, Toast.LENGTH_SHORT);
+																activity.refreshSuites();
+//																new AlertDialog.Builder(
+//																		activity)
+//																		.setTitle(
+//																				R.string.alert_title)
+//																		.setMessage(
+//																				R.string.unsubscribe_suite_success)
+//																		.setPositiveButton(
+//																				R.string.ok,
+//																				new DialogInterface.OnClickListener() {
+//
+//																					@Override
+//																					public void onClick(
+//																							DialogInterface dialog,
+//																							int which) {
+//																						activity.refreshSuites();
+//																					}
+//																				})
+//																		.show();
+															}
+
+															@Override
+															public void onFailed(
+																	HttpResponseResult responseResult) {
+																dismissDlg();
+
+																switch (responseResult
+																		.getStatusCode()) {
+																case 500:
+																	try {
+																		JSONObject data = new JSONObject(
+																				responseResult
+																						.getResponseText());
+																		String vosInfo = data
+																				.getString("vos_info");
+																		MyToast.show(
+																				activity,
+																				String.format(
+																						"%s[%s]",
+																						activity.getString(R.string.unsubscribe_suite_failed),
+																						vosInfo),
+																				Toast.LENGTH_SHORT);
+																	} catch (JSONException e) {
+																		e.printStackTrace();
+																		MyToast.show(
+																				activity,
+																				R.string.subscribe_suite_failed,
+																				Toast.LENGTH_SHORT);
+																	}
+																	break;
+																case -1:
+																	MyToast.show(
+																			activity,
+																			R.string.unsubscribe_suite_failed_check_network,
+																			Toast.LENGTH_SHORT);
+																	break;
+																default:
+																	MyToast.show(
+																			activity,
+																			R.string.unsubscribe_suite_failed,
+																			Toast.LENGTH_SHORT);
+																	break;
+
+																}
+															}
+														};
+													})
+											.setNegativeButton(R.string.Cancel,
+													null).show();
 								} catch (JSONException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
@@ -172,7 +302,8 @@ public class MySuitesListAdapter extends BaseExpandableListAdapter {
 
 	private View getAllSuiteItemView(int groupPosition, int childPosition,
 			View convertView) {
-		Log.d(SystemConstants.TAG, "getAllSuiteItemView - group pos: " + groupPosition + " child pos: " + childPosition);
+		Log.d(SystemConstants.TAG, "getAllSuiteItemView - group pos: "
+				+ groupPosition + " child pos: " + childPosition);
 		AllSuiteItemViewHolder viewHolder = null;
 		Object tag = convertView != null ? convertView.getTag() : null;
 		if (tag != null) {
@@ -192,7 +323,7 @@ public class MySuitesListAdapter extends BaseExpandableListAdapter {
 					.findViewById(R.id.subscribe_button);
 			convertView.setTag(viewHolder);
 		}
-		
+
 		final JSONObject suiteItem = (JSONObject) getChild(groupPosition,
 				childPosition);
 		if (suiteItem != null) {
@@ -208,11 +339,142 @@ public class MySuitesListAdapter extends BaseExpandableListAdapter {
 							@Override
 							public void onClick(View v) {
 								try {
-									String suiteId = suiteItem
+									final String suiteId = suiteItem
 											.getString(SuiteConstant.suiteId
 													.name());
-									MyToast.show(context, "suite id: "
-											+ suiteId, Toast.LENGTH_SHORT);
+
+									new AlertDialog.Builder(activity)
+											.setTitle(
+													R.string.select_time_to_open_suite)
+											.setItems(
+													R.array.subscribe_suite_menu,
+													new DialogInterface.OnClickListener() {
+
+														@Override
+														public void onClick(
+																DialogInterface dialog,
+																int which) {
+															String openTimeType = null;
+															switch (which) {
+															case 0:
+																openTimeType = "at_once";
+																break;
+															case 1:
+																openTimeType = "next_month";
+																break;
+															default:
+																break;
+															}
+
+															if (openTimeType != null) {
+																progressDlg = ProgressDialog
+																		.show(activity,
+																				null,
+																				activity.getString(R.string.subscribing_suite));
+																HashMap<String, String> params = new HashMap<String, String>();
+																UserBean user = UserManager
+																		.getInstance()
+																		.getUser();
+																params.put(
+																		"countryCode",
+																		(String) user
+																				.getValue(TelUser.countryCode
+																						.name()));
+																params.put(
+																		"suiteId",
+																		suiteId);
+																params.put(
+																		"open_time_type",
+																		openTimeType);
+																HttpUtils
+																		.postSignatureRequest(
+																				activity.getString(R.string.server_url)
+																						+ activity
+																								.getString(R.string.subscribe_suite_url),
+																				PostRequestFormat.URLENCODED,
+																				params,
+																				null,
+																				HttpRequestType.ASYNCHRONOUS,
+																				onFinishedSubscribeSuite);
+															}
+
+														}
+
+														private OnHttpRequestListener onFinishedSubscribeSuite = new OnHttpRequestListener() {
+
+															@Override
+															public void onFinished(
+																	HttpResponseResult responseResult) {
+																dismissDlg();
+																MyToast.show(activity, R.string.subscribe_suite_success, Toast.LENGTH_SHORT);
+																activity.refreshSuites();
+//																new AlertDialog.Builder(
+//																		activity)
+//																		.setTitle(
+//																				R.string.alert_title)
+//																		.setMessage(
+//																				R.string.subscribe_suite_success)
+//																		.setPositiveButton(
+//																				R.string.ok,
+//																				new DialogInterface.OnClickListener() {
+//
+//																					@Override
+//																					public void onClick(
+//																							DialogInterface dialog,
+//																							int which) {
+//																						activity.refreshSuites();
+//																					}
+//																				})
+//																		.show();
+															}
+
+															@Override
+															public void onFailed(
+																	HttpResponseResult responseResult) {
+																dismissDlg();
+
+																switch (responseResult
+																		.getStatusCode()) {
+																case 500:
+																	try {
+																		JSONObject data = new JSONObject(
+																				responseResult
+																						.getResponseText());
+																		String vosInfo = data
+																				.getString("vos_info");
+																		MyToast.show(
+																				activity,
+																				String.format(
+																						"%s[%s]",
+																						activity.getString(R.string.subscribe_suite_failed),
+																						vosInfo),
+																				Toast.LENGTH_SHORT);
+																	} catch (JSONException e) {
+																		e.printStackTrace();
+																		MyToast.show(
+																				activity,
+																				R.string.subscribe_suite_failed,
+																				Toast.LENGTH_SHORT);
+																	}
+																	break;
+																case -1:
+																	MyToast.show(
+																			activity,
+																			R.string.subscribe_suite_failed_check_network,
+																			Toast.LENGTH_SHORT);
+																	break;
+																default:
+																	MyToast.show(
+																			activity,
+																			R.string.subscribe_suite_failed,
+																			Toast.LENGTH_SHORT);
+																	break;
+																}
+
+															}
+														};
+													}).show();
+
 								} catch (JSONException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
@@ -256,16 +518,15 @@ public class MySuitesListAdapter extends BaseExpandableListAdapter {
 	public Object getGroup(int groupPosition) {
 		String ret = "";
 		if (groupPosition == 0) {
-			ret = context.getString(R.string.my_suite);
+			ret = activity.getString(R.string.my_suite);
 		} else if (groupPosition == 1) {
-			ret = context.getString(R.string.all_suite);
+			ret = activity.getString(R.string.all_suite);
 		}
 		return ret;
 	}
 
 	@Override
 	public int getGroupCount() {
-		// TODO Auto-generated method stub
 		return GroupCount;
 	}
 
@@ -278,8 +539,13 @@ public class MySuitesListAdapter extends BaseExpandableListAdapter {
 	@Override
 	public View getGroupView(int groupPosition, boolean isExpanded,
 			View convertView, ViewGroup parent) {
+		
 		HeaderViewHolder viewHolder = null;
-		if (convertView == null) {
+		viewHolder = (HeaderViewHolder) (convertView != null ? convertView.getTag() : null);
+		if (viewHolder != null && !(viewHolder instanceof HeaderViewHolder)) {
+			viewHolder = null;
+		}
+		if (viewHolder == null) {
 			viewHolder = new HeaderViewHolder();
 			convertView = inflater.inflate(R.layout.suite_header_item_layout,
 					null);
@@ -288,15 +554,19 @@ public class MySuitesListAdapter extends BaseExpandableListAdapter {
 			viewHolder.expandIcon = (ImageView) convertView
 					.findViewById(R.id.expand_flag_icon);
 			convertView.setTag(viewHolder);
-		} else {
-			viewHolder = (HeaderViewHolder) convertView.getTag();
 		}
-
+		
+		Log.d(SystemConstants.TAG, "group view holder: " + viewHolder);
+		
 		if (groupPosition == 0) {
 			viewHolder.header.setText(R.string.my_suite);
 		} else if (groupPosition == 1) {
 			viewHolder.header.setText(R.string.all_suite);
+		} else {
+			return new LinearLayout(activity);
 		}
+		
+		Log.d(SystemConstants.TAG, "my suite group pos: " + groupPosition + " group count: " + getGroupCount());
 
 		if (isExpanded) {
 			viewHolder.expandIcon
@@ -337,6 +607,12 @@ public class MySuitesListAdapter extends BaseExpandableListAdapter {
 	final class HeaderViewHolder {
 		public TextView header;
 		public ImageView expandIcon;
+	}
+
+	private void dismissDlg() {
+		if (progressDlg != null) {
+			progressDlg.dismiss();
+		}
 	}
 
 }

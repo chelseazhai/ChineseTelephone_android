@@ -8,6 +8,8 @@
         android:id="@+id/my_suites_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:dividerHeight="0dp"
+        android:childDivider="@android:color/transparent"
         android:indicatorLeft="15sp"
         android:indicatorRight="15sp" >
     </ExpandableListView>
