@@ -73,8 +73,9 @@ public abstract class BaseSipServices implements ISipServices {
 		super();
 
 		// init audio manager
-		_mAudioManager = (AudioManager) AppLaunchActivity.getAppContext()
-				.getSystemService(Context.AUDIO_SERVICE);
+		Context context = AppLaunchActivity.getAppContext();
+		_mAudioManager = (AudioManager) (context != null ? context
+				.getSystemService(Context.AUDIO_SERVICE) : null);
 	}
 
 	// make direct dial sip voice call
@@ -144,7 +145,9 @@ public abstract class BaseSipServices implements ISipServices {
 		// check current sip voice call using earphone
 		if (!isSipVoiceCallUsingLoudspeaker()) {
 			// close speaker
-			_mAudioManager.setSpeakerphoneOn(false);
+			if (_mAudioManager != null) {
+				_mAudioManager.setSpeakerphoneOn(false);
+			}
 		}
 
 		// hangup current sip voice call and get its result
@@ -163,11 +166,13 @@ public abstract class BaseSipServices implements ISipServices {
 		_mIsSipVoiceCallUsingLoudspeaker = true;
 
 		// set current sip voice call loudspeaker
-		// set mode
-		_mAudioManager.setMode(AudioManager.MODE_NORMAL);
+		if (_mAudioManager != null) {
+			// set mode
+			_mAudioManager.setMode(AudioManager.MODE_NORMAL);
 
-		// open speaker
-		_mAudioManager.setSpeakerphoneOn(true);
+			// open speaker
+			_mAudioManager.setSpeakerphoneOn(true);
+		}
 	}
 
 	@Override
@@ -177,7 +182,9 @@ public abstract class BaseSipServices implements ISipServices {
 
 		// set current sip voice call earphone
 		// close speaker
-		_mAudioManager.setSpeakerphoneOn(false);
+		if (_mAudioManager != null) {
+			_mAudioManager.setSpeakerphoneOn(false);
+		}
 	}
 
 	public SipInviteStateListener getSipInviteStateListener() {
