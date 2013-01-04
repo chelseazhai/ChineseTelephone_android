@@ -18,8 +18,9 @@ public class SipUtils {
 		_mSipServices = new /* DoubangoSipServices() */SipDroidSipServices();
 	}
 
-	// get sip utils singleton instance
-	public static SipUtils getInstance() {
+	// get base sip services
+	public static BaseSipServices getSipServices() {
+		// check instance
 		if (null == _singletonInstance) {
 			synchronized (SipUtils.class) {
 				if (null == _singletonInstance) {
@@ -28,12 +29,7 @@ public class SipUtils {
 			}
 		}
 
-		return _singletonInstance;
-	}
-
-	// get base sip services
-	public static BaseSipServices getSipServices() {
-		return (BaseSipServices) SipUtils.getInstance()._mSipServices;
+		return (BaseSipServices) _singletonInstance._mSipServices;
 	}
 
 	// register sip account
