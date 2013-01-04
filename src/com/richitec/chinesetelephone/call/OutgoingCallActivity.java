@@ -8,6 +8,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.apache.http.HttpStatus;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -838,7 +840,7 @@ public class OutgoingCallActivity extends Activity implements
 		@Override
 		public void onFinished(HttpResponseResult responseResult) {
 			// check send callback sip voice call request response
-			checkSendCallbackSipVoiceCallRequestResponse(responseResult.getStatusCode());
+			checkSendCallbackSipVoiceCallRequestResponse(responseResult);
 		}
 
 		@Override
@@ -850,16 +852,16 @@ public class OutgoingCallActivity extends Activity implements
 							+ responseResult.getResponseText());
 
 			// check send callback sip voice call request response
-			checkSendCallbackSipVoiceCallRequestResponse(responseResult.getStatusCode());
+			checkSendCallbackSipVoiceCallRequestResponse(responseResult);
 		}
 
 		// check send callback sip voice call request response
 		private void checkSendCallbackSipVoiceCallRequestResponse(
-				int status) {
+				HttpResponseResult responseResult) {
 			// update send callback sip voice call state tip text id, callback
 			// waiting imageView image resource id and callback waiting textView
 			// text
-			if (status == HttpStatus.SC_OK) {
+			if (responseResult.getStatusCode() == HttpStatus.SC_OK) {
 				_sendCallbackSipVoiceCallStateTipTextId = R.string.send_callbackCallRequest_succeed;
 				_callbackCallWaitingImageViewImgResId = drawable.img_sendcallbackcall_succeed;
 				UserBean user = UserManager.getInstance().getUser();
@@ -870,8 +872,29 @@ public class OutgoingCallActivity extends Activity implements
 								.name()))
 								+ ((String) user.getValue(TelUser.bindphone
 										.name())), _mCalleePhone);
-			} else if (status == HttpStatus.SC_PAYMENT_REQUIRED) {
-				_sendCallbackSipVoiceCallStateTipTextId = R.string.no_enough_money;
+			} else if (responseResult.getStatusCode() == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
+				try {
+					JSONObject data = new JSONObject(responseResult.getResponseText());
+					String vosInfo = data.getString("vos_info");
+					// update call state textView text
+					((TextView) findViewById(R.id.callState_textView))
+							.setText(vosInfo);
+
+					// update callback waiting imageView image resource
+					((ImageView) findViewById(R.id.callbackWaiting_imageView))
+							.setImageResource(_callbackCallWaitingImageViewImgResId);
+
+					// update callback waiting textView text
+					((TextView) findViewById(R.id.callbackWaiting_textView))
+							.setText(_callbackCallWaitingTextViewText);
+
+					// show callback waiting relativeLayout
+					((RelativeLayout) findViewById(R.id.callbackWaiting_relativeLayout))
+							.setVisibility(View.VISIBLE);
+					return;
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 			}
 
 			// update call state textView text
