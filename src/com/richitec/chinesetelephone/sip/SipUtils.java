@@ -1,7 +1,5 @@
 package com.richitec.chinesetelephone.sip;
 
-import android.util.Log;
-
 import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
 import com.richitec.chinesetelephone.sip.services.BaseSipServices;
 import com.richitec.chinesetelephone.sip.services.ISipServices;
@@ -9,40 +7,57 @@ import com.richitec.chinesetelephone.sip.services.SipDroidSipServices;
 
 public class SipUtils {
 
-	// sip services
-	private static final ISipServices sipServices = new /* DoubangoSipServices() */SipDroidSipServices();
+	// singleton instance
+	private static volatile SipUtils _singletonInstance;
+
+	// sip services object
+	private ISipServices _mSipServices;
+
+	private SipUtils() {
+		// init sip services object
+		_mSipServices = new /* DoubangoSipServices() */SipDroidSipServices();
+	}
+
+	// get sip utils singleton instance
+	public static SipUtils getInstance() {
+		if (null == _singletonInstance) {
+			synchronized (SipUtils.class) {
+				if (null == _singletonInstance) {
+					_singletonInstance = new SipUtils();
+				}
+			}
+		}
+
+		return _singletonInstance;
+	}
 
 	// get base sip services
 	public static BaseSipServices getSipServices() {
-		return (BaseSipServices) sipServices;
+		return (BaseSipServices) SipUtils.getInstance()._mSipServices;
 	}
 
 	// register sip account
 	public static void registerSipAccount(SipRegisterBean sipAccount,
 			SipRegistrationStateListener sipRegistrationStateListener) {
-		sipServices
-				.registerSipAccount(sipAccount, sipRegistrationStateListener);
+		getSipServices().registerSipAccount(sipAccount,
+				sipRegistrationStateListener);
 	}
 
 	// unregister sip account
 	public static void unregisterSipAccount(
 			SipRegistrationStateListener sipRegistrationStateListener) {
-		sipServices.unregisterSipAccount(sipRegistrationStateListener);
+		getSipServices().unregisterSipAccount(sipRegistrationStateListener);
 	}
 
 	// make sip voice call
 	public static void makeSipVoiceCall(String calleeName, String calleePhone,
 			SipCallMode callMode) {
-		Log.d("SipUtils", "makeSipVoiceCall - callee name = " + calleeName
-				+ " , phone number = " + calleePhone + " and call mode = "
-				+ callMode);
-
-		sipServices.makeSipVoiceCall(calleeName, calleePhone, callMode);
+		getSipServices().makeSipVoiceCall(calleeName, calleePhone, callMode);
 	}
 
 	// destroy sip engine
 	public static void destroySipEngine() {
-		sipServices.destroySipEngine();
+		getSipServices().destroySipEngine();
 	}
 
 }
