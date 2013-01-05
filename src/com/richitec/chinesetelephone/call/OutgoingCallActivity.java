@@ -291,7 +291,7 @@ public class OutgoingCallActivity extends Activity implements
 				UPDATE_CALLDURATIONTIME_HANDLE.post(new Runnable() {
 
 					// 60 seconds per minute
-					Integer SECONDS_PER_MINUTE = 60;
+					final Integer SECONDS_PER_MINUTE = 60;
 
 					@Override
 					public void run() {

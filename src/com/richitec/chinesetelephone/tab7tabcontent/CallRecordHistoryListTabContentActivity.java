@@ -1,5 +1,6 @@
 package com.richitec.chinesetelephone.tab7tabcontent;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -220,6 +221,16 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 		@Override
 		public void onClick(View v) {
 			Log.d(LOG_TAG, "view = " + v + " and position = " + v.getTag());
+
+			// generate parameter
+			Map<String, Serializable> _parameter = new HashMap<String, Serializable>();
+
+			// put call log bean to parameter
+			_parameter.put(CallRecordDetailInfoActivity.CALL_LOG_PARAM_KEY,
+					_mCallLogList.get((Integer) v.getTag()));
+
+			// go to the call record detail info activity
+			pushActivity(CallRecordDetailInfoActivity.class, _parameter);
 		}
 
 	}

@@ -10,6 +10,7 @@
     <!-- pure color -->
     <color name="dodger_blue">#2470d8</color>
     <color name="gray">#565656</color>
+    <color name="light_dark_gray">#98999d</color>
     <color name="dark_gray">#a3a3a3</color>
     <color name="light_gray">#b6b6b6</color>
     <color name="gainsboro">#c0c0c0</color>

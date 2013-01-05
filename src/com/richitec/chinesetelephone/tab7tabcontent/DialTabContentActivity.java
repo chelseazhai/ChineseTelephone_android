@@ -11,7 +11,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -94,13 +93,6 @@ public class DialTabContentActivity extends NavigationActivity {
 				.setOnClickListener(new ClearDialPhoneDialFunBtnOnClickListener());
 		_clearDialPhoneFunBtn
 				.setOnLongClickListener(new ClearDialPhoneDialFunBtnOnLongClickListener());
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater()
-				.inflate(R.menu.dial_tab_content_activity_layout, menu);
-		return true;
 	}
 
 	@Override
