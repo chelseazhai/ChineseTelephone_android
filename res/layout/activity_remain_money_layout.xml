@@ -61,11 +61,6 @@
                 android:textColor="@color/dark_dim_gray"
                 android:textSize="20dp" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/search_remainmoney" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -76,6 +71,7 @@
                 android:textSize="18dp" />
 
             <TextView
+                android:singleLine="true"
                 android:id="@+id/remain_money"
                 android:layout_width="fill_parent"
                 android:layout_height="30dp"
