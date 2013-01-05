@@ -302,4 +302,7 @@
     <string name="unsubscribe_suite_failed">套餐退订失败</string>
     <string name="unsubscribe_suite_success">套餐退订成功，下月起将不再扣除您的套餐费</string>
 
+    <!-- other -->
+    <string name="currency_sign">￥</string>
+
 </resources>

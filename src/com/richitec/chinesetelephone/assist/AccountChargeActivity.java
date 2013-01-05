@@ -146,7 +146,7 @@ public class AccountChargeActivity extends NavigationActivity {
 						.getDouble("balance") + "");
 				String remainBalanceStr = AccountChargeActivity.this
 						.getString(R.string.remain_balance_textfield);
-				remainBalanceStr += balance + getString(R.string.yuan);
+				remainBalanceStr += getString(R.string.currency_sign) + balance + getString(R.string.yuan);
 				((TextView) findViewById(R.id.remain_balance))
 						.setText(remainBalanceStr);
 

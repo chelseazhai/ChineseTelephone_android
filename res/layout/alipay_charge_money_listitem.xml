@@ -12,18 +12,29 @@
         android:layout_marginTop="10dp" >
 
         <TextView
+            android:id="@+id/alipay_charge_list_currency_sign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/currency_sign"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/dodger_blue"
+            android:textSize="20sp" />
+
+        <TextView
             android:id="@+id/charge_money_tv"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:layout_toRightOf="@+id/alipay_charge_list_currency_sign"
             android:textColor="@color/dodger_blue"
             android:textSize="20sp" />
 
         <TextView
             android:id="@+id/charge_money_desc_tv"
-            android:layout_marginLeft="5dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:layout_marginTop="6dp"
             android:layout_toLeftOf="@+id/imgright"
             android:layout_toRightOf="@+id/charge_money_tv"

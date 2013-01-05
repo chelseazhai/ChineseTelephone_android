@@ -50,8 +50,7 @@ import com.richitec.commontoolkit.utils.StringUtils;
 
 public class SettingActivity extends NavigationActivity {
 	private AlertDialog chooseCountryDialog;
-	private CountryCodeManager countryCodeManager = CountryCodeManager
-			.getInstance();
+	private CountryCodeManager countryCodeManager;
 	public static String TITLE_NAME = "titlename";
 	private String inviteLink;
 
@@ -63,36 +62,45 @@ public class SettingActivity extends NavigationActivity {
 	private RadioGroup launchGroup;
 	private RadioGroup loginGroup;
 
-	private final ModifyPSWPopupWindow modifyPSWPopupWindow = new ModifyPSWPopupWindow(
-			R.layout.modify_psw_popupwindow_layout, LayoutParams.FILL_PARENT,
-			LayoutParams.FILL_PARENT);
-	private final GetPSWPopupWindow getPSWPopupWindow = new GetPSWPopupWindow(
-			R.layout.get_psw_popupwindow_layout, LayoutParams.FILL_PARENT,
-			LayoutParams.FILL_PARENT);
-	/*
-	 * private final SetAreaCodePopupWindow setAreaCodePopupWindow = new
-	 * SetAreaCodePopupWindow( R.layout.set_areacode_popupwindow_layout,
-	 * LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT );
-	 */
-	private final SetDialCountryCodePopupWindow setDialCountryCodePopupWindow = new SetDialCountryCodePopupWindow(
-			R.layout.set_dialcountrycode_popupwindow_layout,
-			LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-	private final SetDialPreferencePopupWindow setDialPreferencePopupWin = new SetDialPreferencePopupWindow(
-			R.layout.dial_preference_popupwindow_layout,
-			LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-	private final LaunchSetCodePopupWindow launchSetCodePopupWindow = new LaunchSetCodePopupWindow(
-			R.layout.setup_preference_popupwindow_layout,
-			LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-	private final SetBindNumberPopupWindow setBindNumberPopupWindow = new SetBindNumberPopupWindow(
-			R.layout.set_bind_number_popupwindow_layout,
-			LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+	private ModifyPSWPopupWindow modifyPSWPopupWindow;
+	private GetPSWPopupWindow getPSWPopupWindow;
+	private SetDialCountryCodePopupWindow setDialCountryCodePopupWindow;
+	private SetDialPreferencePopupWindow setDialPreferencePopupWin;
+	private LaunchSetCodePopupWindow launchSetCodePopupWindow;
+	private SetBindNumberPopupWindow setBindNumberPopupWindow;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// Log.e("SettingActivity", "onCreate");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_setting);
-
+		
+		countryCodeManager = CountryCodeManager
+				.getInstance();
+		
+		modifyPSWPopupWindow = new ModifyPSWPopupWindow(
+				R.layout.modify_psw_popupwindow_layout, LayoutParams.FILL_PARENT,
+				LayoutParams.FILL_PARENT);
+		
+		getPSWPopupWindow = new GetPSWPopupWindow(
+				R.layout.get_psw_popupwindow_layout, LayoutParams.FILL_PARENT,
+				LayoutParams.FILL_PARENT);
+		
+		setDialCountryCodePopupWindow = new SetDialCountryCodePopupWindow(
+				R.layout.set_dialcountrycode_popupwindow_layout,
+				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		
+		setDialPreferencePopupWin = new SetDialPreferencePopupWindow(
+				R.layout.dial_preference_popupwindow_layout,
+				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		
+		launchSetCodePopupWindow = new LaunchSetCodePopupWindow(
+				R.layout.setup_preference_popupwindow_layout,
+				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		
+		setBindNumberPopupWindow = new SetBindNumberPopupWindow(
+				R.layout.set_bind_number_popupwindow_layout,
+				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		
 		LinearLayout inviteFriend = (LinearLayout) findViewById(R.id.account_invite_btn);
 		inviteFriend.setOnClickListener(inviteFriendListener);
 
@@ -142,6 +150,8 @@ public class SettingActivity extends NavigationActivity {
 						});
 
 		setTitle(R.string.menu_settings);
+		
+		
 	}
 
 	public void setAuthNumber(View v) {

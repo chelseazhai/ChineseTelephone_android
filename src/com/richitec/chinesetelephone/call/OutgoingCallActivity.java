@@ -100,7 +100,7 @@ public class OutgoingCallActivity extends Activity implements
 	private final Handler UPDATE_CALLDURATIONTIME_HANDLE = new Handler();
 
 	// send callback sip voice call http request listener
-	private final SendCallbackSipVoiceCallHttpRequestListener SEND_CALLBACKSIPVOICECALL_HTTPREQUESTLISTENER = new SendCallbackSipVoiceCallHttpRequestListener();
+	private SendCallbackSipVoiceCallHttpRequestListener SEND_CALLBACKSIPVOICECALL_HTTPREQUESTLISTENER;
 
 	// phone state broadcast receiver
 	private BroadcastReceiver _mPhoneStateBroadcastReceiver;
@@ -115,12 +115,14 @@ public class OutgoingCallActivity extends Activity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
 		// keep outgoing call activity screen on
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 		// set content view
 		setContentView(R.layout.outgoing_call_activity_layout);
+
+		SEND_CALLBACKSIPVOICECALL_HTTPREQUESTLISTENER = new SendCallbackSipVoiceCallHttpRequestListener();
 
 		// define outgoing call mode, callback
 		SipCallMode _outgoingCallMode = SipCallMode.CALLBACK;
