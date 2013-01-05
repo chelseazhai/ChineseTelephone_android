@@ -7,29 +7,22 @@ import com.richitec.chinesetelephone.sip.services.SipDroidSipServices;
 
 public class SipUtils {
 
-	// singleton instance
-	private static volatile SipUtils _singletonInstance;
-
-	// sip services object
-	private ISipServices _mSipServices;
-
-	private SipUtils() {
-		// init sip services object
-		_mSipServices = new /* DoubangoSipServices() */SipDroidSipServices();
-	}
+	// sip services object, singleton instance
+	private static volatile ISipServices _sipServices;
 
 	// get base sip services
 	public static BaseSipServices getSipServices() {
-		// check instance
-		if (null == _singletonInstance) {
+		// check sip services instance
+		if (null == _sipServices) {
 			synchronized (SipUtils.class) {
-				if (null == _singletonInstance) {
-					_singletonInstance = new SipUtils();
+				if (null == _sipServices) {
+					// init sip services object
+					_sipServices = new /* DoubangoSipServices() */SipDroidSipServices();
 				}
 			}
 		}
 
-		return (BaseSipServices) _singletonInstance._mSipServices;
+		return (BaseSipServices) _sipServices;
 	}
 
 	// register sip account
