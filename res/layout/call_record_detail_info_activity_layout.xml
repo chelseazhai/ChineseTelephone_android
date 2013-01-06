@@ -15,10 +15,10 @@
             android:id="@+id/callRecord_detailInfo_contact_avatar_imageView"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="@color/light_dark_gray"
+            android:background="@color/graySmoke"
             android:contentDescription="@string/callRecord_detailInfo_contact_avatar_imageView_content_description"
             android:scaleType="centerInside"
-            android:src="@drawable/img_default_avatar" />
+            android:src="@drawable/img_gray_avatar" />
 
         <TextView
             android:id="@+id/callRecord_detailInfo_contact_displayName_textView"
