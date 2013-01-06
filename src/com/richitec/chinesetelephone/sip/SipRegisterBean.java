@@ -72,7 +72,23 @@ public class SipRegisterBean implements Serializable {
 
 	@Override
 	public String toString() {
-		return super.toString();
+		// init sip register description
+		StringBuilder _sipRegisterDescription = new StringBuilder();
+
+		// append sip register server, sip account name, password, sip register
+		// domain, realm and port
+		_sipRegisterDescription.append("Sip register server: ")
+				.append(sipServer).append(", ");
+		_sipRegisterDescription.append("sip account name: ")
+				.append(sipUserName).append(", ");
+		_sipRegisterDescription.append("password: ").append(sipPwd)
+				.append(", ");
+		_sipRegisterDescription.append("sip register domain: ")
+				.append(sipDomain).append(", ");
+		_sipRegisterDescription.append("realm: ").append(sipRealm).append(", ");
+		_sipRegisterDescription.append("port: ").append(sipPort).append("\n");
+
+		return _sipRegisterDescription.toString();
 	}
 
 }

@@ -10,15 +10,22 @@ import com.richitec.chinesetelephone.sip.services.SipDroidSipServices;
 
 public class SipUtils {
 
-	// sip services
-	private static ISipServices sipServices;
+	// sip services object, singleton instance
+	private static volatile ISipServices _sipServices;
 
 	// get base sip services
 	public static BaseSipServices getSipServices() {
-		if (sipServices == null) {
-			sipServices = new SipDroidSipServices();
+		// check sip services instance
+		if (null == _sipServices) {
+			synchronized (SipUtils.class) {
+				if (null == _sipServices) {
+					// init sip services object
+					_sipServices = new /* DoubangoSipServices() */SipDroidSipServices();
+				}
+			}
 		}
-		return (BaseSipServices) sipServices;
+
+		return (BaseSipServices) _sipServices;
 	}
 
 	// register sip account

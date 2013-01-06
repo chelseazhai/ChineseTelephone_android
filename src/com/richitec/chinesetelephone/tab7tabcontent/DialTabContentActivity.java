@@ -18,11 +18,15 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Intents;
+import android.content.Intent;
+import android.graphics.Rect;
+import android.os.Bundle;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.provider.ContactsContract.Contacts;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -104,13 +108,6 @@ public class DialTabContentActivity extends NavigationActivity {
 				.setOnClickListener(new ClearDialPhoneDialFunBtnOnClickListener());
 		_clearDialPhoneFunBtn
 				.setOnLongClickListener(new ClearDialPhoneDialFunBtnOnLongClickListener());
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater()
-				.inflate(R.menu.dial_tab_content_activity_layout, menu);
-		return true;
 	}
 
 	@Override
@@ -329,55 +326,27 @@ public class DialTabContentActivity extends NavigationActivity {
 		@Override
 		public void onClick(View v) {
 			// get dial phone text
-						String _dialPhoneString = _mDialPhoneTextView.getText().toString();
+			String _dialPhoneString = _mDialPhoneTextView.getText().toString();
 
-						// check dial phone string
-						if (null != _dialPhoneString
-								&& !"".equalsIgnoreCase(_dialPhoneString)) {
-							
-							AlertDialog.Builder builder = new AlertDialog.Builder(DialTabContentActivity.this);
-							builder.setTitle(DialTabContentActivity.this.getString(R.string.add_contact));
-							builder.setItems(new String[]{DialTabContentActivity.this.
-											getString(R.string.add_exist_contact_item),
-											DialTabContentActivity.this.
-											getString(R.string.add_new_contact_item)},
-									new DialogInterface.OnClickListener(){
-										@Override
-										public void onClick(DialogInterface dialog,
-												int which) {
-											// TODO Auto-generated method stub
-											if(which==0){
-												Intent intent = new Intent();
-										        intent.setAction(Intent.ACTION_PICK);
-										        intent.setData(ContactsContract.Contacts.CONTENT_URI);
-										        startActivityForResult(intent, 0);
-											}
-											else{
-												String dialPhoneString = _mDialPhoneTextView.getText().toString();
-												Intent intent = new Intent(Intent.ACTION_INSERT);
-										        intent.setType("vnd.android.cursor.dir/person");
-										        intent.setType("vnd.android.cursor.dir/contact");
-										        intent.setType("vnd.android.cursor.dir/raw_contact");
-										        intent.putExtra("phone", dialPhoneString); 
-										        intent.putExtra(Intents.Insert.PHONE_TYPE, 
-										        		CommonDataKinds.Phone.TYPE_MOBILE);
-										        startActivity(intent);
-											}
-										}
-								
-									}
-									)
-									.setNegativeButton(DialTabContentActivity.this.getString(R.string.cancel), null);	
-							builder.show();
-						}
-						else{
-							//MyToast.show(DialTabContentActivity.this, R.string.pls_input_phone, Toast.LENGTH_SHORT);
-							new AlertDialog.Builder(DialTabContentActivity.this)
-							.setTitle(R.string.alert_title)
-							.setMessage(DialTabContentActivity.this.getString(R.string.pls_input_phone))
-							.setPositiveButton(DialTabContentActivity.this.getString(R.string.ok), null)
-							.show();
-						}
+			// check dial phone string
+			if (null != _dialPhoneString
+					&& !"".equalsIgnoreCase(_dialPhoneString)) {
+				Log.d(LOG_TAG, "add phone = " + _dialPhoneString
+						+ " to new or existed contact");
+
+				// define contact insert intent
+				Intent _contactInsertIntent = new Intent(Intent.ACTION_INSERT);
+
+				// put type and extra
+				_contactInsertIntent.setType(Contacts.CONTENT_TYPE);
+				_contactInsertIntent.putExtra(Phone.NUMBER, _dialPhoneString);
+				_contactInsertIntent.putExtra(Phone.TYPE, Phone.TYPE_MOBILE);
+
+				// check contact insert intent and start the activity
+				if (CommonUtils.isIntentAvailable(_contactInsertIntent)) {
+					startActivity(_contactInsertIntent);
+				}
+			}
 		}
 
 	}

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.richitec.chinesetelephone"
     android:versionCode="1"
@@ -49,16 +50,20 @@
             android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
-            android:name=".tab7tabcontent.ContactListTabContentActivity"
-            android:label="@string/title_activity_contact_list_tab_content" >
+            android:name=".tab7tabcontent.CallRecordHistoryListTabContentActivity"
+            android:label="@string/title_activity_call_record_history_list_tab_content" >
+        </activity>
+        <activity
+            android:name=".tab7tabcontent.CallRecordDetailInfoActivity"
+            android:label="@string/title_activity_call_record_detail_info" >
         </activity>
         <activity
             android:name=".tab7tabcontent.DialTabContentActivity"
             android:label="@string/title_activity_dial_tab_content" >
         </activity>
         <activity
-            android:name=".tab7tabcontent.CallRecordHistoryListTabContentActivity"
-            android:label="@string/title_activity_call_record_history_list_tab_content" >
+            android:name=".tab7tabcontent.ContactListTabContentActivity"
+            android:label="@string/title_activity_contact_list_tab_content" >
         </activity>
         <activity
             android:name=".tab7tabcontent.MoreTabContentActivity"
