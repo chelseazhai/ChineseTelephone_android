@@ -12,21 +12,21 @@
         android:layout_margin="4dp" >
 
         <ImageView
-            android:id="@+id/callRecord_contact_avatar_imageView"
+            android:id="@+id/callRecord_detailInfo_contact_avatar_imageView"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@color/light_dark_gray"
-            android:contentDescription="@string/callRecord_contact_avatar_imageView_content_description"
+            android:contentDescription="@string/callRecord_detailInfo_contact_avatar_imageView_content_description"
             android:scaleType="centerInside"
             android:src="@drawable/img_default_avatar" />
 
         <TextView
-            android:id="@+id/callRecord_contact_displayName_textView"
+            android:id="@+id/callRecord_detailInfo_contact_displayName_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
-            android:layout_toRightOf="@id/callRecord_contact_avatar_imageView"
+            android:layout_toRightOf="@id/callRecord_detailInfo_contact_avatar_imageView"
             android:ellipsize="end"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -46,14 +46,14 @@
             android:layout_height="wrap_content" >
 
             <TextView
-                android:id="@+id/callRecord_callType_textView"
+                android:id="@+id/callRecord_detailInfo_callType_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                android:id="@+id/callRecord_day_textView"
+                android:id="@+id/callRecord_detailInfo_day_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -66,22 +66,22 @@
             android:layout_marginTop="4dp" >
 
             <TextView
-                android:id="@+id/callRecord_time_textView"
+                android:id="@+id/callRecord_detailInfo_time_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true" />
 
             <TextView
-                android:id="@+id/callRecord_duration_textView"
+                android:id="@+id/callRecord_detailInfo_duration_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
-                android:layout_toRightOf="@id/callRecord_time_textView" />
+                android:layout_toRightOf="@id/callRecord_detailInfo_time_textView" />
         </RelativeLayout>
     </LinearLayout>
 
     <ListView
-        android:id="@+id/callRecord_operation_listView"
+        android:id="@+id/callRecord_detailInfo_operation_listView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

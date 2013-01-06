@@ -20,17 +20,20 @@
     <!-- call record detail info activity -->
     <string name="title_activity_call_record_detail_info">CallRecordDetailInfoActivity</string>
     <string name="call_record_detailinfo_title">Call Record DetailInfo</string>
-    <string name="callRecord_contact_avatar_imageView_content_description">call record contact avatar image view</string>
-    <string name="callRecord_outgoingCall_callType">Outgoing call</string>
-    <string name="callRecord_incomingCall_callType">Incoming call</string>
-    <string name="callRecord_initiateTime_year">-</string>
-    <string name="callRecord_initiateTime_month">-</string>
-    <string name="callRecord_initiateTime_day"></string>
-    <string name="callRecord_duration_seconds">seconds</string>
-    <string name="callRecord_duration_minutes">minutes</string>
-    <string name="callRecord_missed_incomingCall">Missed incoming call</string>
-    <string name="callRecord_cancel_outgoingCall">Call cancelled</string>
-    <string name="callRecord_failed_outgoingCall">Call failed</string>
+    <string name="callRecord_detailInfo_contact_avatar_imageView_content_description">call record contact avatar image view</string>
+    <string name="callRecord_detailInfo_outgoingCall_callType">Outgoing call</string>
+    <string name="callRecord_detailInfo_incomingCall_callType">Incoming call</string>
+    <string name="callRecord_detailInfo_initiateTime_year">-</string>
+    <string name="callRecord_detailInfo_initiateTime_month">-</string>
+    <string name="callRecord_detailInfo_initiateTime_day"></string>
+    <string name="callRecord_detailInfo_duration_seconds">seconds</string>
+    <string name="callRecord_detailInfo_duration_minutes">minutes</string>
+    <string name="callRecord_detailInfo_missed_incomingCall">Missed incoming call</string>
+    <string name="callRecord_detailInfo_cancel_outgoingCall">Call cancelled</string>
+    <string name="callRecord_detailInfo_failed_outgoingCall">Call failed</string>
+    <string name="callRecord_detailInfo_operation4directdial">Direct dial</string>
+    <string name="callRecord_detailInfo_operation4callback">Callback</string>
+    <string name="callRecord_detailInfo_operation4sms">SMS</string>
 
     <!-- dial tab content activity -->
     <string name="title_activity_dial_tab_content">DialTabContentActivity</string>

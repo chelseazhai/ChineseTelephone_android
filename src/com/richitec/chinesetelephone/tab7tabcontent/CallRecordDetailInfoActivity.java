@@ -2,10 +2,16 @@ package com.richitec.chinesetelephone.tab7tabcontent;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.richitec.chinesetelephone.R;
@@ -48,17 +54,21 @@ public class CallRecordDetailInfoActivity extends NavigationActivity {
 
 				Log.d(LOG_TAG, "Call log bean = " + _callLog);
 
-				// define call record initiate day and time time format
+				// define call record detail info initiate day and time time
+				// format
 				final DateFormat _callRecordInitiateTimeDayFormat = new SimpleDateFormat(
 						"yyyy"
-								+ getResources().getString(
-										R.string.callRecord_initiateTime_year)
+								+ getResources()
+										.getString(
+												R.string.callRecord_detailInfo_initiateTime_year)
 								+ "MM"
-								+ getResources().getString(
-										R.string.callRecord_initiateTime_month)
+								+ getResources()
+										.getString(
+												R.string.callRecord_detailInfo_initiateTime_month)
 								+ "dd"
-								+ getResources().getString(
-										R.string.callRecord_initiateTime_day),
+								+ getResources()
+										.getString(
+												R.string.callRecord_detailInfo_initiateTime_day),
 						Locale.getDefault());
 				final DateFormat _callRecordInitiateTimeTimeFormat = new SimpleDateFormat(
 						"HH:mm", Locale.getDefault());
@@ -70,54 +80,105 @@ public class CallRecordDetailInfoActivity extends NavigationActivity {
 				_mCalleeName = _callLog.getCalleeName();
 				_mCalleePhone = _callLog.getCalleePhone();
 
-				// get call duration
+				// get callee phone and call duration
+				String _calleePhone = _callLog.getCalleePhone();
 				Long _callDuration = _callLog.getCallDuration();
 
 				// update call record contact display name, call type, call day,
 				// call time and call duration textView text
-				((TextView) findViewById(R.id.callRecord_contact_displayName_textView))
+				((TextView) findViewById(R.id.callRecord_detailInfo_contact_displayName_textView))
 						.setText(_mCalleeName);
-				((TextView) findViewById(R.id.callRecord_callType_textView))
-						.setText(CallType.OUTGOING == _callLog.getCallType() ? R.string.callRecord_outgoingCall_callType
-								: R.string.callRecord_incomingCall_callType);
-				((TextView) findViewById(R.id.callRecord_day_textView))
+				((TextView) findViewById(R.id.callRecord_detailInfo_callType_textView))
+						.setText(CallType.OUTGOING == _callLog.getCallType() ? R.string.callRecord_detailInfo_outgoingCall_callType
+								: R.string.callRecord_detailInfo_incomingCall_callType);
+				((TextView) findViewById(R.id.callRecord_detailInfo_day_textView))
 						.setText(_callRecordInitiateTimeDayFormat
 								.format(_callLog.getCallDate()));
-				((TextView) findViewById(R.id.callRecord_time_textView))
+				((TextView) findViewById(R.id.callRecord_detailInfo_time_textView))
 						.setText(_callRecordInitiateTimeTimeFormat
 								.format(_callLog.getCallDate()));
-				((TextView) findViewById(R.id.callRecord_duration_textView))
+				((TextView) findViewById(R.id.callRecord_detailInfo_duration_textView))
 						.setText(CallType.MISSED == _callLog.getCallType() ? getResources()
 								.getString(
-										R.string.callRecord_missed_incomingCall)
+										R.string.callRecord_detailInfo_missed_incomingCall)
 								: _callDuration < 0 ? getResources()
 										.getString(
-												R.string.callRecord_failed_outgoingCall)
+												R.string.callRecord_detailInfo_failed_outgoingCall)
 										: 0 == _callDuration ? getResources()
 												.getString(
-														R.string.callRecord_cancel_outgoingCall)
+														R.string.callRecord_detailInfo_cancel_outgoingCall)
 												: _callDuration < SECONDS_PER_MINUTE ? _callDuration
 														+ " "
 														+ getResources()
 																.getString(
-																		R.string.callRecord_duration_seconds)
+																		R.string.callRecord_detailInfo_duration_seconds)
 														: 0 == _callDuration
 																% SECONDS_PER_MINUTE ? _callDuration
 																/ SECONDS_PER_MINUTE
 																+ " "
 																+ getResources()
 																		.getString(
-																				R.string.callRecord_duration_minutes)
+																				R.string.callRecord_detailInfo_duration_minutes)
 																: (_callDuration
 																		/ SECONDS_PER_MINUTE + 1)
 																		+ " "
 																		+ getResources()
 																				.getString(
-																						R.string.callRecord_duration_minutes));
+																						R.string.callRecord_detailInfo_duration_minutes));
+
+				// get call record detail info operation listView
+				ListView _callRecordDetailInfoOperationListView = (ListView) findViewById(R.id.callRecord_detailInfo_operation_listView);
+
+				// check callee phone and set operation listView adapter
+				if (null == _calleePhone
+						|| _calleePhone.trim().equalsIgnoreCase("")) {
+					Log.d(LOG_TAG, "Call record detail info operation phone = "
+							+ _calleePhone);
+				} else {
+					_callRecordDetailInfoOperationListView
+							.setAdapter(generateCallRecordDetailInfoOperationAdapter(_calleePhone));
+				}
 			} else {
 				Log.e(LOG_TAG, "Get call log error, call log bean is null");
 			}
 		}
+	}
+
+	// generate call record detail info operation adapter
+	private ListAdapter generateCallRecordDetailInfoOperationAdapter(
+			String operationPhone) {
+		// call record detail info operation adapter data keys
+		final String OPERATION_TIP = "operation_tip";
+		final String OPERATION_PHONE = "operation_phone";
+
+		// call record detail info operation tip array
+		final int[] OPERATION_TIPS = new int[] {
+				R.string.callRecord_detailInfo_operation4directdial,
+				R.string.callRecord_detailInfo_operation4callback,
+				R.string.callRecord_detailInfo_operation4sms };
+
+		// set call record detail info operation list view data list
+		List<Map<String, ?>> _callRecordDetailInfoOperationdataList = new ArrayList<Map<String, ?>>();
+
+		for (int operationTipInteger : OPERATION_TIPS) {
+			// generate data
+			Map<String, Object> _dataMap = new HashMap<String, Object>();
+
+			// put value
+			_dataMap.put(OPERATION_TIP,
+					getResources().getString(operationTipInteger));
+			_dataMap.put(OPERATION_PHONE, operationPhone);
+
+			// add data to list
+			_callRecordDetailInfoOperationdataList.add(_dataMap);
+		}
+
+		return new CallRecordDetailInfoOperationAdapter(this,
+				_callRecordDetailInfoOperationdataList,
+				R.layout.call_record_detail_info_operationlist_item_layout,
+				new String[] { OPERATION_TIP, OPERATION_PHONE }, new int[] {
+						R.id.callRecord_detailInfo_operationTip_textView,
+						R.id.callRecord_detailInfo_operationPhone_textView });
 	}
 
 }
