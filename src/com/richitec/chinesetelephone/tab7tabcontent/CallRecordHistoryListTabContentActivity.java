@@ -190,9 +190,9 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 						CallRecordHistoryListTabContentActivity.this)
 						.setTitle(_calleeName)
 						.setMessage(
-								R.string.unknownCalleePhone_alertDialog_message)
+								R.string.callRecord_unknownCalleePhone_alertDialog_message)
 						.setPositiveButton(
-								R.string.unknownCalleePhone_alertDialog_reselectBtn_title,
+								R.string.callRecord_unknownCalleePhone_alertDialog_reselectBtn_title,
 								null).show();
 			} else {
 				// set callee contact info
