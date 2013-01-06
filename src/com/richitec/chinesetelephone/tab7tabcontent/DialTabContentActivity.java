@@ -5,8 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.provider.ContactsContract.Contacts;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -19,7 +22,6 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.call.ContactPhoneDialModeSelectpopupWindow;
@@ -291,12 +293,21 @@ public class DialTabContentActivity extends NavigationActivity {
 			// check dial phone string
 			if (null != _dialPhoneString
 					&& !"".equalsIgnoreCase(_dialPhoneString)) {
-				Log.d(LOG_TAG, "add new contact, new contact phone = "
-						+ _dialPhoneString);
+				Log.d(LOG_TAG, "add phone = " + _dialPhoneString
+						+ " to new or existed contact");
 
-				Toast.makeText(DialTabContentActivity.this,
-						"The new contact phone = " + _dialPhoneString,
-						Toast.LENGTH_SHORT).show();
+				// define contact insert intent
+				Intent _contactInsertIntent = new Intent(Intent.ACTION_INSERT);
+
+				// put type and extra
+				_contactInsertIntent.setType(Contacts.CONTENT_TYPE);
+				_contactInsertIntent.putExtra(Phone.NUMBER, _dialPhoneString);
+				_contactInsertIntent.putExtra(Phone.TYPE, Phone.TYPE_MOBILE);
+
+				// check contact insert intent and start the activity
+				if (CommonUtils.isIntentAvailable(_contactInsertIntent)) {
+					startActivity(_contactInsertIntent);
+				}
 			}
 		}
 

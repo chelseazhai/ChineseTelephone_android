@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +25,7 @@ import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.calllog.CallLogBean;
 import com.richitec.commontoolkit.calllog.CallLogBean.CallType;
+import com.richitec.commontoolkit.utils.CommonUtils;
 
 public class CallRecordDetailInfoActivity extends NavigationActivity {
 
@@ -215,7 +218,15 @@ public class CallRecordDetailInfoActivity extends NavigationActivity {
 			case 2:
 			default:
 				// send short message
-				Log.d(LOG_TAG, "Send short message not implement");
+				// define send short message intent
+				Intent _smsIntent = new Intent(Intent.ACTION_SENDTO,
+						Uri.parse("smsto:" + _mCalleePhone));
+
+				// check send short message intent and start the activity
+				if (CommonUtils.isIntentAvailable(_smsIntent)) {
+					startActivity(_smsIntent);
+				}
+
 				break;
 			}
 		}
