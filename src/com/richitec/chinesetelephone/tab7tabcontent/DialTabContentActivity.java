@@ -10,6 +10,8 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.Contacts;
+import android.provider.ContactsContract.Intents;
+import android.provider.ContactsContract.RawContacts;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -27,6 +29,7 @@ import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.call.ContactPhoneDialModeSelectpopupWindow;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
+import com.richitec.commontoolkit.customcomponent.CommonPopupWindow;
 import com.richitec.commontoolkit.utils.CommonUtils;
 import com.richitec.commontoolkit.utils.DpPixUtils;
 import com.richitec.commontoolkit.utils.ToneGeneratorUtils;
@@ -68,16 +71,16 @@ public class DialTabContentActivity extends NavigationActivity {
 				.setAdapter(generateDialPhoneButtonAdapter());
 
 		// init dial function button and set click and long click listener
-		// get add new contact dial function button
-		ImageButton _addNewContactFunBtn = (ImageButton) findViewById(R.id.dial_newContact_functionBtn);
+		// get add new or update contact dial function button
+		ImageButton _addNew6updateContactFunBtn = (ImageButton) findViewById(R.id.dial_new6updateContact_functionBtn);
 
 		// set its image resource
-		_addNewContactFunBtn
+		_addNew6updateContactFunBtn
 				.setImageResource(R.drawable.img_dial_newcontact_btn);
 
 		// set its click listener
-		_addNewContactFunBtn
-				.setOnClickListener(new AddNewContactDialFunBtnOnClickListener());
+		_addNew6updateContactFunBtn
+				.setOnClickListener(new AddNew6updateContactDialFunBtnOnClickListener());
 
 		// set dial call button click listener
 		((ImageButton) findViewById(R.id.dial_call_functionBtn))
@@ -282,8 +285,9 @@ public class DialTabContentActivity extends NavigationActivity {
 
 	}
 
-	// add new contact dial function button on click listener
-	class AddNewContactDialFunBtnOnClickListener implements OnClickListener {
+	// add new or update contact dial function button on click listener
+	class AddNew6updateContactDialFunBtnOnClickListener implements
+			OnClickListener {
 
 		@Override
 		public void onClick(View v) {
@@ -293,22 +297,42 @@ public class DialTabContentActivity extends NavigationActivity {
 			// check dial phone string
 			if (null != _dialPhoneString
 					&& !"".equalsIgnoreCase(_dialPhoneString)) {
-				Log.d(LOG_TAG, "add phone = " + _dialPhoneString
-						+ " to new or existed contact");
+				Log.d(LOG_TAG, "Generate new contact and add phone = "
+						+ _dialPhoneString + " to it");
 
 				// define contact insert intent
 				Intent _contactInsertIntent = new Intent(Intent.ACTION_INSERT);
 
 				// put type and extra
 				_contactInsertIntent.setType(Contacts.CONTENT_TYPE);
-				_contactInsertIntent.putExtra(Phone.NUMBER, _dialPhoneString);
-				_contactInsertIntent.putExtra(Phone.TYPE, Phone.TYPE_MOBILE);
+				_contactInsertIntent.setType(RawContacts.CONTENT_TYPE);
+				_contactInsertIntent.putExtra(Intents.Insert.PHONE,
+						_dialPhoneString);
+				_contactInsertIntent.putExtra(Intents.Insert.PHONE_TYPE,
+						Phone.TYPE_MOBILE);
 
 				// check contact insert intent and start the activity
 				if (CommonUtils.isIntentAvailable(_contactInsertIntent)) {
 					startActivity(_contactInsertIntent);
 				}
 			}
+		}
+
+	}
+
+	// insert phone to contact select popup window
+	class InsertPhone2ContactSelectPopupWindow extends CommonPopupWindow {
+
+		@Override
+		protected void bindPopupWindowComponentsListener() {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		protected void resetPopupWindow() {
+			// TODO Auto-generated method stub
+
 		}
 
 	}

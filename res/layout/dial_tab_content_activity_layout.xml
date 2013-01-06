@@ -47,7 +47,7 @@
         android:paddingRight="1dp" >
 
         <include
-            android:id="@+id/dial_newContact_functionBtn"
+            android:id="@+id/dial_new6updateContact_functionBtn"
             android:layout_height="fill_parent"
             android:layout_weight="1"
             layout="@layout/dial_function_btn_layout" />
