@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/contact_phonenumbers_select_phoneslistitem7callrecord_detailinfo_operationlistitem_bg"
-    android:minHeight="54dp"
     android:paddingBottom="10dp"
     android:paddingTop="10dp" >
 

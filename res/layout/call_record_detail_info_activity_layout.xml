@@ -86,7 +86,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="4dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/callrecord_detailinfo_operation_listview_bg"
         android:cacheColorHint="@android:color/transparent"
         android:divider="@color/dark_gray"
