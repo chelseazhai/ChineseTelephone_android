@@ -343,7 +343,7 @@ public class DialTabContentActivity extends NavigationActivity {
 				_contactInsertIntent.putExtra(Phone.TYPE, Phone.TYPE_MOBILE);
 
 				// check contact insert intent and start the activity
-				if (CommonUtils.isIntentAvailable(_contactInsertIntent)) {
+				if (CommonUtils.isIntentAvailable(_contactInsertIntent, DialTabContentActivity.this)) {
 					startActivity(_contactInsertIntent);
 				}
 			}

@@ -223,7 +223,7 @@ public class CallRecordDetailInfoActivity extends NavigationActivity {
 						Uri.parse("smsto:" + _mCalleePhone));
 
 				// check send short message intent and start the activity
-				if (CommonUtils.isIntentAvailable(_smsIntent)) {
+				if (CommonUtils.isIntentAvailable(_smsIntent, CallRecordDetailInfoActivity.this)) {
 					startActivity(_smsIntent);
 				}
 

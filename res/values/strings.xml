@@ -18,30 +18,28 @@
     <string name="call_record_history_list_nav_title">最近通话</string>
     <string name="outgoingCall_imageView_content_description">outgoing call image view</string>
     <string name="recordDetail_imageButton_content_description">call record detail info image button</string>
-    <string name="unknownCalleePhone_alertDialog_message">未知号码，不能拨号</string>
-    <string name="unknownCalleePhone_alertDialog_reselectBtn_title">重选</string>
     <string name="callRecord_callType_imageView_content_description">call type image view</string>
     <string name="callRecord_detailInfo_imageButton_content_description">call record detail info image button</string>
-    <string name="callRecord_unknownCalleePhone_alertDialog_message">Unknown phone, can\'t dial</string>
-    <string name="callRecord_unknownCalleePhone_alertDialog_reselectBtn_title">Reselect</string>
+    <string name="callRecord_unknownCalleePhone_alertDialog_message">未知号码，不能拨号</string>
+    <string name="callRecord_unknownCalleePhone_alertDialog_reselectBtn_title">重选</string>
 
     <!-- call record detail info activity -->
     <string name="title_activity_call_record_detail_info">CallRecordDetailInfoActivity</string>
-    <string name="call_record_detailinfo_title">Call Record DetailInfo</string>
+    <string name="call_record_detailinfo_title">通话详细记录</string>
     <string name="callRecord_detailInfo_contact_avatar_imageView_content_description">call record contact avatar image view</string>
-    <string name="callRecord_detailInfo_outgoingCall_callType">Outgoing call</string>
-    <string name="callRecord_detailInfo_incomingCall_callType">Incoming call</string>
+    <string name="callRecord_detailInfo_outgoingCall_callType">去电</string>
+    <string name="callRecord_detailInfo_incomingCall_callType">来电</string>
     <string name="callRecord_detailInfo_initiateTime_year">-</string>
     <string name="callRecord_detailInfo_initiateTime_month">-</string>
     <string name="callRecord_detailInfo_initiateTime_day"></string>
-    <string name="callRecord_detailInfo_duration_seconds">seconds</string>
-    <string name="callRecord_detailInfo_duration_minutes">minutes</string>
-    <string name="callRecord_detailInfo_missed_incomingCall">Missed incoming call</string>
-    <string name="callRecord_detailInfo_cancel_outgoingCall">Call cancelled</string>
-    <string name="callRecord_detailInfo_failed_outgoingCall">Call failed</string>
-    <string name="callRecord_detailInfo_operation4directdial">Direct dial</string>
-    <string name="callRecord_detailInfo_operation4callback">Callback</string>
-    <string name="callRecord_detailInfo_operation4sms">SMS</string>
+    <string name="callRecord_detailInfo_duration_seconds">秒</string>
+    <string name="callRecord_detailInfo_duration_minutes">分</string>
+    <string name="callRecord_detailInfo_missed_incomingCall">未接来电</string>
+    <string name="callRecord_detailInfo_cancel_outgoingCall">呼叫取消</string>
+    <string name="callRecord_detailInfo_failed_outgoingCall">呼叫失败</string>
+    <string name="callRecord_detailInfo_operation4directdial">直拨</string>
+    <string name="callRecord_detailInfo_operation4callback">回拨</string>
+    <string name="callRecord_detailInfo_operation4sms">短信</string>
 
     <!-- dial tab content activity -->
     <string name="title_activity_dial_tab_content">DialTabContentActivity</string>
