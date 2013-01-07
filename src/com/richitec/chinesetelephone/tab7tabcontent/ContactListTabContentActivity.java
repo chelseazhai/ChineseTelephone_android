@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import android.app.AlertDialog;
@@ -23,7 +24,7 @@ import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
-import android.util.SparseArray;
+import android.util.SparseIntArray;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -163,8 +164,7 @@ public class ContactListTabContentActivity extends NavigationActivity {
 			Map<String, Object> _dataMap = new HashMap<String, Object>();
 
 			// get contact name and phone matching indexes
-			@SuppressWarnings("unchecked")
-			SparseArray<Integer> _nameMatchingIndexes = (SparseArray<Integer>) _contact
+			SparseIntArray _nameMatchingIndexes = (SparseIntArray) _contact
 					.getExtension().get(
 							AddressBookManager.NAME_MATCHING_INDEXES);
 			@SuppressWarnings("unchecked")
@@ -382,7 +382,8 @@ public class ContactListTabContentActivity extends NavigationActivity {
 					// check alphabet index
 					if (null == _alphabetIndex
 							|| _alphabetIndex.startsWith(String.valueOf(
-									alphabeticalCharacter).toLowerCase())) {
+									alphabeticalCharacter).toLowerCase(
+									Locale.getDefault()))) {
 						// set selection
 						dependentListView.setSelection(i);
 
