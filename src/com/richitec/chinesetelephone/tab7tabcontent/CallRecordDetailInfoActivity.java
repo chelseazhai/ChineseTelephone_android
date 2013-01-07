@@ -109,9 +109,10 @@ public class CallRecordDetailInfoActivity extends NavigationActivity {
 						.setText(CallType.MISSED == _callLog.getCallType() ? getResources()
 								.getString(
 										R.string.callRecord_detailInfo_missed_incomingCall)
-								: _callDuration < 0 ? getResources()
+								: _callDuration < 0 ? -1 == _callDuration ? getResources()
 										.getString(
 												R.string.callRecord_detailInfo_failed_outgoingCall)
+										: ""
 										: 0 == _callDuration ? getResources()
 												.getString(
 														R.string.callRecord_detailInfo_cancel_outgoingCall)
