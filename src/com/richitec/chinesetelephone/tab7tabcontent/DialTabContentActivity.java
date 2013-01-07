@@ -217,6 +217,27 @@ public class DialTabContentActivity extends NavigationActivity {
 				new int[] { R.id.dialBtn_imageBtn });
 	}
 
+	// insert phone to new contact
+	private void insertPhone2NewContact(String insertPhone) {
+		Log.d(LOG_TAG, "Generate new contact and add phone = " + insertPhone
+				+ " to it");
+
+		// define contact insert intent
+		Intent _contactInsertIntent = new Intent(Intent.ACTION_INSERT);
+
+		// put type and extra
+		_contactInsertIntent.setType(Contacts.CONTENT_TYPE);
+		_contactInsertIntent.setType(RawContacts.CONTENT_TYPE);
+		_contactInsertIntent.putExtra(Intents.Insert.PHONE, insertPhone);
+		_contactInsertIntent.putExtra(Intents.Insert.PHONE_TYPE,
+				Phone.TYPE_MOBILE);
+
+		// check contact insert intent and start the activity
+		if (CommonUtils.isIntentAvailable(_contactInsertIntent)) {
+			startActivity(_contactInsertIntent);
+		}
+	}
+
 	// inner class
 	// dial phone textView text watcher
 	class DialPhoneTextViewTextWatcher implements TextWatcher {
@@ -364,18 +385,26 @@ public class DialTabContentActivity extends NavigationActivity {
 
 			// check insert phone number
 			if (null != _insertPhone && !"".equalsIgnoreCase(_insertPhone)) {
-				// define insert phone to contact mode select popup window
-				_mInsertPhone2ContactModeSelectPopupWindow = new InsertPhone2ContactModeSelectPopupWindow(
-						R.layout.insert_phone2contact_mode_select_popupwindow_layout,
-						LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+				// check address book contacts size
+				if (0 == AddressBookManager.getInstance()
+						.getAllContactsInfoArray().size()) {
+					// no contact in address book, generate new contact and add
+					// phone to it
+					insertPhone2NewContact(_insertPhone);
+				} else {
+					// define insert phone to contact mode select popup window
+					_mInsertPhone2ContactModeSelectPopupWindow = new InsertPhone2ContactModeSelectPopupWindow(
+							R.layout.insert_phone2contact_mode_select_popupwindow_layout,
+							LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 
-				// set phone number for insert to contact
-				_mInsertPhone2ContactModeSelectPopupWindow
-						.setPhone4Insert2Contact(_insertPhone);
+					// set phone number for insert to contact
+					_mInsertPhone2ContactModeSelectPopupWindow
+							.setPhone4Insert2Contact(_insertPhone);
 
-				// show insert phone to contact mode select popup window
-				_mInsertPhone2ContactModeSelectPopupWindow.showAtLocation(v,
-						Gravity.CENTER, 0, 0);
+					// show insert phone to contact mode select popup window
+					_mInsertPhone2ContactModeSelectPopupWindow.showAtLocation(
+							v, Gravity.CENTER, 0, 0);
+				}
 			} else {
 				Log.w(LOG_TAG,
 						"Insert phone number to contact error, phone number = "
@@ -448,24 +477,8 @@ public class DialTabContentActivity extends NavigationActivity {
 				// dismiss insert phone to contact mode select popup window
 				dismiss();
 
-				Log.d(LOG_TAG, "Generate new contact and add phone = "
-						+ _mInsertPhone + " to it");
-
-				// define contact insert intent
-				Intent _contactInsertIntent = new Intent(Intent.ACTION_INSERT);
-
-				// put type and extra
-				_contactInsertIntent.setType(Contacts.CONTENT_TYPE);
-				_contactInsertIntent.setType(RawContacts.CONTENT_TYPE);
-				_contactInsertIntent.putExtra(Intents.Insert.PHONE,
-						_mInsertPhone);
-				_contactInsertIntent.putExtra(Intents.Insert.PHONE_TYPE,
-						Phone.TYPE_MOBILE);
-
-				// check contact insert intent and start the activity
-				if (CommonUtils.isIntentAvailable(_contactInsertIntent)) {
-					startActivity(_contactInsertIntent);
-				}
+				// insert phone to new contact
+				insertPhone2NewContact(_mInsertPhone);
 			}
 
 		}
