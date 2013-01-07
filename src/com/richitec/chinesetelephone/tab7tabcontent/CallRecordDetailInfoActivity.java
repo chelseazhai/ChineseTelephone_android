@@ -60,8 +60,6 @@ public class CallRecordDetailInfoActivity extends NavigationActivity {
 				CallLogBean _callLog = (CallLogBean) _data
 						.get(CALL_LOG_PARAM_KEY);
 
-				Log.d(LOG_TAG, "Call log bean = " + _callLog);
-
 				// define call record detail info initiate day and time time
 				// format
 				final DateFormat _callRecordInitiateTimeDayFormat = new SimpleDateFormat(

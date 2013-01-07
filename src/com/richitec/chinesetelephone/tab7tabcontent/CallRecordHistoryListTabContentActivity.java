@@ -12,7 +12,6 @@ import java.util.Map;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.text.SpannableString;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
@@ -32,8 +31,6 @@ import com.richitec.commontoolkit.calllog.CallLogManager;
 import com.richitec.commontoolkit.utils.CommonUtils;
 
 public class CallRecordHistoryListTabContentActivity extends NavigationActivity {
-
-	private static final String LOG_TAG = "CallRecordHistoryListTabContentActivity";
 
 	// call record detail image button keys
 	public static final String CALL_RECORD_IMAGEBUTTON_TAG = "call_record_imageButton_tag";
@@ -220,8 +217,6 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 
 		@Override
 		public void onClick(View v) {
-			Log.d(LOG_TAG, "view = " + v + " and position = " + v.getTag());
-
 			// generate parameter
 			Map<String, Serializable> _parameter = new HashMap<String, Serializable>();
 
