@@ -31,6 +31,7 @@
     <string name="callRecord_detailInfo_missed_incomingCall">Missed incoming call</string>
     <string name="callRecord_detailInfo_cancel_outgoingCall">Call cancelled</string>
     <string name="callRecord_detailInfo_failed_outgoingCall">Call failed</string>
+    <string name="callRecord_detailInfo_callbackRequest_outgoingCall">Callback request</string>
     <string name="callRecord_detailInfo_operation4directdial">Direct dial</string>
     <string name="callRecord_detailInfo_operation4callback">Callback</string>
     <string name="callRecord_detailInfo_operation4sms">SMS</string>

@@ -91,6 +91,9 @@ public abstract class BaseSipServices implements ISipServices {
 
 				switch (callMode) {
 				case CALLBACK:
+					// mark sip voice call is callback sip voice call call log
+					updateSipVoiceCallLog(-2L);
+
 					// make callback sip voice call
 					_makeSipVoiceCallResult = makeCallbackSipVoiceCall(
 							calleeName, calleePhone);

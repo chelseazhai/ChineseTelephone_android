@@ -112,7 +112,9 @@ public class CallRecordDetailInfoActivity extends NavigationActivity {
 								: _callDuration < 0 ? -1 == _callDuration ? getResources()
 										.getString(
 												R.string.callRecord_detailInfo_failed_outgoingCall)
-										: ""
+										: getResources()
+												.getString(
+														R.string.callRecord_detailInfo_callbackRequest_outgoingCall)
 										: 0 == _callDuration ? getResources()
 												.getString(
 														R.string.callRecord_detailInfo_cancel_outgoingCall)

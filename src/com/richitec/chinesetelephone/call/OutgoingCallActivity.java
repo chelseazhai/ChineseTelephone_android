@@ -858,9 +858,6 @@ public class OutgoingCallActivity extends Activity implements
 						.getString(R.string.callbackWaiting_textView_succeed)
 						.replaceFirst("\\*\\*\\*", "caller")
 						.replace("***", _mCalleePhone);
-
-				// mark sip voice call is callback sip voice call call log
-				SIPSERVICES.updateSipVoiceCallLog(-2L);
 			} else {
 				// update sip voice call failed call log
 				SIPSERVICES.updateSipVoiceCallLog(-1L);
