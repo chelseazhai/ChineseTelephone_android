@@ -7,6 +7,7 @@ import java.util.Map;
 
 import android.content.Intent;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.Contacts;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
@@ -47,6 +49,12 @@ public class DialTabContentActivity extends NavigationActivity {
 
 	// dial phone textView
 	private TextView _mDialPhoneTextView;
+
+	// contact pick activity request code
+	private static final int PICK_CONTACT = 0;
+
+	// insert phone to contact mode select popup window
+	private InsertPhone2ContactModeSelectPopupWindow _mInsertPhone2ContactModeSelectPopupWindow;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -98,6 +106,66 @@ public class DialTabContentActivity extends NavigationActivity {
 				.setOnClickListener(new ClearDialPhoneDialFunBtnOnClickListener());
 		_clearDialPhoneFunBtn
 				.setOnLongClickListener(new ClearDialPhoneDialFunBtnOnLongClickListener());
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// get user input phone number
+		String _userInputPhone = _mDialPhoneTextView.getText().toString();
+
+		// check request code
+		switch (requestCode) {
+		case PICK_CONTACT:
+			// check result code
+			switch (resultCode) {
+			case RESULT_CANCELED:
+				Log.d(LOG_TAG, "Pick contact canceled");
+				break;
+
+			case RESULT_OK:
+			default:
+				// check data
+				if (null != data) {
+					// get pick contact data
+					Uri _pickContactData = data.getData();
+
+					// get pick contact id
+					String _pickContactId = _pickContactData
+							.getLastPathSegment();
+
+					// check pick contact id
+					if (null != _pickContactId) {
+						// define contact edit intent
+						Intent _contactEditIntent = new Intent(
+								Intent.ACTION_EDIT, Uri.withAppendedPath(
+										Contacts.CONTENT_URI, _pickContactId));
+
+						// put extra
+						_contactEditIntent.putExtra(Intents.Insert.PHONE,
+								_userInputPhone);
+						_contactEditIntent.putExtra(Intents.Insert.PHONE_TYPE,
+								Phone.TYPE_MOBILE);
+
+						// check contact exit intent and start the activity
+						if (CommonUtils.isIntentAvailable(_contactEditIntent)) {
+							startActivity(_contactEditIntent);
+						}
+					} else {
+						Log.e(LOG_TAG, "Picked contact id is null");
+					}
+				} else {
+					Log.e(LOG_TAG, "On activity result intent data = " + data);
+				}
+				break;
+			}
+			break;
+
+		default:
+			// nothing to do
+			break;
+		}
+
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	@Override
@@ -291,14 +359,97 @@ public class DialTabContentActivity extends NavigationActivity {
 
 		@Override
 		public void onClick(View v) {
-			// get dial phone text
-			String _dialPhoneString = _mDialPhoneTextView.getText().toString();
+			// get insert phone number
+			String _insertPhone = _mDialPhoneTextView.getText().toString();
 
-			// check dial phone string
-			if (null != _dialPhoneString
-					&& !"".equalsIgnoreCase(_dialPhoneString)) {
+			// check insert phone number
+			if (null != _insertPhone && !"".equalsIgnoreCase(_insertPhone)) {
+				// define insert phone to contact mode select popup window
+				_mInsertPhone2ContactModeSelectPopupWindow = new InsertPhone2ContactModeSelectPopupWindow(
+						R.layout.insert_phone2contact_mode_select_popupwindow_layout,
+						LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+
+				// set phone number for insert to contact
+				_mInsertPhone2ContactModeSelectPopupWindow
+						.setPhone4Insert2Contact(_insertPhone);
+
+				// show insert phone to contact mode select popup window
+				_mInsertPhone2ContactModeSelectPopupWindow.showAtLocation(v,
+						Gravity.CENTER, 0, 0);
+			} else {
+				Log.w(LOG_TAG,
+						"Insert phone number to contact error, phone number = "
+								+ _insertPhone);
+			}
+		}
+	}
+
+	// insert phone to contact mode select popup window
+	class InsertPhone2ContactModeSelectPopupWindow extends CommonPopupWindow {
+
+		// insert phone number
+		private String _mInsertPhone;
+
+		public InsertPhone2ContactModeSelectPopupWindow(int resource,
+				int width, int height, boolean focusable,
+				boolean isBindDefListener) {
+			super(resource, width, height, focusable, isBindDefListener);
+		}
+
+		public InsertPhone2ContactModeSelectPopupWindow(int resource,
+				int width, int height) {
+			super(resource, width, height);
+		}
+
+		@Override
+		protected void bindPopupWindowComponentsListener() {
+			// bind insert phone to contact mode select insert to new contact,
+			// existed contact and cancel button click listener
+			((Button) getContentView().findViewById(
+					R.id.insertPhone2NewContact_button))
+					.setOnClickListener(new InsertPhone2ContactModeSelectInsert2NewContactBtnOnClickListener());
+
+			((Button) getContentView().findViewById(
+					R.id.insertPhone2ExistedContact_button))
+					.setOnClickListener(new InsertPhone2ContactModeSelectInsert2ExistedContactBtnOnClickListener());
+
+			((Button) getContentView().findViewById(
+					R.id.insertPhone2Contact_cancelBtn))
+					.setOnClickListener(new InsertPhone2ContactModeSelectCancelBtnOnClickListener());
+		}
+
+		@Override
+		protected void resetPopupWindow() {
+			// nothing to do
+		}
+
+		// set phone number for inserting to contact
+		public void setPhone4Insert2Contact(String insertPhone) {
+			// update phone number for inserting
+			_mInsertPhone = insertPhone;
+
+			// set insert phone to contact mode select title textView text
+			((TextView) getContentView().findViewById(
+					R.id.insertPhone2ContactMode_select_titleTextView))
+					.setText(getResources()
+							.getString(
+									R.string.insertPhone2Contact_modeSelectPopupWindow_titleTextView_text)
+							.replace("***", insertPhone));
+		}
+
+		// inner class
+		// insert phone to contact mode select insert to new contact button on
+		// click listener
+		class InsertPhone2ContactModeSelectInsert2NewContactBtnOnClickListener
+				implements OnClickListener {
+
+			@Override
+			public void onClick(View v) {
+				// dismiss insert phone to contact mode select popup window
+				dismiss();
+
 				Log.d(LOG_TAG, "Generate new contact and add phone = "
-						+ _dialPhoneString + " to it");
+						+ _mInsertPhone + " to it");
 
 				// define contact insert intent
 				Intent _contactInsertIntent = new Intent(Intent.ACTION_INSERT);
@@ -307,7 +458,7 @@ public class DialTabContentActivity extends NavigationActivity {
 				_contactInsertIntent.setType(Contacts.CONTENT_TYPE);
 				_contactInsertIntent.setType(RawContacts.CONTENT_TYPE);
 				_contactInsertIntent.putExtra(Intents.Insert.PHONE,
-						_dialPhoneString);
+						_mInsertPhone);
 				_contactInsertIntent.putExtra(Intents.Insert.PHONE_TYPE,
 						Phone.TYPE_MOBILE);
 
@@ -316,22 +467,45 @@ public class DialTabContentActivity extends NavigationActivity {
 					startActivity(_contactInsertIntent);
 				}
 			}
-		}
-
-	}
-
-	// insert phone to contact select popup window
-	class InsertPhone2ContactSelectPopupWindow extends CommonPopupWindow {
-
-		@Override
-		protected void bindPopupWindowComponentsListener() {
-			// TODO Auto-generated method stub
 
 		}
 
-		@Override
-		protected void resetPopupWindow() {
-			// TODO Auto-generated method stub
+		// insert phone to contact mode select insert to existed contact button
+		// on click listener
+		class InsertPhone2ContactModeSelectInsert2ExistedContactBtnOnClickListener
+				implements OnClickListener {
+
+			@Override
+			public void onClick(View v) {
+				// dismiss insert phone to contact mode select popup window
+				dismiss();
+
+				Log.d(LOG_TAG, "Add phone = " + _mInsertPhone
+						+ " to existed contact");
+
+				// define contact pick intent
+				Intent _contactPickIntent = new Intent(Intent.ACTION_PICK);
+
+				// put type
+				_contactPickIntent.setType(Contacts.CONTENT_TYPE);
+
+				// check contact pick intent and start the activity for result
+				if (CommonUtils.isIntentAvailable(_contactPickIntent)) {
+					startActivityForResult(_contactPickIntent, PICK_CONTACT);
+				}
+			}
+
+		}
+
+		// insert phone to contact mode select cancel button on click listener
+		class InsertPhone2ContactModeSelectCancelBtnOnClickListener implements
+				OnClickListener {
+
+			@Override
+			public void onClick(View v) {
+				// dismiss insert phone to contact mode select popup window
+				dismiss();
+			}
 
 		}
 
@@ -348,9 +522,6 @@ public class DialTabContentActivity extends NavigationActivity {
 			// check dial phone string
 			if (null != _dialPhoneString
 					&& !"".equalsIgnoreCase(_dialPhoneString)) {
-				// make voice call
-				// makeVoiceCall(_dialPhoneString);
-
 				// define contact phone dial mode select popup window
 				ContactPhoneDialModeSelectpopupWindow _contactPhoneDialModeSelectPopupWindow = new ContactPhoneDialModeSelectpopupWindow(
 						R.layout.contact_phone_dialmode_select_popupwindow_layout,

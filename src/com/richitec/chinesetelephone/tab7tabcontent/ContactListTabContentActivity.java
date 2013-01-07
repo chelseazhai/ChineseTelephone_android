@@ -418,13 +418,13 @@ public class ContactListTabContentActivity extends NavigationActivity {
 								null).show();
 			} else {
 				// define contact phone dial mode select popup window
-				ContactPhoneDialModeSelectpopupWindow contactPhoneDialModeSelectPopupWindow = new ContactPhoneDialModeSelectpopupWindow(
+				ContactPhoneDialModeSelectpopupWindow _contactPhoneDialModeSelectPopupWindow = new ContactPhoneDialModeSelectpopupWindow(
 						R.layout.contact_phone_dialmode_select_popupwindow_layout,
 						LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 
 				// set contact phone number select popup window and its
 				// dependent view
-				contactPhoneDialModeSelectPopupWindow
+				_contactPhoneDialModeSelectPopupWindow
 						.setContactPhoneNumbersSelectPopupWindow7ItsDependentView(
 								new ContactPhoneNumbersSelectPopupWindow(
 										R.layout.contact_phonenumbers_select_popupwindow_layout,
@@ -433,12 +433,12 @@ public class ContactListTabContentActivity extends NavigationActivity {
 								_mABContactsListView);
 
 				// set callee contact info
-				contactPhoneDialModeSelectPopupWindow.setCalleeContactInfo(
+				_contactPhoneDialModeSelectPopupWindow.setCalleeContactInfo(
 						_clickItemViewData.getDisplayName(),
 						_clickItemViewData.getPhoneNumbers());
 
 				// show contact phone dial mode select pupupWindow
-				contactPhoneDialModeSelectPopupWindow.showAtLocation(parent,
+				_contactPhoneDialModeSelectPopupWindow.showAtLocation(parent,
 						Gravity.CENTER, 0, 0);
 			}
 		}
