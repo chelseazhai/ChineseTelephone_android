@@ -27,7 +27,7 @@
             android:id="@+id/search_remainmoney_btn"
             android:layout_width="fill_parent"
             android:layout_height="50.0dp"
-            android:background="@drawable/setting_alone_item_bg"
+            android:background="@drawable/setting_top_item_bg"
             android:clickable="true"
             android:gravity="center_vertical"
             android:onClick="getRemainMoney"
@@ -61,6 +61,43 @@
             android:layout_height="1.0dp"
             android:background="@drawable/setting_line_img" />
 
+         <LinearLayout
+            android:id="@+id/fee_query_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="50.0dp"
+            android:background="@drawable/setting_bottom_item_bg"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:onClick=""
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:layout_width="30.0dp"
+                android:layout_height="30.0dp"
+                android:layout_marginLeft="10.0dp"
+                android:src="@drawable/zifei-chaxun" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10.0dp"
+                android:layout_weight="1.0"
+                android:gravity="center_vertical"
+                android:text="@string/fee_query_item"
+                android:textColor="@color/dark_dim_gray"
+                android:textSize="18.0sp" />
+
+            <ImageView
+                android:layout_width="12.0dp"
+                android:layout_height="12.0dp"
+                android:layout_marginRight="10.0dp"
+                android:src="@drawable/into_icon" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dp"
+            android:background="@drawable/setting_line_img" />
     </LinearLayout>
 
 </LinearLayout>

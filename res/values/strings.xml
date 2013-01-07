@@ -114,8 +114,8 @@
     <string name="account_charge_item">账户充值</string>
     <string name="my_suites_item">我的套餐</string>
     <string name="search">查询</string>
-    <string name="search_remainmoney_item">查询余额</string>
-    <string name="search_authnumber_item">查询认证号</string>
+    <string name="search_remainmoney_item">余额查询</string>
+    <string name="fee_query_item">资费查询</string>
     <string name="setting">设置</string>
     <string name="back">返回</string>
     <string name="setting_dial_item">拨打设置</string>
