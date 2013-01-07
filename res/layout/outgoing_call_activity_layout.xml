@@ -224,16 +224,19 @@
 
             <FrameLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/img_contactslist_slidingdrawer_handleparentframelayout_bg" >
+                android:layout_height="48dp"
+                android:background="@drawable/img_contactslist_slidingdrawer_handleparentframelayout_bg"
+                android:paddingBottom="5dp"
+                android:paddingTop="6dp" >
 
                 <Button
                     android:id="@+id/hide_contactslist_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="6dp"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/hidecontactslist_button_text" />
+                    android:background="@drawable/contactslist_slidingdrawer_handlebtn_bg"
+                    android:text="@string/hidecontactslist_button_text"
+                    android:textColor="@android:color/white" />
             </FrameLayout>
 
             <FrameLayout
