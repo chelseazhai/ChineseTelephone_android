@@ -55,7 +55,8 @@
         </activity>
         <activity
             android:name=".tab7tabcontent.CallRecordDetailInfoActivity"
-            android:label="@string/title_activity_call_record_detail_info" >
+            android:label="@string/title_activity_call_record_detail_info"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".tab7tabcontent.DialTabContentActivity"

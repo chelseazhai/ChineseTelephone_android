@@ -68,14 +68,13 @@
             android:background="@drawable/setting_bottom_item_bg"
             android:clickable="true"
             android:gravity="center_vertical"
-            android:onClick=""
             android:orientation="horizontal" >
 
             <ImageView
                 android:layout_width="30.0dp"
                 android:layout_height="30.0dp"
                 android:layout_marginLeft="10.0dp"
-                android:src="@drawable/zifei-chaxun" />
+                android:src="@drawable/zifeichaxun" />
 
             <TextView
                 android:layout_width="wrap_content"

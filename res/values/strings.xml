@@ -40,6 +40,7 @@
     <string name="callRecord_detailInfo_operation4directdial">直拨</string>
     <string name="callRecord_detailInfo_operation4callback">回拨</string>
     <string name="callRecord_detailInfo_operation4sms">短信</string>
+    <string name="callRecord_detailInfo_callbackRequest_outgoingCall">回拨请求</string>
 
     <!-- dial tab content activity -->
     <string name="title_activity_dial_tab_content">DialTabContentActivity</string>
@@ -47,6 +48,10 @@
     <string name="dialBtn_imageView_content_description">dial button image view</string>
     <string name="dialBtn_imageButton_content_description">dial button image button</string>
     <string name="dial_phone_callee_unknown">未知联系人</string>
+    <string name="insertPhone2Contact_modeSelectPopupWindow_titleTextView_text">将号码***添加到哪里？</string>
+    <string name="insertPhone2Contact_modeSelectPopupWindow_insert2NewContact">添加到新建联系人</string>
+    <string name="insertPhone2Contact_modeSelectPopupWindow_insert2ExistedContact">添加到已有联系人</string>
+    <string name="insertPhone2Contact_modeSelectPopupWindow_cancelBtn_title">取消</string>
 
     <!-- contact list tab content activity -->
     <string name="title_activity_contact_list_tab_content">ContactListTabContentActivity</string>
@@ -115,7 +120,7 @@
     <string name="my_suites_item">我的套餐</string>
     <string name="search">查询</string>
     <string name="search_remainmoney_item">余额查询</string>
-    <string name="fee_query_item">资费查询</string>
+    <string name="fee_query_item">费率查询</string>
     <string name="setting">设置</string>
     <string name="back">返回</string>
     <string name="setting_dial_item">拨打设置</string>

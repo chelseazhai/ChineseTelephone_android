@@ -60,8 +60,6 @@ public class CallRecordDetailInfoActivity extends NavigationActivity {
 				CallLogBean _callLog = (CallLogBean) _data
 						.get(CALL_LOG_PARAM_KEY);
 
-				Log.d(LOG_TAG, "Call log bean = " + _callLog);
-
 				// define call record detail info initiate day and time time
 				// format
 				final DateFormat _callRecordInitiateTimeDayFormat = new SimpleDateFormat(
@@ -109,9 +107,12 @@ public class CallRecordDetailInfoActivity extends NavigationActivity {
 						.setText(CallType.MISSED == _callLog.getCallType() ? getResources()
 								.getString(
 										R.string.callRecord_detailInfo_missed_incomingCall)
-								: _callDuration < 0 ? getResources()
+								: _callDuration < 0 ? -1 == _callDuration ? getResources()
 										.getString(
 												R.string.callRecord_detailInfo_failed_outgoingCall)
+										: getResources()
+												.getString(
+														R.string.callRecord_detailInfo_callbackRequest_outgoingCall)
 										: 0 == _callDuration ? getResources()
 												.getString(
 														R.string.callRecord_detailInfo_cancel_outgoingCall)

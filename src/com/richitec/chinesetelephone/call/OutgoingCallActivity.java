@@ -874,7 +874,11 @@ public class OutgoingCallActivity extends Activity implements
 								.name()))
 								+ ((String) user.getValue(TelUser.bindphone
 										.name())), _mCalleePhone);
-			} else if (responseResult.getStatusCode() == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
+			} else {
+				// update sip voice call failed call log
+				SIPSERVICES.updateSipVoiceCallLog(-1L);
+
+			    if (responseResult.getStatusCode() == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
 				try {
 					JSONObject data = new JSONObject(responseResult.getResponseText());
 					String vosInfo = data.getString("vos_info");
@@ -897,6 +901,7 @@ public class OutgoingCallActivity extends Activity implements
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
+			    }
 			}
 
 			// update call state textView text
