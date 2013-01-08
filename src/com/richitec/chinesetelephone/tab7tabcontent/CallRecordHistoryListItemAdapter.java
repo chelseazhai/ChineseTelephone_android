@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.richitec.chinesetelephone.R;
-import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
+import com.richitec.commontoolkit.CommonToolkitApplication;
 import com.richitec.commontoolkit.calllog.CallLogBean.CallType;
 import com.richitec.commontoolkit.customadapter.CommonListAdapter;
 
@@ -43,10 +43,10 @@ public class CallRecordHistoryListItemAdapter extends CommonListAdapter {
 
 			// check data class name
 			if (_itemData instanceof SpannableString) {
-				_viewNewText.setSpan(new ForegroundColorSpan(AppLaunchActivity
-						.getAppContext().getResources().getColor(R.color.red)),
-						0, _viewNewText.length(),
-						Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+				_viewNewText.setSpan(new ForegroundColorSpan(
+						CommonToolkitApplication.getContext().getResources()
+								.getColor(R.color.red)), 0, _viewNewText
+						.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
 
 			// set view text

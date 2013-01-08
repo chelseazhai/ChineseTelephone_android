@@ -2,6 +2,8 @@ package com.richitec.chinesetelephone.call;
 
 import java.util.List;
 
+import android.content.Context;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -12,7 +14,7 @@ import android.widget.TextView;
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.sip.SipCallMode;
 import com.richitec.chinesetelephone.sip.SipUtils;
-import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
+import com.richitec.commontoolkit.CommonToolkitApplication;
 import com.richitec.commontoolkit.customcomponent.CommonPopupWindow;
 
 public class ContactPhoneDialModeSelectpopupWindow extends CommonPopupWindow {
@@ -35,6 +37,20 @@ public class ContactPhoneDialModeSelectpopupWindow extends CommonPopupWindow {
 	public ContactPhoneDialModeSelectpopupWindow(int resource, int width,
 			int height) {
 		super(resource, width, height);
+	}
+
+	public ContactPhoneDialModeSelectpopupWindow(Context context,
+			AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+	}
+
+	public ContactPhoneDialModeSelectpopupWindow(Context context,
+			AttributeSet attrs) {
+		super(context, attrs);
+	}
+
+	public ContactPhoneDialModeSelectpopupWindow(Context context) {
+		super(context);
 	}
 
 	@Override
@@ -70,6 +86,9 @@ public class ContactPhoneDialModeSelectpopupWindow extends CommonPopupWindow {
 	// set callee contact info
 	public void setCalleeContactInfo(String contactName,
 			List<String> contactPhones) {
+		// get application context
+		Context _appContext = CommonToolkitApplication.getContext();
+
 		// update select contact info
 		_mSelectContactName = contactName;
 		_mSelectContactPhones = contactPhones;
@@ -77,8 +96,7 @@ public class ContactPhoneDialModeSelectpopupWindow extends CommonPopupWindow {
 		// set contact phone dial mode select title textView text
 		((TextView) getContentView().findViewById(
 				R.id.contactPhone_dialMode_select_titleTextView))
-				.setText(AppLaunchActivity
-						.getAppContext()
+				.setText(_appContext
 						.getResources()
 						.getString(
 								R.string.contactPhone_dialMode_selectPopupWindow_titleTextView_text)
@@ -97,8 +115,7 @@ public class ContactPhoneDialModeSelectpopupWindow extends CommonPopupWindow {
 			_contactPhone4selecting = "("
 					+ contactPhones.size()
 					+ " "
-					+ AppLaunchActivity
-							.getAppContext()
+					+ _appContext
 							.getResources()
 							.getString(
 									R.string.contactPhone_dialMode_selectPopupWindow_contactPhones_4select)
@@ -108,16 +125,14 @@ public class ContactPhoneDialModeSelectpopupWindow extends CommonPopupWindow {
 		// reset direct dial and callback button text
 		((Button) getContentView().findViewById(
 				R.id.contactPhone_dialMode_select_directdialBtn))
-				.setText(AppLaunchActivity
-						.getAppContext()
+				.setText(_appContext
 						.getResources()
 						.getString(
 								R.string.contactPhone_dialMode_selectPopupWindow_directdialBtn_title)
 						+ _contactPhone4selecting);
 		((Button) getContentView().findViewById(
 				R.id.contactPhone_dialMode_select_callbackBtn))
-				.setText(AppLaunchActivity
-						.getAppContext()
+				.setText(_appContext
 						.getResources()
 						.getString(
 								R.string.contactPhone_dialMode_selectPopupWindow_callbackBtn_title)
