@@ -10,6 +10,7 @@ import com.richitec.chinesetelephone.bean.DialPreferenceBean;
 import com.richitec.chinesetelephone.constant.DialPreference;
 import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.constant.TelUser;
+import com.richitec.chinesetelephone.service.NoticeService;
 import com.richitec.chinesetelephone.tab7tabcontent.ChineseTelephoneTabActivity;
 import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity;
 import com.richitec.chinesetelephone.tab7tabcontent.DialTabContentActivity;
@@ -34,6 +35,9 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 		Intent service = new Intent(this, ContactSyncService.class);
 		startService(service);
 
+		Intent noticeService = new Intent(this, NoticeService.class);
+		startService(noticeService);
+		
 		// go to Chinese telephone main tab activity
 		loadAccount();
 
