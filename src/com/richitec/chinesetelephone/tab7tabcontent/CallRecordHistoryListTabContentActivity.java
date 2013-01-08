@@ -11,6 +11,7 @@ import java.util.Map;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.provider.CallLog;
 import android.text.SpannableString;
 import android.view.Gravity;
 import android.view.Menu;
@@ -31,6 +32,13 @@ import com.richitec.commontoolkit.calllog.CallLogManager;
 import com.richitec.commontoolkit.utils.CommonUtils;
 
 public class CallRecordHistoryListTabContentActivity extends NavigationActivity {
+
+	// call record history list item adapter data keys
+	public static final String CALL_RECORD_CALLTYPE = "call_record_callType";
+	public static final String CALL_RECORD_DISPLAYNAME = "call_record_displayName";
+	public static final String CALL_RECORD_PHONE = "call_record_phone";
+	public static final String CALL_RECORD_INITIATETIME = "call_record_initiateTime";
+	public static final String CALL_RECORD_DETAIL = "call_record_detailInfo";
 
 	// call record detail image button keys
 	public static final String CALL_RECORD_IMAGEBUTTON_TAG = "call_record_imageButton_tag";
@@ -78,14 +86,7 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 	}
 
 	// generate call record history list item adapter
-	private ListAdapter generateCallRecordHistoryListItemAdapter() {
-		// call record history list item adapter data keys
-		final String CALL_RECORD_CALLTYPE = "call_record_callType";
-		final String CALL_RECORD_DISPLAYNAME = "call_record_displayName";
-		final String CALL_RECORD_PHONE = "call_record_phone";
-		final String CALL_RECORD_INITIATETIME = "call_record_initiateTime";
-		final String CALL_RECORD_DETAIL = "call_record_detailInfo";
-
+	private ListAdapter _generateCallRecordHistoryListItemAdapter() {
 		// set call record history list view data list
 		List<Map<String, ?>> _callRecordHistoryDataList = new ArrayList<Map<String, ?>>();
 
@@ -127,13 +128,59 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 			_callRecordHistoryDataList.add(_dataMap);
 		}
 
+		// return new CallRecordHistoryListItemAdapter(this,
+		// _callRecordHistoryDataList,
+		// R.layout.call_record_historylist_item, new String[] {
+		// CALL_RECORD_CALLTYPE, CALL_RECORD_DISPLAYNAME,
+		// CALL_RECORD_PHONE, CALL_RECORD_INITIATETIME,
+		// CALL_RECORD_DETAIL }, new int[] {
+		// R.id.record_callType_imageView,
+		// R.id.record_displayName_textView,
+		// R.id.record_phone_textView,
+		// R.id.record_initiateTime_textView,
+		// R.id.recordDetail_imageBtn });
+		return null;
+	}
+
+	// generate call record history list item adapter
+	private ListAdapter generateCallRecordHistoryListItemAdapter() {
+		// call record history list item adapter data keys
+		final String CALL_RECORD_CALLTYPE = "call_record_callType";
+		final String CALL_RECORD_DISPLAYNAME = "call_record_displayName";
+		final String CALL_RECORD_PHONE = "call_record_phone";
+		final String CALL_RECORD_INITIATETIME = "call_record_initiateTime";
+		final String CALL_RECORD_DETAIL = "call_record_detailInfo";
+
+		// define constant for call log query
+		final Object[][] _projection7TypeArray = new Object[][] {
+				{ CallLog.Calls.TYPE, Integer.class },
+				{ CallLog.Calls.CACHED_NAME, String.class },
+				{ CallLog.Calls.NUMBER, String.class },
+				{ CallLog.Calls.DATE, Long.class },
+				{ CallLog.Calls.DURATION, Long.class } };
+
+		// define projection and type map list
+		List<Map<String, Class<?>>> _projection7TypeMapList = new ArrayList<Map<String, Class<?>>>();
+
+		// set projection and type map array object
+		for (int i = 0; i < _projection7TypeArray.length; i++) {
+			// new projection and type map and put projection and type to it
+			Map<String, Class<?>> _projection7TypeMap = new HashMap<String, Class<?>>();
+			_projection7TypeMap.put((String) _projection7TypeArray[i][0],
+					(Class<?>) _projection7TypeArray[i][1]);
+
+			// add projection and type map to projection and type map list
+			_projection7TypeMapList.add(_projection7TypeMap);
+		}
+
 		return new CallRecordHistoryListItemAdapter(this,
-				_callRecordHistoryDataList,
-				R.layout.call_record_historylist_item, new String[] {
-						CALL_RECORD_CALLTYPE, CALL_RECORD_DISPLAYNAME,
-						CALL_RECORD_PHONE, CALL_RECORD_INITIATETIME,
-						CALL_RECORD_DETAIL }, new int[] {
-						R.id.record_callType_imageView,
+				R.layout.call_record_historylist_item, getContentResolver()
+						.query(CallLog.Calls.CONTENT_URI, null, null, null,
+								CallLog.Calls.DEFAULT_SORT_ORDER),
+				_projection7TypeMapList, new String[] { CALL_RECORD_CALLTYPE,
+						CALL_RECORD_DISPLAYNAME, CALL_RECORD_PHONE,
+						CALL_RECORD_INITIATETIME, CALL_RECORD_DETAIL },
+				new int[] { R.id.record_callType_imageView,
 						R.id.record_displayName_textView,
 						R.id.record_phone_textView,
 						R.id.record_initiateTime_textView,

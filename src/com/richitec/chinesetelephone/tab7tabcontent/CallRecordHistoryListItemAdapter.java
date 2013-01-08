@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -17,16 +18,42 @@ import android.widget.TextView;
 import com.richitec.chinesetelephone.R;
 import com.richitec.commontoolkit.CommonToolkitApplication;
 import com.richitec.commontoolkit.calllog.CallLogBean.CallType;
-import com.richitec.commontoolkit.customadapter.CommonListAdapter;
+import com.richitec.commontoolkit.calllog.CallLogManager;
+import com.richitec.commontoolkit.customadapter.CommonListCursorAdapter;
 
-public class CallRecordHistoryListItemAdapter extends CommonListAdapter {
+public class CallRecordHistoryListItemAdapter extends CommonListCursorAdapter {
 
 	private static final String LOG_TAG = "CallRecordHistoryListItemAdapter";
 
 	public CallRecordHistoryListItemAdapter(Context context,
-			List<Map<String, ?>> data, int itemsLayoutResId, String[] dataKeys,
-			int[] itemsComponentResIds) {
-		super(context, data, itemsLayoutResId, dataKeys, itemsComponentResIds);
+			int itemsLayoutResId, Cursor c,
+			List<Map<String, Class<?>>> cursorProjection7TypeMaps,
+			String[] dataKeys, int[] itemsComponentResIds) {
+		super(context, itemsLayoutResId, c, cursorProjection7TypeMaps,
+				dataKeys, itemsComponentResIds);
+	}
+
+	@Override
+	protected void recombinationData(Map<String, Object> dataMap,
+			String dataKey, Object dataValue) {
+		// check data key and update data value
+		if (CallRecordHistoryListTabContentActivity.CALL_RECORD_CALLTYPE
+				.equalsIgnoreCase(dataKey)) {
+			// call type
+			dataValue = CallLogManager.getCallType((Integer) dataValue);
+		} else if (CallRecordHistoryListTabContentActivity.CALL_RECORD_DISPLAYNAME
+				.equalsIgnoreCase(dataKey)) {
+			//
+		} else if (CallRecordHistoryListTabContentActivity.CALL_RECORD_PHONE
+				.equalsIgnoreCase(dataKey)) {
+			//
+		} else {
+			Log.e(LOG_TAG, "Recombination data error, data key = " + dataKey
+					+ " and data value = " + dataValue);
+		}
+
+		// put data value to map
+		dataMap.put(dataKey, dataValue);
 	}
 
 	@Override
