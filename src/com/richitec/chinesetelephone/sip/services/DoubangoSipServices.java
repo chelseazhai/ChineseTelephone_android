@@ -55,7 +55,7 @@ public class DoubangoSipServices extends BaseSipServices implements
 		_mRegistrationStateBroadcastReceiver = new RegistrationStateBroadcastReceiver();
 
 		// register sip registration state broadcast receiver
-		APP_CONTEXT.registerReceiver(_mRegistrationStateBroadcastReceiver,
+		_appContext.registerReceiver(_mRegistrationStateBroadcastReceiver,
 				SIPEGISTER_INTENTFILTER);
 
 		// starts ngn engine
@@ -109,7 +109,7 @@ public class DoubangoSipServices extends BaseSipServices implements
 			_configurationService.commit();
 
 			// sip account register
-			_sipService.register(APP_CONTEXT);
+			_sipService.register(_appContext);
 		}
 	}
 
@@ -126,7 +126,7 @@ public class DoubangoSipServices extends BaseSipServices implements
 
 		// release doubango ngn registration state broadcast receiver
 		if (null != _mRegistrationStateBroadcastReceiver) {
-			APP_CONTEXT
+			_appContext
 					.unregisterReceiver(_mRegistrationStateBroadcastReceiver);
 
 			_mRegistrationStateBroadcastReceiver = null;
@@ -144,7 +144,7 @@ public class DoubangoSipServices extends BaseSipServices implements
 		_mAVSessionStateBroadcastReceiver = new AVSessionStateBroadcastReceiver();
 
 		// register doubango ngn audio/video session state receiver
-		APP_CONTEXT.registerReceiver(_mAVSessionStateBroadcastReceiver,
+		_appContext.registerReceiver(_mAVSessionStateBroadcastReceiver,
 				SIPINVITE_INTENTFILTER);
 
 		// get doubango ngn sip service
@@ -152,7 +152,7 @@ public class DoubangoSipServices extends BaseSipServices implements
 
 		// re-register
 		if (!_sipService.isRegistered()) {
-			_sipService.register(APP_CONTEXT);
+			_sipService.register(_appContext);
 		}
 
 		// check register status

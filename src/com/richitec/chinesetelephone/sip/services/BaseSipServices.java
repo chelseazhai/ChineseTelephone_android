@@ -16,7 +16,7 @@ import com.richitec.chinesetelephone.call.OutgoingCallActivity;
 import com.richitec.chinesetelephone.sip.SipCallMode;
 import com.richitec.chinesetelephone.sip.listeners.SipInviteStateListener;
 import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
-import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
+import com.richitec.commontoolkit.CommonToolkitApplication;
 import com.richitec.commontoolkit.calllog.CallLogManager;
 import com.richitec.commontoolkit.utils.HttpUtils;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
@@ -27,8 +27,7 @@ public abstract class BaseSipServices implements ISipServices {
 	private static final String LOG_TAG = "BaseSipServices";
 
 	// application context
-	protected static final Context APP_CONTEXT = AppLaunchActivity
-			.getAppContext();
+	protected static Context _appContext;
 
 	// sip registration state listener
 	protected SipRegistrationStateListener _mSipRegistrationStateListener;
@@ -63,8 +62,11 @@ public abstract class BaseSipServices implements ISipServices {
 	public BaseSipServices() {
 		super();
 
+		// init application context
+		_appContext = CommonToolkitApplication.getContext();
+
 		// init audio manager
-		_mAudioManager = (AudioManager) AppLaunchActivity.getAppContext()
+		_mAudioManager = (AudioManager) _appContext
 				.getSystemService(Context.AUDIO_SERVICE);
 	}
 
@@ -210,8 +212,8 @@ public abstract class BaseSipServices implements ISipServices {
 
 		// start outgoing call activity and set parameters
 		// define the outgoing call intent
-		Intent _outgoingCallIntent = new Intent(
-				AppLaunchActivity.getAppContext(), OutgoingCallActivity.class);
+		Intent _outgoingCallIntent = new Intent(_appContext,
+				OutgoingCallActivity.class);
 
 		// set it as an new task
 		_outgoingCallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -225,7 +227,7 @@ public abstract class BaseSipServices implements ISipServices {
 				OutgoingCallActivity.OUTGOING_CALL_OWNERSHIP, calleeName);
 
 		// start outgoing call activity
-		AppLaunchActivity.getAppContext().startActivity(_outgoingCallIntent);
+		_appContext.startActivity(_outgoingCallIntent);
 	}
 
 	// after make sip voice call
