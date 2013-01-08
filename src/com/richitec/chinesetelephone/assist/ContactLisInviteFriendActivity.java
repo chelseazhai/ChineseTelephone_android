@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -42,7 +43,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.richitec.chinesetelephone.R;
-import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
+import com.richitec.commontoolkit.CommonToolkitApplication;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.addressbook.ContactBean;
@@ -616,8 +617,7 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 			// set contact phones select title textView text
 			((TextView) getContentView().findViewById(
 					R.id.contactPhones_select_titleTextView))
-					.setText(AppLaunchActivity
-							.getAppContext()
+					.setText(CommonToolkitApplication.getContext()
 							.getResources()
 							.getString(
 									R.string.select_phone_to_invite)
@@ -650,7 +650,7 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 				// set phone list view adapter
 				_phoneListView
 						.setAdapter(new ArrayAdapter<String>(
-								AppLaunchActivity.getAppContext(),
+								CommonToolkitApplication.getContext(),
 								R.layout.contact_phonenumbers_select_phoneslist_item_layout,
 								phoneNumbers));
 
