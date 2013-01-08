@@ -155,6 +155,7 @@
                 <action android:name="org.sipdroid.STOP_SIPDROID" />
             </intent-filter>
         </receiver>
+        <activity android:screenOrientation="portrait" android:name=".assist.AboutActivity" android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

@@ -1299,4 +1299,8 @@ public class SettingActivity extends NavigationActivity {
 	public void onClickMySuiteAction(View v) {
 		pushActivity(MySuitesActivity.class);
 	}
+	
+	public void onClickAboutAction(View v) {
+		pushActivity(AboutActivity.class);
+	}
 }

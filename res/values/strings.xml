@@ -3,7 +3,17 @@
 
     <!-- Chinese telephone project -->
     <string name="app_name">UU-Talk</string>
-
+    
+    <!-- About -->
+    <string name="about_nav_title_text">关于我们</string>
+	<string name="product_description">简单强大便宜的电话软件</string>
+    <string name="product_version">版本号:</string>
+    <string name="programming_design">程序设计</string>
+    <string name="programming_authors">翟绍虎\t\t路辉\t\t王星</string>
+    <string name="copyright">Copyright</string>
+    <string name="copyright_ownership">（香港）寰宇通科技有限公司</string>
+    <string name="acknowledgement">鸣谢</string>
+    <string name="acknowledgement_organizations">合肥优云信息技术有限公司</string>
     <!-- Chinese telephone tab activity -->
 
     <string name="title_activity_chinese_telephone_tab">ChineseTelephoneTabActivity</string>
