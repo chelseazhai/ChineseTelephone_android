@@ -35,7 +35,7 @@
 
     <!-- call record detail info activity -->
     <string name="title_activity_call_record_detail_info">CallRecordDetailInfoActivity</string>
-    <string name="call_record_detailinfo_title">通话详细记录</string>
+    <string name="call_record_detailinfo_title">详细记录</string>
     <string name="callRecord_detailInfo_contact_avatar_imageView_content_description">call record contact avatar image view</string>
     <string name="callRecord_detailInfo_outgoingCall_callType">去电</string>
     <string name="callRecord_detailInfo_incomingCall_callType">来电</string>
