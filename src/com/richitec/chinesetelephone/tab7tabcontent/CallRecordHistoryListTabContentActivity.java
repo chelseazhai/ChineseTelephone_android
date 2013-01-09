@@ -101,6 +101,9 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 	protected void onResume() {
 		// check call log need to reload flag
 		if (_mCallLogNeed2Reload) {
+			// reset call log need to reload flag
+			_mCallLogNeed2Reload = false;
+
 			// update call record history listView adapter
 			_mCallRecordHistoryListView
 					.setAdapter(new CallRecordHistoryListItemAdapter(this,
