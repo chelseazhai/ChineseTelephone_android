@@ -1,36 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/setting_main_layout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    >
-    
-    <ScrollView 
+    android:orientation="vertical" >
+
+    <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@color/setting_bg"
-        >
-          
+        android:background="@color/setting_bg" >
+
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="vertical"
-            android:paddingBottom="10.0dp"
-             >
-             
-            <!--第一个白框  -->
-            <include layout="@layout/setting_activity_content_first_layout"/> 
-            <!-- 第二个白框 -->
-            <include layout="@layout/setting_activity_content_second_layout"  />          
-            <!-- 第三个白匡 -->
-            <include layout="@layout/setting_activity_content_third_layout"/>
-            
-            <include layout="@layout/setting_activity_content_forth_layout"/>        
+            android:paddingBottom="10.0dp" >
+
+            <include layout="@layout/setting_activity_content_zero_layout" />
+
+            <include layout="@layout/setting_activity_content_first_layout" />
+
+            <include layout="@layout/setting_activity_content_second_layout" />
+
+            <include layout="@layout/setting_activity_content_third_layout" />
+
+            <include layout="@layout/setting_activity_content_forth_layout" />
         </LinearLayout>
-        
     </ScrollView>
-    
+
 </LinearLayout>

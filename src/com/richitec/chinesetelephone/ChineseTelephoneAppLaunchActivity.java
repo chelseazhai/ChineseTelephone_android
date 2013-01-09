@@ -2,7 +2,6 @@ package com.richitec.chinesetelephone;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.os.SystemClock;
 import android.util.Log;
 
 import com.richitec.chinesetelephone.account.AccountSettingActivity;
@@ -13,7 +12,6 @@ import com.richitec.chinesetelephone.constant.TelUser;
 import com.richitec.chinesetelephone.service.NoticeService;
 import com.richitec.chinesetelephone.tab7tabcontent.ChineseTelephoneTabActivity;
 import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity;
-import com.richitec.chinesetelephone.tab7tabcontent.DialTabContentActivity;
 import com.richitec.chinesetelephone.utils.DialPreferenceManager;
 import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
@@ -22,6 +20,7 @@ import com.richitec.commontoolkit.user.User;
 import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.DataStorageUtils;
+import com.richitec.commontoolkit.utils.DeviceUtils;
 
 public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 
@@ -32,11 +31,15 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 
 	@Override
 	public Intent intentActivity() {
-		Intent service = new Intent(this, ContactSyncService.class);
-		startService(service);
+		if (!DeviceUtils.isServiceRunning(this, ContactSyncService.class)) {
+			Intent service = new Intent(this, ContactSyncService.class);
+			startService(service);
+		}
 
-		Intent noticeService = new Intent(this, NoticeService.class);
-		startService(noticeService);
+		if (!DeviceUtils.isServiceRunning(this, NoticeService.class)) {
+			Intent noticeService = new Intent(this, NoticeService.class);
+			startService(noticeService);
+		}
 		
 		// go to Chinese telephone main tab activity
 		loadAccount();

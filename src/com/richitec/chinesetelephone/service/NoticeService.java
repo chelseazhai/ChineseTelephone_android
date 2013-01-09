@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -20,11 +21,14 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.Process;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.richitec.chinesetelephone.R;
+import com.richitec.chinesetelephone.assist.AboutActivity;
 import com.richitec.chinesetelephone.constant.SystemConstants;
+import com.richitec.chinesetelephone.utils.NoticeDBHelper;
 import com.richitec.commontoolkit.utils.DataStorageUtils;
 import com.richitec.commontoolkit.utils.HttpUtils;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
@@ -37,9 +41,9 @@ public class NoticeService extends Service {
 	private ServiceHandler mServiceHandler;
 	private Timer timer;
 	private NoticeGetTimerTaks task;
-	
-	private static final long interval = 2 * 1000;
-	
+
+	private static final long interval = 10 * 1000;
+
 	// Handler that receives messages from the thread
 	private final class ServiceHandler extends Handler {
 		public ServiceHandler(Looper looper) {
@@ -68,15 +72,17 @@ public class NoticeService extends Service {
 		// Get the HandlerThread's Looper and use it for our Handler
 		mServiceLooper = thread.getLooper();
 		mServiceHandler = new ServiceHandler(mServiceLooper);
-		
-		timer = new Timer();
-		task = new NoticeGetTimerTaks(this);
+
+		if (timer == null) {
+			timer = new Timer();
+		}
+		if (task == null) {
+			task = new NoticeGetTimerTaks(this);
+		}
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
-
 		mServiceHandler.sendEmptyMessage(0);
 
 		// If we get killed, after returning from here, restart
@@ -102,16 +108,19 @@ public class NoticeService extends Service {
 		private Context context;
 		private NotificationManager mNotificationManager;
 
+		private NoticeDBHelper dbHelper;
+
 		public NoticeGetTimerTaks(Context context) {
 			this.context = context;
 			mNotificationManager = (NotificationManager) context
 					.getSystemService(Context.NOTIFICATION_SERVICE);
+			dbHelper = new NoticeDBHelper(context);
 		}
 
 		@Override
 		public void run() {
 			Log.d(SystemConstants.TAG, "get new notice");
-			
+
 			String maxId = DataStorageUtils.getString(MAX_NOTICE_ID);
 			if (maxId == null || maxId.equals("")) {
 				maxId = "-1";
@@ -158,18 +167,27 @@ public class NoticeService extends Service {
 					contentToDisplay = content;
 					timeToDisplay = time;
 				}
-				
-				
-				//TODO: save notice to database
+
+				// save notice to database
+				dbHelper.addNotice(id, content, time);
 			}
-			
-//			DataStorageUtils.putObject(MAX_NOTICE_ID, String.valueOf(maxId));
-			
+
+			DataStorageUtils.putObject(MAX_NOTICE_ID, String.valueOf(maxId));
+
 			// show notice in status bar
 			Log.d(SystemConstants.TAG, "notify: " + contentToDisplay);
-			NotificationCompat.Builder mBuilder =
-			        new NotificationCompat.Builder(context)
-			        .setSmallIcon(R.drawable.ic_launcher).setContentTitle(contentToDisplay).setNumber(notices.length());
+			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+					context).setSmallIcon(R.drawable.ic_launcher)
+					.setContentTitle(contentToDisplay)
+					.setNumber(notices.length());
+
+			Intent resultIntent = new Intent(context, AboutActivity.class);
+			PendingIntent noticePendingIntent = PendingIntent
+					.getActivity(context, 0, resultIntent,
+							PendingIntent.FLAG_UPDATE_CURRENT);
+			mBuilder.setContentIntent(noticePendingIntent);
+			mBuilder.setAutoCancel(true);
+
 			Notification notif = mBuilder.build();
 			notif.defaults = Notification.DEFAULT_ALL;
 			mNotificationManager.notify(NOTIFY_ID, notif);

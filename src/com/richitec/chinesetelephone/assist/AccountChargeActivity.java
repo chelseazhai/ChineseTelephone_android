@@ -146,7 +146,8 @@ public class AccountChargeActivity extends NavigationActivity {
 						.getDouble("balance") + "");
 				String remainBalanceStr = AccountChargeActivity.this
 						.getString(R.string.remain_balance_textfield);
-				remainBalanceStr += getString(R.string.currency_sign) + balance + getString(R.string.yuan);
+				remainBalanceStr += getString(R.string.currency_sign) + balance
+						+ getString(R.string.yuan);
 				((TextView) findViewById(R.id.remain_balance))
 						.setText(remainBalanceStr);
 
@@ -188,8 +189,10 @@ public class AccountChargeActivity extends NavigationActivity {
 		if (!isMobile_spExist)
 			return;
 
-		mProgress = ProgressDialog.show(this, null,
-				getString(R.string.sending_request), true);
+		if (mProgress == null || !mProgress.isShowing()) {
+			mProgress = ProgressDialog.show(this, null,
+					getString(R.string.sending_request), true);
+		}
 		if (PartnerConfig.PARTNER.equals("")) {
 
 			UserBean telUser = UserManager.getInstance().getUser();
@@ -398,11 +401,12 @@ public class AccountChargeActivity extends NavigationActivity {
 
 		mProgress = ProgressDialog.show(this, null,
 				getString(R.string.charging_now));
-		UserBean user =  UserManager.getInstance().getUser();
+		UserBean user = UserManager.getInstance().getUser();
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("pin", cardNumber);
 		params.put("password", cardPwd);
-		params.put("countryCode", (String)user.getValue(TelUser.countryCode.name()));
+		params.put("countryCode",
+				(String) user.getValue(TelUser.countryCode.name()));
 		HttpUtils.postSignatureRequest(getString(R.string.server_url)
 				+ getString(R.string.card_charge_url),
 				PostRequestFormat.URLENCODED, params, null,

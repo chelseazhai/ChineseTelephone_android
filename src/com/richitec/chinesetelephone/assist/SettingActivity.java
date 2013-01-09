@@ -1303,4 +1303,8 @@ public class SettingActivity extends NavigationActivity {
 	public void onClickAboutAction(View v) {
 		pushActivity(AboutActivity.class);
 	}
+	
+	public void onClickViewNoticeAction(View v) {
+		pushActivity(NoticeViewActivity.class);
+	}
 }

@@ -121,6 +121,8 @@
 
     <!-- setting -->
     <string name="menu_settings">更多设置</string>
+    <string name="notice_center">消息中心</string>
+    <string name="view_notice">查看消息</string>
     <string name="account">账户</string>
     <string name="account_invite_friend_item">邀请好友赚话费</string>
     <string name="account_setting_item">切换账户</string>

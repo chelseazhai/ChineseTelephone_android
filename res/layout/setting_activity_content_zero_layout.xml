@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10.0dp"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12.0dp"
+        android:layout_marginRight="10.0dp"
+        android:gravity="center_vertical"
+        android:text="@string/notice_center"
+        android:textSize="20.0sp" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10.0dp"
+        android:layout_marginRight="10.0dp"
+        android:background="@drawable/img_setting_content_bg"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="50.0dp"
+            android:background="@drawable/setting_alone_item_bg"
+            android:clickable="true"
+            android:onClick="onClickViewNoticeAction"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:layout_width="22.0dp"
+                android:layout_height="22.0dp"
+                android:layout_marginLeft="14.0dp"
+                android:layout_marginRight="4dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/notice_icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10.0dp"
+                android:layout_weight="1.0"
+                android:gravity="center_vertical"
+                android:text="@string/view_notice"
+                android:textColor="@color/dark_dim_gray"
+                android:textSize="18.0sp" />
+
+            <ImageView
+                android:layout_width="12.0dp"
+                android:layout_height="12.0dp"
+                android:layout_marginRight="10.0dp"
+                android:src="@drawable/into_icon" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dp"
+            android:background="@drawable/setting_line_img" />
+
+        
+    </LinearLayout>
+
+</LinearLayout>

@@ -20,6 +20,7 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:name="com.richitec.commontoolkit.CommonToolkitApplication"
@@ -157,6 +158,7 @@
         </receiver>
         <activity android:screenOrientation="portrait" android:name=".assist.AboutActivity" android:theme="@style/AppTheme"></activity>
         <service android:name=".service.NoticeService"></service>
+        <activity android:name=".assist.NoticeViewActivity" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
