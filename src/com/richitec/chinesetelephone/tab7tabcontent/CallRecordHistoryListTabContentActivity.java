@@ -1,18 +1,15 @@
 package com.richitec.chinesetelephone.tab7tabcontent;
 
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import android.app.AlertDialog;
+import android.database.ContentObserver;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.CallLog;
-import android.text.SpannableString;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
@@ -20,14 +17,12 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.call.ContactPhoneDialModeSelectpopupWindow;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.calllog.CallLogBean;
-import com.richitec.commontoolkit.calllog.CallLogBean.CallType;
 import com.richitec.commontoolkit.calllog.CallLogManager;
 import com.richitec.commontoolkit.utils.CommonUtils;
 
@@ -40,12 +35,14 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 	public static final String CALL_RECORD_INITIATETIME = "call_record_initiateTime";
 	public static final String CALL_RECORD_DETAIL = "call_record_detailInfo";
 
-	// call record detail image button keys
-	public static final String CALL_RECORD_IMAGEBUTTON_TAG = "call_record_imageButton_tag";
-	public static final String CALL_RECORD_IMAGEBUTTON_ONCLICKLISTENER = "call_record_imageButton_onClickListener";
+	// call record history listView
+	private ListView _mCallRecordHistoryListView;
 
-	// call log list
-	private final List<CallLogBean> _mCallLogList = new ArrayList<CallLogBean>();
+	// call log need to reload flag
+	private boolean _mCallLogNeed2Reload;
+
+	// call log content observer
+	private final CallLogContentObserver CALLLOG_CONTENTOBSERVER = new CallLogContentObserver();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -58,11 +55,33 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 		setTitle(R.string.call_record_history_list_nav_title);
 
 		// get call record history listView
-		ListView _callRecordHistoryListView = (ListView) findViewById(R.id.callRecordHistoryList_listView);
+		_mCallRecordHistoryListView = (ListView) findViewById(R.id.callRecordHistoryList_listView);
+
+		// set call record history listView tag
+		_mCallRecordHistoryListView.setTag(this);
+
+		// set call record history listView adapter
+		_mCallRecordHistoryListView
+				.setAdapter(new CallRecordHistoryListItemAdapter(this,
+						_mCallRecordHistoryListView,
+						R.layout.call_record_historylist_item, CallLogManager
+								.getAllCallLogQueryCursor(), new String[] {
+								CALL_RECORD_CALLTYPE, CALL_RECORD_DISPLAYNAME,
+								CALL_RECORD_PHONE, CALL_RECORD_INITIATETIME,
+								CALL_RECORD_DETAIL }, new int[] {
+								R.id.record_callType_imageView,
+								R.id.record_displayName_textView,
+								R.id.record_phone_textView,
+								R.id.record_initiateTime_textView,
+								R.id.recordDetail_imageBtn }));
 
 		// set call record history listView on item click listener
-		_callRecordHistoryListView
+		_mCallRecordHistoryListView
 				.setOnItemClickListener(new CallRecordHistoryListViewOnItemClickListener());
+
+		// add call log changed ContentObserver
+		getContentResolver().registerContentObserver(CallLog.Calls.CONTENT_URI,
+				false, CALLLOG_CONTENTOBSERVER);
 	}
 
 	@Override
@@ -75,135 +94,40 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 
 	@Override
 	protected void onResume() {
-		// clear call log list
-		_mCallLogList.clear();
-
-		// update call record history listView adapter
-		((ListView) findViewById(R.id.callRecordHistoryList_listView))
-				.setAdapter(generateCallRecordHistoryListItemAdapter());
+		// check call log need to reload flag
+		if (_mCallLogNeed2Reload) {
+			// update call record history listView adapter
+			_mCallRecordHistoryListView
+					.setAdapter(new CallRecordHistoryListItemAdapter(this,
+							_mCallRecordHistoryListView,
+							R.layout.call_record_historylist_item,
+							CallLogManager.getAllCallLogQueryCursor(),
+							new String[] { CALL_RECORD_CALLTYPE,
+									CALL_RECORD_DISPLAYNAME, CALL_RECORD_PHONE,
+									CALL_RECORD_INITIATETIME,
+									CALL_RECORD_DETAIL }, new int[] {
+									R.id.record_callType_imageView,
+									R.id.record_displayName_textView,
+									R.id.record_phone_textView,
+									R.id.record_initiateTime_textView,
+									R.id.recordDetail_imageBtn }));
+		}
 
 		super.onResume();
 	}
 
-	// generate call record history list item adapter
-	private ListAdapter _generateCallRecordHistoryListItemAdapter() {
-		// set call record history list view data list
-		List<Map<String, ?>> _callRecordHistoryDataList = new ArrayList<Map<String, ?>>();
+	@Override
+	protected void onDestroy() {
+		// remove call log changed ContentObserver
+		getContentResolver().unregisterContentObserver(CALLLOG_CONTENTOBSERVER);
 
-		// get all call log and all added to call log list
-		_mCallLogList.addAll(CallLogManager.getAllCallLogs());
-
-		for (int i = 0; i < _mCallLogList.size(); i++) {
-			// generate data
-			Map<String, Object> _dataMap = new HashMap<String, Object>();
-
-			// get call log bean
-			CallLogBean _callLogBean = _mCallLogList.get(i);
-
-			// get call type, callee display name and phone
-			CallType _callType = _callLogBean.getCallType();
-			String _calleeName = _callLogBean.getCalleeName();
-			String _calleePhone = _callLogBean.getCalleePhone();
-
-			// put value
-			_dataMap.put(CALL_RECORD_CALLTYPE, _callType);
-			_dataMap.put(CALL_RECORD_DISPLAYNAME,
-					CallType.MISSED == _callType ? new SpannableString(
-							_calleeName) : _calleeName);
-			_dataMap.put(CALL_RECORD_PHONE,
-					CallType.MISSED == _callType ? new SpannableString(
-							_calleePhone) : _calleePhone);
-			_dataMap.put(CALL_RECORD_INITIATETIME,
-					formatCallRecordInitiateTime(_callLogBean.getCallDate()));
-
-			// call record detail value map
-			Map<String, Object> _callRecordDetailValueMap = new HashMap<String, Object>();
-			_callRecordDetailValueMap.put(CALL_RECORD_IMAGEBUTTON_TAG, i);
-			_callRecordDetailValueMap
-					.put(CALL_RECORD_IMAGEBUTTON_ONCLICKLISTENER,
-							new CallRecordHistoryListViewItemDetailImgBtnOnClickListener());
-			_dataMap.put(CALL_RECORD_DETAIL, _callRecordDetailValueMap);
-
-			// add data to list
-			_callRecordHistoryDataList.add(_dataMap);
-		}
-
-		// return new CallRecordHistoryListItemAdapter(this,
-		// _callRecordHistoryDataList,
-		// R.layout.call_record_historylist_item, new String[] {
-		// CALL_RECORD_CALLTYPE, CALL_RECORD_DISPLAYNAME,
-		// CALL_RECORD_PHONE, CALL_RECORD_INITIATETIME,
-		// CALL_RECORD_DETAIL }, new int[] {
-		// R.id.record_callType_imageView,
-		// R.id.record_displayName_textView,
-		// R.id.record_phone_textView,
-		// R.id.record_initiateTime_textView,
-		// R.id.recordDetail_imageBtn });
-		return null;
+		super.onDestroy();
 	}
 
-	// generate call record history list item adapter
-	private ListAdapter generateCallRecordHistoryListItemAdapter() {
-		// call record history list item adapter data keys
-		final String CALL_RECORD_CALLTYPE = "call_record_callType";
-		final String CALL_RECORD_DISPLAYNAME = "call_record_displayName";
-		final String CALL_RECORD_PHONE = "call_record_phone";
-		final String CALL_RECORD_INITIATETIME = "call_record_initiateTime";
-		final String CALL_RECORD_DETAIL = "call_record_detailInfo";
-
-		// define constant for call log query
-		final Object[][] _projection7TypeArray = new Object[][] {
-				{ CallLog.Calls.TYPE, Integer.class },
-				{ CallLog.Calls.CACHED_NAME, String.class },
-				{ CallLog.Calls.NUMBER, String.class },
-				{ CallLog.Calls.DATE, Long.class },
-				{ CallLog.Calls.DURATION, Long.class } };
-
-		// define projection and type map list
-		List<Map<String, Class<?>>> _projection7TypeMapList = new ArrayList<Map<String, Class<?>>>();
-
-		// set projection and type map array object
-		for (int i = 0; i < _projection7TypeArray.length; i++) {
-			// new projection and type map and put projection and type to it
-			Map<String, Class<?>> _projection7TypeMap = new HashMap<String, Class<?>>();
-			_projection7TypeMap.put((String) _projection7TypeArray[i][0],
-					(Class<?>) _projection7TypeArray[i][1]);
-
-			// add projection and type map to projection and type map list
-			_projection7TypeMapList.add(_projection7TypeMap);
-		}
-
-		return new CallRecordHistoryListItemAdapter(this,
-				R.layout.call_record_historylist_item, getContentResolver()
-						.query(CallLog.Calls.CONTENT_URI, null, null, null,
-								CallLog.Calls.DEFAULT_SORT_ORDER),
-				_projection7TypeMapList, new String[] { CALL_RECORD_CALLTYPE,
-						CALL_RECORD_DISPLAYNAME, CALL_RECORD_PHONE,
-						CALL_RECORD_INITIATETIME, CALL_RECORD_DETAIL },
-				new int[] { R.id.record_callType_imageView,
-						R.id.record_displayName_textView,
-						R.id.record_phone_textView,
-						R.id.record_initiateTime_textView,
-						R.id.recordDetail_imageBtn });
-	}
-
-	// format call record initiate time
-	private String formatCallRecordInitiateTime(Long callDate) {
-		// define return string builder
-		StringBuilder _ret = new StringBuilder();
-
-		// call record initiate time day and time format, format unix timeStamp
-		final DateFormat _callRecordInitiateTimeDayFormat = new SimpleDateFormat(
-				"yy-MM-dd", Locale.getDefault());
-		final DateFormat _callRecordInitiateTimeTimeFormat = new SimpleDateFormat(
-				"HH:mm:ss", Locale.getDefault());
-
-		// format day and time
-		_ret.append(_callRecordInitiateTimeDayFormat.format(callDate))
-				.append("\n")
-				.append(_callRecordInitiateTimeTimeFormat.format(callDate));
-
-		return _ret.toString();
+	// generate call record history listView item detail image button on click
+	// listener
+	protected OnClickListener generateCallRecordHistoryListViewItemDetailImgBtnOnClickListener() {
+		return new CallRecordHistoryListViewItemDetailImgBtnOnClickListener();
 	}
 
 	// inner class
@@ -215,7 +139,8 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			// get the click item view data: call log object
-			CallLogBean _clickItemViewData = _mCallLogList.get((int) id);
+			CallLogBean _clickItemViewData = (CallLogBean) ((CallRecordHistoryListItemAdapter) _mCallRecordHistoryListView
+					.getAdapter()).getDataList().get(position);
 
 			// define contact phone dial mode select popup window
 			ContactPhoneDialModeSelectpopupWindow _contactPhoneDialModeSelectPopupWindow = new ContactPhoneDialModeSelectpopupWindow(
@@ -268,11 +193,31 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 			Map<String, Serializable> _parameter = new HashMap<String, Serializable>();
 
 			// put call log bean to parameter
-			_parameter.put(CallRecordDetailInfoActivity.CALL_LOG_PARAM_KEY,
-					_mCallLogList.get((Integer) v.getTag()));
+			_parameter
+					.put(CallRecordDetailInfoActivity.CALL_LOG_PARAM_KEY,
+							(CallLogBean) ((CallRecordHistoryListItemAdapter) _mCallRecordHistoryListView
+									.getAdapter()).getDataList().get(
+									(Integer) v.getTag()));
 
 			// go to the call record detail info activity
 			pushActivity(CallRecordDetailInfoActivity.class, _parameter);
+		}
+
+	}
+
+	// call log db changed observer
+	class CallLogContentObserver extends ContentObserver {
+
+		public CallLogContentObserver() {
+			super(new Handler());
+		}
+
+		@Override
+		public void onChange(boolean selfChange) {
+			super.onChange(selfChange);
+
+			// call log need to reload
+			_mCallLogNeed2Reload = true;
 		}
 
 	}
