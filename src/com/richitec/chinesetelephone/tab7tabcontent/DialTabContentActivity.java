@@ -47,8 +47,9 @@ public class DialTabContentActivity extends NavigationActivity {
 	public static final String DIAL_PHONE_BUTTON_ONCLICKLISTENER = "dial_phone_button_onClickListener";
 	public static final String DIAL_PHONE_BUTTON_ONLONGCLICKLISTENER = "dial_phone_button_onLongClickListener";
 
-	// dial phone textView
+	// dial phone textView and previous dial phone
 	private TextView _mDialPhoneTextView;
+	private StringBuffer _mPreviousDialPhone;
 
 	// contact pick activity request code
 	private static final int PICK_CONTACT = 0;
@@ -62,6 +63,9 @@ public class DialTabContentActivity extends NavigationActivity {
 
 		// set content view
 		setContentView(R.layout.dial_tab_content_activity_layout);
+
+		// init previous dial phone
+		_mPreviousDialPhone = new StringBuffer();
 
 		// init dial phone textView
 		// set dial phone textView
@@ -244,6 +248,10 @@ public class DialTabContentActivity extends NavigationActivity {
 
 		@Override
 		public void afterTextChanged(Editable s) {
+			// update previous dial phone
+			_mPreviousDialPhone.setLength(0);
+			_mPreviousDialPhone.append(s);
+
 			// measure text
 			// define textView text bounds and font size
 			Rect _textBounds = new Rect();
@@ -540,6 +548,10 @@ public class DialTabContentActivity extends NavigationActivity {
 						R.layout.contact_phone_dialmode_select_popupwindow_layout,
 						LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 
+				// set dial phone textView
+				_contactPhoneDialModeSelectPopupWindow.setDialPhoneTextView(
+						_mDialPhoneTextView, _mPreviousDialPhone);
+
 				// set callee contact info
 				// generate callee display name and phones
 				// get dial phone ownership textView
@@ -561,8 +573,13 @@ public class DialTabContentActivity extends NavigationActivity {
 				// show contact phone dial mode select pupupWindow
 				_contactPhoneDialModeSelectPopupWindow.showAtLocation(v,
 						Gravity.CENTER, 0, 0);
+			} else if (null != _mPreviousDialPhone
+					&& !"".equalsIgnoreCase(_mPreviousDialPhone.toString())) {
+				// set dial phone textView text using previous dial phone
+				_mDialPhoneTextView.setText(_mPreviousDialPhone);
 			} else {
-				Log.e(LOG_TAG, "The dial phone number is null");
+				Log.e(LOG_TAG,
+						"Both the dial phone number and previous dial phone are null");
 			}
 		}
 
