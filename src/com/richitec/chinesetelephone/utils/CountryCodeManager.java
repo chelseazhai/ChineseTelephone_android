@@ -11,10 +11,11 @@ import com.richitec.chinesetelephone.constant.Country;
 import com.richitec.chinesetelephone.constant.SystemConstants;
 
 public class CountryCodeManager {
-	private List<Map<String, String>> datas = new ArrayList<Map<String, String>>();
-	private static volatile CountryCodeManager countryCodeManager;
+	private List<Map<String, String>> datas;
+	private static CountryCodeManager countryCodeManager;
 
 	private CountryCodeManager() {
+		datas = new ArrayList<Map<String, String>>();
 		getCountryCode();
 	}
 
@@ -70,6 +71,7 @@ public class CountryCodeManager {
 		int i = 0;
 		for (Map<String, String> data : datas) {
 			String c = data.get(Country.code.name());
+			Log.d(SystemConstants.TAG, "data: " + data.toString());
 			if (c.equals(code)) {
 				Log.d(SystemConstants.TAG, "Find:" + i);
 				break;

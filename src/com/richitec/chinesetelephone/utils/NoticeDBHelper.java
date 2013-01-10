@@ -56,7 +56,7 @@ public class NoticeDBHelper extends SQLiteOpenHelper {
 	public List<Map<String, Object>> getAllNotices() {
 		List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
 		SQLiteDatabase db = getReadableDatabase();
-		String sql = "SELECT * FROM " + TABLE_NAME;
+		String sql = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + NoticeFields.create_time.name() + " DESC";
 		Cursor cursor = db.rawQuery(sql, null);
 		if (cursor.moveToFirst()) {
 			do {
@@ -74,6 +74,13 @@ public class NoticeDBHelper extends SQLiteOpenHelper {
 			} while (cursor.moveToNext());
 		}
 		return list;
+	}
+	
+	public Cursor getAllNoticesCursor() {
+		SQLiteDatabase db = getReadableDatabase();
+		String sql = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + NoticeFields.create_time.name() + " DESC";
+		Cursor cursor = db.rawQuery(sql, null);
+		return cursor;
 	}
 
 	public void setNoticeAsRead(Integer id) {
