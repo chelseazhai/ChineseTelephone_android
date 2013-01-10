@@ -40,7 +40,7 @@ public class NoticeService extends Service {
 	private Timer timer;
 	private NoticeGetTimerTaks task;
 
-	private static final long interval = 10 * 1000;
+	private static final long interval = 60 * 60 * 1000;
 
 	// Handler that receives messages from the thread
 	private final class ServiceHandler extends Handler {
