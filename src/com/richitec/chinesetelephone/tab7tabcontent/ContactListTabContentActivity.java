@@ -51,7 +51,9 @@ import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.addressbook.ContactBean;
 import com.richitec.commontoolkit.customadapter.CommonListAdapter;
+import com.richitec.commontoolkit.customcomponent.BarButtonItem.BarButtonItemStyle;
 import com.richitec.commontoolkit.customcomponent.CommonPopupWindow;
+import com.richitec.commontoolkit.customcomponent.ImageBarButtonItem;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar.OnTouchListener;
 import com.richitec.commontoolkit.utils.StringUtils;
@@ -104,6 +106,11 @@ public class ContactListTabContentActivity extends NavigationActivity {
 
 		// set title
 		setTitle(R.string.contact_list_tab7nav_title);
+
+		// set right bar button item
+		setRightBarButtonItem(new ImageBarButtonItem(this,
+				android.R.drawable.ic_input_add, BarButtonItemStyle.RIGHT_GO,
+				null));
 
 		// check all address book name phonetic sorted contacts detail info list
 		// and init present contacts in address book detail info array
