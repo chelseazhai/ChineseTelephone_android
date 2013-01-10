@@ -414,9 +414,9 @@ public class DialTabContentActivity extends NavigationActivity {
 							v, Gravity.CENTER, 0, 0);
 				}
 			} else {
-				Log.w(LOG_TAG,
-						"Insert phone number to contact error, phone number = "
-								+ _insertPhone);
+				// add new contact
+				ContactListTabContentActivity
+						.addNewContact(DialTabContentActivity.this);
 			}
 		}
 	}
