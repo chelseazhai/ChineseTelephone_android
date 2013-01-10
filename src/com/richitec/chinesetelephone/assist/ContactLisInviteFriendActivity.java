@@ -24,6 +24,7 @@ import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.util.SparseArray;
+import android.util.SparseIntArray;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -139,8 +140,7 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 			Map<String, Object> _dataMap = new HashMap<String, Object>();
 
 			// get contact name and phone matching indexes
-			@SuppressWarnings("unchecked")
-			SparseArray<Integer> _nameMatchingIndexes = (SparseArray<Integer>) _contact
+			SparseIntArray _nameMatchingIndexes = (SparseIntArray) _contact
 					.getExtension().get(
 							AddressBookManager.NAME_MATCHING_INDEXES);
 			@SuppressWarnings("unchecked")

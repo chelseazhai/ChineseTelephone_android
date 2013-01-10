@@ -21,12 +21,10 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.Process;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.richitec.chinesetelephone.R;
-import com.richitec.chinesetelephone.assist.AboutActivity;
+import com.richitec.chinesetelephone.assist.NoticeViewActivity;
 import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.utils.NoticeDBHelper;
 import com.richitec.commontoolkit.utils.DataStorageUtils;
@@ -181,7 +179,7 @@ public class NoticeService extends Service {
 					.setContentTitle(contentToDisplay)
 					.setNumber(notices.length());
 
-			Intent resultIntent = new Intent(context, AboutActivity.class);
+			Intent resultIntent = new Intent(context, NoticeViewActivity.class);
 			PendingIntent noticePendingIntent = PendingIntent
 					.getActivity(context, 0, resultIntent,
 							PendingIntent.FLAG_UPDATE_CURRENT);

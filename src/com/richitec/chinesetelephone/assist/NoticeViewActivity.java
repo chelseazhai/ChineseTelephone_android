@@ -6,13 +6,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.R.integer;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.constant.NoticeFields;
@@ -22,10 +26,11 @@ import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.customadapter.CommonListCursorAdapter;
 
 public class NoticeViewActivity extends NavigationActivity {
-
+	private ListView listView;
 	private NoticeListAdapter listAdapter;
 	private NoticeDBHelper dbhelper;
-
+	private Cursor cursor;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,18 +39,66 @@ public class NoticeViewActivity extends NavigationActivity {
 
 		// set title text
 		setTitle(R.string.view_notice);
+		listView = (ListView) findViewById(R.id.notice_list_view);
 		dbhelper = new NoticeDBHelper(this);
-		Cursor c = dbhelper.getAllNoticesCursor();
+
+		refresh();
+		
+		listView.setOnItemClickListener(onNoticeItemClick);
+	}
+
+	public void refresh() {
+		if (cursor != null && !cursor.isClosed()) {
+			cursor.close();
+		}
+		cursor = dbhelper.getAllNoticesCursor();
 		listAdapter = new NoticeListAdapter(this,
-				R.layout.notice_list_item_layout, c, new String[] {
+				R.layout.notice_list_item_layout, cursor, new String[] {
 						NoticeFields.status.name(),
 						NoticeFields.content.name(),
 						NoticeFields.create_time.name() }, new int[] {
 						R.id.notice_flag_icon, R.id.notice_content_tv,
 						R.id.notice_time_tv });
+		listView.setAdapter(listAdapter);
+	}
+	
+	private OnItemClickListener onNoticeItemClick = new OnItemClickListener() {
 
-		ListView list = (ListView) findViewById(R.id.notice_list_view);
-		list.setAdapter(listAdapter);
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			HashMap<String, Object> notice = (HashMap<String, Object>) listAdapter
+					.getDataList().get(position);
+			Integer noticeId = (Integer) notice.get(NoticeFields.noticeid
+					.name());
+			dbhelper.setNoticeAsRead(noticeId);
+			notice.put(NoticeFields.status.name(), NoticeStatus.read.name());
+			listAdapter.notifyDataSetChanged();
+		}
+	};
+
+	private OnItemLongClickListener onNoticeLongClick = new OnItemLongClickListener() {
+
+		@Override
+		public boolean onItemLongClick(AdapterView<?> parent, View view,
+				int position, long id) {
+			HashMap<String, Object> notice = (HashMap<String, Object>) listAdapter
+					.getDataList().get(position);
+			Integer noticeId = (Integer) notice.get(NoticeFields.noticeid
+					.name());
+			
+			
+			
+			return false;
+		}
+	};
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		cursor.close();
+		dbhelper.close();
+		super.onDestroy();
 	}
 
 	class NoticeListAdapter extends CommonListCursorAdapter {
@@ -59,8 +112,8 @@ public class NoticeViewActivity extends NavigationActivity {
 		protected void appendCursorData(List<Object> data, Cursor cursor) {
 			if (cursor != null) {
 				Map<String, Object> map = new HashMap<String, Object>();
-				map.put(NoticeFields.id.name(), cursor.getInt(cursor
-						.getColumnIndex(NoticeFields.id.name())));
+				map.put(NoticeFields.noticeid.name(), cursor.getInt(cursor
+						.getColumnIndex(NoticeFields._id.name())));
 				map.put(NoticeFields.content.name(), cursor.getString(cursor
 						.getColumnIndex(NoticeFields.content.name())));
 				map.put(NoticeFields.create_time.name(), cursor.getLong(cursor

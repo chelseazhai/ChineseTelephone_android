@@ -29,10 +29,11 @@ public class NoticeDBHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL("CREATE TABLE " + TABLE_NAME + " (" + NoticeFields.id.name()
-				+ " INTEGER PRIMARY KEY," + NoticeFields.content.name()
-				+ " TEXT," + NoticeFields.create_time.name() + " INTEGER,"
-				+ NoticeFields.status.name() + " TEXT" + ");");
+		db.execSQL("CREATE TABLE " + TABLE_NAME + " ( "
+				+ NoticeFields.noticeid.name() + " INTEGER PRIMARY KEY, "
+				+ NoticeFields.content.name() + " TEXT, "
+				+ NoticeFields.create_time.name() + " INTEGER, "
+				+ NoticeFields.status.name() + " TEXT" + " );");
 
 	}
 
@@ -45,7 +46,7 @@ public class NoticeDBHelper extends SQLiteOpenHelper {
 	public void addNotice(Integer id, String content, Long createTime) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
-		values.put(NoticeFields.id.name(), id);
+		values.put(NoticeFields.noticeid.name(), id);
 		values.put(NoticeFields.content.name(), content);
 		values.put(NoticeFields.create_time.name(), createTime);
 		values.put(NoticeFields.status.name(), NoticeStatus.unread.name());
@@ -56,13 +57,14 @@ public class NoticeDBHelper extends SQLiteOpenHelper {
 	public List<Map<String, Object>> getAllNotices() {
 		List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
 		SQLiteDatabase db = getReadableDatabase();
-		String sql = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + NoticeFields.create_time.name() + " DESC";
+		String sql = "SELECT * FROM " + TABLE_NAME + " ORDER BY "
+				+ NoticeFields.create_time.name() + " DESC";
 		Cursor cursor = db.rawQuery(sql, null);
 		if (cursor.moveToFirst()) {
 			do {
 				Map<String, Object> map = new HashMap<String, Object>();
-				map.put(NoticeFields.id.name(), cursor.getInt(cursor
-						.getColumnIndex(NoticeFields.id.name())));
+				map.put(NoticeFields.noticeid.name(), cursor.getInt(cursor
+						.getColumnIndex(NoticeFields.noticeid.name())));
 				map.put(NoticeFields.content.name(), cursor.getString(cursor
 						.getColumnIndex(NoticeFields.content.name())));
 				map.put(NoticeFields.create_time.name(), cursor.getLong(cursor
@@ -73,12 +75,17 @@ public class NoticeDBHelper extends SQLiteOpenHelper {
 				list.add(map);
 			} while (cursor.moveToNext());
 		}
+		db.close();
 		return list;
 	}
-	
+
 	public Cursor getAllNoticesCursor() {
 		SQLiteDatabase db = getReadableDatabase();
-		String sql = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + NoticeFields.create_time.name() + " DESC";
+		String sql = "SELECT " + NoticeFields.noticeid.name() + " AS _id, "
+				+ NoticeFields.content.name() + ", "
+				+ NoticeFields.create_time.name() + ", "
+				+ NoticeFields.status.name() + " FROM " + TABLE_NAME
+				+ " ORDER BY " + NoticeFields.create_time.name() + " DESC";
 		Cursor cursor = db.rawQuery(sql, null);
 		return cursor;
 	}
@@ -88,7 +95,7 @@ public class NoticeDBHelper extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		values.put(NoticeFields.status.name(), NoticeStatus.read.name());
 
-		db.update(TABLE_NAME, values, NoticeFields.id.name() + " = ?",
+		db.update(TABLE_NAME, values, NoticeFields.noticeid.name() + " = ?",
 				new String[] { String.valueOf(id) });
 
 		db.close();
@@ -96,8 +103,9 @@ public class NoticeDBHelper extends SQLiteOpenHelper {
 
 	public void deleteNotice(Integer id) {
 		SQLiteDatabase db = getWritableDatabase();
-		db.delete(TABLE_NAME, NoticeFields.id.name() + " = ?",
+		db.delete(TABLE_NAME, NoticeFields.noticeid.name() + " = ?",
 				new String[] { String.valueOf(id) });
 		db.close();
 	}
+	
 }
