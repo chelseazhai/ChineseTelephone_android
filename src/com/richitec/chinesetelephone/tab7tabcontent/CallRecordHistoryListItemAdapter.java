@@ -32,13 +32,6 @@ public class CallRecordHistoryListItemAdapter extends CommonListCursorAdapter {
 	private static final String LOG_TAG = "CallRecordHistoryListItemAdapter";
 
 	public CallRecordHistoryListItemAdapter(Context context,
-			View dependentView, int itemsLayoutResId, Cursor c,
-			String[] dataKeys, int[] itemsComponentResIds) {
-		super(context, dependentView, itemsLayoutResId, c, dataKeys,
-				itemsComponentResIds);
-	}
-
-	public CallRecordHistoryListItemAdapter(Context context,
 			int itemsLayoutResId, Cursor c, String[] dataKeys,
 			int[] itemsComponentResIds) {
 		super(context, itemsLayoutResId, c, dataKeys, itemsComponentResIds);
@@ -106,12 +99,23 @@ public class CallRecordHistoryListItemAdapter extends CommonListCursorAdapter {
 				// call record detail value map
 				SparseArray<OnClickListener> _callRecordDetailValueMap = new SparseArray<View.OnClickListener>();
 
+				// get and check call detail info button on clicked listener
+				OnClickListener _callRecordHistoryListViewItemDetailImgBtnOnClickListener = null;
+				try {
+					_callRecordHistoryListViewItemDetailImgBtnOnClickListener = ((CallRecordHistoryListTabContentActivity) _mContext)
+							.generateCallRecordHistoryListViewItemDetailImgBtnOnClickListener();
+				} catch (Exception e) {
+					e.printStackTrace();
+
+					Log.e(LOG_TAG,
+							"Get call detail info button on clicked listener error, exception = "
+									+ e.getMessage());
+				}
+
 				// append call detail info button on clicked listener
 				_callRecordDetailValueMap
 						.append(_data.indexOf(_dataCallLogBean),
-								((CallRecordHistoryListTabContentActivity) getDependentView()
-										.getTag())
-										.generateCallRecordHistoryListViewItemDetailImgBtnOnClickListener());
+								_callRecordHistoryListViewItemDetailImgBtnOnClickListener);
 
 				_dataValue = _callRecordDetailValueMap;
 			} else {
