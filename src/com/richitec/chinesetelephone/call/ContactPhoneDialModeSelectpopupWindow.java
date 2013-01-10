@@ -25,6 +25,10 @@ public class ContactPhoneDialModeSelectpopupWindow extends CommonPopupWindow {
 	private String _mSelectContactName;
 	private List<String> _mSelectContactPhones;
 
+	// dial phone textView and and previous dial phone
+	private TextView _mDialPhoneTextView;
+	private StringBuffer _mPreviousDialPhone;
+
 	// contact phone numbers select popup window and its dependent view
 	private CommonPopupWindow _mContactPhoneNumbersSelectPopupWindow;
 	private View _mContactPhoneNumbersSelectPopupWindowDependentView;
@@ -73,6 +77,13 @@ public class ContactPhoneDialModeSelectpopupWindow extends CommonPopupWindow {
 	@Override
 	protected void resetPopupWindow() {
 		// nothing to do
+	}
+
+	// set dial phone textView and previous dial phone
+	public void setDialPhoneTextView(TextView dialPhoneTextView,
+			StringBuffer previousDialPhone) {
+		_mDialPhoneTextView = dialPhoneTextView;
+		_mPreviousDialPhone = previousDialPhone;
 	}
 
 	// set contact phone numbers select popup window and its dependent view
@@ -144,10 +155,22 @@ public class ContactPhoneDialModeSelectpopupWindow extends CommonPopupWindow {
 		// dismiss contact phone dial mode select popup window
 		dismiss();
 
+		// check select contact phone size
 		if (1 == _mSelectContactPhones.size()) {
 			// make sip voice call
 			SipUtils.makeSipVoiceCall(_mSelectContactName,
 					_mSelectContactPhones.get(0), dialMode);
+
+			// check dial phone textView
+			if (null != _mDialPhoneTextView) {
+				// save previous dial phone and clear dial phone textView text
+				CharSequence _previousDialPhone = _mDialPhoneTextView.getText();
+				_mDialPhoneTextView.setText("");
+				_mPreviousDialPhone.append(_previousDialPhone);
+			} else {
+				Log.e(LOG_TAG,
+						"Get dial phone textView for clear its text error, dial phone textView is null");
+			}
 		} else {
 			// check contact phone numbers select popup window and its dependent
 			// view

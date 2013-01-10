@@ -87,6 +87,9 @@ public class ContactListTabContentActivity extends NavigationActivity {
 			Context outgoingCallActivityContext) {
 		// check all address book name phonetic sorted contacts detail info list
 		if (null == _smAllNamePhoneticSortedContactsInfoArray) {
+			Log.d(LOG_TAG,
+					"All address book name phonetic sorted contacts detail info list is null, init immediately");
+
 			// init first
 			initNamePhoneticSortedContactsInfoArray();
 		}
@@ -106,7 +109,15 @@ public class ContactListTabContentActivity extends NavigationActivity {
 		// set title
 		setTitle(R.string.contact_list_tab7nav_title);
 
-		// init present contacts in address book detail info array
+		// check all address book name phonetic sorted contacts detail info list
+		// and init present contacts in address book detail info array
+		if (null == _smAllNamePhoneticSortedContactsInfoArray) {
+			Log.d(LOG_TAG,
+					"All address book name phonetic sorted contacts detail info list is null, init immediately when on create");
+
+			// init first
+			initNamePhoneticSortedContactsInfoArray();
+		}
 		_mPresentContactsInABInfoArray = _smAllNamePhoneticSortedContactsInfoArray;
 
 		// get contacts in address book list view

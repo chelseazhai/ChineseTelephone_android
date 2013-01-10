@@ -63,7 +63,6 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 		// set call record history listView adapter
 		_mCallRecordHistoryListView
 				.setAdapter(new CallRecordHistoryListItemAdapter(this,
-						_mCallRecordHistoryListView,
 						R.layout.call_record_historylist_item, CallLogManager
 								.getAllCallLogQueryCursor(), new String[] {
 								CALL_RECORD_CALLTYPE, CALL_RECORD_DISPLAYNAME,
@@ -107,7 +106,6 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 			// update call record history listView adapter
 			_mCallRecordHistoryListView
 					.setAdapter(new CallRecordHistoryListItemAdapter(this,
-							_mCallRecordHistoryListView,
 							R.layout.call_record_historylist_item,
 							CallLogManager.getAllCallLogQueryCursor(),
 							new String[] { CALL_RECORD_CALLTYPE,
