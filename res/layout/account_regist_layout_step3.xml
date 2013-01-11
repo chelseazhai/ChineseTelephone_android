@@ -52,15 +52,15 @@
         
         <LinearLayout 
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/textfield_selector"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_edityzm"
             android:layout_margin="5dp"
             android:orientation="horizontal"
             >
             
             <TextView 
 	            android:layout_width="80dp"
-	            android:layout_height="50dp"
+	            android:layout_height="40dp"
 	            android:gravity="center_vertical|right"
 	            android:text="@string/account_psw"
 	            android:textColor="@color/dark_dim_gray"
@@ -70,7 +70,7 @@
             <EditText 
                 android:id="@+id/regist_psw_edittext"
                 android:layout_width="fill_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:ellipsize="end"
                 android:hint="@string/account_psw_hint"
                 android:inputType="textPassword"
@@ -81,15 +81,15 @@
         
         <LinearLayout 
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/textfield_selector"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_edityzm"
             android:layout_margin="5dp"
             android:orientation="horizontal"
             >
             
             <TextView 
 	            android:layout_width="80dp"
-	            android:layout_height="50dp"
+	            android:layout_height="40dp"
 	            android:gravity="center_vertical|right"
 	            android:text="@string/verify_psw"
 	            android:textColor="@color/dark_dim_gray"
@@ -99,7 +99,7 @@
             <EditText 
                 android:id="@+id/verify_psw_edittext"
                 android:layout_width="fill_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:ellipsize="end"
                 android:hint="@string/verify_psw_hint"
                 android:inputType="textPassword"
@@ -121,10 +121,10 @@
                 android:id="@+id/finish_btn"
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"
-				android:textSize="13sp"
+				android:textSize="20sp"
 				android:textColor="@android:color/white"
 				android:text="@string/finish"
-				android:background="@drawable/login_btn_bg"
+				android:background="@drawable/green_btn_bg"
 				android:onClick="onFinishRegist"
                 />
             

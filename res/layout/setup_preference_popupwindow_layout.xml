@@ -9,144 +9,121 @@
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="vertical"
         android:background="@drawable/popupwindow_relativelayout_bg"
-        android:paddingBottom="10dp"
-        >
-		
+        android:orientation="vertical"
+        android:paddingBottom="10dp" >
+
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/popupwindow_title_relativelayout_bg"
-            >
-        
-	        <TextView 
-	            android:layout_width="fill_parent"
-	            android:layout_height="40dp"
-	            android:text="@string/setup_popwin_title"
-	            android:paddingLeft="10dp"
-	            android:textColor="@android:color/white"
-	            android:textSize="20sp" 
-	            android:gravity="center_vertical"
-	            />
-        
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/popupwindow_title_relativelayout_bg" >
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="@string/setup_popwin_title"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
         </LinearLayout>
-        
+
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" 
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:text="@string/is_auto_launch"
             android:textColor="@color/dark_dim_gray"
-            android:textStyle="bold"
             android:textSize="20dp"
-            android:layout_marginLeft="10dp"
-            />
-        
-        <RadioGroup 
+            android:textStyle="bold" />
+
+        <RadioGroup
             android:id="@+id/auto_launch_radio_group"
-            android:layout_height="wrap_content"
             android:layout_width="fill_parent"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:checkedButton="@+id/auto_launch_rbtn"
+            android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            >
-        	<RadioButton 
-        	    android:id="@+id/auto_launch_rbtn"
-        	    android:layout_width="110dp"
-        	    android:layout_height="wrap_content"
-        	    android:text="@string/yes"
-        	    android:textSize="18dp"
-        	    android:textColor="@color/dark_dim_gray"
-        	    android:gravity="left|center_vertical"
-        	    
-        	    />
-        	<RadioButton 
-        	    android:id="@+id/manual_launch_rbtn"
-        	    android:layout_width="110dp"
-        	    android:layout_height="wrap_content"
-        	    android:text="@string/no"
-        	    android:textSize="18dp"
-        	    android:textColor="@color/dark_dim_gray"
-        	    android:gravity="left|center_vertical"
-        	    />
+            android:checkedButton="@+id/auto_launch_rbtn"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/auto_launch_rbtn"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:gravity="left|center_vertical"
+                android:text="@string/yes"
+                android:textColor="@color/dark_dim_gray"
+                android:textSize="18dp" />
+
+            <RadioButton
+                android:id="@+id/manual_launch_rbtn"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:gravity="left|center_vertical"
+                android:text="@string/no"
+                android:textColor="@color/dark_dim_gray"
+                android:textSize="18dp" />
         </RadioGroup>
-        
+
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" 
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:text="@string/is_auto_login"
             android:textColor="@color/dark_dim_gray"
-            android:textStyle="bold"
             android:textSize="19dp"
-            android:layout_marginLeft="10dp"
-            />
-        
-        <RadioGroup 
+            android:textStyle="bold" />
+
+        <RadioGroup
             android:id="@+id/auto_login_group"
-            android:layout_height="wrap_content"
             android:layout_width="fill_parent"
-            android:checkedButton="@+id/auto_login_rbtn"
-            android:orientation="horizontal"
-            android:gravity="center"
+            android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            >
-        	<RadioButton 
-        	    android:id="@+id/auto_login_rbtn"
-        	    android:layout_width="wrap_content"
-        	    android:layout_height="wrap_content"
-        	    android:text="@string/auto_login_rbtn_title"
-        	    android:textSize="18dp"
-        	    android:textColor="@color/dark_dim_gray"
-        	    android:layout_marginRight="5dp"
-        	    android:gravity="center"
-        	    />
-        	<RadioButton 
-        	    android:id="@+id/manual_login_rbtn"
-        	    android:layout_width="wrap_content"
-        	    android:layout_height="wrap_content"
-        	    android:text="@string/manual_login_rbtn_title"
-        	    android:textSize="18dp"
-        	    android:textColor="@color/dark_dim_gray"
-        	    android:gravity="center"
-        	    />
+            android:checkedButton="@+id/auto_login_rbtn"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/auto_login_rbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:gravity="center"
+                android:text="@string/auto_login_rbtn_title"
+                android:textColor="@color/dark_dim_gray"
+                android:textSize="18dp" />
+
+            <RadioButton
+                android:id="@+id/manual_login_rbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/manual_login_rbtn_title"
+                android:textColor="@color/dark_dim_gray"
+                android:textSize="18dp" />
         </RadioGroup>
-        
-        <LinearLayout 
+
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal"
-            >
-        	
+            android:orientation="horizontal" >
+
             <Button
-	            android:id="@+id/setup_cancelBtn"
-	            android:layout_width="100dp"
-	            android:layout_height="45dp"
-	            android:gravity="center_horizontal"
-	            android:paddingBottom="16dp"
-	            android:layout_marginRight="10dp"
-	            android:background="@drawable/regist_btn_bg"
-	            android:text="@string/cancel"
-	            android:textSize="12dp"
-	            android:textAppearance="?android:attr/textAppearanceSmall"
-	            android:textColor="@android:color/white" />
+                android:id="@+id/setup_cancelBtn"
+                style="@style/popup_window_cancel_bt"
+                android:layout_width="100dp"
+                android:layout_height="45dp"
+                android:layout_marginRight="10dp" />
 
-	       <Button
-	            android:id="@+id/setup_confirmBtn"
-	            android:layout_width="100dp"
-	            android:layout_height="43dp"
-	            android:background="@drawable/login_btn_bg"
-	            android:text="@string/ok"
-	            android:textSize="12dp"
-	            android:gravity="center_horizontal"
-	            android:paddingBottom="16dp"
-	            android:layout_marginLeft="10dp"
-	            android:textAppearance="?android:attr/textAppearanceSmall"
-	            android:textColor="@android:color/white" /> 
-	            
-	        
-    	</LinearLayout>
+            <Button
+                android:id="@+id/setup_confirmBtn"
+                style="@style/popup_window_ok_bt"
+                android:layout_width="100dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="10dp" />
+        </LinearLayout>
+    </LinearLayout>
 
-     </LinearLayout>
 </FrameLayout>

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- application default theme -->
     <style name="AppTheme" parent="android:Theme.Light.NoTitleBar" />
@@ -6,4 +6,16 @@
     <!-- application launch activity theme -->
     <style name="AppLaunchActivityTheme" parent="android:Theme.Black.NoTitleBar.Fullscreen" />
 
+    <style name="popup_window_cancel_bt">
+        <item name="android:background">@drawable/gray_btn_bg</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:text">@string/cancel</item>
+    </style>
+    <style name="popup_window_ok_bt">
+        <item name="android:background">@drawable/green_btn_bg</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:text">@string/ok</item>
+    </style>
 </resources>

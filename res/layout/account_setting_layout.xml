@@ -44,9 +44,9 @@
 
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_margin="5dp"
-                android:background="@drawable/textfeild_selected"
+                android:background="@drawable/textfield_selector"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -71,9 +71,9 @@
 
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_margin="5dp"
-                android:background="@drawable/textfeild_nor"
+                android:background="@drawable/bg_edityzm"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -152,24 +152,24 @@
                 <Button
                     android:id="@+id/account_regist_btn"
                     android:layout_width="130dp"
-                    android:layout_height="51.5dp"
+                    android:layout_height="50dp"
                     android:layout_alignParentLeft="true"
                     android:background="@drawable/regist_btn_bg"
                     android:onClick="onRegist"
                     android:text="@string/regist_btn_title"
                     android:textColor="@android:color/white"
-                    android:textSize="13sp" />
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/account_login_btn"
                     android:layout_width="130dp"
                     android:layout_height="50dp"
                     android:layout_alignParentRight="true"
-                    android:background="@drawable/login_btn_bg"
+                    android:background="@drawable/green_btn_bg"
                     android:onClick="onLogin"
                     android:text="@string/login_btn_title"
                     android:textColor="@android:color/white"
-                    android:textSize="13sp" />
+                    android:textSize="20sp" />
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>

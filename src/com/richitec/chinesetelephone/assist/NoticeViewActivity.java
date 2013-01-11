@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.R.integer;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,11 +13,11 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.constant.NoticeFields;
@@ -58,10 +57,10 @@ public class NoticeViewActivity extends NavigationActivity {
 		listAdapter = new NoticeListAdapter(this,
 				R.layout.notice_list_item_layout, cursor, new String[] {
 						NoticeFields.status.name(),
-						NoticeFields.content.name(),
-						NoticeFields.create_time.name() }, new int[] {
-						R.id.notice_flag_icon, R.id.notice_content_tv,
-						R.id.notice_time_tv });
+						NoticeFields.create_time.name(),
+						NoticeFields.content.name() }, new int[] {
+						R.id.notice_flag_icon, R.id.notice_time_tv,
+						R.id.notice_content_tv });
 		listView.setAdapter(listAdapter);
 	}
 
@@ -89,24 +88,26 @@ public class NoticeViewActivity extends NavigationActivity {
 					.getDataList().get(position);
 			final Integer noticeId = (Integer) notice.get(NoticeFields.noticeid
 					.name());
-			AlertDialog.Builder alertBuilder = new AlertDialog.Builder(NoticeViewActivity.this).setTitle(
-					R.string.notice_op).setItems(R.array.notice_op_menu,
-					new DialogInterface.OnClickListener() {
+			AlertDialog.Builder alertBuilder = new AlertDialog.Builder(
+					NoticeViewActivity.this).setTitle(R.string.notice_op)
+					.setItems(R.array.notice_op_menu,
+							new DialogInterface.OnClickListener() {
 
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							switch (which) {
-							case 0:
-								dbhelper.deleteNotice(noticeId);
-								refresh();
-								break;
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									switch (which) {
+									case 0:
+										dbhelper.deleteNotice(noticeId);
+										refresh();
+										break;
 
-							default:
-								break;
-							}
+									default:
+										break;
+									}
 
-						}
-					});
+								}
+							});
 			alertBuilder.show();
 			return false;
 		}
@@ -158,9 +159,9 @@ public class NoticeViewActivity extends NavigationActivity {
 				String status = (String) dataMap.get(dataKey);
 				ImageView iv = (ImageView) view;
 				if (NoticeStatus.read.name().equals(status)) {
-					iv.setImageResource(R.drawable.leaf_gray);
+					iv.setImageResource(R.drawable.notice_read);
 				} else {
-					iv.setImageResource(R.drawable.leaf);
+					iv.setImageResource(R.drawable.notice_unread);
 				}
 			} else if (view instanceof TextView) {
 				TextView tv = (TextView) view;

@@ -49,6 +49,7 @@
                 <TextView
                     android:layout_width="80dp"
                     android:layout_height="50dp"
+                    android:id="@+id/step_view"
                     android:gravity="center_vertical|left"
                     android:text="@string/step1"
                     android:textSize="25sp" />
@@ -67,14 +68,14 @@
 
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_margin="5dp"
-                android:background="@drawable/textfeild_nor"
+                android:background="@drawable/bg_edityzm"
                 android:orientation="horizontal" >
 
                 <TextView
                     android:layout_width="80dp"
-                    android:layout_height="50dp"
+                    android:layout_height="40dp"
                     android:gravity="center_vertical|right"
                     android:text="@string/getpsw_phone"
                     android:textColor="@color/dark_dim_gray"
@@ -83,7 +84,7 @@
                 <EditText
                     android:id="@+id/regist_phone_edittext"
                     android:layout_width="fill_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="40dp"
                     android:background="@null"
                     android:ellipsize="end"
                     android:hint="@string/regist_step1_hint"
@@ -102,11 +103,11 @@
                     android:id="@+id/get_authcode_btn"
                     android:layout_width="fill_parent"
                     android:layout_height="50dp"
-                    android:background="@drawable/login_btn_bg"
+                    android:background="@drawable/green_btn_bg"
                     android:onClick="onGetAuthCode"
                     android:text="@string/get_auth_code_btn"
                     android:textColor="@android:color/white"
-                    android:textSize="13sp" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:layout_width="fill_parent"

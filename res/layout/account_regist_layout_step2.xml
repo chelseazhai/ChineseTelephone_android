@@ -4,106 +4,91 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical" >
-    
-    <LinearLayout 
+
+    <LinearLayout
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:orientation="vertical"
         android:background="@drawable/account_setting_bg"
-        android:padding="10dp"
-        >
-        <TextView 
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dp" >
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/account_regist"
-            android:textSize="25sp"
             android:gravity="center"
-            />
-        
-        <RelativeLayout 
+            android:text="@string/account_regist"
+            android:textSize="25sp" />
+
+        <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="50dp"
-            android:layout_margin="5dp"
-            >
-            
-            <TextView 
-	            android:layout_width="80dp"
-	            android:layout_height="50dp"
-	            android:gravity="center_vertical|left"
-	            android:text="@string/step2"
-	            android:textSize="25sp"
-            />
-            
-            <TextView 
+            android:layout_margin="5dp" >
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:gravity="center_vertical|left"
+                android:text="@string/step2"
+                android:textSize="25sp" />
+
+            <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right|bottom"
-                android:text="@string/input_auth_code_inform"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
-                android:gravity="right"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right|bottom"
                 android:ellipsize="end"
-                >
+                android:gravity="right"
+                android:text="@string/input_auth_code_inform" >
             </TextView>
         </RelativeLayout>
-        
-        <LinearLayout 
+
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/textfeild_nor"
+            android:layout_height="40dp"
             android:layout_margin="5dp"
-            android:orientation="horizontal"
-            >
-            
-            <TextView 
-	            android:layout_width="80dp"
-	            android:layout_height="50dp"
-	            android:gravity="center_vertical|right"
-	            android:text="@string/auth_code"
-	            android:textColor="@color/dark_dim_gray"
-	            android:textSize="17sp"
-            />
-            
-            <EditText 
+            android:background="@drawable/bg_edityzm"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:gravity="center_vertical|right"
+                android:text="@string/auth_code"
+                android:textColor="@color/dark_dim_gray"
+                android:textSize="17sp" />
+
+            <EditText
                 android:id="@+id/auth_code_edittext"
                 android:layout_width="fill_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
+                android:background="@null"
                 android:ellipsize="end"
                 android:hint="@string/regist_step2_hint"
-                android:inputType="phone"
-                android:background="@null"
-                />
-            
+                android:inputType="phone" />
         </LinearLayout>
-        
-        <LinearLayout 
+
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
-            android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            >
-            
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical" >
+
             <Button
                 android:id="@+id/next_btn"
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"
-				android:textSize="13sp"
-				android:textColor="@android:color/white"
-				android:text="@string/next"
-				android:background="@drawable/login_btn_bg"
-				android:onClick="onVerifyAuthCodeAction"
-                />
-            
+                android:background="@drawable/green_btn_bg"
+                android:onClick="onVerifyAuthCodeAction"
+                android:text="@string/next"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
         </LinearLayout>
-        
     </LinearLayout>
-    
-    
-    
 
 </LinearLayout>

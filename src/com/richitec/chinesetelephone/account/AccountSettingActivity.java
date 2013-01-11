@@ -403,12 +403,12 @@ public class AccountSettingActivity extends Activity {
 				((LinearLayout) v.getParent())
 						.setBackgroundDrawable(AccountSettingActivity.this
 								.getResources().getDrawable(
-										R.drawable.textfeild_selected));
+										R.drawable.bg_edit_s));
 			} else {
 				((LinearLayout) v.getParent())
 						.setBackgroundDrawable(AccountSettingActivity.this
 								.getResources().getDrawable(
-										R.drawable.textfeild_nor));
+										R.drawable.bg_edityzm));
 			}
 		}
 

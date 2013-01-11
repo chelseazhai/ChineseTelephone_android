@@ -27,40 +27,40 @@
                 android:textColor="@android:color/white"
                 android:textSize="20sp" />
         </LinearLayout>
-        
+
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical|left"
-            android:layout_marginLeft="10dp" 
+            android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:gravity="center_vertical|left"
+            android:textSize="16sp"
             android:text="@string/bind_number_inform"
-            android:textColor="@color/red"
-            />
-        
+            android:textColor="@color/red" />
+
         <Button
             android:id="@+id/setAuth_choose_country_btn"
             android:layout_width="fill_parent"
             android:layout_height="40dp"
-            android:text=""
-            android:textSize="17dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:gravity="left|center_vertical"
+            android:layout_marginTop="10dp"
             android:background="@drawable/btn_bg"
             android:drawableRight="@drawable/down_into_icon"
-            />
+            android:gravity="left|center_vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text=""
+            android:textSize="17dp" />
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:gravity="center_vertical"
-            android:orientation="horizontal" >
+            android:orientation="vertical" >
 
             <TextView
                 android:layout_width="100dp"
@@ -68,12 +68,12 @@
                 android:gravity="center"
                 android:text="@string/set_bind_number_message"
                 android:textColor="@color/dark_dim_gray"
-                android:textSize="15sp" />
+                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/set_auth_number_editText"
                 android:layout_width="fill_parent"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/textfield_selector"
@@ -91,34 +91,20 @@
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:orientation="horizontal" >
-            
+
             <Button
                 android:id="@+id/set_auth_cancelBtn"
+                style="@style/popup_window_cancel_bt"
                 android:layout_width="100dp"
                 android:layout_height="45dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/regist_btn_bg"
-                android:gravity="center_horizontal"
-            	android:paddingBottom="16dp"
-                android:text="@string/cancel"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@android:color/white"
-                android:textSize="12dp" />
+                android:layout_marginRight="10dp" />
 
             <Button
                 android:id="@+id/set_auth_confirmBtn"
+                style="@style/popup_window_ok_bt"
                 android:layout_width="100dp"
-                android:layout_height="43dp"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/login_btn_bg"
-                android:gravity="center_horizontal"
-            	android:paddingBottom="16dp"
-                android:text="@string/ok"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@android:color/white"
-                android:textSize="12dp" />
-
-            
+                android:layout_height="45dp"
+                android:layout_marginLeft="10dp" />
         </LinearLayout>
     </LinearLayout>
 

@@ -44,14 +44,14 @@
 
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_margin="10dp"
-                android:background="@drawable/textfeild_selected"
+                android:background="@drawable/bg_edit_s"
                 android:orientation="horizontal" >
 
                 <TextView
                     android:layout_width="80dp"
-                    android:layout_height="50dp"
+                    android:layout_height="40dp"
                     android:gravity="center_vertical|right"
                     android:text="@string/getpsw_phone"
                     android:textColor="@color/dark_dim_gray"
@@ -60,7 +60,7 @@
                 <EditText
                     android:id="@+id/get_phone_editText"
                     android:layout_width="fill_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="40dp"
                     android:background="@null"
                     android:ellipsize="end"
                     android:hint="@string/getpsw_phone_hint"
@@ -92,11 +92,11 @@
                     android:layout_height="50dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="5dp"
-                    android:background="@drawable/login_btn_bg"
+                    android:background="@drawable/green_btn_bg"
                     android:onClick="onGetPSWAction"
                     android:text="@string/ok"
                     android:textColor="@android:color/white"
-                    android:textSize="13sp" />
+                    android:textSize="20sp" />
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>

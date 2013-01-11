@@ -2,13 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:background="@color/light_gray"
+    android:orientation="vertical"
+    android:paddingBottom="15dp"
+    android:paddingTop="5dp" >
 
     <ListView
         android:id="@+id/notice_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:dividerHeight="1dp" >
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@android:color/transparent"
+        android:listSelector="@android:color/transparent" >
     </ListView>
 
 </LinearLayout>

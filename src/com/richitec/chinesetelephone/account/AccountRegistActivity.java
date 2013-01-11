@@ -314,11 +314,11 @@ public class AccountRegistActivity extends Activity {
 			// TODO Auto-generated method stub
 			if(hasFocus){
 				((LinearLayout)v.getParent()).setBackgroundDrawable(
-						AccountRegistActivity.this.getResources().getDrawable(R.drawable.textfeild_selected));
+						AccountRegistActivity.this.getResources().getDrawable(R.drawable.bg_edit_s));
 			}
 			else{
 				((LinearLayout)v.getParent()).setBackgroundDrawable(
-						AccountRegistActivity.this.getResources().getDrawable(R.drawable.textfeild_nor));
+						AccountRegistActivity.this.getResources().getDrawable(R.drawable.bg_edityzm));
 			}
 		}
     }
