@@ -7,4 +7,8 @@
         <item>@string/cancel</item>
     </string-array>
 
+    <string-array name="notice_op_menu">
+        <item >@string/delete_notice</item>
+        <item >@string/Cancel</item>
+    </string-array>
 </resources>

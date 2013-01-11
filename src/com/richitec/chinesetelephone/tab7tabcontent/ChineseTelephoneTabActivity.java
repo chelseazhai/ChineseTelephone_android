@@ -15,6 +15,7 @@ import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
 import com.richitec.chinesetelephone.utils.AppUpdateManager;
 import com.richitec.chinesetelephone.utils.SipRegisterManager;
+import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.customcomponent.CommonTabSpecIndicator;
 
 public class ChineseTelephoneTabActivity extends TabActivity {
@@ -203,7 +204,9 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 								dialog.dismiss();
 								SipUtils.unregisterSipAccount(null);
 								SipUtils.destroySipEngine();
-								System.exit(0);
+								AddressBookManager.getInstance().unRegistContactObserver();
+//								System.exit(0);
+								finish();
 							}
 						}).setNegativeButton(R.string.cancel, null).show();
 	}

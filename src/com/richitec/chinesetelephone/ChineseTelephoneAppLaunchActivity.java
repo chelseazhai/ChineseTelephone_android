@@ -1,7 +1,10 @@
 package com.richitec.chinesetelephone;
 
 import android.content.Intent;
+import android.database.ContentObserver;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import com.richitec.chinesetelephone.account.AccountSettingActivity;
@@ -13,6 +16,7 @@ import com.richitec.chinesetelephone.service.NoticeService;
 import com.richitec.chinesetelephone.tab7tabcontent.ChineseTelephoneTabActivity;
 import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity;
 import com.richitec.chinesetelephone.utils.DialPreferenceManager;
+import com.richitec.commontoolkit.CommonToolkitApplication;
 import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.addressbook.ContactSyncService;
@@ -31,16 +35,6 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 
 	@Override
 	public Intent intentActivity() {
-		if (!DeviceUtils.isServiceRunning(this, ContactSyncService.class)) {
-			Intent service = new Intent(this, ContactSyncService.class);
-			startService(service);
-		}
-
-		if (!DeviceUtils.isServiceRunning(this, NoticeService.class)) {
-			Intent noticeService = new Intent(this, NoticeService.class);
-			startService(noticeService);
-		}
-		
 		// go to Chinese telephone main tab activity
 		loadAccount();
 
@@ -63,7 +57,17 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 
 		// init all name phonetic sorted contacts info array
 		ContactListTabContentActivity.initNamePhoneticSortedContactsInfoArray();
-
+		
+	}
+	
+	@Override
+	public void doPostExecute() {
+		if (!DeviceUtils.isServiceRunning(this, NoticeService.class)) {
+			Intent noticeService = new Intent(this, NoticeService.class);
+			startService(noticeService);
+		}
+		
+		AddressBookManager.getInstance().registContactOberver();
 	}
 
 	private void loadAccount() {
@@ -120,7 +124,8 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 	@Override
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
-		System.exit(0);
+		AddressBookManager.getInstance().unRegistContactObserver();
+//		System.exit(0);
 	}
 
 	

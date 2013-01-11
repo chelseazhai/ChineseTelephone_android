@@ -127,7 +127,7 @@ public class NoticeService extends Service {
 			params.put("maxId", maxId);
 			HttpUtils.getRequest(context.getString(R.string.server_url)
 					+ context.getString(R.string.getNewNotice_url), params,
-					null, HttpRequestType.ASYNCHRONOUS, onFinishedGetNotice);
+					null, HttpRequestType.SYNCHRONOUS, onFinishedGetNotice);
 		}
 
 		private OnHttpRequestListener onFinishedGetNotice = new OnHttpRequestListener() {

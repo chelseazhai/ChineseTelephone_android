@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 import android.R.integer;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -30,7 +32,7 @@ public class NoticeViewActivity extends NavigationActivity {
 	private NoticeListAdapter listAdapter;
 	private NoticeDBHelper dbhelper;
 	private Cursor cursor;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,8 +45,9 @@ public class NoticeViewActivity extends NavigationActivity {
 		dbhelper = new NoticeDBHelper(this);
 
 		refresh();
-		
+
 		listView.setOnItemClickListener(onNoticeItemClick);
+		listView.setOnItemLongClickListener(onNoticeLongClick);
 	}
 
 	public void refresh() {
@@ -61,7 +64,7 @@ public class NoticeViewActivity extends NavigationActivity {
 						R.id.notice_time_tv });
 		listView.setAdapter(listAdapter);
 	}
-	
+
 	private OnItemClickListener onNoticeItemClick = new OnItemClickListener() {
 
 		@Override
@@ -84,11 +87,27 @@ public class NoticeViewActivity extends NavigationActivity {
 				int position, long id) {
 			HashMap<String, Object> notice = (HashMap<String, Object>) listAdapter
 					.getDataList().get(position);
-			Integer noticeId = (Integer) notice.get(NoticeFields.noticeid
+			final Integer noticeId = (Integer) notice.get(NoticeFields.noticeid
 					.name());
-			
-			
-			
+			AlertDialog.Builder alertBuilder = new AlertDialog.Builder(NoticeViewActivity.this).setTitle(
+					R.string.notice_op).setItems(R.array.notice_op_menu,
+					new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							switch (which) {
+							case 0:
+								dbhelper.deleteNotice(noticeId);
+								refresh();
+								break;
+
+							default:
+								break;
+							}
+
+						}
+					});
+			alertBuilder.show();
 			return false;
 		}
 	};

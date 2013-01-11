@@ -342,6 +342,8 @@
 
     <!-- notice center -->
     <string name="notice_time">时间：</string>
+    <string name="notice_op">请选择操作</string>
+    <string name="delete_notice">删除</string>
     <!-- other -->
     <string name="currency_sign">￥</string>
 

@@ -139,7 +139,8 @@ public class ContactListTabContentActivity extends NavigationActivity {
 		((EditText) findViewById(R.id.contact_search_editText))
 				.addTextChangedListener(new ContactSearchEditTextTextWatcher());
 		
-		ContactSyncService.setHandler(new UpdateABListHandler());
+//		ContactSyncService.setHandler(new UpdateABListHandler());
+		AddressBookManager.getInstance().addContactObserverhandler(new UpdateABListHandler());
 	}
 
 	@Override
