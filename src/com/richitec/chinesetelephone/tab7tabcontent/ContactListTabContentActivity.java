@@ -113,7 +113,7 @@ public class ContactListTabContentActivity extends NavigationActivity {
 
 		// set new contact button as right bar button item
 		setRightBarButtonItem(new ImageBarButtonItem(this,
-				android.R.drawable.ic_input_add, BarButtonItemStyle.RIGHT_GO,
+				R.drawable.img_newcontact_btn, BarButtonItemStyle.RIGHT_GO,
 				new AddNewContactBtnOnClickListener()));
 
 		// check all address book name phonetic sorted contacts detail info list

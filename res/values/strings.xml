@@ -13,6 +13,18 @@
     <string name="call_record_history_list_tab_title">Recent</string>
     <string name="call_record_history_list_nav_title">Call Record</string>
     <string name="callRecord_callType_imageView_content_description">call type image view</string>
+    <string name="yesterdayCallRecord_callDate">Yesterday</string>
+
+    <string-array name="callRecord_callDate_daysOfWeek">
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+    </string-array>
+
     <string name="callRecord_detailInfo_imageButton_content_description">call record detail info image button</string>
     <string name="callRecord_unknownCalleePhone_alertDialog_message">Unknown phone, can\'t dial</string>
     <string name="callRecord_unknownCalleePhone_alertDialog_reselectBtn_title">Reselect</string>
