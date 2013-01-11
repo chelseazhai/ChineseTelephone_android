@@ -29,16 +29,16 @@
     <string name="outgoingCall_imageView_content_description">outgoing call image view</string>
     <string name="recordDetail_imageButton_content_description">call record detail info image button</string>
     <string name="callRecord_callType_imageView_content_description">call type image view</string>
-    <string name="yesterdayCallRecord_callDate">Yesterday</string>
+    <string name="yesterdayCallRecord_callDate">昨天</string>
 
     <string-array name="callRecord_callDate_daysOfWeek">
-        <item>Sunday</item>
-        <item>Monday</item>
-        <item>Tuesday</item>
-        <item>Wednesday</item>
-        <item>Thursday</item>
-        <item>Friday</item>
-        <item>Saturday</item>
+        <item>星期日</item>
+        <item>星期一</item>
+        <item>星期二</item>
+        <item>星期三</item>
+        <item>星期四</item>
+        <item>星期五</item>
+        <item>星期六</item>
     </string-array>
 
     <string name="callRecord_detailInfo_imageButton_content_description">call record detail info image button</string>
