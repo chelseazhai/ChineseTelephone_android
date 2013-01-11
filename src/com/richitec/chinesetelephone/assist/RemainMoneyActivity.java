@@ -38,7 +38,7 @@ public class RemainMoneyActivity extends NavigationActivity {
 		setContentView(R.layout.activity_remain_money_layout);
 
 		this.setRightBarButtonItem(new BarButtonItem(this,
-				BarButtonItemStyle.RIGHT_GO, R.string.charge_title_popwin,
+				R.string.charge_title_popwin, BarButtonItemStyle.RIGHT_GO,
 				chargeBtnListener));
 
 		setTitle(R.string.get_remain_money_title);

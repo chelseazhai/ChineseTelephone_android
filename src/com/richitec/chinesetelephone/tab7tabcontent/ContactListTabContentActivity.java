@@ -56,7 +56,6 @@ import com.richitec.commontoolkit.CommonToolkitApplication;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.addressbook.ContactBean;
-import com.richitec.commontoolkit.addressbook.ContactSyncService;
 import com.richitec.commontoolkit.customadapter.CommonListAdapter;
 import com.richitec.commontoolkit.customcomponent.BarButtonItem.BarButtonItemStyle;
 import com.richitec.commontoolkit.customcomponent.CommonPopupWindow;

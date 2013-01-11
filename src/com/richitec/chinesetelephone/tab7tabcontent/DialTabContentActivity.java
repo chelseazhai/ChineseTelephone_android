@@ -164,7 +164,7 @@ public class DialTabContentActivity extends NavigationActivity {
 								Phone.TYPE_MOBILE);
 
 						// check contact exit intent and start the activity
-						if (CommonUtils.isIntentAvailable(_contactEditIntent, DialTabContentActivity.this)) {
+						if (CommonUtils.isIntentAvailable(_contactEditIntent)) {
 							startActivity(_contactEditIntent);
 						}
 					} else {
@@ -279,7 +279,7 @@ public class DialTabContentActivity extends NavigationActivity {
 				Phone.TYPE_MOBILE);
 
 		// check contact insert intent and start the activity
-		if (CommonUtils.isIntentAvailable(_contactInsertIntent, DialTabContentActivity.this)) {
+		if (CommonUtils.isIntentAvailable(_contactInsertIntent)) {
 			startActivity(_contactInsertIntent);
 		}
 	}
@@ -549,7 +549,7 @@ public class DialTabContentActivity extends NavigationActivity {
 				_contactPickIntent.setType(Contacts.CONTENT_TYPE);
 
 				// check contact pick intent and start the activity for result
-				if (CommonUtils.isIntentAvailable(_contactPickIntent, DialTabContentActivity.this)) {
+				if (CommonUtils.isIntentAvailable(_contactPickIntent)) {
 					startActivityForResult(_contactPickIntent, PICK_CONTACT);
 				}
 			}
