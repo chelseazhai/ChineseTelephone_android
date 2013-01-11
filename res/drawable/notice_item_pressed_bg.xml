@@ -8,6 +8,6 @@
         android:bottomLeftRadius="6.0dp"
         android:bottomRightRadius="6.0dp" />
 
-    <solid android:color="@color/light_transparent_blue"/>
+    <solid android:color="#87a3ea"/>
 
 </shape>
