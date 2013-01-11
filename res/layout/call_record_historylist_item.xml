@@ -17,7 +17,7 @@
         android:contentDescription="@string/callRecord_callType_imageView_content_description" />
 
     <RelativeLayout
-        android:layout_width="168dp"
+        android:layout_width="158dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
@@ -52,6 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:layout_marginRight="6dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/callRecord_detailInfo_imageButton_content_description"
         android:focusable="false"
@@ -62,7 +63,7 @@
         android:layout_width="62dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginRight="2dp"
+        android:layout_marginRight="6dp"
         android:layout_toLeftOf="@id/recordDetail_imageBtn"
         android:gravity="right"
         android:textAppearance="?android:attr/textAppearanceSmall"

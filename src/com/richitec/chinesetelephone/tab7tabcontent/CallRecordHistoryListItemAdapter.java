@@ -2,6 +2,7 @@ package com.richitec.chinesetelephone.tab7tabcontent;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -215,16 +216,70 @@ public class CallRecordHistoryListItemAdapter extends CommonListCursorAdapter {
 		// define return string builder
 		StringBuilder _ret = new StringBuilder();
 
-		// call record initiate time day and time format, format unix timeStamp
+		// call record initiate time day and time format, format timeStamp
 		final DateFormat _callRecordInitiateTimeDayFormat = new SimpleDateFormat(
 				"yy-MM-dd", Locale.getDefault());
 		final DateFormat _callRecordInitiateTimeTimeFormat = new SimpleDateFormat(
-				"HH:mm:ss", Locale.getDefault());
+				"HH:mm", Locale.getDefault());
 
-		// format day and time
-		_ret.append(_callRecordInitiateTimeDayFormat.format(callDate))
-				.append("\n")
-				.append(_callRecordInitiateTimeTimeFormat.format(callDate));
+		// miliSceonds of day, days of week
+		Long MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000L;
+		Integer DAYS_PER_WEEK = 7;
+
+		// get current system time
+		Long _currentSystemTime = System.currentTimeMillis();
+
+		// compare current system time and call date
+		if (_currentSystemTime - callDate >= 0) {
+			// get today calendar instance
+			Calendar _todayCalendarInstance = Calendar.getInstance(Locale
+					.getDefault());
+			_todayCalendarInstance.setTimeInMillis(_currentSystemTime);
+			_todayCalendarInstance.set(Calendar.HOUR, 0);
+			_todayCalendarInstance.set(Calendar.MINUTE, 0);
+			_todayCalendarInstance.set(Calendar.SECOND, 0);
+			_todayCalendarInstance.set(Calendar.MILLISECOND, 0);
+
+			// get call date calendar instance
+			Calendar _callDateCalendarInstance = Calendar.getInstance(Locale
+					.getDefault());
+			_callDateCalendarInstance.setTimeInMillis(callDate);
+
+			// format day and time
+			if (_callDateCalendarInstance.before(_todayCalendarInstance)) {
+				// get today and call date time different
+				Long _today7callDateCalendarTimeDifferent = _todayCalendarInstance
+						.getTimeInMillis()
+						- _callDateCalendarInstance.getTimeInMillis();
+
+				// get application context
+				Context _appContext = CommonToolkitApplication.getContext();
+
+				// check time different
+				if (_today7callDateCalendarTimeDifferent <= MILLISECONDS_PER_DAY) {
+					_ret.append(_appContext.getResources().getString(
+							R.string.yesterdayCallRecord_callDate));
+				} else if (_today7callDateCalendarTimeDifferent <= DAYS_PER_WEEK
+						* MILLISECONDS_PER_DAY) {
+					// update time different day
+					_todayCalendarInstance
+							.add(Calendar.DAY_OF_MONTH,
+									(int) -(_today7callDateCalendarTimeDifferent / MILLISECONDS_PER_DAY));
+
+					_ret.append(_appContext.getResources().getStringArray(
+							R.array.callRecord_callDate_daysOfWeek)[_todayCalendarInstance
+							.get(Calendar.DAY_OF_WEEK) - 1]);
+				} else {
+					_ret.append(_callRecordInitiateTimeDayFormat
+							.format(callDate));
+				}
+			} else {
+				_ret.append(_callRecordInitiateTimeTimeFormat.format(callDate));
+			}
+		} else {
+			Log.e(LOG_TAG,
+					"Format call record initiate time error, call date greater than current system time");
+		}
 
 		return _ret.toString();
 	}

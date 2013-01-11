@@ -11,6 +11,7 @@ import java.util.Map;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -18,6 +19,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.ContactsContract.Contacts;
+import android.provider.ContactsContract.RawContacts;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -55,9 +58,12 @@ import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.addressbook.ContactBean;
 import com.richitec.commontoolkit.addressbook.ContactSyncService;
 import com.richitec.commontoolkit.customadapter.CommonListAdapter;
+import com.richitec.commontoolkit.customcomponent.BarButtonItem.BarButtonItemStyle;
 import com.richitec.commontoolkit.customcomponent.CommonPopupWindow;
+import com.richitec.commontoolkit.customcomponent.ImageBarButtonItem;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar.OnTouchListener;
+import com.richitec.commontoolkit.utils.CommonUtils;
 import com.richitec.commontoolkit.utils.StringUtils;
 
 public class ContactListTabContentActivity extends NavigationActivity {
@@ -109,6 +115,11 @@ public class ContactListTabContentActivity extends NavigationActivity {
 		// set title
 		setTitle(R.string.contact_list_tab7nav_title);
 
+		// set new contact button as right bar button item
+		setRightBarButtonItem(new ImageBarButtonItem(this,
+				R.drawable.img_newcontact_btn, BarButtonItemStyle.RIGHT_GO,
+				new AddNewContactBtnOnClickListener()));
+
 		// check all address book name phonetic sorted contacts detail info list
 		// and init present contacts in address book detail info array
 		if (null == _smAllNamePhoneticSortedContactsInfoArray) {
@@ -157,6 +168,21 @@ public class ContactListTabContentActivity extends NavigationActivity {
 
 	public ContactSearchStatus getContactSearchStatus() {
 		return _mContactSearchStatus;
+	}
+
+	// add new contact
+	public static void addNewContact(Context activityContext) {
+		// define contact insert intent
+		Intent _contactInsertIntent = new Intent(Intent.ACTION_INSERT);
+
+		// put type and extra
+		_contactInsertIntent.setType(Contacts.CONTENT_TYPE);
+		_contactInsertIntent.setType(RawContacts.CONTENT_TYPE);
+
+		// check contact insert intent and start the activity
+		if (CommonUtils.isIntentAvailable(_contactInsertIntent)) {
+			activityContext.startActivity(_contactInsertIntent);
+		}
 	}
 
 	// generate in address book contact adapter
@@ -366,6 +392,17 @@ public class ContactListTabContentActivity extends NavigationActivity {
 	}
 
 	// inner class
+	// add new contact button on click listener
+	class AddNewContactBtnOnClickListener implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			// add new contact
+			addNewContact(ContactListTabContentActivity.this);
+		}
+
+	}
+
 	// contact search status
 	enum ContactSearchStatus {
 		NONESEARCH, SEARCHBYNAME, SEARCHBYCHINESENAME, SEARCHBYPHONE
