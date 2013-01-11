@@ -261,10 +261,16 @@ public class CallRecordHistoryListItemAdapter extends CommonListCursorAdapter {
 							R.string.yesterdayCallRecord_callDate));
 				} else if (_today7callDateCalendarTimeDifferent <= DAYS_PER_WEEK
 						* MILLISECONDS_PER_DAY) {
+					// time different divide
+					Long _timeDifferentDivide = _today7callDateCalendarTimeDifferent
+							/ MILLISECONDS_PER_DAY;
+
 					// update time different day
 					_todayCalendarInstance
 							.add(Calendar.DAY_OF_MONTH,
-									(int) -(_today7callDateCalendarTimeDifferent / MILLISECONDS_PER_DAY));
+									(int) (0 == _today7callDateCalendarTimeDifferent
+											% MILLISECONDS_PER_DAY ? -_timeDifferentDivide
+											: -(_timeDifferentDivide + 1)));
 
 					_ret.append(_appContext.getResources().getStringArray(
 							R.array.callRecord_callDate_daysOfWeek)[_todayCalendarInstance
