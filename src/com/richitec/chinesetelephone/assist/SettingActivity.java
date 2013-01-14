@@ -29,6 +29,7 @@ import com.richitec.chinesetelephone.account.AccountSettingActivity;
 import com.richitec.chinesetelephone.bean.DialPreferenceBean;
 import com.richitec.chinesetelephone.constant.DialPreference;
 import com.richitec.chinesetelephone.constant.LaunchSetting;
+import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.constant.TelUser;
 import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.chinesetelephone.utils.AppUpdateManager;
@@ -77,9 +78,9 @@ public class SettingActivity extends NavigationActivity {
 		countryCodeManager = CountryCodeManager
 				.getInstance();
 		
-		modifyPSWPopupWindow = new ModifyPSWPopupWindow(
-				R.layout.modify_psw_popupwindow_layout, LayoutParams.FILL_PARENT,
-				LayoutParams.FILL_PARENT);
+//		modifyPSWPopupWindow = new ModifyPSWPopupWindow(
+//				R.layout.modify_psw_popupwindow_layout, LayoutParams.FILL_PARENT,
+//				LayoutParams.FILL_PARENT);
 		
 		getPSWPopupWindow = new GetPSWPopupWindow(
 				R.layout.get_psw_popupwindow_layout, LayoutParams.FILL_PARENT,
@@ -263,11 +264,6 @@ public class SettingActivity extends NavigationActivity {
 		this.getParent().onBackPressed();
 	}
 
-	/*
-	 * public void setAreaCode(View v){ setAreaCodePopupWindow.showAtLocation(v,
-	 * Gravity.CENTER, 0, 0); }
-	 */
-
 	public void setDialCountryCode(View v) {
 		UserBean telUser = UserManager.getInstance().getUser();
 		String dialcountrycode = (String) telUser
@@ -337,63 +333,6 @@ public class SettingActivity extends NavigationActivity {
 		}
 	};
 
-	/*
-	 * protected void onActivityResult(int requestCode, int resultCode, Intent
-	 * data) {
-	 * 
-	 * if (requestCode == 0) {
-	 * 
-	 * if (resultCode == RESULT_OK) {
-	 * 
-	 * if (data == null) { return; }
-	 * 
-	 * Uri result = data.getData(); final String[] phones =
-	 * getPhoneNumbers(result);
-	 * 
-	 * if(phones.length>0){ if(phones.length==1){ Uri uri = Uri.parse("smsto:" +
-	 * phones[0]); Intent intent = new Intent(Intent.ACTION_SENDTO, uri); String
-	 * inviteMessage = getString(R.string.invite_message).replace("***",
-	 * inviteLink); intent.putExtra("sms_body", inviteMessage);
-	 * startActivity(intent); } else{ AlertDialog.Builder builder = new
-	 * AlertDialog.Builder(SettingActivity.this);
-	 * builder.setTitle(getString(R.string.choose_sms_number));
-	 * builder.setItems(phones, new DialogInterface.OnClickListener(){
-	 * 
-	 * @Override public void onClick(DialogInterface dialog, int which) { //
-	 * TODO Auto-generated method stub Uri uri = Uri.parse("smsto:" +
-	 * phones[0]); Intent intent = new Intent(Intent.ACTION_SENDTO, uri); String
-	 * inviteMessage = getString(R.string.invite_message).replace("***",
-	 * inviteLink); intent.putExtra("sms_body", inviteMessage);
-	 * startActivity(intent); } } )
-	 * .setNegativeButton(getString(R.string.cancel), null); builder.show(); } }
-	 * else{ MyToast.show(this, R.string.no_sms_number, Toast.LENGTH_SHORT); } }
-	 * } }
-	 */
-
-	/*
-	 * private String[] getPhoneNumbers(Uri contactData){ String contactId =
-	 * contactData.getLastPathSegment(); Cursor cursor =
-	 * managedQuery(contactData, null, null, null, null); cursor.moveToFirst();
-	 * 
-	 * int phoneColumn =
-	 * cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER); int
-	 * phoneNum = cursor.getInt(phoneColumn);
-	 * 
-	 * if(phoneNum>0){ final String[] _projection = new String[] {Phone.NUMBER
-	 * }; final String _selection = Data.MIMETYPE +
-	 * "=? and "+Phone.CONTACT_ID+"=?"; final String[] _selectionArgs = new
-	 * String[] { Phone.CONTENT_ITEM_TYPE,contactId }; List<String> phones = new
-	 * ArrayList<String>();
-	 * 
-	 * Cursor phoneCursor = this.getContentResolver().query(Data.CONTENT_URI,
-	 * _projection, _selection, _selectionArgs, null); if(phoneCursor!=null){
-	 * while(phoneCursor.moveToNext()){ String phone =
-	 * phoneCursor.getString(phoneCursor.getColumnIndex(Phone.NUMBER)); //find
-	 * the old record and update it if(phone!=null&&!phone.trim().equals(""))
-	 * phones.add(phone); } } return phones.toArray(new String[]{}); } else{
-	 * return new String[]{}; } }
-	 */
-
 	private OnClickListener getPswListener = new OnClickListener() {
 
 		@Override
@@ -443,7 +382,9 @@ public class SettingActivity extends NavigationActivity {
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
+			modifyPSWPopupWindow = new ModifyPSWPopupWindow(
+					R.layout.modify_psw_popupwindow_layout, LayoutParams.FILL_PARENT,
+					LayoutParams.FILL_PARENT);
 			modifyPSWPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
 		}
 
@@ -508,6 +449,11 @@ public class SettingActivity extends NavigationActivity {
 
 		@Override
 		public void onFinished(HttpResponseResult responseResult) {
+			dismiss();
+			
+			if (modifyPSWPopupWindow == null) {
+				return;
+			}
 			try {
 				JSONObject data = new JSONObject(
 						responseResult.getResponseText());
@@ -525,7 +471,7 @@ public class SettingActivity extends NavigationActivity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			dismiss();
+			
 			if (modifyPSWPopupWindow != null)
 				modifyPSWPopupWindow.dismiss();
 			MyToast.show(SettingActivity.this, R.string.change_psw_success,
@@ -563,13 +509,6 @@ public class SettingActivity extends NavigationActivity {
 				+ getString(R.string.getpsw_url), PostRequestFormat.URLENCODED,
 				params, null, HttpRequestType.ASYNCHRONOUS, onFinishGetPSW);
 	}
-
-	/*
-	 * private void setAreaCode(String areacode){ TelUserBean telUserBean =
-	 * (TelUserBean) UserManager.getInstance().getUser();
-	 * telUserBean.setAreaCode(areacode);
-	 * DataStorageUtils.putObject(TelUser.areaCode.name(), areacode); }
-	 */
 
 	private void setDialCountryCode(String dialcountryCode) {
 		UserBean telUserBean = UserManager.getInstance().getUser();
@@ -906,69 +845,6 @@ public class SettingActivity extends NavigationActivity {
 
 	}
 
-	/*
-	 * class SetAreaCodePopupWindow extends CommonPopupWindow {
-	 * 
-	 * public SetAreaCodePopupWindow(int resource, int width, int height,
-	 * boolean focusable, boolean isBindDefListener) { super(resource, width,
-	 * height, focusable, isBindDefListener); }
-	 * 
-	 * public SetAreaCodePopupWindow(int resource, int width, int height) {
-	 * super(resource, width, height); TelUserBean telUser = (TelUserBean)
-	 * UserManager.getInstance().getUser(); String areacode =
-	 * telUser.getAreaCode(); if(areacode!=null&&!areacode.equals(""))
-	 * ((EditText
-	 * )getContentView().findViewById(R.id.set_areacode_editText)).setText
-	 * (areacode); }
-	 * 
-	 * @Override protected void bindPopupWindowComponentsListener() {
-	 * 
-	 * // bind contact phone select cancel button click listener ((Button)
-	 * getContentView().findViewById(R.id.set_areacode_confirmBtn))
-	 * .setOnClickListener(new SetAreaCodeConfirmBtnOnClickListener());
-	 * ((Button)getContentView().findViewById(R.id.set_areacode_cancelBtn)).
-	 * setOnClickListener( new SetAreaCodeCancelBtnOnClickListener()); }
-	 * 
-	 * @Override protected void resetPopupWindow() { // hide contact phones
-	 * select phone list view
-	 * ((EditText)getContentView().findViewById(R.id.set_areacode_editText
-	 * )).setText(""); }
-	 * 
-	 * // inner class // contact phone select phone button on click listener
-	 * class SetAreaCodeConfirmBtnOnClickListener implements OnClickListener {
-	 * 
-	 * @Override public void onClick(View v) { // dismiss contact phone select
-	 * popup window String areacode = ((EditText)getContentView().
-	 * findViewById(R
-	 * .id.set_areacode_editText)).getEditableText().toString().trim();
-	 * 
-	 * if(!areacode.matches("(^[0-9]*)")){ MyToast.show(SettingActivity.this,
-	 * R.string.invalid_areacode, Toast.LENGTH_SHORT); return; }
-	 * if(areacode==null||areacode.equals("")){
-	 * MyToast.show(SettingActivity.this, R.string.null_areacode,
-	 * Toast.LENGTH_SHORT); return; } InputMethodManager imm =
-	 * (InputMethodManager)getSystemService( Context.INPUT_METHOD_SERVICE);
-	 * imm.hideSoftInputFromWindow(((EditText)
-	 * getContentView().findViewById(R.id.set_areacode_editText))
-	 * .getWindowToken(),0); setAreaCode(areacode); dismiss(); }
-	 * 
-	 * }
-	 * 
-	 * // contact phone select cancel button on click listener class
-	 * SetAreaCodeCancelBtnOnClickListener implements OnClickListener {
-	 * 
-	 * @Override public void onClick(View v) { // dismiss contact phone select
-	 * popup window InputMethodManager imm =
-	 * (InputMethodManager)getSystemService( Context.INPUT_METHOD_SERVICE);
-	 * imm.hideSoftInputFromWindow(((EditText) getContentView()
-	 * .findViewById(R.id.set_areacode_editText)) .getWindowToken(),0);
-	 * dismiss(); }
-	 * 
-	 * }
-	 * 
-	 * }
-	 */
-
 	class SetDialCountryCodePopupWindow extends CommonPopupWindow {
 		private int lastDialCountryCodeSelect = 0;
 
@@ -980,6 +856,8 @@ public class SettingActivity extends NavigationActivity {
 		public SetDialCountryCodePopupWindow(int resource, int width, int height) {
 			super(resource, width, height);
 			UserBean telUser = UserManager.getInstance().getUser();
+			Log.d(SystemConstants.TAG, "SetDialCountryCodePopupWindow - userbean: " + telUser.toString());
+			
 			String dialcountrycode = (String) telUser
 					.getValue(TelUser.dialCountryCode.name());
 			int dialCountryIndex = countryCodeManager
