@@ -35,7 +35,9 @@ import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.chinesetelephone.utils.AppUpdateManager;
 import com.richitec.chinesetelephone.utils.CountryCodeManager;
 import com.richitec.chinesetelephone.utils.DialPreferenceManager;
+import com.richitec.commontoolkit.CommonToolkitApplication;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
+import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.customcomponent.CommonPopupWindow;
 import com.richitec.commontoolkit.user.User;
 import com.richitec.commontoolkit.user.UserBean;
@@ -72,6 +74,7 @@ public class SettingActivity extends NavigationActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		Log.d(SystemConstants.TAG, "SettingActivity - onCreate");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_setting);
 
@@ -151,6 +154,41 @@ public class SettingActivity extends NavigationActivity {
 
 		setTitle(R.string.menu_settings);
 
+	}
+	
+	protected void onRestoreInstanceState (Bundle savedInstanceState) {
+		Log.d(SystemConstants.TAG, "SettingActivity - onRestoreInstanceState");
+		super.onRestoreInstanceState(savedInstanceState);
+	}
+	
+	@Override
+	protected void onStop() {
+		Log.d(SystemConstants.TAG, "SettingActivity - onStop");
+		super.onStop();
+	}
+	
+	@Override
+	protected void onResume() {
+		Log.d(SystemConstants.TAG, "SettingActivity - onResume");
+		super.onResume();
+	}
+		
+	@Override
+    protected void onPause() {
+		Log.d(SystemConstants.TAG, "SettingActivity - onPause");
+		super.onPause();
+    }
+	
+	@Override
+	protected void onRestart() {
+		Log.d(SystemConstants.TAG, "SettingActivity - onRestart");
+		super.onRestart();
+	}
+
+	@Override
+	protected void onStart() {
+		Log.d(SystemConstants.TAG, "SettingActivity - onStart");
+		super.onStart();
 	}
 
 	public void setAuthNumber(View v) {

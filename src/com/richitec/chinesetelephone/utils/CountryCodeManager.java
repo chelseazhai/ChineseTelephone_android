@@ -85,6 +85,9 @@ public class CountryCodeManager {
 			}
 			i++;
 		}
+		if (i >= datas.size()) {
+			i = -1;
+		}
 		return i;
 	}
 }

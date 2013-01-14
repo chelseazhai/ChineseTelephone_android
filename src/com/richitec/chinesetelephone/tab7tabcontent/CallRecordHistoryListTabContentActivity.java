@@ -10,6 +10,7 @@ import android.database.ContentObserver;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.CallLog;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
@@ -21,6 +22,7 @@ import android.widget.ListView;
 
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.call.ContactPhoneDialModeSelectpopupWindow;
+import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.calllog.CallLogBean;
 import com.richitec.commontoolkit.calllog.CallLogManager;
@@ -46,6 +48,7 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		Log.d(SystemConstants.TAG, "CallRecordHistoryListTabContentActivity - onCreate");
 		super.onCreate(savedInstanceState);
 
 		// set content view
@@ -81,6 +84,8 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 		// add call log changed ContentObserver
 		getContentResolver().registerContentObserver(CallLog.Calls.CONTENT_URI,
 				false, CALLLOG_CONTENTOBSERVER);
+		
+		
 	}
 
 	@Override
@@ -96,8 +101,37 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
     	this.getParent().onBackPressed();
     }
 
+	protected void onSaveInstanceState (Bundle outState) {
+		Log.d(SystemConstants.TAG, "CallRecordHistoryListTabContentActivity  - onSaveInstanceState");
+	}
+	
+	@Override
+	protected void onStop() {
+		Log.d(SystemConstants.TAG, "CallRecordHistoryListTabContentActivity - onStop");
+		super.onStop();
+	}
+	
+	@Override
+    protected void onPause() {
+		Log.d(SystemConstants.TAG, "CallRecordHistoryListTabContentActivity - onPause");
+		super.onPause();
+    }
+	
+	@Override
+	protected void onRestart() {
+		Log.d(SystemConstants.TAG, "CallRecordHistoryListTabContentActivity - onRestart");
+		super.onRestart();
+	}
+
+	@Override
+	protected void onStart() {
+		Log.d(SystemConstants.TAG, "CallRecordHistoryListTabContentActivity - onStart");
+		super.onStart();
+	}
+	
 	@Override
 	protected void onResume() {
+		Log.d(SystemConstants.TAG, "CallRecordHistoryListTabContentActivity - onResume");
 		// check call log need to reload flag
 		if (_mCallLogNeed2Reload) {
 			// reset call log need to reload flag
@@ -136,6 +170,8 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 		return new CallRecordHistoryListViewItemDetailImgBtnOnClickListener();
 	}
 
+	
+	
 	// inner class
 	// call record history listView on item click listener
 	class CallRecordHistoryListViewOnItemClickListener implements

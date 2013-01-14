@@ -1,10 +1,7 @@
 package com.richitec.chinesetelephone;
 
 import android.content.Intent;
-import android.database.ContentObserver;
 import android.graphics.drawable.Drawable;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 
 import com.richitec.chinesetelephone.account.AccountSettingActivity;
@@ -16,10 +13,8 @@ import com.richitec.chinesetelephone.service.NoticeService;
 import com.richitec.chinesetelephone.tab7tabcontent.ChineseTelephoneTabActivity;
 import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity;
 import com.richitec.chinesetelephone.utils.DialPreferenceManager;
-import com.richitec.commontoolkit.CommonToolkitApplication;
 import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
-import com.richitec.commontoolkit.addressbook.ContactSyncService;
 import com.richitec.commontoolkit.user.User;
 import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
@@ -106,7 +101,7 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 		user.setValue(TelUser.vosphone.name(), vosphone);
 		user.setValue(TelUser.vosphone_pwd.name(), vosphone_psw);
 		UserManager.getInstance().setUser(user);
-		Log.d(SystemConstants.TAG + " load account: ", user.toString());
+		Log.d(SystemConstants.TAG, " load account: " + user.toString());
 		// 保存拨打设置属性
 		DialPreferenceBean dialBean = DialPreferenceManager.getInstance()
 				.getDialPreferenceBean();

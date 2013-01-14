@@ -11,6 +11,7 @@ import android.widget.TabHost.TabSpec;
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.account.AccountSettingActivity;
 import com.richitec.chinesetelephone.assist.SettingActivity;
+import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
 import com.richitec.chinesetelephone.utils.AppUpdateManager;
@@ -74,6 +75,7 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 
 	@Override
 	public void onDestroy() {
+		Log.d(SystemConstants.TAG, "ChineseTelephoneTabActivity - onDestroy");
 		super.onDestroy();
 		if (dialog != null) {
 			dialog.dismiss();
@@ -83,8 +85,10 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		Log.d(SystemConstants.TAG, "ChineseTelephoneTabActivity - onCreate");
 		super.onCreate(savedInstanceState);
-
+		
+		
 		Runnable registSipRunnable = new Runnable() {
 			@Override
 			public void run() {
@@ -189,7 +193,41 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 		AppUpdateManager updateManager = new AppUpdateManager(this);
 		updateManager.checkVersion(false);
 	}
+	
+	@Override
+	protected void onStop() {
+		Log.d(SystemConstants.TAG, "ChineseTelephoneTabActivity - onStop");
+		super.onStop();
+	}
+	
+	@Override
+	protected void onResume() {
+		Log.d(SystemConstants.TAG, "ChineseTelephoneTabActivity - onResume");
+		super.onResume();
+	}
+		
+	@Override
+    protected void onPause() {
+		Log.d(SystemConstants.TAG, "ChineseTelephoneTabActivity - onPause");
+		super.onPause();
+    }
+	
+	@Override
+	protected void onRestart() {
+		Log.d(SystemConstants.TAG, "ChineseTelephoneTabActivity - onRestart");
+		super.onRestart();
+	}
 
+	@Override
+	protected void onStart() {
+		Log.d(SystemConstants.TAG, "ChineseTelephoneTabActivity - onStart");
+		super.onStart();
+	}
+
+//	protected void onSaveInstanceState (Bundle outState) {
+//		Log.d(SystemConstants.TAG, "ChineseTelephoneTabActivity  - onSaveInstanceState");
+//	}
+	
 	@Override
 	public void onBackPressed() {
 		new AlertDialog.Builder(this)
