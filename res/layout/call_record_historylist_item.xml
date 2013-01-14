@@ -52,10 +52,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="4dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/callRecord_detailInfo_imageButton_content_description"
         android:focusable="false"
+        android:paddingRight="4dp"
         android:src="@drawable/img_call_record_detail" />
 
     <TextView
