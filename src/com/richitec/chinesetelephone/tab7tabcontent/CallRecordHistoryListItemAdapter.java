@@ -222,23 +222,22 @@ public class CallRecordHistoryListItemAdapter extends CommonListCursorAdapter {
 		final DateFormat _callRecordInitiateTimeTimeFormat = new SimpleDateFormat(
 				"HH:mm", Locale.getDefault());
 
-		// miliSceonds of day, days of week
+		// miliSceonds of day
 		Long MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000L;
-		Integer DAYS_PER_WEEK = 7;
 
 		// get current system time
 		Long _currentSystemTime = System.currentTimeMillis();
 
 		// compare current system time and call date
 		if (_currentSystemTime - callDate >= 0) {
-			// get today calendar instance
-			Calendar _todayCalendarInstance = Calendar.getInstance(Locale
+			// get today zero o'clock calendar instance
+			Calendar _todayZeroCalendarInstance = Calendar.getInstance(Locale
 					.getDefault());
-			_todayCalendarInstance.setTimeInMillis(_currentSystemTime);
-			_todayCalendarInstance.set(Calendar.HOUR, 0);
-			_todayCalendarInstance.set(Calendar.MINUTE, 0);
-			_todayCalendarInstance.set(Calendar.SECOND, 0);
-			_todayCalendarInstance.set(Calendar.MILLISECOND, 0);
+			_todayZeroCalendarInstance.set(Calendar.AM_PM, 0);
+			_todayZeroCalendarInstance.set(Calendar.HOUR, 0);
+			_todayZeroCalendarInstance.set(Calendar.MINUTE, 0);
+			_todayZeroCalendarInstance.set(Calendar.SECOND, 0);
+			_todayZeroCalendarInstance.set(Calendar.MILLISECOND, 0);
 
 			// get call date calendar instance
 			Calendar _callDateCalendarInstance = Calendar.getInstance(Locale
@@ -246,9 +245,9 @@ public class CallRecordHistoryListItemAdapter extends CommonListCursorAdapter {
 			_callDateCalendarInstance.setTimeInMillis(callDate);
 
 			// format day and time
-			if (_callDateCalendarInstance.before(_todayCalendarInstance)) {
-				// get today and call date time different
-				Long _today7callDateCalendarTimeDifferent = _todayCalendarInstance
+			if (_callDateCalendarInstance.before(_todayZeroCalendarInstance)) {
+				// get today zero o'clock and call date time different
+				Long _today7callDateCalendarTimeDifferent = _todayZeroCalendarInstance
 						.getTimeInMillis()
 						- _callDateCalendarInstance.getTimeInMillis();
 
@@ -259,25 +258,25 @@ public class CallRecordHistoryListItemAdapter extends CommonListCursorAdapter {
 				if (_today7callDateCalendarTimeDifferent <= MILLISECONDS_PER_DAY) {
 					_ret.append(_appContext.getResources().getString(
 							R.string.yesterdayCallRecord_callDate));
-				} else if (_today7callDateCalendarTimeDifferent <= DAYS_PER_WEEK
-						* MILLISECONDS_PER_DAY) {
-					// time different divide
-					Long _timeDifferentDivide = _today7callDateCalendarTimeDifferent
-							/ MILLISECONDS_PER_DAY;
-
-					// update time different day
-					_todayCalendarInstance
-							.add(Calendar.DAY_OF_MONTH,
-									(int) (0 == _today7callDateCalendarTimeDifferent
-											% MILLISECONDS_PER_DAY ? -_timeDifferentDivide
-											: -(_timeDifferentDivide + 1)));
-
-					_ret.append(_appContext.getResources().getStringArray(
-							R.array.callRecord_callDate_daysOfWeek)[_todayCalendarInstance
-							.get(Calendar.DAY_OF_WEEK) - 1]);
 				} else {
-					_ret.append(_callRecordInitiateTimeDayFormat
-							.format(callDate));
+					// get first day zero o'clock of week calendar instance
+					Calendar _firstDayOfWeekZeroCalendarInstance = Calendar
+							.getInstance(Locale.getDefault());
+					_firstDayOfWeekZeroCalendarInstance
+							.setTimeInMillis(_todayZeroCalendarInstance
+									.getTimeInMillis());
+					_firstDayOfWeekZeroCalendarInstance.set(
+							Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+
+					if (_callDateCalendarInstance
+							.before(_firstDayOfWeekZeroCalendarInstance)) {
+						_ret.append(_callRecordInitiateTimeDayFormat
+								.format(callDate));
+					} else {
+						_ret.append(_appContext.getResources().getStringArray(
+								R.array.callRecord_callDate_daysOfWeek)[_callDateCalendarInstance
+								.get(Calendar.DAY_OF_WEEK) - 1]);
+					}
 				}
 			} else {
 				_ret.append(_callRecordInitiateTimeTimeFormat.format(callDate));
