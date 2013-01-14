@@ -9,6 +9,8 @@ import android.util.Log;
 
 import com.richitec.chinesetelephone.constant.Country;
 import com.richitec.chinesetelephone.constant.SystemConstants;
+import com.richitec.commontoolkit.user.UserBean;
+import com.richitec.commontoolkit.user.UserManager;
 
 public class CountryCodeManager {
 	private List<Map<String, String>> datas;
@@ -68,10 +70,15 @@ public class CountryCodeManager {
 	}
 
 	public int getCountryIndex(String code) {
+		// test
+		UserBean telUser = UserManager.getInstance().getUser();
+		Log.d(SystemConstants.TAG, "getCountryIndex - userbean: " + telUser.toString());
+		// end test
+		
 		int i = 0;
 		for (Map<String, String> data : datas) {
 			String c = data.get(Country.code.name());
-			Log.d(SystemConstants.TAG, "data: " + data.toString());
+			Log.d(SystemConstants.TAG, "code: " + code + " data: " + data.toString());
 			if (c.equals(code)) {
 				Log.d(SystemConstants.TAG, "Find:" + i);
 				break;

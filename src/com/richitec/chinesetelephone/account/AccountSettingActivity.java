@@ -321,11 +321,13 @@ public class AccountSettingActivity extends Activity {
 
 	public void loginError() {
 		closeProgressDialog();
+		isFirstLogin = true;
 		MyToast.show(this, R.string.login_error, Toast.LENGTH_LONG);
 	}
 
 	public void loginFailed() {
 		closeProgressDialog();
+		isFirstLogin = true;
 		MyToast.show(this, R.string.login_failed, Toast.LENGTH_LONG);
 	}
 
