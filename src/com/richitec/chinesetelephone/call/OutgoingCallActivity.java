@@ -125,7 +125,7 @@ public class OutgoingCallActivity extends Activity implements
 		// define phone state intent filter and default filter action is phone
 		// state
 		IntentFilter _phoneStateIntentFilter = new IntentFilter(
-				"android.intent.action.PHONE_STATE");
+				TelephonyManager.ACTION_PHONE_STATE_CHANGED);
 
 		// add phone state intent filter action, new outgoing call
 		_phoneStateIntentFilter.addAction(Intent.ACTION_NEW_OUTGOING_CALL);
