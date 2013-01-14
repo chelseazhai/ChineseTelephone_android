@@ -74,34 +74,33 @@ public class SettingActivity extends NavigationActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_setting);
-		
-		countryCodeManager = CountryCodeManager
-				.getInstance();
-		
-//		modifyPSWPopupWindow = new ModifyPSWPopupWindow(
-//				R.layout.modify_psw_popupwindow_layout, LayoutParams.FILL_PARENT,
+
+		countryCodeManager = CountryCodeManager.getInstance();
+
+		// modifyPSWPopupWindow = new ModifyPSWPopupWindow(
+		// R.layout.modify_psw_popupwindow_layout, LayoutParams.FILL_PARENT,
+		// LayoutParams.FILL_PARENT);
+
+//		getPSWPopupWindow = new GetPSWPopupWindow(
+//				R.layout.get_psw_popupwindow_layout, LayoutParams.FILL_PARENT,
 //				LayoutParams.FILL_PARENT);
-		
-		getPSWPopupWindow = new GetPSWPopupWindow(
-				R.layout.get_psw_popupwindow_layout, LayoutParams.FILL_PARENT,
-				LayoutParams.FILL_PARENT);
-		
-		setDialCountryCodePopupWindow = new SetDialCountryCodePopupWindow(
-				R.layout.set_dialcountrycode_popupwindow_layout,
-				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-		
+
+//		setDialCountryCodePopupWindow = new SetDialCountryCodePopupWindow(
+//				R.layout.set_dialcountrycode_popupwindow_layout,
+//				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+
 		setDialPreferencePopupWin = new SetDialPreferencePopupWindow(
 				R.layout.dial_preference_popupwindow_layout,
 				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-		
+
 		launchSetCodePopupWindow = new LaunchSetCodePopupWindow(
 				R.layout.setup_preference_popupwindow_layout,
 				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-		
+
 		setBindNumberPopupWindow = new SetBindNumberPopupWindow(
 				R.layout.set_bind_number_popupwindow_layout,
 				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-		
+
 		LinearLayout inviteFriend = (LinearLayout) findViewById(R.id.account_invite_btn);
 		inviteFriend.setOnClickListener(inviteFriendListener);
 
@@ -151,8 +150,7 @@ public class SettingActivity extends NavigationActivity {
 						});
 
 		setTitle(R.string.menu_settings);
-		
-		
+
 	}
 
 	public void setAuthNumber(View v) {
@@ -265,6 +263,10 @@ public class SettingActivity extends NavigationActivity {
 	}
 
 	public void setDialCountryCode(View v) {
+		setDialCountryCodePopupWindow = new SetDialCountryCodePopupWindow(
+				R.layout.set_dialcountrycode_popupwindow_layout,
+				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		
 		UserBean telUser = UserManager.getInstance().getUser();
 		String dialcountrycode = (String) telUser
 				.getValue(TelUser.dialCountryCode.name());
@@ -337,7 +339,9 @@ public class SettingActivity extends NavigationActivity {
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
+			getPSWPopupWindow = new GetPSWPopupWindow(
+					R.layout.get_psw_popupwindow_layout,
+					LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 			getPSWPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
 		}
 
@@ -383,8 +387,8 @@ public class SettingActivity extends NavigationActivity {
 		@Override
 		public void onClick(View v) {
 			modifyPSWPopupWindow = new ModifyPSWPopupWindow(
-					R.layout.modify_psw_popupwindow_layout, LayoutParams.FILL_PARENT,
-					LayoutParams.FILL_PARENT);
+					R.layout.modify_psw_popupwindow_layout,
+					LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 			modifyPSWPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
 		}
 
@@ -450,7 +454,7 @@ public class SettingActivity extends NavigationActivity {
 		@Override
 		public void onFinished(HttpResponseResult responseResult) {
 			dismiss();
-			
+
 			if (modifyPSWPopupWindow == null) {
 				return;
 			}
@@ -471,7 +475,7 @@ public class SettingActivity extends NavigationActivity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			if (modifyPSWPopupWindow != null)
 				modifyPSWPopupWindow.dismiss();
 			MyToast.show(SettingActivity.this, R.string.change_psw_success,
@@ -856,8 +860,10 @@ public class SettingActivity extends NavigationActivity {
 		public SetDialCountryCodePopupWindow(int resource, int width, int height) {
 			super(resource, width, height);
 			UserBean telUser = UserManager.getInstance().getUser();
-			Log.d(SystemConstants.TAG, "SetDialCountryCodePopupWindow - userbean: " + telUser.toString());
-			
+			Log.d(SystemConstants.TAG,
+					"SetDialCountryCodePopupWindow - userbean: "
+							+ telUser.toString());
+
 			String dialcountrycode = (String) telUser
 					.getValue(TelUser.dialCountryCode.name());
 			int dialCountryIndex = countryCodeManager
@@ -1173,15 +1179,15 @@ public class SettingActivity extends NavigationActivity {
 					Toast.LENGTH_SHORT);
 		}
 	};
-	
+
 	public void onClickMySuiteAction(View v) {
 		pushActivity(MySuitesActivity.class);
 	}
-	
+
 	public void onClickAboutAction(View v) {
 		pushActivity(AboutActivity.class);
 	}
-	
+
 	public void onClickViewNoticeAction(View v) {
 		pushActivity(NoticeViewActivity.class);
 	}
