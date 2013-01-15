@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.sip.SipCallMode;
 import com.richitec.chinesetelephone.sip.SipUtils;
-import com.richitec.commontoolkit.CommonToolkitApplication;
+import com.richitec.commontoolkit.CTApplication;
 import com.richitec.commontoolkit.customcomponent.CommonPopupWindow;
 
 public class ContactPhoneDialModeSelectpopupWindow extends CommonPopupWindow {
@@ -98,7 +98,7 @@ public class ContactPhoneDialModeSelectpopupWindow extends CommonPopupWindow {
 	public void setCalleeContactInfo(String contactName,
 			List<String> contactPhones) {
 		// get application context
-		Context _appContext = CommonToolkitApplication.getContext();
+		Context _appContext = CTApplication.getContext();
 
 		// update select contact info
 		_mSelectContactName = contactName;

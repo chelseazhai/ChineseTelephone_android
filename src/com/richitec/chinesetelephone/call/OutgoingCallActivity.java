@@ -46,7 +46,7 @@ import com.richitec.chinesetelephone.sip.listeners.SipInviteStateListener;
 import com.richitec.chinesetelephone.sip.services.BaseSipServices;
 import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity;
 import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity.ContactsInABListViewQuickAlphabetBarOnTouchListener;
-import com.richitec.commontoolkit.CommonToolkitApplication;
+import com.richitec.commontoolkit.CTApplication;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar;
 import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
 import com.richitec.commontoolkit.utils.ToneGeneratorUtils;
@@ -554,7 +554,7 @@ public class OutgoingCallActivity extends Activity implements
 
 		// check sip audio/video session state broadcast receiver
 		if (null != _avSessionStateBroadcastReceiver) {
-			CommonToolkitApplication.getContext().unregisterReceiver(
+			CTApplication.getContext().unregisterReceiver(
 					_avSessionStateBroadcastReceiver);
 
 			SIPSERVICES.setAVSessionStateBroadcastReceiver(null);
@@ -827,8 +827,8 @@ public class OutgoingCallActivity extends Activity implements
 		// text
 		Integer _sendCallbackSipVoiceCallStateTipTextId = R.string.send_callbackCallRequest_failed;
 		Integer _callbackCallWaitingImageViewImgResId = drawable.img_sendcallbackcall_failed;
-		String _callbackCallWaitingTextViewText = CommonToolkitApplication
-				.getContext().getResources()
+		String _callbackCallWaitingTextViewText = CTApplication.getContext()
+				.getResources()
 				.getString(R.string.callbackWaiting_textView_failed);
 
 		@Override

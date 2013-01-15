@@ -16,7 +16,7 @@ import com.richitec.chinesetelephone.call.OutgoingCallActivity;
 import com.richitec.chinesetelephone.sip.SipCallMode;
 import com.richitec.chinesetelephone.sip.listeners.SipInviteStateListener;
 import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
-import com.richitec.commontoolkit.CommonToolkitApplication;
+import com.richitec.commontoolkit.CTApplication;
 import com.richitec.commontoolkit.calllog.CallLogManager;
 import com.richitec.commontoolkit.utils.HttpUtils;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
@@ -63,7 +63,7 @@ public abstract class BaseSipServices implements ISipServices {
 		super();
 
 		// init application context
-		_appContext = CommonToolkitApplication.getContext();
+		_appContext = CTApplication.getContext();
 
 		// init audio manager
 		_mAudioManager = (AudioManager) _appContext

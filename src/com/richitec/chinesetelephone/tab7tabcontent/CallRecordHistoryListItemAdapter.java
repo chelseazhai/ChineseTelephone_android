@@ -22,7 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.richitec.chinesetelephone.R;
-import com.richitec.commontoolkit.CommonToolkitApplication;
+import com.richitec.commontoolkit.CTApplication;
 import com.richitec.commontoolkit.calllog.CallLogBean;
 import com.richitec.commontoolkit.calllog.CallLogBean.CallType;
 import com.richitec.commontoolkit.calllog.CallLogManager;
@@ -150,10 +150,13 @@ public class CallRecordHistoryListItemAdapter extends CommonListCursorAdapter {
 
 			// check data class name
 			if (_itemData instanceof SpannableString) {
-				_viewNewText.setSpan(new ForegroundColorSpan(
-						CommonToolkitApplication.getContext().getResources()
-								.getColor(R.color.red)), 0, _viewNewText
-						.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+				_viewNewText
+						.setSpan(
+								new ForegroundColorSpan(CTApplication
+										.getContext().getResources()
+										.getColor(R.color.red)), 0,
+								_viewNewText.length(),
+								Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
 
 			// set view text
@@ -252,7 +255,7 @@ public class CallRecordHistoryListItemAdapter extends CommonListCursorAdapter {
 						- _callDateCalendarInstance.getTimeInMillis();
 
 				// get application context
-				Context _appContext = CommonToolkitApplication.getContext();
+				Context _appContext = CTApplication.getContext();
 
 				// check time different
 				if (_today7callDateCalendarTimeDifferent <= MILLISECONDS_PER_DAY) {
