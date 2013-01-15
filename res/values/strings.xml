@@ -3,10 +3,10 @@
 
     <!-- Chinese telephone project -->
     <string name="app_name">UU-Talk</string>
-    
+
     <!-- About -->
     <string name="about_nav_title_text">关于我们</string>
-	<string name="product_description">简单强大便宜的电话软件</string>
+    <string name="product_description">简单强大便宜的电话软件</string>
     <string name="product_version">版本号:</string>
     <string name="programming_design">程序设计</string>
     <string name="programming_authors">翟绍虎\t\t路辉\t\t王星</string>
@@ -193,6 +193,12 @@
     <string name="invite_pattern_title">请选择邀请方式</string>
     <string name="sms_invite_pattern">短信邀请</string>
     <string name="get_bindphone_failed">因网络原因，无法获取绑定号码</string>
+
+    <!-- fee query activity -->
+    <string name="fee_loading_textView_textHeader">正在加载&#8230;，</string>
+    <string name="fee_loading_progressBar_max">100</string>
+    <string name="loading_progressBar_max">100</string>
+
     <!-- dial preference -->
     <string name="dia_preference_title">拨号方式设置</string>
     <string name="choose_direct_dial">固定选择直拨</string>
@@ -359,5 +365,6 @@
     <string name="delete_notice">删除</string>
     <!-- other -->
     <string name="currency_sign">￥</string>
-
+	<string name="online">UU-Talk语音在线</string>
+	<string name="offline">UU-Talk语音已离线</string>
 </resources>

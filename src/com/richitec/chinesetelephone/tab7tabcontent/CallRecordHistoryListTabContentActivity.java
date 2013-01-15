@@ -262,14 +262,18 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 	}
 
 	@Override
-	protected void onRestoreInstanceState (Bundle savedInstanceState) {
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		Log.d(SystemConstants.TAG,
+				"CallRecordHistoryListTabContentActivity - onRestoreInstanceState");
 		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);
-		super.onRestoreInstanceState(savedInstanceState);
+		// super.onRestoreInstanceState(savedInstanceState);
 	}
-	
+
 	@Override
-	protected void onSaveInstanceState (Bundle outState) {
+	protected void onSaveInstanceState(Bundle outState) {
+		Log.d(SystemConstants.TAG,
+				"CallRecordHistoryListTabContentActivity - onSaveInstanceState");
 		AppDataSaveRestoreUtil.onSaveInstanceState(outState);
-		super.onSaveInstanceState(outState);
+		// super.onSaveInstanceState(outState);
 	}
 }

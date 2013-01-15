@@ -1,15 +1,23 @@
 package com.richitec.chinesetelephone.tab7tabcontent;
 
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.TabActivity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
+
 import com.richitec.chinesetelephone.R;
-import com.richitec.chinesetelephone.account.AccountSettingActivity;
+import com.richitec.chinesetelephone.assist.NoticeViewActivity;
 import com.richitec.chinesetelephone.assist.SettingActivity;
 import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.sip.SipUtils;
@@ -17,6 +25,7 @@ import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
 import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
 import com.richitec.chinesetelephone.utils.AppUpdateManager;
 import com.richitec.chinesetelephone.utils.SipRegisterManager;
+import com.richitec.commontoolkit.CommonToolkitApplication;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.customcomponent.CommonTabSpecIndicator;
 
@@ -34,54 +43,79 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 	// current tab index, default is contact list tab
 	private int _mCurrentTabIndex = 1;
 
-	private AlertDialog dialog;
-
-	private SipRegistrationStateListener sipRegistrationStateListener = new SipRegistrationStateListener() {
-
+	private SipRegistrationStateListener sipRegistrationStateListener;
+	
+	class SipRegistrationStateListenerImp implements SipRegistrationStateListener {
+		public final static int NOTIFY_ID = 2;
+		
+		private NotificationManager mNotificationManager;
+		
+		public SipRegistrationStateListenerImp() {
+			mNotificationManager = (NotificationManager) CommonToolkitApplication.getContext()
+					.getSystemService(Context.NOTIFICATION_SERVICE);
+		}
+		
 		@Override
 		public void onRegisterSuccess() {
-			// TODO Auto-generated method stub
-			// do nothing
-			Log.d("ChineseTelephoneTabActivity", "regist success");
+			Log.d(SystemConstants.TAG, "regist success");
+			Context context = CommonToolkitApplication.getContext();
+			Bitmap icon = BitmapFactory.decodeResource(context.getResources(),
+					android.R.drawable.presence_online);
+			NotificationCompat.Builder builder = new NotificationCompat.Builder(
+					context).setSmallIcon(android.R.drawable.presence_online).setLargeIcon(icon)
+					.setAutoCancel(false).setOngoing(true).setWhen(0)
+					.setContentTitle(context.getString(R.string.online));
+			
+//			Intent resultIntent = new Intent(ChineseTelephoneTabActivity.this, ChineseTelephoneTabActivity.class);
+//			PendingIntent noticePendingIntent = PendingIntent
+//					.getActivity(ChineseTelephoneTabActivity.this, 0, resultIntent,
+//							0);
+//			builder.setContentIntent(noticePendingIntent);
+			
+			Notification notif = builder.build();
+			mNotificationManager.notify(NOTIFY_ID, notif);
 		}
 
 		@Override
 		public void onRegisterFailed() {
-			// TODO Auto-generated method stub
-			sipRegistFail();
+			Log.d(SystemConstants.TAG, "regist failed");
+			Context context = CommonToolkitApplication.getContext();
+			Bitmap icon = BitmapFactory.decodeResource(context.getResources(),
+					android.R.drawable.presence_offline);
+			NotificationCompat.Builder builder = new NotificationCompat.Builder(
+					context).setSmallIcon(android.R.drawable.presence_offline).setLargeIcon(icon)
+					.setAutoCancel(false).setOngoing(true).setWhen(0)
+					.setContentTitle(context.getString(R.string.offline));
+			
+//			Intent resultIntent = new Intent(ChineseTelephoneTabActivity.this, ChineseTelephoneTabActivity.class);
+//			PendingIntent noticePendingIntent = PendingIntent
+//					.getActivity(ChineseTelephoneTabActivity.this, 0, resultIntent,
+//							0);
+//			builder.setContentIntent(noticePendingIntent);
+			
+			Notification notif = builder.build();
+			mNotificationManager.notify(NOTIFY_ID, notif);
+			
 		}
 
 		@Override
 		public void onUnRegisterSuccess() {
 			// TODO Auto-generated method stub
-			// sipRegistFail();
-			Log.d("ChineseTelephoneTabActivity", "unregist success");
-			sipRegistFail();
+			
 		}
 
 		@Override
 		public void onUnRegisterFailed() {
 			// TODO Auto-generated method stub
-			Log.d("ChineseTelephoneTabActivity", "unregist fail");
-			sipRegistFail();
+			
 		}
-
-	};
-
-	private void sipRegistFail() {
-		if (dialog != null) {
-			dialog.show();
-		}
+		
 	}
 
 	@Override
 	public void onDestroy() {
 		Log.d(SystemConstants.TAG, "ChineseTelephoneTabActivity - onDestroy");
 		super.onDestroy();
-		if (dialog != null) {
-			dialog.dismiss();
-		}
-		dialog = null;
 	}
 
 	@Override
@@ -89,6 +123,7 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 		Log.d(SystemConstants.TAG, "ChineseTelephoneTabActivity - onCreate");
 		super.onCreate(savedInstanceState);
 		
+		sipRegistrationStateListener = new SipRegistrationStateListenerImp();
 		
 		Runnable registSipRunnable = new Runnable() {
 			@Override
@@ -101,26 +136,7 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 		};
 		Thread registSipThread = new Thread(registSipRunnable);
 		registSipThread.start();
-
-		dialog = new AlertDialog.Builder(ChineseTelephoneTabActivity.this)
-				.setTitle(R.string.alert_title)
-				.setMessage(R.string.sip_account_regist_fail)
-				.setPositiveButton(
-						ChineseTelephoneTabActivity.this.getString(R.string.ok),
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int arg1) {
-								Intent intent = new Intent(
-										ChineseTelephoneTabActivity.this,
-										AccountSettingActivity.class);
-								intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-										| Intent.FLAG_ACTIVITY_CLEAR_TOP);
-								startActivity(intent);
-								dialog.dismiss();
-								ChineseTelephoneTabActivity.this.finish();
-							}
-						}).create();
-
+		
 		// set content view
 		setContentView(R.layout.chinese_telephone_tab_activity_layout);
 
@@ -194,25 +210,25 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 		AppUpdateManager updateManager = new AppUpdateManager(this);
 		updateManager.checkVersion(false);
 	}
-	
+
 	@Override
 	protected void onStop() {
 		Log.d(SystemConstants.TAG, "ChineseTelephoneTabActivity - onStop");
 		super.onStop();
 	}
-	
+
 	@Override
 	protected void onResume() {
 		Log.d(SystemConstants.TAG, "ChineseTelephoneTabActivity - onResume");
 		super.onResume();
 	}
-		
+
 	@Override
-    protected void onPause() {
+	protected void onPause() {
 		Log.d(SystemConstants.TAG, "ChineseTelephoneTabActivity - onPause");
 		super.onPause();
-    }
-	
+	}
+
 	@Override
 	protected void onRestart() {
 		Log.d(SystemConstants.TAG, "ChineseTelephoneTabActivity - onRestart");
@@ -225,10 +241,11 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 		super.onStart();
 	}
 
-//	protected void onSaveInstanceState (Bundle outState) {
-//		Log.d(SystemConstants.TAG, "ChineseTelephoneTabActivity  - onSaveInstanceState");
-//	}
-	
+	// protected void onSaveInstanceState (Bundle outState) {
+	// Log.d(SystemConstants.TAG,
+	// "ChineseTelephoneTabActivity  - onSaveInstanceState");
+	// }
+
 	@Override
 	public void onBackPressed() {
 		new AlertDialog.Builder(this)
@@ -239,26 +256,34 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
-								// TODO Auto-generated method stub
 								dialog.dismiss();
 								SipUtils.unregisterSipAccount(null);
 								SipUtils.destroySipEngine();
-								AddressBookManager.getInstance().unRegistContactObserver();
-//								System.exit(0);
+								AddressBookManager.getInstance()
+										.unRegistContactObserver();
+								
+								NotificationManager nm = (NotificationManager) CommonToolkitApplication.getContext()
+										.getSystemService(Context.NOTIFICATION_SERVICE);
+								nm.cancel(SipRegistrationStateListenerImp.NOTIFY_ID);
+								// System.exit(0);
 								finish();
 							}
 						}).setNegativeButton(R.string.cancel, null).show();
 	}
-	
+
 	@Override
-	protected void onRestoreInstanceState (Bundle savedInstanceState) {
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		Log.d(SystemConstants.TAG,
+				"ChineseTelephoneTabActivity - onRestoreInstanceState");
 		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);
 		super.onRestoreInstanceState(savedInstanceState);
 	}
-	
+
 	@Override
-	protected void onSaveInstanceState (Bundle outState) {
+	protected void onSaveInstanceState(Bundle outState) {
+		Log.d(SystemConstants.TAG,
+				"ChineseTelephoneTabActivity - onSaveInstanceState");
 		AppDataSaveRestoreUtil.onSaveInstanceState(outState);
-		super.onSaveInstanceState(outState);
+		// super.onSaveInstanceState(outState);
 	}
 }

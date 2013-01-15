@@ -67,6 +67,7 @@
             android:layout_height="50.0dp"
             android:background="@drawable/setting_bottom_item_bg"
             android:clickable="true"
+            android:onClick="onClickFeeQueryAction"
             android:gravity="center_vertical"
             android:orientation="horizontal" >
 

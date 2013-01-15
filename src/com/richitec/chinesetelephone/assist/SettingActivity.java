@@ -1230,6 +1230,10 @@ public class SettingActivity extends NavigationActivity {
 		pushActivity(NoticeViewActivity.class);
 	}
 
+	public void onClickFeeQueryAction(View v) {
+		pushActivity(FeeActivity.class);
+	}
+	
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);

@@ -1,17 +1,21 @@
 package com.richitec.chinesetelephone.utils;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+
+import com.richitec.chinesetelephone.account.AccountSettingActivity;
 import com.richitec.chinesetelephone.bean.DialPreferenceBean;
 import com.richitec.chinesetelephone.constant.DialPreference;
 import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.constant.TelUser;
+import com.richitec.commontoolkit.CommonToolkitApplication;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.user.User;
 import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.DataStorageUtils;
-
-import android.os.Bundle;
-import android.util.Log;
 
 public class AppDataSaveRestoreUtil {
 	public static void onSaveInstanceState (Bundle outState) {
@@ -21,19 +25,25 @@ public class AppDataSaveRestoreUtil {
 	
 	
 	public static void onRestoreInstanceState (Bundle savedInstanceState) {
+		if (!AddressBookManager.getInstance().isInited()) {
+			AddressBookManager.getInstance().traversalAddressBook();
+		}
+		
 		String userName = savedInstanceState.getString(User.username.name());
 		
 		UserBean user = UserManager.getInstance().getUser();
-		if (!user.getName().equals(userName)) {
-			// reload account
+		if (userName == null || userName.equals("")) {
+			// jump to account setting
+			Context context = CommonToolkitApplication.getContext();
+			Intent intent = new Intent(context,
+					AccountSettingActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+					| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			context.startActivity(intent);
+		} else if (user.getName() == null || user.getName().equals("")) {
 			loadAccount();
 		}
 		
-		Log.d("commontoolkit", "1 addressbook inited: " + AddressBookManager.getInstance().isInited());
-		if (!AddressBookManager.getInstance().isInited()) {
-			Log.d("commontoolkit", "2 addressbook inited: " + AddressBookManager.getInstance().isInited());
-			AddressBookManager.getInstance().traversalAddressBook();
-		}
 	}
 	
 	public static void loadAccount() {

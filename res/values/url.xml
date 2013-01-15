@@ -28,5 +28,5 @@
     <string name="getNewNotice_url">/getNewNotice</string>
     <string name="appvcenter_url">http://www.uu-talk.com/appvcenter</string>
     <string name="vos_server">vos.uu-talk.com</string>
-
+	<string name="fee_query_url">http://www.uu-talk.com/a/zifeishuoming/mobile/</string>
 </resources>
