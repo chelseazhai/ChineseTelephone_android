@@ -816,6 +816,7 @@ public class ContactListTabContentActivity extends NavigationActivity {
 	@Override
 	protected void onRestoreInstanceState (Bundle savedInstanceState) {
 		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);
+		initNamePhoneticSortedContactsInfoArray();
 		initListUI();
 		super.onRestoreInstanceState(savedInstanceState);
 	}

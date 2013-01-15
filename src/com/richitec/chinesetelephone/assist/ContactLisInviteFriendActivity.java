@@ -141,7 +141,7 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 	private void initListUI() {
 		// check all address book name phonetic sorted contacts detail info list
 		// and init present contacts in address book detail info array
-		if (null == _mAllNamePhoneticSortedContactsInfoArray) {
+		if (null == _mAllNamePhoneticSortedContactsInfoArray) { 
 			Log.d(LOG_TAG,
 					"All address book name phonetic sorted contacts detail info list is null, init immediately when on create");
 
@@ -1063,7 +1063,9 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		Log.d(SystemConstants.TAG, "ContactLisInviteFriendActivity - onRestoreInstanceState");
 		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);
+		initNamePhoneticSortedContactsInfoArray();
 		initListUI();
 		super.onRestoreInstanceState(savedInstanceState);
 	}
