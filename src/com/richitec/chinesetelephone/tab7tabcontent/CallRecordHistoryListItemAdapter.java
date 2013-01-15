@@ -115,7 +115,7 @@ public class CallRecordHistoryListItemAdapter extends CommonListCursorAdapter {
 
 				// append call detail info button on clicked listener
 				_callRecordDetailValueMap
-						.append(_data.indexOf(_dataCallLogBean),
+						.append(_mData.indexOf(_dataCallLogBean),
 								_callRecordHistoryListViewItemDetailImgBtnOnClickListener);
 
 				_dataValue = _callRecordDetailValueMap;
