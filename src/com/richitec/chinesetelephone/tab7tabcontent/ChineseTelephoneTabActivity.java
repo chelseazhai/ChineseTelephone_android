@@ -66,11 +66,11 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 					.setAutoCancel(false).setOngoing(true).setWhen(0)
 					.setContentTitle(context.getString(R.string.online));
 			
-//			Intent resultIntent = new Intent(ChineseTelephoneTabActivity.this, ChineseTelephoneTabActivity.class);
-//			PendingIntent noticePendingIntent = PendingIntent
-//					.getActivity(ChineseTelephoneTabActivity.this, 0, resultIntent,
-//							0);
-//			builder.setContentIntent(noticePendingIntent);
+			Intent resultIntent = new Intent(context, ChineseTelephoneTabActivity.class);
+			PendingIntent noticePendingIntent = PendingIntent
+					.getActivity(ChineseTelephoneTabActivity.this, 0, resultIntent,
+							PendingIntent.FLAG_UPDATE_CURRENT);
+			builder.setContentIntent(noticePendingIntent);
 			
 			Notification notif = builder.build();
 			mNotificationManager.notify(NOTIFY_ID, notif);
@@ -87,11 +87,11 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 					.setAutoCancel(false).setOngoing(true).setWhen(0)
 					.setContentTitle(context.getString(R.string.offline));
 			
-//			Intent resultIntent = new Intent(ChineseTelephoneTabActivity.this, ChineseTelephoneTabActivity.class);
-//			PendingIntent noticePendingIntent = PendingIntent
-//					.getActivity(ChineseTelephoneTabActivity.this, 0, resultIntent,
-//							0);
-//			builder.setContentIntent(noticePendingIntent);
+			Intent resultIntent = new Intent(context, ChineseTelephoneTabActivity.class);
+			PendingIntent noticePendingIntent = PendingIntent
+					.getActivity(ChineseTelephoneTabActivity.this, 0, resultIntent,
+							PendingIntent.FLAG_UPDATE_CURRENT);
+			builder.setContentIntent(noticePendingIntent);
 			
 			Notification notif = builder.build();
 			mNotificationManager.notify(NOTIFY_ID, notif);

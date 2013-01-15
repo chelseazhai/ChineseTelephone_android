@@ -89,13 +89,13 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 		
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(
-				R.menu.call_record_history_list_tab_content_activity_layout,
-				menu);
-		return true;
-	}
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		getMenuInflater().inflate(
+//				R.menu.call_record_history_list_tab_content_activity_layout,
+//				menu);
+//		return true;
+//	}
 	
 	@Override
     public void onBackPressed(){
