@@ -37,6 +37,7 @@ import com.richitec.chinesetelephone.constant.ChargeMoneyConstants;
 import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.constant.TelUser;
 import com.richitec.chinesetelephone.utils.AliPayManager;
+import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
@@ -497,4 +498,15 @@ public class AccountChargeActivity extends NavigationActivity {
 		}
 	}
 
+	@Override
+	protected void onRestoreInstanceState (Bundle savedInstanceState) {
+		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);
+		super.onRestoreInstanceState(savedInstanceState);
+	}
+	
+	@Override
+	protected void onSaveInstanceState (Bundle outState) {
+		AppDataSaveRestoreUtil.onSaveInstanceState(outState);
+		super.onSaveInstanceState(outState);
+	}
 }

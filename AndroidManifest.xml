@@ -68,10 +68,6 @@
             android:label="@string/title_activity_contact_list_tab_content" >
         </activity>
         <activity
-            android:name=".tab7tabcontent.MoreTabContentActivity"
-            android:label="@string/title_activity_more_tab_content" >
-        </activity>
-        <activity
             android:name=".call.OutgoingCallActivity"
             android:label="@string/title_activity_outgoing_call"
             android:screenOrientation="portrait" >

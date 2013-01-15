@@ -32,6 +32,7 @@ import com.richitec.chinesetelephone.constant.LaunchSetting;
 import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.constant.TelUser;
 import com.richitec.chinesetelephone.sip.SipUtils;
+import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
 import com.richitec.chinesetelephone.utils.AppUpdateManager;
 import com.richitec.chinesetelephone.utils.CountryCodeManager;
 import com.richitec.chinesetelephone.utils.DialPreferenceManager;
@@ -84,13 +85,13 @@ public class SettingActivity extends NavigationActivity {
 		// R.layout.modify_psw_popupwindow_layout, LayoutParams.FILL_PARENT,
 		// LayoutParams.FILL_PARENT);
 
-//		getPSWPopupWindow = new GetPSWPopupWindow(
-//				R.layout.get_psw_popupwindow_layout, LayoutParams.FILL_PARENT,
-//				LayoutParams.FILL_PARENT);
+		// getPSWPopupWindow = new GetPSWPopupWindow(
+		// R.layout.get_psw_popupwindow_layout, LayoutParams.FILL_PARENT,
+		// LayoutParams.FILL_PARENT);
 
-//		setDialCountryCodePopupWindow = new SetDialCountryCodePopupWindow(
-//				R.layout.set_dialcountrycode_popupwindow_layout,
-//				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		// setDialCountryCodePopupWindow = new SetDialCountryCodePopupWindow(
+		// R.layout.set_dialcountrycode_popupwindow_layout,
+		// LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 
 		setDialPreferencePopupWin = new SetDialPreferencePopupWindow(
 				R.layout.dial_preference_popupwindow_layout,
@@ -155,30 +156,25 @@ public class SettingActivity extends NavigationActivity {
 		setTitle(R.string.menu_settings);
 
 	}
-	
-	protected void onRestoreInstanceState (Bundle savedInstanceState) {
-		Log.d(SystemConstants.TAG, "SettingActivity - onRestoreInstanceState");
-		super.onRestoreInstanceState(savedInstanceState);
-	}
-	
+
 	@Override
 	protected void onStop() {
 		Log.d(SystemConstants.TAG, "SettingActivity - onStop");
 		super.onStop();
 	}
-	
+
 	@Override
 	protected void onResume() {
 		Log.d(SystemConstants.TAG, "SettingActivity - onResume");
 		super.onResume();
 	}
-		
+
 	@Override
-    protected void onPause() {
+	protected void onPause() {
 		Log.d(SystemConstants.TAG, "SettingActivity - onPause");
 		super.onPause();
-    }
-	
+	}
+
 	@Override
 	protected void onRestart() {
 		Log.d(SystemConstants.TAG, "SettingActivity - onRestart");
@@ -304,7 +300,7 @@ public class SettingActivity extends NavigationActivity {
 		setDialCountryCodePopupWindow = new SetDialCountryCodePopupWindow(
 				R.layout.set_dialcountrycode_popupwindow_layout,
 				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-		
+
 		UserBean telUser = UserManager.getInstance().getUser();
 		String dialcountrycode = (String) telUser
 				.getValue(TelUser.dialCountryCode.name());
@@ -367,9 +363,13 @@ public class SettingActivity extends NavigationActivity {
 		public void onFailed(HttpResponseResult responseResult) {
 			dismiss();
 
-			MyToast.show(SettingActivity.this, R.string.server_error,
-					Toast.LENGTH_SHORT);
-
+			if (responseResult.getStatusCode() == -1) {
+				MyToast.show(SettingActivity.this,
+						R.string.cannot_connet_server, Toast.LENGTH_SHORT);
+			} else {
+				MyToast.show(SettingActivity.this, R.string.server_error,
+						Toast.LENGTH_SHORT);
+			}
 		}
 	};
 
@@ -1228,5 +1228,17 @@ public class SettingActivity extends NavigationActivity {
 
 	public void onClickViewNoticeAction(View v) {
 		pushActivity(NoticeViewActivity.class);
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);
+		super.onRestoreInstanceState(savedInstanceState);
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		AppDataSaveRestoreUtil.onSaveInstanceState(outState);
+		super.onSaveInstanceState(outState);
 	}
 }

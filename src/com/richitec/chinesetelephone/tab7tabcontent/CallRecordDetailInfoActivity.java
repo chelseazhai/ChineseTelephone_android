@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.sip.SipCallMode;
 import com.richitec.chinesetelephone.sip.SipUtils;
+import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.calllog.CallLogBean;
 import com.richitec.commontoolkit.calllog.CallLogBean.CallType;
@@ -234,4 +235,15 @@ public class CallRecordDetailInfoActivity extends NavigationActivity {
 
 	}
 
+	@Override
+	protected void onRestoreInstanceState (Bundle savedInstanceState) {
+		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);
+		super.onRestoreInstanceState(savedInstanceState);
+	}
+	
+	@Override
+	protected void onSaveInstanceState (Bundle outState) {
+		AppDataSaveRestoreUtil.onSaveInstanceState(outState);
+		super.onSaveInstanceState(outState);
+	}
 }

@@ -49,6 +49,7 @@ import com.richitec.chinesetelephone.sip.listeners.SipInviteStateListener;
 import com.richitec.chinesetelephone.sip.services.BaseSipServices;
 import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity;
 import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity.ContactsInABListViewQuickAlphabetBarOnTouchListener;
+import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
 import com.richitec.commontoolkit.CommonToolkitApplication;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar;
 import com.richitec.commontoolkit.user.UserBean;
@@ -963,4 +964,15 @@ public class OutgoingCallActivity extends Activity implements
 		INITIATIVE, PASSIVE
 	}
 
+	@Override
+	protected void onRestoreInstanceState (Bundle savedInstanceState) {
+		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);
+		super.onRestoreInstanceState(savedInstanceState);
+	}
+	
+	@Override
+	protected void onSaveInstanceState (Bundle outState) {
+		AppDataSaveRestoreUtil.onSaveInstanceState(outState);
+		super.onSaveInstanceState(outState);
+	}
 }

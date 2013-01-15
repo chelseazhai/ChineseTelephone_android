@@ -2,23 +2,17 @@ package com.richitec.chinesetelephone;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
+import android.os.Bundle;
 
 import com.richitec.chinesetelephone.account.AccountSettingActivity;
-import com.richitec.chinesetelephone.bean.DialPreferenceBean;
-import com.richitec.chinesetelephone.constant.DialPreference;
-import com.richitec.chinesetelephone.constant.SystemConstants;
-import com.richitec.chinesetelephone.constant.TelUser;
 import com.richitec.chinesetelephone.service.NoticeService;
 import com.richitec.chinesetelephone.tab7tabcontent.ChineseTelephoneTabActivity;
 import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity;
-import com.richitec.chinesetelephone.utils.DialPreferenceManager;
+import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
 import com.richitec.commontoolkit.activityextension.AppLaunchActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
-import com.richitec.commontoolkit.user.User;
 import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
-import com.richitec.commontoolkit.utils.DataStorageUtils;
 import com.richitec.commontoolkit.utils.DeviceUtils;
 
 public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
@@ -31,7 +25,7 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 	@Override
 	public Intent intentActivity() {
 		// go to Chinese telephone main tab activity
-		loadAccount();
+		AppDataSaveRestoreUtil.loadAccount();
 
 		UserBean userBean = UserManager.getInstance().getUser();
 		if (userBean.getPassword() != null
@@ -65,57 +59,6 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 		AddressBookManager.getInstance().registContactOberver();
 	}
 
-	private void loadAccount() {
-		String userName = DataStorageUtils.getString(User.username.name());
-		String userkey = DataStorageUtils.getString(User.userkey.name());
-		String password = DataStorageUtils.getString(User.password.name());
-		String countrycode = DataStorageUtils.getString(TelUser.countryCode
-				.name());
-		String dialcountrycode = DataStorageUtils
-				.getString(TelUser.dialCountryCode.name());
-		String vosphone = DataStorageUtils.getString(TelUser.vosphone.name());
-		String vosphone_psw = DataStorageUtils.getString(TelUser.vosphone_pwd
-				.name());
-		String bindPhone = DataStorageUtils.getString(TelUser.bindphone.name());
-		String bindPhoneCountryCode = DataStorageUtils
-				.getString(TelUser.bindphone_country_code.name());
-
-		UserBean user = new UserBean();
-		user.setName(userName);
-		user.setUserKey(userkey);
-		user.setPassword(password);
-		user.setValue(TelUser.countryCode.name(), countrycode);
-		user.setValue(TelUser.bindphone.name(), bindPhone);
-		user.setValue(TelUser.bindphone_country_code.name(), bindPhoneCountryCode);
-		
-		
-		if (dialcountrycode == null || dialcountrycode.trim().equals("")) {
-			user.setValue(TelUser.dialCountryCode.name(), countrycode);
-		} else {
-			user.setValue(TelUser.dialCountryCode.name(), dialcountrycode);
-		}
-		if (password != null && !password.equals("") && userkey != null
-				&& !userkey.equals("")) {
-			user.setRememberPwd(true);
-		}
-		user.setValue(TelUser.vosphone.name(), vosphone);
-		user.setValue(TelUser.vosphone_pwd.name(), vosphone_psw);
-		UserManager.getInstance().setUser(user);
-		Log.d(SystemConstants.TAG, " load account: " + user.toString());
-		// 保存拨打设置属性
-		DialPreferenceBean dialBean = DialPreferenceManager.getInstance()
-				.getDialPreferenceBean();
-		String dialPattern = DataStorageUtils
-				.getString(DialPreference.DialSetting.dialPattern.name());
-		if (dialPattern != null)
-			dialBean.setDialPattern(dialPattern);
-		String answerPattern = DataStorageUtils
-				.getString(DialPreference.DialSetting.answerPattern.name());
-		if (answerPattern != null)
-			dialBean.setAnswerPattern(answerPattern);
-
-	}
-
 	@Override
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
@@ -123,5 +66,16 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 //		System.exit(0);
 	}
 
+	@Override
+	protected void onRestoreInstanceState (Bundle savedInstanceState) {
+		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);
+		super.onRestoreInstanceState(savedInstanceState);
+	}
+	
+	@Override
+	protected void onSaveInstanceState (Bundle outState) {
+		AppDataSaveRestoreUtil.onSaveInstanceState(outState);
+		super.onSaveInstanceState(outState);
+	}
 	
 }

@@ -214,6 +214,7 @@
     <string name="auth_not_pass">原有密码输入错误</string>
     <string name="new_psw_error">新密码为空，或者两次输入不一致</string>
     <string name="server_error">服务器出错，请重试</string>
+    <string name="cannot_connet_server">无法连接服务器</string>
     <string name="change_psw_success">修改密码成功</string>
     <!-- get remain money -->
     <string name="get_remain_money_title">查询余额</string>

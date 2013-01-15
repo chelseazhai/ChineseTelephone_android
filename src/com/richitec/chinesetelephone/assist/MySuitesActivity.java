@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.constant.TelUser;
+import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
@@ -95,5 +96,17 @@ public class MySuitesActivity extends NavigationActivity {
 		if (progressDlg != null) {
 			progressDlg.dismiss();
 		}
+	}
+	
+	@Override
+	protected void onRestoreInstanceState (Bundle savedInstanceState) {
+		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);
+		super.onRestoreInstanceState(savedInstanceState);
+	}
+	
+	@Override
+	protected void onSaveInstanceState (Bundle outState) {
+		AppDataSaveRestoreUtil.onSaveInstanceState(outState);
+		super.onSaveInstanceState(outState);
 	}
 }

@@ -52,6 +52,7 @@ import com.richitec.chinesetelephone.call.OutgoingCallActivity;
 import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.sip.SipCallMode;
 import com.richitec.chinesetelephone.sip.SipUtils;
+import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
 import com.richitec.commontoolkit.CommonToolkitApplication;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
@@ -119,28 +120,28 @@ public class ContactListTabContentActivity extends NavigationActivity {
 				R.drawable.img_newcontact_btn, BarButtonItemStyle.RIGHT_GO,
 				new AddNewContactBtnOnClickListener()));
 
-		// check all address book name phonetic sorted contacts detail info list
-		// and init present contacts in address book detail info array
-		if (null == _smAllNamePhoneticSortedContactsInfoArray) {
-			Log.d(LOG_TAG,
-					"All address book name phonetic sorted contacts detail info list is null, init immediately when on create");
-
-			// init first
-			initNamePhoneticSortedContactsInfoArray();
-		}
-		_mPresentContactsInABInfoArray = _smAllNamePhoneticSortedContactsInfoArray;
+//		// check all address book name phonetic sorted contacts detail info list
+//		// and init present contacts in address book detail info array
+//		if (null == _smAllNamePhoneticSortedContactsInfoArray) {
+//			Log.d(LOG_TAG,
+//					"All address book name phonetic sorted contacts detail info list is null, init immediately when on create");
+//
+//			// init first
+//			initNamePhoneticSortedContactsInfoArray();
+//		}
+//		_mPresentContactsInABInfoArray = _smAllNamePhoneticSortedContactsInfoArray;
 
 		// get contacts in address book list view
 		_mABContactsListView = (ListView) findViewById(R.id.contactInABInTab_listView);
 
-		// set contacts in address book listView adapter
-		_mABContactsListView.setAdapter(generateInABContactAdapter(this, true,
-				_mPresentContactsInABInfoArray));
-		// init address book contacts listView quick alphabet bar and add on
-		// touch listener
-		new ListViewQuickAlphabetBar(_mABContactsListView)
-				.setOnTouchListener(new ContactsInABListViewQuickAlphabetBarOnTouchListener());
-
+//		// set contacts in address book listView adapter
+//		_mABContactsListView.setAdapter(generateInABContactAdapter(this, true,
+//				_mPresentContactsInABInfoArray));
+//		// init address book contacts listView quick alphabet bar and add on
+//		// touch listener
+//		new ListViewQuickAlphabetBar(_mABContactsListView)
+//				.setOnTouchListener(new ContactsInABListViewQuickAlphabetBarOnTouchListener());
+		initListUI();
 		// set contacts in address book listView on item click listener
 		_mABContactsListView
 				.setOnItemClickListener(new ContactsInABListViewOnItemClickListener());
@@ -152,13 +153,34 @@ public class ContactListTabContentActivity extends NavigationActivity {
 //		ContactSyncService.setHandler(new UpdateABListHandler());
 		AddressBookManager.getInstance().addContactObserverhandler(new UpdateABListHandler());
 	}
+	
+	private void initListUI() {
+		// check all address book name phonetic sorted contacts detail info list
+		// and init present contacts in address book detail info array
+		if (null == _smAllNamePhoneticSortedContactsInfoArray) {
+			Log.d(LOG_TAG,
+					"All address book name phonetic sorted contacts detail info list is null, init immediately when on create");
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(
-				R.menu.contact_list_tab_content_activity_layout, menu);
-		return true;
+			// init first
+			initNamePhoneticSortedContactsInfoArray();
+		}
+		_mPresentContactsInABInfoArray = _smAllNamePhoneticSortedContactsInfoArray;
+
+		// set contacts in address book listView adapter
+		_mABContactsListView.setAdapter(generateInABContactAdapter(this, true,
+				_mPresentContactsInABInfoArray));
+		// init address book contacts listView quick alphabet bar and add on
+		// touch listener
+		new ListViewQuickAlphabetBar(_mABContactsListView)
+				.setOnTouchListener(new ContactsInABListViewQuickAlphabetBarOnTouchListener());
 	}
+
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		getMenuInflater().inflate(
+//				R.menu.contact_list_tab_content_activity_layout, menu);
+//		return true;
+//	}
 	
 	@Override
     public void onBackPressed(){
@@ -789,5 +811,18 @@ public class ContactListTabContentActivity extends NavigationActivity {
 							_mPresentContactsInABInfoArray));
 
 		}
+	}
+	
+	@Override
+	protected void onRestoreInstanceState (Bundle savedInstanceState) {
+		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);
+		initListUI();
+		super.onRestoreInstanceState(savedInstanceState);
+	}
+	
+	@Override
+	protected void onSaveInstanceState (Bundle outState) {
+		AppDataSaveRestoreUtil.onSaveInstanceState(outState);
+		super.onSaveInstanceState(outState);
 	}
 }

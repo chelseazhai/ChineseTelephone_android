@@ -42,6 +42,8 @@ import android.widget.TextView;
 
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.call.ContactPhoneDialModeSelectpopupWindow;
+import com.richitec.chinesetelephone.constant.SystemConstants;
+import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.customcomponent.CommonPopupWindow;
@@ -661,4 +663,45 @@ public class DialTabContentActivity extends NavigationActivity {
 
 	}
 
+	@Override
+	protected void onRestoreInstanceState (Bundle savedInstanceState) {
+		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);
+		super.onRestoreInstanceState(savedInstanceState);
+	}
+	
+	@Override
+	protected void onSaveInstanceState (Bundle outState) {
+		AppDataSaveRestoreUtil.onSaveInstanceState(outState);
+		super.onSaveInstanceState(outState);
+	}
+	
+	@Override
+	protected void onStop() {
+		Log.d(SystemConstants.TAG, "DialTabContentActivity - onStop");
+		super.onStop();
+	}
+	
+	@Override
+    protected void onPause() {
+		Log.d(SystemConstants.TAG, "DialTabContentActivity - onPause");
+		super.onPause();
+    }
+	
+	@Override
+	protected void onRestart() {
+		Log.d(SystemConstants.TAG, "DialTabContentActivity - onRestart");
+		super.onRestart();
+	}
+
+	@Override
+	protected void onStart() {
+		Log.d(SystemConstants.TAG, "DialTabContentActivity - onStart");
+		super.onStart();
+	}
+	
+	@Override
+	protected void onResume() {
+		Log.d(SystemConstants.TAG, "DialTabContentActivity - onResume");
+		super.onResume();
+	}
 }

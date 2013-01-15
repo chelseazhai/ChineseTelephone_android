@@ -31,6 +31,7 @@ import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.constant.TelUser;
 import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.chinesetelephone.tab7tabcontent.ChineseTelephoneTabActivity;
+import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
 import com.richitec.chinesetelephone.utils.AppUpdateManager;
 import com.richitec.chinesetelephone.utils.CountryCodeManager;
 import com.richitec.commontoolkit.user.User;
@@ -119,27 +120,37 @@ public class AccountSettingActivity extends Activity {
 		DataStorageUtils.putObject(TelUser.dialCountryCode.name(),
 				user.getValue(TelUser.dialCountryCode.name()));
 
+		DataStorageUtils.putObject(TelUser.vosphone.name(),
+				user.getValue(TelUser.vosphone.name()));
+		DataStorageUtils.putObject(TelUser.vosphone_pwd.name(),
+				user.getValue(TelUser.vosphone_pwd.name()));
+		DataStorageUtils.putObject(User.userkey.name(), user.getUserKey());
+		DataStorageUtils.putObject(TelUser.bindphone.name(),
+				user.getValue(TelUser.bindphone.name()));
+		DataStorageUtils.putObject(TelUser.bindphone_country_code.name(),
+				user.getValue(TelUser.bindphone_country_code.name()));
 		if (user.isRememberPwd()) {
-			DataStorageUtils.putObject(TelUser.vosphone.name(),
-					user.getValue(TelUser.vosphone.name()));
-			DataStorageUtils.putObject(TelUser.vosphone_pwd.name(),
-					user.getValue(TelUser.vosphone_pwd.name()));
+			// DataStorageUtils.putObject(TelUser.vosphone.name(),
+			// user.getValue(TelUser.vosphone.name()));
+			// DataStorageUtils.putObject(TelUser.vosphone_pwd.name(),
+			// user.getValue(TelUser.vosphone_pwd.name()));
 			DataStorageUtils
 					.putObject(User.password.name(), user.getPassword());
-			DataStorageUtils.putObject(User.userkey.name(), user.getUserKey());
-			DataStorageUtils.putObject(TelUser.bindphone.name(),
-					user.getValue(TelUser.bindphone.name()));
-			DataStorageUtils.putObject(TelUser.bindphone_country_code.name(),
-					user.getValue(TelUser.bindphone_country_code.name()));
+			// DataStorageUtils.putObject(User.userkey.name(),
+			// user.getUserKey());
+			// DataStorageUtils.putObject(TelUser.bindphone.name(),
+			// user.getValue(TelUser.bindphone.name()));
+			// DataStorageUtils.putObject(TelUser.bindphone_country_code.name(),
+			// user.getValue(TelUser.bindphone_country_code.name()));
 
 		} else {
 			DataStorageUtils.putObject(User.password.name(), "");
-			DataStorageUtils.putObject(TelUser.vosphone.name(), "");
-			DataStorageUtils.putObject(TelUser.vosphone_pwd.name(), "");
-			DataStorageUtils.putObject(User.userkey.name(), "");
-			DataStorageUtils.putObject(TelUser.bindphone.name(), "");
-			DataStorageUtils.putObject(TelUser.bindphone_country_code.name(),
-					"");
+			// DataStorageUtils.putObject(TelUser.vosphone.name(), "");
+			// DataStorageUtils.putObject(TelUser.vosphone_pwd.name(), "");
+			// DataStorageUtils.putObject(User.userkey.name(), "");
+			// DataStorageUtils.putObject(TelUser.bindphone.name(), "");
+			// DataStorageUtils.putObject(TelUser.bindphone_country_code.name(),
+			// "");
 		}
 	}
 
@@ -162,6 +173,56 @@ public class AccountSettingActivity extends Activity {
 		}
 
 		countryCodeManager = CountryCodeManager.getInstance();
+//		UserBean user = UserManager.getInstance().getUser();
+//		String countryCode = (String) user.getValue(TelUser.countryCode.name());
+//		if (countryCode == null || countryCode.equals("")) {
+//			((Button) findViewById(R.id.account_choose_country_btn))
+//					.setText(countryCodeManager.getCountryName(0));
+//		} else {
+//			lastSelectCountryCode = countryCodeManager
+//					.getCountryIndex((String) user.getValue(TelUser.countryCode
+//							.name()));
+//			((Button) findViewById(R.id.account_choose_country_btn))
+//					.setText(countryCodeManager
+//							.getCountryName(lastSelectCountryCode));
+//		}
+
+		EditText userEditText = (EditText) findViewById(R.id.account_user_edittext);
+		EditText pswEditText = (EditText) findViewById(R.id.account_psw_edittext);
+//		CheckBox remember = (CheckBox) findViewById(R.id.account_remember_psw_cbtn);
+
+		userEditText.addTextChangedListener(onTextChanged);
+		pswEditText.addTextChangedListener(onTextChanged);
+
+		userEditText.setOnFocusChangeListener(new OnChangeEditTextBGListener());
+		pswEditText.setOnFocusChangeListener(new OnChangeEditTextBGListener());
+
+//		userEditText.setText(user.getName());
+//
+//		if (user.getPassword() != null && user.getPassword() != "") {
+//			pswEditText.setText(PWD_MASK);
+//			useSavedPsw = true;
+//			remember.setChecked(true);
+//		} else {
+//			useSavedPsw = false;
+//			remember.setChecked(false);
+//		}
+//
+//		// 从设置页面切换账号时标明用户是否在登录时勾选记住密码
+//		if (!user.isRememberPwd()) {
+//			// Log.d("Account remember", user.isRememberPwd()+"");
+//			pswEditText.setText("");
+//			useSavedPsw = false;
+//			remember.setChecked(false);
+//		}
+
+		initUI();
+		
+		AppUpdateManager updateManager = new AppUpdateManager(this);
+		updateManager.checkVersion(false);
+	}
+	
+	private void initUI() {
 		UserBean user = UserManager.getInstance().getUser();
 		String countryCode = (String) user.getValue(TelUser.countryCode.name());
 		if (countryCode == null || countryCode.equals("")) {
@@ -175,19 +236,13 @@ public class AccountSettingActivity extends Activity {
 					.setText(countryCodeManager
 							.getCountryName(lastSelectCountryCode));
 		}
-
+		
 		EditText userEditText = (EditText) findViewById(R.id.account_user_edittext);
 		EditText pswEditText = (EditText) findViewById(R.id.account_psw_edittext);
 		CheckBox remember = (CheckBox) findViewById(R.id.account_remember_psw_cbtn);
-
-		userEditText.addTextChangedListener(onTextChanged);
-		pswEditText.addTextChangedListener(onTextChanged);
-
-		userEditText.setOnFocusChangeListener(new OnChangeEditTextBGListener());
-		pswEditText.setOnFocusChangeListener(new OnChangeEditTextBGListener());
-
+		
 		userEditText.setText(user.getName());
-
+		
 		if (user.getPassword() != null && user.getPassword() != "") {
 			pswEditText.setText(PWD_MASK);
 			useSavedPsw = true;
@@ -205,8 +260,6 @@ public class AccountSettingActivity extends Activity {
 			remember.setChecked(false);
 		}
 
-		AppUpdateManager updateManager = new AppUpdateManager(this);
-		updateManager.checkVersion(false);
 	}
 
 	@Override
@@ -340,13 +393,13 @@ public class AccountSettingActivity extends Activity {
 			String bindPhoneCountryCode = data
 					.getString("bindphone_country_code");
 
-			UserBean telUser = UserManager.getInstance()
-					.getUser();
+			UserBean telUser = UserManager.getInstance().getUser();
 			telUser.setUserKey(userKey);
 			telUser.setValue(TelUser.vosphone.name(), vosphone);
 			telUser.setValue(TelUser.vosphone_pwd.name(), vosphone_psw);
 			telUser.setValue(TelUser.bindphone.name(), bindPhone);
-			telUser.setValue(TelUser.bindphone_country_code.name(), bindPhoneCountryCode);
+			telUser.setValue(TelUser.bindphone_country_code.name(),
+					bindPhoneCountryCode);
 			saveUserAccount();
 
 			closeProgressDialog();
@@ -414,5 +467,17 @@ public class AccountSettingActivity extends Activity {
 			}
 		}
 
+	}
+	
+	@Override
+	protected void onRestoreInstanceState (Bundle savedInstanceState) {
+		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);
+		super.onRestoreInstanceState(savedInstanceState);
+	}
+	
+	@Override
+	protected void onSaveInstanceState (Bundle outState) {
+		AppDataSaveRestoreUtil.onSaveInstanceState(outState);
+		super.onSaveInstanceState(outState);
 	}
 }
