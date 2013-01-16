@@ -7,7 +7,9 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -30,10 +32,12 @@ import com.richitec.chinesetelephone.assist.SettingActivity;
 import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.constant.TelUser;
 import com.richitec.chinesetelephone.sip.SipUtils;
+import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListenerImp;
 import com.richitec.chinesetelephone.tab7tabcontent.ChineseTelephoneTabActivity;
 import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
 import com.richitec.chinesetelephone.utils.AppUpdateManager;
 import com.richitec.chinesetelephone.utils.CountryCodeManager;
+import com.richitec.commontoolkit.CommonToolkitApplication;
 import com.richitec.commontoolkit.user.User;
 import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
@@ -130,27 +134,10 @@ public class AccountSettingActivity extends Activity {
 		DataStorageUtils.putObject(TelUser.bindphone_country_code.name(),
 				user.getValue(TelUser.bindphone_country_code.name()));
 		if (user.isRememberPwd()) {
-			// DataStorageUtils.putObject(TelUser.vosphone.name(),
-			// user.getValue(TelUser.vosphone.name()));
-			// DataStorageUtils.putObject(TelUser.vosphone_pwd.name(),
-			// user.getValue(TelUser.vosphone_pwd.name()));
 			DataStorageUtils
 					.putObject(User.password.name(), user.getPassword());
-			// DataStorageUtils.putObject(User.userkey.name(),
-			// user.getUserKey());
-			// DataStorageUtils.putObject(TelUser.bindphone.name(),
-			// user.getValue(TelUser.bindphone.name()));
-			// DataStorageUtils.putObject(TelUser.bindphone_country_code.name(),
-			// user.getValue(TelUser.bindphone_country_code.name()));
-
 		} else {
 			DataStorageUtils.putObject(User.password.name(), "");
-			// DataStorageUtils.putObject(TelUser.vosphone.name(), "");
-			// DataStorageUtils.putObject(TelUser.vosphone_pwd.name(), "");
-			// DataStorageUtils.putObject(User.userkey.name(), "");
-			// DataStorageUtils.putObject(TelUser.bindphone.name(), "");
-			// DataStorageUtils.putObject(TelUser.bindphone_country_code.name(),
-			// "");
 		}
 	}
 
@@ -173,48 +160,15 @@ public class AccountSettingActivity extends Activity {
 		}
 
 		countryCodeManager = CountryCodeManager.getInstance();
-//		UserBean user = UserManager.getInstance().getUser();
-//		String countryCode = (String) user.getValue(TelUser.countryCode.name());
-//		if (countryCode == null || countryCode.equals("")) {
-//			((Button) findViewById(R.id.account_choose_country_btn))
-//					.setText(countryCodeManager.getCountryName(0));
-//		} else {
-//			lastSelectCountryCode = countryCodeManager
-//					.getCountryIndex((String) user.getValue(TelUser.countryCode
-//							.name()));
-//			((Button) findViewById(R.id.account_choose_country_btn))
-//					.setText(countryCodeManager
-//							.getCountryName(lastSelectCountryCode));
-//		}
 
 		EditText userEditText = (EditText) findViewById(R.id.account_user_edittext);
 		EditText pswEditText = (EditText) findViewById(R.id.account_psw_edittext);
-//		CheckBox remember = (CheckBox) findViewById(R.id.account_remember_psw_cbtn);
 
 		userEditText.addTextChangedListener(onTextChanged);
 		pswEditText.addTextChangedListener(onTextChanged);
 
 		userEditText.setOnFocusChangeListener(new OnChangeEditTextBGListener());
 		pswEditText.setOnFocusChangeListener(new OnChangeEditTextBGListener());
-
-//		userEditText.setText(user.getName());
-//
-//		if (user.getPassword() != null && user.getPassword() != "") {
-//			pswEditText.setText(PWD_MASK);
-//			useSavedPsw = true;
-//			remember.setChecked(true);
-//		} else {
-//			useSavedPsw = false;
-//			remember.setChecked(false);
-//		}
-//
-//		// 从设置页面切换账号时标明用户是否在登录时勾选记住密码
-//		if (!user.isRememberPwd()) {
-//			// Log.d("Account remember", user.isRememberPwd()+"");
-//			pswEditText.setText("");
-//			useSavedPsw = false;
-//			remember.setChecked(false);
-//		}
 
 		initUI();
 		
@@ -374,14 +328,20 @@ public class AccountSettingActivity extends Activity {
 
 	public void loginError() {
 		closeProgressDialog();
-		isFirstLogin = true;
 		MyToast.show(this, R.string.login_error, Toast.LENGTH_LONG);
+		processError();
 	}
 
 	public void loginFailed() {
 		closeProgressDialog();
-		isFirstLogin = true;
 		MyToast.show(this, R.string.login_failed, Toast.LENGTH_LONG);
+		processError();
+	}
+	
+	private void processError() {
+		isFirstLogin = true;
+		SipUtils.unregisterSipAccount(null);
+		SipRegistrationStateListenerImp.cancelVOIPOnlineStatus();
 	}
 
 	public void loginSuccess(JSONObject data) {
@@ -405,8 +365,7 @@ public class AccountSettingActivity extends Activity {
 			closeProgressDialog();
 			Intent intent = new Intent(AccountSettingActivity.this,
 					ChineseTelephoneTabActivity.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-					| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
 			startActivity(intent);
 			finish();

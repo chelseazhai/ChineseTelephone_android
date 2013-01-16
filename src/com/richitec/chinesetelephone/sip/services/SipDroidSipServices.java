@@ -56,7 +56,7 @@ public class SipDroidSipServices extends BaseSipServices implements
 		_edit.putBoolean(Settings.PREF_WLAN, true);
 		_edit.putBoolean(Settings.PREF_3G, true);
 		_edit.putBoolean(Settings.PREF_EDGE, true);
-
+		
 		// set credentials
 		_edit.putString(Settings.PREF_USERNAME, sipAccount.getSipUserName());
 		_edit.putString(Settings.PREF_PASSWORD, sipAccount.getSipPwd());
@@ -65,12 +65,16 @@ public class SipDroidSipServices extends BaseSipServices implements
 		_edit.putString(Settings.PREF_DNS, sipAccount.getSipServer());
 		_edit.putString(Settings.PREF_PORT, sipAccount.getSipPort().toString());
 
+		_edit.putBoolean(Settings.PREF_ON, true);
+		
 		// commit changes
 		_edit.commit();
 		
 		Receiver.mSipdroidEngine = null;
 		// sip account register
 		Receiver.engine(_appContext).registerMore();
+		
+		setSipRegisterCalled(true);
 	}
 
 	@Override
@@ -85,6 +89,8 @@ public class SipDroidSipServices extends BaseSipServices implements
 
 			_mRegistrationStateBroadcastReceiver = null;
 		}
+		
+		setSipRegisterCalled(false);
 	}
 
 	@Override
@@ -216,6 +222,9 @@ public class SipDroidSipServices extends BaseSipServices implements
 						Log.d(LOG_TAG, "Failed to register :(");
 
 						_mSipRegistrationStateListener.onRegisterFailed();
+					} else if (_registrationEventArgs.equalsIgnoreCase("registering")) {
+						Log.d(LOG_TAG, "registering");
+						_mSipRegistrationStateListener.onRegistering();
 					}
 				}
 			}

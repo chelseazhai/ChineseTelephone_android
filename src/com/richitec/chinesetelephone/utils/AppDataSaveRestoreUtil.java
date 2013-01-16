@@ -1,16 +1,12 @@
 package com.richitec.chinesetelephone.utils;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.richitec.chinesetelephone.account.AccountSettingActivity;
 import com.richitec.chinesetelephone.bean.DialPreferenceBean;
 import com.richitec.chinesetelephone.constant.DialPreference;
 import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.constant.TelUser;
-import com.richitec.commontoolkit.CommonToolkitApplication;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.user.User;
 import com.richitec.commontoolkit.user.UserBean;
@@ -33,13 +29,6 @@ public class AppDataSaveRestoreUtil {
 		
 		UserBean user = UserManager.getInstance().getUser();
 		if (userName == null || userName.equals("")) {
-			// jump to account setting
-			Context context = CommonToolkitApplication.getContext();
-			Intent intent = new Intent(context,
-					AccountSettingActivity.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-					| Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			context.startActivity(intent);
 		} else if (user.getName() == null || user.getName().equals("")) {
 			loadAccount();
 		}

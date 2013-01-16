@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest package="com.richitec.chinesetelephone"
     android:versionCode="1"
-    android:versionName="0.9" xmlns:android="http://schemas.android.com/apk/res/android">
+    android:versionName="0.9.1" xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-sdk
         android:minSdkVersion="7"
@@ -28,75 +28,61 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <activity
-            android:name=".account.AccountSettingActivity"
-            android:label="@string/title_activity_account_setting"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
-        </activity>
-        <activity
-            android:name=".ChineseTelephoneAppLaunchActivity"
-            android:theme="@style/AppLaunchActivityTheme" android:screenOrientation="portrait">
+        <activity android:name=".ChineseTelephoneAppLaunchActivity" android:theme="@style/AppLaunchActivityTheme" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity><activity
+            android:name=".account.AccountSettingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize|stateHidden">
         </activity>
+        
         <activity
             android:name=".tab7tabcontent.ChineseTelephoneTabActivity"
-            android:label="@string/title_activity_chinese_telephone_tab"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" android:launchMode="singleTask">
         </activity>
         <activity
-            android:name=".tab7tabcontent.CallRecordHistoryListTabContentActivity"
-            android:label="@string/title_activity_call_record_history_list_tab_content" >
+            android:name=".tab7tabcontent.CallRecordHistoryListTabContentActivity">
         </activity>
         <activity
             android:name=".tab7tabcontent.CallRecordDetailInfoActivity"
-            android:label="@string/title_activity_call_record_detail_info"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".tab7tabcontent.DialTabContentActivity"
-            android:label="@string/title_activity_dial_tab_content" >
+            android:name=".tab7tabcontent.DialTabContentActivity">
         </activity>
         <activity
-            android:name=".tab7tabcontent.ContactListTabContentActivity"
-            android:label="@string/title_activity_contact_list_tab_content" >
+            android:name=".tab7tabcontent.ContactListTabContentActivity">
         </activity>
         <activity
             android:name=".call.OutgoingCallActivity"
-            android:label="@string/title_activity_outgoing_call"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".account.AccountForgetPSWActivity"
-            android:label="@string/title_activity_account_forget_psw"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
             android:name=".account.AccountRegistActivity"
-            android:label="@string/title_activity_account_regist"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" android:theme="@style/AppTheme">
         </activity>
         <activity
             android:name=".assist.SettingActivity"
-            android:label="@string/title_setting"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".assist.RemainMoneyActivity"
-            android:label="@string/title_activity_remain_money"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".assist.AccountChargeActivity"
-            android:label="@string/title_activity_remain_money"
             android:screenOrientation="portrait" >
         </activity>
 
@@ -113,7 +99,7 @@
         </activity>
         <activity
             android:name=".assist.InviteFriendActivity"
-            android:label="@string/title_activity_invite_friend" android:screenOrientation="portrait">
+            android:screenOrientation="portrait">
         </activity>
         <activity android:name=".account.AccountDirectRegisterActivity" android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden|adjustResize"></activity>
         <activity android:name=".assist.MySuitesActivity" android:screenOrientation="portrait"></activity>

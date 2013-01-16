@@ -167,7 +167,7 @@
     <string name="is_auto_login">登录设置</string>
     <string name="auto_login_rbtn_title">自动登录</string>
     <string name="manual_login_rbtn_title">手动登录</string>
-    <string name="exit_program_messge">确定要注销并退出程序？</string>
+    <string name="logout_messge">点击确定注销登录并退出</string>
     <string name="exit">确定要退出程序？</string>
     <string name="add_contact">添加联系人</string>
     <string name="add_new_contact_item">添加新联系人</string>
@@ -365,6 +365,7 @@
     <string name="delete_notice">删除</string>
     <!-- other -->
     <string name="currency_sign">￥</string>
-	<string name="online">UU-Talk语音在线</string>
-	<string name="offline">UU-Talk语音已离线</string>
+	<string name="online">%s(在线)</string>
+	<string name="offline">%s(离线)</string>
+	<string name="registering">%s(正在登录…)</string>
 </resources>

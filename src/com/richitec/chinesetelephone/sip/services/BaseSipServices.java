@@ -69,6 +69,8 @@ public abstract class BaseSipServices implements ISipServices {
 	// current sip voice call using loudspeaker flag
 	private Boolean _mIsSipVoiceCallUsingLoudspeaker;
 
+	private boolean sipRegisterCalled;
+	
 	public BaseSipServices() {
 		super();
 
@@ -78,8 +80,22 @@ public abstract class BaseSipServices implements ISipServices {
 		// init audio manager
 		_mAudioManager = (AudioManager) _appContext
 				.getSystemService(Context.AUDIO_SERVICE);
+		
+		sipRegisterCalled = false;
+	}
+	
+	protected void setSipRegisterCalled(boolean flag) {
+		sipRegisterCalled = flag;
 	}
 
+	/**
+	 * whether the sip service registration method has been called
+	 * @return
+	 */
+	public boolean isSipRegisterCalled() {
+		return sipRegisterCalled;
+	}
+	
 	// make direct dial sip voice call
 	public abstract boolean makeDirectDialSipVoiceCall(String calleeName,
 			String calleePhone);

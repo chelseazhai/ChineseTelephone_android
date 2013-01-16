@@ -189,11 +189,12 @@ public class NoticeViewActivity extends NavigationActivity {
 	@Override
 	protected void onRestoreInstanceState (Bundle savedInstanceState) {
 		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);
-		super.onRestoreInstanceState(savedInstanceState);
+//		super.onRestoreInstanceState(savedInstanceState);
 	}
 	
 	@Override
 	protected void onSaveInstanceState (Bundle outState) {
 		AppDataSaveRestoreUtil.onSaveInstanceState(outState);
+//		super.onSaveInstanceState(outState);
 	}
 }

@@ -19,11 +19,10 @@ public class SipRegisterManager {
 		String sipPsw = (String) userBean.getValue(TelUser.vosphone_pwd.name());
 		
 		if(sipName!=null&&!sipName.equals("")&&sipPsw!=null&&!sipPsw.equals("")){
-			// test by ares
 			// generate sip register account
 			SipRegisterBean _sipAccount = new SipRegisterBean();
 	
-			// set test sip account
+			// set sip account
 			_sipAccount.setSipUserName(sipName);
 			_sipAccount.setSipPwd(sipPsw);
 			_sipAccount.setSipServer(vosServerAddress);

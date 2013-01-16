@@ -161,8 +161,8 @@ public class AccountChargeActivity extends NavigationActivity {
 		@Override
 		public void onFailed(HttpResponseResult responseResult) {
 			closeProgress();
-			MyToast.show(AccountChargeActivity.this,
-					R.string.get_balance_error, Toast.LENGTH_SHORT);
+//			MyToast.show(AccountChargeActivity.this,
+//					R.string.get_balance_error, Toast.LENGTH_SHORT);
 		}
 	};
 

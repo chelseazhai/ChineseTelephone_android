@@ -1,33 +1,30 @@
 package com.richitec.chinesetelephone.tab7tabcontent;
 
 import android.app.AlertDialog;
-import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 
 import com.richitec.chinesetelephone.R;
-import com.richitec.chinesetelephone.assist.NoticeViewActivity;
 import com.richitec.chinesetelephone.assist.SettingActivity;
 import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
+import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListenerImp;
 import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
 import com.richitec.chinesetelephone.utils.AppUpdateManager;
 import com.richitec.chinesetelephone.utils.SipRegisterManager;
 import com.richitec.commontoolkit.CommonToolkitApplication;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.customcomponent.CommonTabSpecIndicator;
+import com.richitec.commontoolkit.user.UserBean;
+import com.richitec.commontoolkit.user.UserManager;
 
 public class ChineseTelephoneTabActivity extends TabActivity {
 
@@ -41,102 +38,104 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 			{ R.string.more_tab7nav_title, R.drawable.more_tab_icon } };
 
 	// current tab index, default is contact list tab
-	private int _mCurrentTabIndex = 1;
+	private int _mDefaultTabIndex = 1;
 
 	private SipRegistrationStateListener sipRegistrationStateListener;
-	
-	class SipRegistrationStateListenerImp implements SipRegistrationStateListener {
-		public final static int NOTIFY_ID = 2;
-		
-		private NotificationManager mNotificationManager;
-		
-		public SipRegistrationStateListenerImp() {
-			mNotificationManager = (NotificationManager) CommonToolkitApplication.getContext()
-					.getSystemService(Context.NOTIFICATION_SERVICE);
-		}
-		
-		@Override
-		public void onRegisterSuccess() {
-			Log.d(SystemConstants.TAG, "regist success");
-			Context context = CommonToolkitApplication.getContext();
-			Bitmap icon = BitmapFactory.decodeResource(context.getResources(),
-					android.R.drawable.presence_online);
-			NotificationCompat.Builder builder = new NotificationCompat.Builder(
-					context).setSmallIcon(android.R.drawable.presence_online).setLargeIcon(icon)
-					.setAutoCancel(false).setOngoing(true).setWhen(0)
-					.setContentTitle(context.getString(R.string.online));
-			
-			Intent resultIntent = new Intent(context, ChineseTelephoneTabActivity.class);
-			PendingIntent noticePendingIntent = PendingIntent
-					.getActivity(ChineseTelephoneTabActivity.this, 0, resultIntent,
-							PendingIntent.FLAG_UPDATE_CURRENT);
-			builder.setContentIntent(noticePendingIntent);
-			
-			Notification notif = builder.build();
-			mNotificationManager.notify(NOTIFY_ID, notif);
-		}
 
-		@Override
-		public void onRegisterFailed() {
-			Log.d(SystemConstants.TAG, "regist failed");
-			Context context = CommonToolkitApplication.getContext();
-			Bitmap icon = BitmapFactory.decodeResource(context.getResources(),
-					android.R.drawable.presence_offline);
-			NotificationCompat.Builder builder = new NotificationCompat.Builder(
-					context).setSmallIcon(android.R.drawable.presence_offline).setLargeIcon(icon)
-					.setAutoCancel(false).setOngoing(true).setWhen(0)
-					.setContentTitle(context.getString(R.string.offline));
-			
-			Intent resultIntent = new Intent(context, ChineseTelephoneTabActivity.class);
-			PendingIntent noticePendingIntent = PendingIntent
-					.getActivity(ChineseTelephoneTabActivity.this, 0, resultIntent,
-							PendingIntent.FLAG_UPDATE_CURRENT);
-			builder.setContentIntent(noticePendingIntent);
-			
-			Notification notif = builder.build();
-			mNotificationManager.notify(NOTIFY_ID, notif);
-			
-		}
-
-		@Override
-		public void onUnRegisterSuccess() {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void onUnRegisterFailed() {
-			// TODO Auto-generated method stub
-			
-		}
-		
-	}
-
-	@Override
-	public void onDestroy() {
-		Log.d(SystemConstants.TAG, "ChineseTelephoneTabActivity - onDestroy");
-		super.onDestroy();
-	}
+//	final public class SipRegistrationStateListenerImp implements
+//			SipRegistrationStateListener {
+//		public final static int VOIP_ONLINE_NOTIFY_ID = 2;
+//
+//		private NotificationManager mNotificationManager;
+//
+//		public SipRegistrationStateListenerImp() {
+//			mNotificationManager = (NotificationManager) CommonToolkitApplication
+//					.getContext()
+//					.getSystemService(Context.NOTIFICATION_SERVICE);
+//		}
+//
+//		@Override
+//		public void onRegisterSuccess() {
+//			Log.d(SystemConstants.TAG, "regist success");
+//			Context context = CommonToolkitApplication.getContext();
+//
+//			UserBean user = UserManager.getInstance().getUser();
+//			sendNotification(
+//					android.R.drawable.presence_online,
+//					context.getString(R.string.app_name),
+//					String.format(context.getString(R.string.online),
+//							user.getName()));
+//		}
+//
+//		@Override
+//		public void onRegisterFailed() {
+//			Log.d(SystemConstants.TAG, "regist failed");
+//			Context context = CommonToolkitApplication.getContext();
+//
+//			UserBean user = UserManager.getInstance().getUser();
+//			sendNotification(
+//					android.R.drawable.presence_offline,
+//					context.getString(R.string.app_name),
+//					String.format(context.getString(R.string.offline),
+//							user.getName()));
+//		}
+//
+//		private void sendNotification(int iconResId, String title,
+//				String content) {
+//			Context context = CommonToolkitApplication.getContext();
+//			Bitmap icon = BitmapFactory.decodeResource(context.getResources(),
+//					R.drawable.ic_launcher);
+//			NotificationCompat.Builder builder = new NotificationCompat.Builder(
+//					context).setSmallIcon(iconResId).setLargeIcon(icon)
+//					.setAutoCancel(false).setOngoing(true).setWhen(0)
+//					.setContentTitle(title).setContentText(content);
+//
+//			Intent resultIntent = new Intent(context,
+//					ChineseTelephoneTabActivity.class);
+//			PendingIntent noticePendingIntent = PendingIntent.getActivity(
+//					ChineseTelephoneTabActivity.this, 0, resultIntent,
+//					PendingIntent.FLAG_UPDATE_CURRENT);
+//			builder.setContentIntent(noticePendingIntent);
+//
+//			Notification notif = builder.build();
+//			mNotificationManager.notify(VOIP_ONLINE_NOTIFY_ID, notif);
+//		}
+//
+//		@Override
+//		public void onUnRegisterSuccess() {
+//			// TODO Auto-generated method stub
+//
+//		}
+//
+//		@Override
+//		public void onUnRegisterFailed() {
+//			// TODO Auto-generated method stub
+//
+//		}
+//
+//		@Override
+//		public void onRegistering() {
+//			Log.d(SystemConstants.TAG, "registering");
+//			Context context = CommonToolkitApplication.getContext();
+//
+//			UserBean user = UserManager.getInstance().getUser();
+//			sendNotification(
+//					android.R.drawable.presence_away,
+//					context.getString(R.string.app_name),
+//					String.format(context.getString(R.string.registering),
+//							user.getName()));
+//
+//		}
+//
+//	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		Log.d(SystemConstants.TAG, "ChineseTelephoneTabActivity - onCreate");
 		super.onCreate(savedInstanceState);
-		
+
 		sipRegistrationStateListener = new SipRegistrationStateListenerImp();
-		
-		Runnable registSipRunnable = new Runnable() {
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				// regist sip account
-				SipRegisterManager.registSip(sipRegistrationStateListener,
-						getString(R.string.vos_server));
-			}
-		};
-		Thread registSipThread = new Thread(registSipRunnable);
-		registSipThread.start();
-		
+
 		// set content view
 		setContentView(R.layout.chinese_telephone_tab_activity_layout);
 
@@ -198,17 +197,17 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 		_tabHost.addTab(_tabSpec);
 
 		// set current tab and tab image
-		_tabHost.setCurrentTab(_mCurrentTabIndex);
-
-		/*
-		 * TabWidget tabWidget = this.getTabWidget(); int count =
-		 * tabWidget.getChildCount(); for (int i = 0; i < count; i++) { View
-		 * view = tabWidget.getChildTabViewAt(i); final TextView tv = (TextView)
-		 * view.findViewById(android.R.id.title); tv.setTextSize(15); }
-		 */
+		_tabHost.setCurrentTab(_mDefaultTabIndex);
 
 		AppUpdateManager updateManager = new AppUpdateManager(this);
 		updateManager.checkVersion(false);
+	}
+
+	@Override
+	public void onDestroy() {
+		Log.d(SystemConstants.TAG, "ChineseTelephoneTabActivity - onDestroy");
+		SipRegistrationStateListenerImp.cancelVOIPOnlineStatus();
+		super.onDestroy();
 	}
 
 	@Override
@@ -220,6 +219,8 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 	@Override
 	protected void onResume() {
 		Log.d(SystemConstants.TAG, "ChineseTelephoneTabActivity - onResume");
+		SipRegisterManager.registSip(sipRegistrationStateListener,
+				getString(R.string.vos_server));
 		super.onResume();
 	}
 
@@ -241,11 +242,6 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 		super.onStart();
 	}
 
-	// protected void onSaveInstanceState (Bundle outState) {
-	// Log.d(SystemConstants.TAG,
-	// "ChineseTelephoneTabActivity  - onSaveInstanceState");
-	// }
-
 	@Override
 	public void onBackPressed() {
 		new AlertDialog.Builder(this)
@@ -261,12 +257,10 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 								SipUtils.destroySipEngine();
 								AddressBookManager.getInstance()
 										.unRegistContactObserver();
-								
-								NotificationManager nm = (NotificationManager) CommonToolkitApplication.getContext()
-										.getSystemService(Context.NOTIFICATION_SERVICE);
-								nm.cancel(SipRegistrationStateListenerImp.NOTIFY_ID);
-								// System.exit(0);
-								finish();
+								SipRegistrationStateListenerImp.cancelVOIPOnlineStatus();
+								UserManager.getInstance().setUser(new UserBean());
+					
+								System.exit(0);
 							}
 						}).setNegativeButton(R.string.cancel, null).show();
 	}
@@ -276,7 +270,16 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 		Log.d(SystemConstants.TAG,
 				"ChineseTelephoneTabActivity - onRestoreInstanceState");
 		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);
-		super.onRestoreInstanceState(savedInstanceState);
+
+		int currentTabIndex = savedInstanceState.getInt("current_tab");
+		Log.d(SystemConstants.TAG, "restore - current tab: "
+				+ currentTabIndex);
+		if (currentTabIndex != 0) {
+			super.onRestoreInstanceState(savedInstanceState);
+		} else {
+			TabHost tabHost = getTabHost();
+			tabHost.setCurrentTab(currentTabIndex);
+		}
 	}
 
 	@Override
@@ -284,6 +287,11 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 		Log.d(SystemConstants.TAG,
 				"ChineseTelephoneTabActivity - onSaveInstanceState");
 		AppDataSaveRestoreUtil.onSaveInstanceState(outState);
-		// super.onSaveInstanceState(outState);
+
+		super.onSaveInstanceState(outState);
+		TabHost tabHost = getTabHost();
+		int currentTabIndex = tabHost.getCurrentTab();
+		Log.d(SystemConstants.TAG, "save - current tab: " + currentTabIndex);
+		outState.putInt("current_tab", currentTabIndex);
 	}
 }

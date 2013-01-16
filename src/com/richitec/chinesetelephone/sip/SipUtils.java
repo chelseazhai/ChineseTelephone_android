@@ -32,8 +32,10 @@ public class SipUtils {
 	public static void registerSipAccount(SipRegisterBean sipAccount,
 			SipRegistrationStateListener sipRegistrationStateListener) {
 		Log.d(SystemConstants.TAG, "SipUtils - registerSipAccount");
-		getSipServices().registerSipAccount(sipAccount,
-				sipRegistrationStateListener);
+		BaseSipServices service = getSipServices();
+		if (!service.isSipRegisterCalled()) {
+			service.registerSipAccount(sipAccount, sipRegistrationStateListener);
+		}
 	}
 
 	// unregister sip account

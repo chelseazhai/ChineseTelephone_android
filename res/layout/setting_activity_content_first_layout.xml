@@ -103,8 +103,8 @@
             android:layout_height="50.0dp"
             android:background="@drawable/setting_middle_item_bg"
             android:clickable="true"
-            android:onClick="onClickMySuiteAction"
             android:gravity="center_vertical"
+            android:onClick="onClickMySuiteAction"
             android:orientation="horizontal" >
 
             <ImageView
@@ -143,7 +143,8 @@
             android:background="@drawable/setting_middle_item_bg"
             android:clickable="true"
             android:gravity="center_vertical"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:visibility="gone" >
 
             <ImageView
                 android:layout_width="30.0dp"
@@ -177,7 +178,7 @@
             android:id="@+id/account_changePSW_btn"
             android:layout_width="fill_parent"
             android:layout_height="50.0dp"
-            android:background="@drawable/setting_bottom_item_bg"
+            android:background="@drawable/setting_middle_item_bg"
             android:clickable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal" >
@@ -233,6 +234,44 @@
                 android:layout_weight="1.0"
                 android:gravity="center_vertical"
                 android:text="@string/account_getPSW_item"
+                android:textColor="@color/dark_dim_gray"
+                android:textSize="18.0sp" />
+
+            <ImageView
+                android:layout_width="12.0dp"
+                android:layout_height="12.0dp"
+                android:layout_marginRight="10.0dp"
+                android:src="@drawable/into_icon" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dp"
+            android:background="@drawable/setting_line_img" />
+
+        <LinearLayout
+            android:id="@+id/search_logout_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="50.0dp"
+            android:background="@drawable/setting_bottom_item_bg"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:onClick="logout"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:layout_width="30.0dp"
+                android:layout_height="30.0dp"
+                android:layout_marginLeft="10.0dp"
+                android:src="@drawable/menuexit" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10.0dp"
+                android:layout_weight="1.0"
+                android:gravity="center_vertical"
+                android:text="@string/setting_logout_item"
                 android:textColor="@color/dark_dim_gray"
                 android:textSize="18.0sp" />
 

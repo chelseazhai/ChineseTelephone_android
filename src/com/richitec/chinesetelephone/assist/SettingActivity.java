@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -32,13 +33,13 @@ import com.richitec.chinesetelephone.constant.LaunchSetting;
 import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.constant.TelUser;
 import com.richitec.chinesetelephone.sip.SipUtils;
+import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListenerImp;
 import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
 import com.richitec.chinesetelephone.utils.AppUpdateManager;
 import com.richitec.chinesetelephone.utils.CountryCodeManager;
 import com.richitec.chinesetelephone.utils.DialPreferenceManager;
 import com.richitec.commontoolkit.CommonToolkitApplication;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
-import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.customcomponent.CommonPopupWindow;
 import com.richitec.commontoolkit.user.User;
 import com.richitec.commontoolkit.user.UserBean;
@@ -258,20 +259,19 @@ public class SettingActivity extends NavigationActivity {
 		}
 	};
 
-	public void exitProgram(View v) {
+	public void logout(View v) {
 		new AlertDialog.Builder(SettingActivity.this)
 				.setTitle(R.string.alert_title)
-				.setMessage(R.string.exit_program_messge)
+				.setMessage(R.string.logout_messge)
 				.setPositiveButton(R.string.ok,
 						new DialogInterface.OnClickListener() {
 
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
-								// TODO Auto-generated method stub
 								dialog.dismiss();
 								DataStorageUtils.putObject(
-										User.password.name(), "");
+										User.username.name(), "");
 								DataStorageUtils.putObject(
 										User.password.name(), "");
 								DataStorageUtils.putObject(
@@ -281,6 +281,10 @@ public class SettingActivity extends NavigationActivity {
 								DataStorageUtils.putObject(User.userkey.name(),
 										"");
 								SipUtils.unregisterSipAccount(null);
+
+								SipRegistrationStateListenerImp.cancelVOIPOnlineStatus();
+								
+								UserManager.getInstance().setUser(new UserBean());
 								System.exit(0);
 							}
 						}).setNegativeButton(R.string.cancel, null).show();
