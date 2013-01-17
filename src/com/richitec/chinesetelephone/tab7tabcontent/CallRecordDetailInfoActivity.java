@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -104,6 +105,17 @@ public class CallRecordDetailInfoActivity extends NavigationActivity {
 				((TextView) findViewById(R.id.callRecord_detailInfo_time_textView))
 						.setText(_callRecordInitiateTimeTimeFormat
 								.format(_callLog.getCallDate()));
+				ImageView durationIcon = (ImageView) findViewById(R.id.callRecord_detailInfo_duration_type_icon);
+				if (CallType.MISSED == _callLog.getCallType()) {
+					durationIcon.setImageResource(android.R.drawable.sym_call_missed);
+				} else if (CallType.INCOMING == _callLog.getCallType()) {
+					durationIcon.setImageResource(android.R.drawable.sym_call_incoming);
+				} else if (CallType.OUTGOING == _callLog.getCallType()) {
+					durationIcon.setImageResource(android.R.drawable.sym_call_outgoing);
+				} else {
+					durationIcon.setImageDrawable(null);
+				}
+				
 				((TextView) findViewById(R.id.callRecord_detailInfo_duration_textView))
 						.setText(CallType.MISSED == _callLog.getCallType() ? getResources()
 								.getString(

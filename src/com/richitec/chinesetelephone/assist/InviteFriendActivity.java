@@ -54,9 +54,10 @@ public class InviteFriendActivity extends NavigationActivity {
 		public void onFinished(HttpResponseResult responseResult) {
 			try {
 				JSONObject data = new JSONObject(responseResult.getResponseText());
-				String desc = data.getString("reg_gift_desc_text");
 				TextView descTV = (TextView) findViewById(R.id.invite_reg_descirption_tv);
+				String desc = data.getString("reg_gift_desc_text");
 				descTV.setText(desc);
+				descTV.setVisibility(View.VISIBLE);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -64,7 +65,6 @@ public class InviteFriendActivity extends NavigationActivity {
 
 		@Override
 		public void onFailed(HttpResponseResult responseResult) {
-
 		}
 	};
 

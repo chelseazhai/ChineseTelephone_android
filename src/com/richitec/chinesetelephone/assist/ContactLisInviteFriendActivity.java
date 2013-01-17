@@ -32,6 +32,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -110,26 +112,25 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 
 		_mInviteFriendsInfo = new ArrayList<ContactBean>();
 
-		// init present contacts in address book detail info array
-		// _mPresentContactsInABInfoArray =
-		// _mAllNamePhoneticSortedContactsInfoArray;
-
 		// init contacts in address book list view
 		_mABContactsListView = (ListView) findViewById(R.id.contactInAB_listView);
 
-		// set contacts in address book listView adapter
-		// _mABContactsListView
-		// .setAdapter(generateInABContactAdapter(_mPresentContactsInABInfoArray));
-		// init address book contacts listView quick alphabet bar and add on
-		// touch listener
-		// new ListViewQuickAlphabetBar(_mABContactsListView)
-		// .setOnTouchListener(new
-		// ContactsInABListViewQuickAlphabetBarOnTouchListener());
 		initListUI();
 		// set contacts in address book listView on item click listener
 		_mABContactsListView
 				.setOnItemClickListener(new ContactsInABListViewOnItemClickListener());
+		_mABContactsListView.setOnScrollListener(new OnScrollListener() {
 
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				hideSoftKeyboard();
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+			}
+		});
 		// bind contact search editText text watcher
 		((EditText) findViewById(R.id.contact_search_editText))
 				.addTextChangedListener(new ContactSearchEditTextTextWatcher());
@@ -141,7 +142,7 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 	private void initListUI() {
 		// check all address book name phonetic sorted contacts detail info list
 		// and init present contacts in address book detail info array
-		if (null == _mAllNamePhoneticSortedContactsInfoArray) { 
+		if (null == _mAllNamePhoneticSortedContactsInfoArray) {
 			Log.d(LOG_TAG,
 					"All address book name phonetic sorted contacts detail info list is null, init immediately when on create");
 
@@ -149,7 +150,8 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 			initNamePhoneticSortedContactsInfoArray();
 		}
 		_mPresentContactsInABInfoArray = _mAllNamePhoneticSortedContactsInfoArray;
-		Log.d(SystemConstants.TAG, "_mPresentContactsInABInfoArray size: " + _mPresentContactsInABInfoArray.size());
+		Log.d(SystemConstants.TAG, "_mPresentContactsInABInfoArray size: "
+				+ _mPresentContactsInABInfoArray.size());
 		// set contacts in address book listView adapter
 		_mABContactsListView.setAdapter(generateInABContactAdapter(this, true,
 				_mPresentContactsInABInfoArray));
@@ -158,205 +160,6 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 		new ListViewQuickAlphabetBar(_mABContactsListView)
 				.setOnTouchListener(new ContactsInABListViewQuickAlphabetBarOnTouchListener());
 	}
-
-	// generate in address book contact adapter
-	// private ListAdapter generateInABContactAdapter(
-	// List<ContactBean> presentContactsInAB) {
-	// // in address book contacts adapter data keys
-	// final String PRESENT_CONTACT_PHOTO = "present_contact_photo";
-	// final String PRESENT_CONTACT_NAME = "present_contact_name";
-	//
-	// // set address book contacts list view present data list
-	// List<Map<String, ?>> _addressBookContactsPresentDataList = new
-	// ArrayList<Map<String, ?>>();
-	//
-	// for (ContactBean _contact : presentContactsInAB) {
-	// // generate data
-	// Map<String, Object> _dataMap = new HashMap<String, Object>();
-	//
-	// // get contact name and phone matching indexes
-	// SparseIntArray _nameMatchingIndexes = (SparseIntArray) _contact
-	// .getExtension().get(
-	// AddressBookManager.NAME_MATCHING_INDEXES);
-	// @SuppressWarnings("unchecked")
-	// List<List<Integer>> _phoneMatchingIndexes = (List<List<Integer>>)
-	// _contact
-	// .getExtension().get(
-	// AddressBookManager.PHONENUMBER_MATCHING_INDEXES);
-	//
-	// // set data
-	// // define contact photo bitmap
-	// Bitmap _contactPhotoBitmap = ((BitmapDrawable) getResources()
-	// .getDrawable(R.drawable.img_default_avatar)).getBitmap();
-	//
-	// // check contact photo data
-	// if (null != _contact.getPhoto()) {
-	// try {
-	// // get photo data stream
-	// InputStream _photoDataStream = new ByteArrayInputStream(
-	// _contact.getPhoto());
-	//
-	// // check photo data stream
-	// if (null != _photoDataStream) {
-	// _contactPhotoBitmap = BitmapFactory
-	// .decodeStream(_photoDataStream);
-	//
-	// // close photo data stream
-	// _photoDataStream.close();
-	// }
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	//
-	// Log.e(LOG_TAG,
-	// "Get contact photo data stream error, error message = "
-	// + e.getMessage());
-	// }
-	// }
-	//
-	// // set photo
-	// _dataMap.put(PRESENT_CONTACT_PHOTO, _contactPhotoBitmap);
-	//
-	// // check contact search status
-	// if (ContactSearchStatus.SEARCHBYNAME == _mContactSearchStatus
-	// || ContactSearchStatus.SEARCHBYCHINESENAME == _mContactSearchStatus) {
-	// // get display name
-	// SpannableString _displayName = new SpannableString(
-	// _contact.getDisplayName());
-	//
-	// // set attributed
-	// for (int i = 0; i < _nameMatchingIndexes.size(); i++) {
-	// // get key and value
-	// Integer _nameCharMatchedPos = getRealPositionInContactDisplayName(
-	// _contact.getDisplayName(),
-	// _nameMatchingIndexes.keyAt(i));
-	// Integer _nameCharMatchedLength = _nameMatchingIndexes
-	// .get(_nameMatchingIndexes.keyAt(i));
-	//
-	// _displayName
-	// .setSpan(
-	// new ForegroundColorSpan(Color.BLUE),
-	// _nameCharMatchedPos,
-	// AddressBookManager.NAME_CHARACTER_FUZZYMATCHED_LENGTH ==
-	// _nameCharMatchedLength ? _nameCharMatchedPos + 1
-	// : _nameCharMatchedPos
-	// + _nameCharMatchedLength,
-	// Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-	// }
-	//
-	// _dataMap.put(PRESENT_CONTACT_NAME, _displayName);
-	// } else {
-	// _dataMap.put(PRESENT_CONTACT_NAME, _contact.getDisplayName());
-	// }
-	// if (ContactSearchStatus.SEARCHBYPHONE == _mContactSearchStatus) {
-	// // get format phone number string
-	// SpannableString _formatPhoneNumberString = new SpannableString(
-	// _contact.getFormatPhoneNumbers());
-	//
-	// // get format phone number string separator "\n" positions
-	// List<Integer> _sepPositions = StringUtils.subStringPositions(
-	// _contact.getFormatPhoneNumbers(), "\n");
-	//
-	// // set attributed
-	// for (int i = 0; i < _phoneMatchingIndexes.size(); i++) {
-	// // check the phone matched
-	// if (0 != _phoneMatchingIndexes.get(i).size()) {
-	// // get begin and end position
-	// int _beginPos = _phoneMatchingIndexes.get(i).get(0);
-	// int _endPos = _phoneMatchingIndexes.get(i).get(
-	// _phoneMatchingIndexes.get(i).size() - 1) + 1;
-	//
-	// // check matched phone
-	// if (1 <= i) {
-	// _beginPos += _sepPositions.get(i - 1) + 1;
-	// _endPos += _sepPositions.get(i - 1) + 1;
-	// }
-	//
-	// _formatPhoneNumberString.setSpan(
-	// new ForegroundColorSpan(Color.BLUE), _beginPos,
-	// _endPos, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-	// }
-	// }
-	//
-	// if (_contact.getExtension().get(SELECTED_PHONE) == null
-	// || ((String) _contact.getExtension()
-	// .get(SELECTED_PHONE)).equals("")) {
-	// _dataMap.put(PRESENT_CONTACT_PHONES,
-	// _formatPhoneNumberString);
-	// } else {
-	// _contact.getExtension().put(PREVIOUS_PHONES_STYLE,
-	// _formatPhoneNumberString);
-	// String selectedPhone = (String) _contact.getExtension()
-	// .get(SELECTED_PHONE);
-	// String allPhones = _contact.getFormatPhoneNumbers();
-	// int begin = allPhones.indexOf(selectedPhone);
-	// int end = begin + selectedPhone.length();
-	// SpannableString _newformatPhoneNumberString = new SpannableString(
-	// _formatPhoneNumberString);
-	// _newformatPhoneNumberString.setSpan(
-	// new ForegroundColorSpan(Color.RED), begin, end,
-	// Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-	// _dataMap.put(PRESENT_CONTACT_PHONES,
-	// _newformatPhoneNumberString);
-	// }
-	// } else {
-	// if (_contact.getExtension().get(SELECTED_PHONE) == null
-	// || ((String) _contact.getExtension()
-	// .get(SELECTED_PHONE)).equals("")) {
-	// _dataMap.put(PRESENT_CONTACT_PHONES,
-	// _contact.getFormatPhoneNumbers());
-	// } else {
-	// _contact.getExtension().put(PREVIOUS_PHONES_STYLE,
-	// _contact.getFormatPhoneNumbers());
-	// String selectedPhone = (String) _contact.getExtension()
-	// .get(SELECTED_PHONE);
-	// String allPhones = _contact.getFormatPhoneNumbers();
-	// int begin = allPhones.indexOf(selectedPhone);
-	// int end = begin + selectedPhone.length();
-	// SpannableString _newformatPhoneNumberString = new SpannableString(
-	// _contact.getFormatPhoneNumbers());
-	// _newformatPhoneNumberString.setSpan(
-	// new ForegroundColorSpan(Color.RED), begin, end,
-	// Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-	// _dataMap.put(PRESENT_CONTACT_PHONES,
-	// _newformatPhoneNumberString);
-	// }
-	// }
-	//
-	// // put alphabet index
-	// _dataMap.put(CommonListAdapter.ALPHABET_INDEX,
-	// _contact.getNamePhoneticsString());
-	//
-	// Boolean _isSelected = (Boolean) _contact.getExtension().get(
-	// CONTACT_IS_SELECTED);
-	// if (null == _isSelected) {
-	// _contact.getExtension().put(CONTACT_IS_SELECTED, false);
-	// }
-	// _dataMap.put(CONTACT_IS_SELECTED,
-	// _contact.getExtension().get(CONTACT_IS_SELECTED));
-	//
-	// // add data to list
-	// _addressBookContactsPresentDataList.add(_dataMap);
-	// }
-	//
-	// // get address book contacts listView adapter
-	// InviteFriendContactAdapter _addressBookContactsListViewAdapter =
-	// (InviteFriendContactAdapter) ((ListView)
-	// findViewById(R.id.contactInAB_listView))
-	// .getAdapter();
-	//
-	// return null == _addressBookContactsListViewAdapter ? new
-	// InviteFriendContactAdapter(
-	// this, _addressBookContactsPresentDataList,
-	// R.layout.invite_friend_contact_layout, new String[] {
-	// PRESENT_CONTACT_PHOTO, PRESENT_CONTACT_NAME,
-	// PRESENT_CONTACT_PHONES, CONTACT_IS_SELECTED },
-	// new int[] { R.id.addressBook_contact_avatar_imageView,
-	// R.id.adressBook_contact_displayName_textView,
-	// R.id.addressBook_contact_phoneNumber_textView,
-	// R.id.addressBook_contact_checkbox })
-	// : _addressBookContactsListViewAdapter
-	// .setData(_addressBookContactsPresentDataList);
-	// }
 
 	private ListAdapter generateInABContactAdapter(Context activityContext,
 			Boolean contactListViewInTab, List<ContactBean> presentContactsInAB) {
@@ -503,7 +306,7 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 			}
 			_dataMap.put(CONTACT_IS_SELECTED,
 					_contact.getExtension().get(CONTACT_IS_SELECTED));
-			
+
 			// add data to list
 			_addressBookContactsPresentDataList.add(_dataMap);
 		}
@@ -620,6 +423,16 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 
 	}
 
+	private void hideSoftKeyboard() {
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		if (imm != null) {
+			imm.hideSoftInputFromWindow(
+					((EditText) findViewById(R.id.contact_search_editText))
+							.getWindowToken(),
+					InputMethodManager.HIDE_NOT_ALWAYS);
+		}
+	}
+
 	// contacts in address book listView on item click listener
 	class ContactsInABListViewOnItemClickListener implements
 			OnItemClickListener {
@@ -628,11 +441,7 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			// hide input method manager not always
-			((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
-					.hideSoftInputFromWindow(
-							((EditText) findViewById(R.id.contact_search_editText))
-									.getWindowToken(),
-							InputMethodManager.HIDE_NOT_ALWAYS);
+			hideSoftKeyboard();
 
 			// get the click item view data: contact object
 			ContactBean _clickItemViewData = _mPresentContactsInABInfoArray
@@ -1063,7 +872,8 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		Log.d(SystemConstants.TAG, "ContactLisInviteFriendActivity - onRestoreInstanceState");
+		Log.d(SystemConstants.TAG,
+				"ContactLisInviteFriendActivity - onRestoreInstanceState");
 		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);
 		initNamePhoneticSortedContactsInfoArray();
 		initListUI();

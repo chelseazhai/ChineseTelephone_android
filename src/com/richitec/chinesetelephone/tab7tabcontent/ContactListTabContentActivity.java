@@ -29,12 +29,13 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -120,32 +121,27 @@ public class ContactListTabContentActivity extends NavigationActivity {
 				R.drawable.img_newcontact_btn, BarButtonItemStyle.RIGHT_GO,
 				new AddNewContactBtnOnClickListener()));
 
-//		// check all address book name phonetic sorted contacts detail info list
-//		// and init present contacts in address book detail info array
-//		if (null == _smAllNamePhoneticSortedContactsInfoArray) {
-//			Log.d(LOG_TAG,
-//					"All address book name phonetic sorted contacts detail info list is null, init immediately when on create");
-//
-//			// init first
-//			initNamePhoneticSortedContactsInfoArray();
-//		}
-//		_mPresentContactsInABInfoArray = _smAllNamePhoneticSortedContactsInfoArray;
-
 		// get contacts in address book list view
 		_mABContactsListView = (ListView) findViewById(R.id.contactInABInTab_listView);
 
-//		// set contacts in address book listView adapter
-//		_mABContactsListView.setAdapter(generateInABContactAdapter(this, true,
-//				_mPresentContactsInABInfoArray));
-//		// init address book contacts listView quick alphabet bar and add on
-//		// touch listener
-//		new ListViewQuickAlphabetBar(_mABContactsListView)
-//				.setOnTouchListener(new ContactsInABListViewQuickAlphabetBarOnTouchListener());
 		initListUI();
 		// set contacts in address book listView on item click listener
 		_mABContactsListView
 				.setOnItemClickListener(new ContactsInABListViewOnItemClickListener());
-
+		_mABContactsListView.setOnScrollListener(new OnScrollListener() {
+			
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				hideSoftKeyboard();
+				
+			}
+			
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				
+			}
+		});
 		// bind contact search editText text watcher
 		((EditText) findViewById(R.id.contact_search_editText))
 				.addTextChangedListener(new ContactSearchEditTextTextWatcher());
@@ -470,6 +466,16 @@ public class ContactListTabContentActivity extends NavigationActivity {
 		}
 
 	}
+	
+	private void hideSoftKeyboard() {
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		if (imm != null) {
+			imm.hideSoftInputFromWindow(
+					((EditText) findViewById(R.id.contact_search_editText))
+							.getWindowToken(),
+					InputMethodManager.HIDE_NOT_ALWAYS);
+		}
+	}
 
 	// contacts in address book listView on item click listener
 	class ContactsInABListViewOnItemClickListener implements
@@ -479,11 +485,7 @@ public class ContactListTabContentActivity extends NavigationActivity {
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			// hide input method manager not always
-			((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
-					.hideSoftInputFromWindow(
-							((EditText) findViewById(R.id.contact_search_editText))
-									.getWindowToken(),
-							InputMethodManager.HIDE_NOT_ALWAYS);
+			hideSoftKeyboard();
 
 			// get the click item view data: contact object
 			ContactBean _clickItemViewData = _mPresentContactsInABInfoArray

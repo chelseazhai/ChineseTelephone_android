@@ -49,14 +49,14 @@
     <string name="title_activity_call_record_detail_info">CallRecordDetailInfoActivity</string>
     <string name="call_record_detailinfo_title">详细记录</string>
     <string name="callRecord_detailInfo_contact_avatar_imageView_content_description">call record contact avatar image view</string>
-    <string name="callRecord_detailInfo_outgoingCall_callType">去电</string>
-    <string name="callRecord_detailInfo_incomingCall_callType">来电</string>
+    <string name="callRecord_detailInfo_outgoingCall_callType">呼出电话</string>
+    <string name="callRecord_detailInfo_incomingCall_callType">呼入电话</string>
     <string name="callRecord_detailInfo_initiateTime_year">年</string>
     <string name="callRecord_detailInfo_initiateTime_month">月</string>
     <string name="callRecord_detailInfo_initiateTime_day">日</string>
     <string name="callRecord_detailInfo_duration_seconds">秒</string>
-    <string name="callRecord_detailInfo_duration_minutes">分</string>
-    <string name="callRecord_detailInfo_missed_incomingCall">未接来电</string>
+    <string name="callRecord_detailInfo_duration_minutes">分钟</string>
+    <string name="callRecord_detailInfo_missed_incomingCall">未接听</string>
     <string name="callRecord_detailInfo_cancel_outgoingCall">呼叫取消</string>
     <string name="callRecord_detailInfo_failed_outgoingCall">呼叫失败</string>
     <string name="callRecord_detailInfo_operation4directdial">直拨</string>
@@ -151,7 +151,7 @@
     <string name="setting_areacode_item">本地区号设置</string>
     <string name="setting_countrycode_item">默认国家号设置</string>
     <string name="setting_setup_item">启动设置</string>
-    <string name="setting_set_auth_number">绑定号码设置</string>
+    <string name="setting_set_auth_number">回拨号码设置</string>
     <string name="setting_logout_item">注销登录并退出</string>
     <string name="help">帮助</string>
     <string name="help_item">系统帮助及资费查询</string>
@@ -160,7 +160,7 @@
     <string name="change_account_title">切换账户</string>
     <string name="set_dialcountry_code">默认国家号设置</string>
     <string name="dialcountry_country_code_inform">提示：当您在拨打电话时未加国家号码，将会自动在您拨打的号码前添加默认国家号。</string>
-    <string name="bind_number_inform">提示：通过设置绑定号码，使用回拨功能时将会回拨绑定的号码</string>
+    <string name="bind_number_inform">提示：通过设置回拨号码，使用回拨功能时将会回拨绑定的号码</string>
     <string name="is_auto_launch">是否开机启动?</string>
     <string name="yes">是</string>
     <string name="no">否</string>
@@ -176,11 +176,9 @@
     <string name="invite_message">邀请你使用免费电话软件,点击 *** 进行下载</string>
     <string name="choose_sms_number">请选择号码</string>
     <string name="pls_input_phone">请输入电话号码</string>
-    <string name="set_bind_number_title">设置绑定号码</string>
-    <string name="set_bind_number_message">绑定号码：</string>
-    <string name="set_bind_number_success">绑定号码成功！</string>
-    <string name="get_bind_phone_title">已绑定号码</string>
-    <string name="get_bind_phone_message">绑定手机号：</string>
+    <string name="set_bind_number_title">设置回拨号码</string>
+    <string name="set_bind_number_message">回拨号码：</string>
+    <string name="set_bind_number_success">回拨号码设置成功！</string>
     <string name="get_bind_country_message">国家号：</string>
     <string name="setup_popwin_title">启动方式设置</string>
     <string name="invite_friend_title">邀请好友</string>
@@ -360,7 +358,7 @@
     <string name="unsubscribe_suite_success">套餐退订成功，下月起将不再扣除您的套餐费</string>
 
     <!-- notice center -->
-    <string name="notice_time">时间：</string>
+    <string name="notice_time">发布时间：</string>
     <string name="notice_op">请选择操作</string>
     <string name="delete_notice">删除</string>
     <!-- other -->

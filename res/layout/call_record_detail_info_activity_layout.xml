@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/light_gray"
     android:orientation="vertical"
     android:padding="10dp"
     tools:context=".tab7tabcontent.CallRecordDetailInfoActivity" >
@@ -39,7 +40,9 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:layout_marginTop="4dp"
-        android:orientation="vertical" >
+        android:background="@drawable/callrecord_deatil_time_bar_bg"
+        android:orientation="vertical"
+        android:padding="8dp" >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -71,12 +74,22 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true" />
 
+            <ImageView
+                android:id="@+id/callRecord_detailInfo_duration_type_icon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="30dp"
+                android:layout_toRightOf="@id/callRecord_detailInfo_time_textView"
+                android:scaleType="centerInside"
+                android:src="@android:drawable/sym_call_incoming" />
+
             <TextView
                 android:id="@+id/callRecord_detailInfo_duration_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_toRightOf="@id/callRecord_detailInfo_time_textView" />
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/callRecord_detailInfo_duration_type_icon"
+                android:text="33" />
         </RelativeLayout>
     </LinearLayout>
 

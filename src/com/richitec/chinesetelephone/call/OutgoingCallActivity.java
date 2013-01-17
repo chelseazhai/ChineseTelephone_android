@@ -116,7 +116,7 @@ public class OutgoingCallActivity extends Activity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		// keep outgoing call activity screen on
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -865,44 +865,64 @@ public class OutgoingCallActivity extends Activity implements
 			// waiting imageView image resource id and callback waiting textView
 			// text
 			if (responseResult.getStatusCode() == HttpStatus.SC_OK) {
-				_sendCallbackSipVoiceCallStateTipTextId = R.string.send_callbackCallRequest_succeed;
-				_callbackCallWaitingImageViewImgResId = drawable.img_sendcallbackcall_succeed;
-				UserBean user = UserManager.getInstance().getUser();
-				_callbackCallWaitingTextViewText = String.format(
-						getResources().getString(
-								R.string.callbackWaiting_textView_succeed),
-						((String) user.getValue(TelUser.bindphone_country_code
-								.name()))
-								+ ((String) user.getValue(TelUser.bindphone
-										.name())), _mCalleePhone);
+				try {
+					JSONObject data = new JSONObject(
+							responseResult.getResponseText());
+					if (200 == data.getInt("vos_status_code")) {
+						_sendCallbackSipVoiceCallStateTipTextId = R.string.send_callbackCallRequest_succeed;
+						_callbackCallWaitingImageViewImgResId = drawable.img_sendcallbackcall_succeed;
+						UserBean user = UserManager.getInstance().getUser();
+						_callbackCallWaitingTextViewText = String
+								.format(getResources()
+										.getString(
+												R.string.callbackWaiting_textView_succeed),
+										((String) user
+												.getValue(TelUser.bindphone_country_code
+														.name()))
+												+ ((String) user
+														.getValue(TelUser.bindphone
+																.name())),
+										_mCalleePhone);
+					} else {
+						// update sip voice call failed call log
+						SIPSERVICES.updateSipVoiceCallLog(-1L);
+					}
+
+				} catch (JSONException e) {
+					e.printStackTrace();
+					// update sip voice call failed call log
+					SIPSERVICES.updateSipVoiceCallLog(-1L);
+				}
+
 			} else {
 				// update sip voice call failed call log
 				SIPSERVICES.updateSipVoiceCallLog(-1L);
 
-			    if (responseResult.getStatusCode() == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
-				try {
-					JSONObject data = new JSONObject(responseResult.getResponseText());
-					String vosInfo = data.getString("vos_info");
-					// update call state textView text
-					((TextView) findViewById(R.id.callState_textView))
-							.setText(vosInfo);
+				if (responseResult.getStatusCode() == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
+					try {
+						JSONObject data = new JSONObject(
+								responseResult.getResponseText());
+						String vosInfo = data.getString("vos_info");
+						// update call state textView text
+						((TextView) findViewById(R.id.callState_textView))
+								.setText(vosInfo);
 
-					// update callback waiting imageView image resource
-					((ImageView) findViewById(R.id.callbackWaiting_imageView))
-							.setImageResource(_callbackCallWaitingImageViewImgResId);
+						// update callback waiting imageView image resource
+						((ImageView) findViewById(R.id.callbackWaiting_imageView))
+								.setImageResource(_callbackCallWaitingImageViewImgResId);
 
-					// update callback waiting textView text
-					((TextView) findViewById(R.id.callbackWaiting_textView))
-							.setText(_callbackCallWaitingTextViewText);
+						// update callback waiting textView text
+						((TextView) findViewById(R.id.callbackWaiting_textView))
+								.setText(_callbackCallWaitingTextViewText);
 
-					// show callback waiting relativeLayout
-					((RelativeLayout) findViewById(R.id.callbackWaiting_relativeLayout))
-							.setVisibility(View.VISIBLE);
-					return;
-				} catch (JSONException e) {
-					e.printStackTrace();
+						// show callback waiting relativeLayout
+						((RelativeLayout) findViewById(R.id.callbackWaiting_relativeLayout))
+								.setVisibility(View.VISIBLE);
+						return;
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
 				}
-			    }
 			}
 
 			// update call state textView text
@@ -965,13 +985,13 @@ public class OutgoingCallActivity extends Activity implements
 	}
 
 	@Override
-	protected void onRestoreInstanceState (Bundle savedInstanceState) {
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);
 		super.onRestoreInstanceState(savedInstanceState);
 	}
-	
+
 	@Override
-	protected void onSaveInstanceState (Bundle outState) {
+	protected void onSaveInstanceState(Bundle outState) {
 		AppDataSaveRestoreUtil.onSaveInstanceState(outState);
 		super.onSaveInstanceState(outState);
 	}

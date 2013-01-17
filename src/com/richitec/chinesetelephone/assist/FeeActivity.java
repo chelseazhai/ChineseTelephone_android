@@ -37,6 +37,7 @@ public class FeeActivity extends NavigationActivity {
 		WebView feeWebView = (WebView) findViewById(R.id.fee_webView);
 
 		// load support url
+		feeWebView.clearCache(true);
 		feeWebView.loadUrl(getString(R.string.fee_query_url));
 
 		// add web chrome client for loading progress changed

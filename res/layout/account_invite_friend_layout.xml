@@ -2,81 +2,82 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:orientation="vertical" >
-    
-    	<TextView 
-    	    android:id="@+id/invite_reg_descirption_tv"
-    	    android:layout_width="fill_parent"
-    	    android:layout_height="wrap_content"
-    	    android:gravity="center_vertical|left"
-    	    android:layout_marginTop="10dp"
-    	    android:layout_marginLeft="15dp"
-    	    android:layout_marginRight="15dp"
-    	    android:textSize="14dp"
-    	    android:textColor="@color/red"
-    	    />
-	    
-	    <LinearLayout 
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:orientation="vertical"
-	        android:layout_marginTop="10dp"
-	        android:layout_marginBottom="10dp"
-	        >
-	        
-	        <TextView
-	            android:layout_width="fill_parent"
-	            android:layout_height="50dp"
-	            android:text="@string/invite_pattern_title"
-	            android:textColor="@color/dodger_blue"
-	            android:textSize="20dp"
-	            android:gravity="center_vertical"
-	            android:layout_marginLeft="10dp" 
-	            />
-	        
-	         <View
-                android:layout_width="fill_parent"
-                android:layout_height="1.0dp"
-                android:background="@drawable/setting_line_img" 
-                />
-	        
-	        <LinearLayout
-	            android:id="@+id/sms_invite_btn"
-	            android:background="@drawable/setting_middle_item_bg"
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content"
-	            android:gravity="center_vertical"
-	            android:orientation="horizontal"
-	            android:clickable="true"
-	            android:onClick="smsInvite"
-	            >
-	            
-	            <TextView
-		            android:layout_width="wrap_content"
-		            android:layout_height="50dp"
-		            android:text="@string/sms_invite_pattern"
-		            android:textColor="@color/dark_dim_gray"
-		            android:textSize="20dp"
-		            android:layout_weight="1.0"
-		            android:gravity="center_vertical"
-		            android:layout_marginLeft="10dp" 
-	            />
-	            
-	            <ImageView
-	                android:layout_width="30dp"
-	                android:layout_height="30dp" 
-	                android:layout_marginRight="10dp"
-	                android:src="@drawable/imgright"
-	                />
-	            
-	        </LinearLayout>
-	        
-	        <View
-               android:layout_width="fill_parent"
-               android:layout_height="1.0dp"
-               android:background="@drawable/setting_line_img" 
-               />
-	        
-	    </LinearLayout>
-	    
+
+    <TextView
+        android:id="@+id/invite_reg_descirption_tv"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/notice_item_nor_bg"
+        android:gravity="center_vertical|left"
+        android:padding="8dp"
+        android:textColor="@color/red"
+        android:textSize="14dp"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:text="@string/invite_pattern_title"
+            android:textColor="@color/dodger_blue"
+            android:textSize="20dp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dp"
+            android:background="@drawable/setting_line_img" />
+
+        <LinearLayout
+            android:id="@+id/sms_invite_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/setting_middle_item_bg"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:onClick="smsInvite"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/sms_invite" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1.0"
+                android:gravity="center_vertical"
+                android:text="@string/sms_invite_pattern"
+                android:textColor="@color/dark_dim_gray"
+                android:textSize="20dp" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/imgright" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dp"
+            android:background="@drawable/setting_line_img" />
+    </LinearLayout>
+
 </LinearLayout>

@@ -14,6 +14,7 @@
         android:text="@string/setting"
         android:textSize="20.0sp" />
 
+   
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -31,7 +32,8 @@
             android:clickable="true"
             android:gravity="center_vertical"
             android:onClick="setDialPreference"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:visibility="gone" >
 
             <ImageView
                 android:layout_width="30.0dp"
@@ -61,55 +63,11 @@
             android:layout_height="1.0dp"
             android:background="@drawable/setting_line_img" />
 
-        <!--
-                <LinearLayout 
-                    android:id="@+id/setting_areacode_btn"
-                    android:background="@drawable/setting_middle_item_bg"
-                    android:clickable="true"
-                    android:layout_width="fill_parent"
-                    android:layout_height="50.0dp"
-                    android:orientation="horizontal"
-                    android:onClick="setAreaCode"
-                    android:gravity="center_vertical"
-                    >
-                    
-                    <ImageView 
-                        android:layout_width="30.0dp"
-                        android:layout_height="30.0dp"
-                        android:layout_marginLeft="10.0dp"
-                        android:src="@drawable/setting_areacode"
-                        />
-                    
-                    <TextView
-                        android:textSize="18.0sp" 
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" 
-                        android:layout_marginLeft="10.0dp"
-                        android:gravity="center_vertical"
-                        android:layout_weight="1.0"
-                        android:text="@string/setting_areacode_item"
-                        android:textColor="@color/dark_dim_gray"
-                        />
-                    <ImageView 
-                        android:layout_width="12.0dp"
-                        android:layout_height="12.0dp"
-                        android:layout_marginRight="10.0dp"
-                        android:src="@drawable/into_icon"
-                        />                   
-                </LinearLayout>
-                
-                <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="1.0dp"
-                    android:background="@drawable/setting_line_img" 
-                    />
-        -->
-
         <LinearLayout
             android:id="@+id/setting_countrycode_btn"
             android:layout_width="fill_parent"
             android:layout_height="50.0dp"
-            android:background="@drawable/setting_middle_item_bg"
+            android:background="@drawable/setting_top_item_bg"
             android:clickable="true"
             android:gravity="center_vertical"
             android:onClick="setDialCountryCode"
@@ -144,48 +102,10 @@
             android:background="@drawable/setting_line_img" />
 
         <LinearLayout
-            android:id="@+id/setting_setup_btn"
-            android:layout_width="fill_parent"
-            android:layout_height="50.0dp"
-            android:background="@drawable/setting_middle_item_bg"
-            android:clickable="true"
-            android:gravity="center_vertical"
-            android:onClick="setSetupPreference"
-            android:orientation="horizontal" >
-
-            <ImageView
-                android:layout_width="30.0dp"
-                android:layout_height="30.0dp"
-                android:layout_marginLeft="10.0dp"
-                android:src="@drawable/setting_setup" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10.0dp"
-                android:layout_weight="1.0"
-                android:gravity="center_vertical"
-                android:text="@string/setting_setup_item"
-                android:textColor="@color/dark_dim_gray"
-                android:textSize="18.0sp" />
-
-            <ImageView
-                android:layout_width="12.0dp"
-                android:layout_height="12.0dp"
-                android:layout_marginRight="10.0dp"
-                android:src="@drawable/into_icon" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1.0dp"
-            android:background="@drawable/setting_line_img" />
-
-        <LinearLayout
             android:id="@+id/setting_setauth_btn"
             android:layout_width="fill_parent"
             android:layout_height="50.0dp"
-            android:background="@drawable/setting_bottom_item_bg"
+            android:background="@drawable/setting_middle_item_bg"
             android:clickable="true"
             android:gravity="center_vertical"
             android:onClick="setAuthNumber"
@@ -204,6 +124,44 @@
                 android:layout_weight="1.0"
                 android:gravity="center_vertical"
                 android:text="@string/setting_set_auth_number"
+                android:textColor="@color/dark_dim_gray"
+                android:textSize="18.0sp" />
+
+            <ImageView
+                android:layout_width="12.0dp"
+                android:layout_height="12.0dp"
+                android:layout_marginRight="10.0dp"
+                android:src="@drawable/into_icon" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dp"
+            android:background="@drawable/setting_line_img" />
+
+        <LinearLayout
+            android:id="@+id/setting_setup_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="50.0dp"
+            android:background="@drawable/setting_bottom_item_bg"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:onClick="setSetupPreference"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:layout_width="30.0dp"
+                android:layout_height="30.0dp"
+                android:layout_marginLeft="10.0dp"
+                android:src="@drawable/setting_setup" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10.0dp"
+                android:layout_weight="1.0"
+                android:gravity="center_vertical"
+                android:text="@string/setting_setup_item"
                 android:textColor="@color/dark_dim_gray"
                 android:textSize="18.0sp" />
 
