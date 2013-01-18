@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -13,7 +14,7 @@
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:background="@color/light_orange"
             android:gravity="center_vertical"
             android:orientation="horizontal" >
@@ -21,11 +22,11 @@
             <TextView
                 android:id="@+id/remain_balance"
                 android:layout_width="fill_parent"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:gravity="center_vertical|left"
                 android:text="@string/remain_balance_textfield"
-                android:textSize="15dp" />
+                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -42,72 +43,50 @@
                 android:gravity="center_vertical"
                 android:text="@string/charge_pattern_title"
                 android:textColor="@color/dodger_blue"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1.0dp"
                 android:background="@drawable/setting_line_img" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/alipay_btn"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:background="@drawable/setting_middle_item_bg"
                 android:clickable="true"
                 android:gravity="center_vertical"
-                android:onClick="aliPayBtnAction"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="1.0"
-                    android:gravity="center_vertical"
-                    android:text="@string/alipay_pattern"
-                    android:textColor="@color/dark_dim_gray"
-                    android:textSize="20dp" />
+                android:onClick="aliPayBtnAction" >
 
                 <ImageView
-                    android:layout_width="30dp"
+                    android:layout_width="fill_parent"
                     android:layout_height="30dp"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/imgright" />
-            </LinearLayout>
+                    android:scaleType="centerInside"
+                    android:src="@drawable/alipay_logo" />
+            </RelativeLayout>
 
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1.0dp"
                 android:background="@drawable/setting_line_img" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/card_charge_btn"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:background="@drawable/setting_middle_item_bg"
                 android:clickable="true"
                 android:gravity="center_vertical"
                 android:onClick="onCardChargeBtnClick"
-                android:orientation="horizontal"
                 android:visibility="visible" >
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="1.0"
-                    android:gravity="center_vertical"
-                    android:text="@string/card_charge"
-                    android:textColor="@color/dark_dim_gray"
-                    android:textSize="20dp" />
-
                 <ImageView
-                    android:layout_width="30dp"
+                    android:layout_width="fill_parent"
                     android:layout_height="30dp"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/imgright" />
-            </LinearLayout>
+                    android:scaleType="centerInside"
+                    android:src="@drawable/uutalk_charge_card" />
+            </RelativeLayout>
 
             <View
                 android:layout_width="fill_parent"

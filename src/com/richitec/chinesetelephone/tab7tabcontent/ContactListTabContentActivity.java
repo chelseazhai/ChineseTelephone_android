@@ -83,6 +83,8 @@ public class ContactListTabContentActivity extends NavigationActivity {
 	// contact search status
 	private ContactSearchStatus _mContactSearchStatus = ContactSearchStatus.NONESEARCH;
 
+	private UpdateABListHandler listUpdateHandler;
+	
 	// init all name phonetic sorted contacts info array
 	public static void initNamePhoneticSortedContactsInfoArray() {
 		_smAllNamePhoneticSortedContactsInfoArray = AddressBookManager
@@ -146,8 +148,8 @@ public class ContactListTabContentActivity extends NavigationActivity {
 		((EditText) findViewById(R.id.contact_search_editText))
 				.addTextChangedListener(new ContactSearchEditTextTextWatcher());
 		
-//		ContactSyncService.setHandler(new UpdateABListHandler());
-		AddressBookManager.getInstance().addContactObserverhandler(new UpdateABListHandler());
+		listUpdateHandler = new UpdateABListHandler();
+		AddressBookManager.getInstance().addContactObserverhandler(listUpdateHandler);
 	}
 	
 	private void initListUI() {
@@ -820,6 +822,7 @@ public class ContactListTabContentActivity extends NavigationActivity {
 		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);
 		initNamePhoneticSortedContactsInfoArray();
 		initListUI();
+		AddressBookManager.getInstance().addContactObserverhandler(listUpdateHandler);
 		super.onRestoreInstanceState(savedInstanceState);
 	}
 	

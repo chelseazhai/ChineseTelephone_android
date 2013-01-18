@@ -1,9 +1,7 @@
 package com.richitec.chinesetelephone.tab7tabcontent;
 
 import android.app.AlertDialog;
-import android.app.NotificationManager;
 import android.app.TabActivity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,7 +18,6 @@ import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListenerI
 import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
 import com.richitec.chinesetelephone.utils.AppUpdateManager;
 import com.richitec.chinesetelephone.utils.SipRegisterManager;
-import com.richitec.commontoolkit.CommonToolkitApplication;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.customcomponent.CommonTabSpecIndicator;
 import com.richitec.commontoolkit.user.UserBean;
@@ -41,93 +38,6 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 	private int _mDefaultTabIndex = 1;
 
 	private SipRegistrationStateListener sipRegistrationStateListener;
-
-//	final public class SipRegistrationStateListenerImp implements
-//			SipRegistrationStateListener {
-//		public final static int VOIP_ONLINE_NOTIFY_ID = 2;
-//
-//		private NotificationManager mNotificationManager;
-//
-//		public SipRegistrationStateListenerImp() {
-//			mNotificationManager = (NotificationManager) CommonToolkitApplication
-//					.getContext()
-//					.getSystemService(Context.NOTIFICATION_SERVICE);
-//		}
-//
-//		@Override
-//		public void onRegisterSuccess() {
-//			Log.d(SystemConstants.TAG, "regist success");
-//			Context context = CommonToolkitApplication.getContext();
-//
-//			UserBean user = UserManager.getInstance().getUser();
-//			sendNotification(
-//					android.R.drawable.presence_online,
-//					context.getString(R.string.app_name),
-//					String.format(context.getString(R.string.online),
-//							user.getName()));
-//		}
-//
-//		@Override
-//		public void onRegisterFailed() {
-//			Log.d(SystemConstants.TAG, "regist failed");
-//			Context context = CommonToolkitApplication.getContext();
-//
-//			UserBean user = UserManager.getInstance().getUser();
-//			sendNotification(
-//					android.R.drawable.presence_offline,
-//					context.getString(R.string.app_name),
-//					String.format(context.getString(R.string.offline),
-//							user.getName()));
-//		}
-//
-//		private void sendNotification(int iconResId, String title,
-//				String content) {
-//			Context context = CommonToolkitApplication.getContext();
-//			Bitmap icon = BitmapFactory.decodeResource(context.getResources(),
-//					R.drawable.ic_launcher);
-//			NotificationCompat.Builder builder = new NotificationCompat.Builder(
-//					context).setSmallIcon(iconResId).setLargeIcon(icon)
-//					.setAutoCancel(false).setOngoing(true).setWhen(0)
-//					.setContentTitle(title).setContentText(content);
-//
-//			Intent resultIntent = new Intent(context,
-//					ChineseTelephoneTabActivity.class);
-//			PendingIntent noticePendingIntent = PendingIntent.getActivity(
-//					ChineseTelephoneTabActivity.this, 0, resultIntent,
-//					PendingIntent.FLAG_UPDATE_CURRENT);
-//			builder.setContentIntent(noticePendingIntent);
-//
-//			Notification notif = builder.build();
-//			mNotificationManager.notify(VOIP_ONLINE_NOTIFY_ID, notif);
-//		}
-//
-//		@Override
-//		public void onUnRegisterSuccess() {
-//			// TODO Auto-generated method stub
-//
-//		}
-//
-//		@Override
-//		public void onUnRegisterFailed() {
-//			// TODO Auto-generated method stub
-//
-//		}
-//
-//		@Override
-//		public void onRegistering() {
-//			Log.d(SystemConstants.TAG, "registering");
-//			Context context = CommonToolkitApplication.getContext();
-//
-//			UserBean user = UserManager.getInstance().getUser();
-//			sendNotification(
-//					android.R.drawable.presence_away,
-//					context.getString(R.string.app_name),
-//					String.format(context.getString(R.string.registering),
-//							user.getName()));
-//
-//		}
-//
-//	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

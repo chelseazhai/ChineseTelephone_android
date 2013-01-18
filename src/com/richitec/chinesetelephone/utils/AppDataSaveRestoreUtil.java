@@ -23,6 +23,7 @@ public class AppDataSaveRestoreUtil {
 	public static void onRestoreInstanceState (Bundle savedInstanceState) {
 		if (!AddressBookManager.getInstance().isInited()) {
 			AddressBookManager.getInstance().traversalAddressBook();
+			AddressBookManager.getInstance().registContactOberver();
 		}
 		
 		String userName = savedInstanceState.getString(User.username.name());

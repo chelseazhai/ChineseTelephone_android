@@ -86,7 +86,9 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 
 	// contact search status
 	private ContactSearchStatus _mContactSearchStatus = ContactSearchStatus.NONESEARCH;
-
+	
+	private UpdateABListHandler listUpdateHandler;
+	
 	// define contact phone numbers select popup window
 	private final ContactPhoneNumbersSelectPopupWindow _mContactPhoneNumbersSelectPopupWindow = new ContactPhoneNumbersSelectPopupWindow(
 			R.layout.contact_phonenumbers_select_popupwindow_layout,
@@ -108,7 +110,7 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 		inviteLink = getIntent().getStringExtra("inviteLink");
 
 		// set title
-		setTitle(R.string.sms_invite_title);
+		setTitle(R.string.sms_invite_pattern);
 
 		_mInviteFriendsInfo = new ArrayList<ContactBean>();
 
@@ -135,8 +137,9 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 		((EditText) findViewById(R.id.contact_search_editText))
 				.addTextChangedListener(new ContactSearchEditTextTextWatcher());
 
+		listUpdateHandler = new UpdateABListHandler();
 		AddressBookManager.getInstance().addContactObserverhandler(
-				new UpdateABListHandler());
+				listUpdateHandler);
 	}
 
 	private void initListUI() {
@@ -877,6 +880,7 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);
 		initNamePhoneticSortedContactsInfoArray();
 		initListUI();
+		AddressBookManager.getInstance().addContactObserverhandler(listUpdateHandler);
 		super.onRestoreInstanceState(savedInstanceState);
 	}
 

@@ -215,6 +215,8 @@ public class AccountChargeActivity extends NavigationActivity {
 		mainLayout.setVisibility(View.GONE);
 		contentLayout = findViewById(R.id.alipay_charge_content);
 		contentLayout.setVisibility(View.VISIBLE);
+		
+		setTitle(R.string.alipay_pattern);
 	}
 
 	private void fetchChargeMoneyList() {
@@ -303,6 +305,8 @@ public class AccountChargeActivity extends NavigationActivity {
 			mainLayout.setVisibility(View.VISIBLE);
 
 		contentLayout = null;
+		
+		setTitle(R.string.charge_title_popwin);
 	}
 
 	// the handler use to receive the pay result.
@@ -377,6 +381,8 @@ public class AccountChargeActivity extends NavigationActivity {
 		mainLayout.setVisibility(View.GONE);
 		contentLayout = findViewById(R.id.card_charge_content);
 		contentLayout.setVisibility(View.VISIBLE);
+		
+		setTitle(R.string.card_charge);
 	}
 
 	public void onDoCardChargeClick(View v) {

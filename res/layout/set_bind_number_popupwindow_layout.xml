@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:id="@+id/modify_psw_popupWindow_relativeLayout"
-        android:layout_width="250dp"
+        android:layout_width="270dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@drawable/popupwindow_relativelayout_bg"
@@ -16,7 +16,8 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/popupwindow_title_relativelayout_bg" >
+            android:background="@drawable/popupwindow_title_relativelayout_bg"
+            android:orientation="vertical" >
 
             <TextView
                 android:layout_width="fill_parent"
@@ -28,61 +29,69 @@
                 android:textSize="20sp" />
         </LinearLayout>
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:gravity="center_vertical|left"
-            android:textSize="16sp"
-            android:text="@string/bind_number_inform"
-            android:textColor="@color/red" />
-
-        <Button
-            android:id="@+id/setAuth_choose_country_btn"
-            android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/btn_bg"
-            android:drawableRight="@drawable/down_into_icon"
-            android:gravity="left|center_vertical"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:text=""
-            android:textSize="17dp" />
-
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:orientation="vertical" >
 
             <TextView
-                android:layout_width="100dp"
-                android:layout_height="30dp"
-                android:gravity="center"
-                android:text="@string/set_bind_number_message"
-                android:textColor="@color/dark_dim_gray"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical|left"
+                android:text="@string/bind_number_inform"
+                android:textColor="@color/red"
                 android:textSize="16sp" />
 
-            <EditText
-                android:id="@+id/set_auth_number_editText"
+            <Button
+                android:id="@+id/setAuth_choose_country_btn"
                 android:layout_width="fill_parent"
                 android:layout_height="40dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/textfield_selector"
-                android:ellipsize="end"
-                android:inputType="number"
-                android:textColor="@android:color/black" >
+                android:layout_marginTop="10dp"
+                android:background="@drawable/btn_bg"
+                android:drawableRight="@drawable/down_into_icon"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text=""
+                android:textSize="17dp" />
 
-                <requestFocus />
-            </EditText>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:gravity="center"
+                    android:text="@string/set_bind_number_message"
+                    android:textColor="@color/dark_dim_gray"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/set_auth_number_editText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/textfield_selector"
+                    android:ellipsize="end"
+                    android:inputType="number"
+                    android:textColor="@android:color/black" >
+
+                    <requestFocus />
+                </EditText>
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout

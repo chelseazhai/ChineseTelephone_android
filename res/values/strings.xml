@@ -136,7 +136,7 @@
     <string name="notice_center">消息中心</string>
     <string name="view_notice">查看消息</string>
     <string name="account">账户</string>
-    <string name="account_invite_friend_item">邀请好友赚话费</string>
+    <string name="account_invite_friend_item">分享赚话费</string>
     <string name="account_setting_item">切换账户</string>
     <string name="account_changePSW_item">修改密码</string>
     <string name="account_getPSW_item">找回密码</string>
@@ -181,16 +181,15 @@
     <string name="set_bind_number_success">回拨号码设置成功！</string>
     <string name="get_bind_country_message">国家号：</string>
     <string name="setup_popwin_title">启动方式设置</string>
-    <string name="invite_friend_title">邀请好友</string>
-    <string name="sms_invite_title">短信邀请</string>
+    <string name="invite_friend_title">分享</string>
     <string name="select_phone_to_invite">请选择***的号码：</string>
-    <string name="pls_choose_invite_people">请选择邀请人</string>
+    <string name="pls_choose_invite_people">请选择分享给哪个好友</string>
     <string name="sip_account_regist_fail">网络电话登录失败，请重新登录！</string>
     <string name="no_new_version">当前版本为***，已经是最新版本</string>
     <string name="phone_not_null">手机号不能为空</string>
-    <string name="invite_pattern_title">请选择邀请方式</string>
-    <string name="sms_invite_pattern">短信邀请</string>
-    <string name="get_bindphone_failed">因网络原因，无法获取绑定号码</string>
+    <string name="invite_pattern_title">请选择分享方式</string>
+    <string name="sms_invite_pattern">短信分享</string>
+    <string name="get_bindphone_failed">因网络原因，无法获取回拨号码</string>
 
     <!-- fee query activity -->
     <string name="fee_loading_textView_textHeader">正在加载&#8230;，</string>
@@ -240,12 +239,8 @@
     <string name="charge_title_popwin">充值</string>
     <string name="charge_textfield_popwin">充值金额：</string>
     <string name="charge_pattern_title">请选择充值方式</string>
-    <string name="alipay_pattern">支付宝充值</string>
-    <string name="card_charge">充值卡充值</string>
-    <string name="charge_100">充值100元</string>
-    <string name="charge_50">充值50元</string>
-    <string name="charge_30">充值30元</string>
-    <string name="charge_other">其他</string>
+    <string name="alipay_pattern">支付宝</string>
+    <string name="card_charge">UU-Talk充值卡</string>
     <string name="charge_back">其他充值方式</string>
     <string name="input_card_number">请输入充值卡卡号</string>
     <string name="input_card_pwd">请输入充值卡密码</string>
