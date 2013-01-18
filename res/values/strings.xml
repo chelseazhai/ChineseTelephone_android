@@ -187,6 +187,8 @@
     <string name="sip_account_regist_fail">网络电话登录失败，请重新登录！</string>
     <string name="no_new_version">当前版本为***，已经是最新版本</string>
     <string name="phone_not_null">手机号不能为空</string>
+    <string name="no_user_shared_reg">现在还没有成功推荐好友注册，赶快分享吧！</string>
+    <string name="current_user_shared_reg_count">您已成功推荐%s个好友使用UU-Talk</string>
     <string name="invite_pattern_title">请选择分享方式</string>
     <string name="sms_invite_pattern">短信分享</string>
     <string name="get_bindphone_failed">因网络原因，无法获取回拨号码</string>

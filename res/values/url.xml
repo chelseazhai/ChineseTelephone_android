@@ -17,6 +17,7 @@
     <string name="setBindPhone">/profile/setBindPhone</string>
     <string name="getBindPhone">/profile/getBindPhone</string>
     <string name="getRegInviteDescription_url">/profile/regInviteDesc</string>
+    <string name="getRegedUserCountViaShare_url">/profile/getRegedUserCountViaShare</string>
     <string name="getChargeMoneyList_url">/profile/getChargeMoneyList</string>
     <string name="getSuites_url">/profile/getSuites</string>
     <string name="subscribe_suite_url">/profile/subscribeSuite</string>

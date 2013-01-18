@@ -36,12 +36,14 @@ public class InviteFriendActivity extends NavigationActivity {
 		setTitle(R.string.invite_friend_title);
 
 		loadDescription();
+		getRegedUserCountViaShare();
 	}
 
 	private void loadDescription() {
-		UserBean user =  UserManager.getInstance().getUser();
+		UserBean user = UserManager.getInstance().getUser();
 		HashMap<String, String> params = new HashMap<String, String>();
-		params.put("countryCode", (String) user.getValue(TelUser.countryCode.name()));
+		params.put("countryCode",
+				(String) user.getValue(TelUser.countryCode.name()));
 		HttpUtils.postSignatureRequest(getString(R.string.server_url)
 				+ getString(R.string.getRegInviteDescription_url),
 				PostRequestFormat.URLENCODED, params, null,
@@ -53,7 +55,8 @@ public class InviteFriendActivity extends NavigationActivity {
 		@Override
 		public void onFinished(HttpResponseResult responseResult) {
 			try {
-				JSONObject data = new JSONObject(responseResult.getResponseText());
+				JSONObject data = new JSONObject(
+						responseResult.getResponseText());
 				TextView descTV = (TextView) findViewById(R.id.invite_reg_descirption_tv);
 				String desc = data.getString("reg_gift_desc_text");
 				descTV.setText(desc);
@@ -68,20 +71,62 @@ public class InviteFriendActivity extends NavigationActivity {
 		}
 	};
 
+	private void getRegedUserCountViaShare() {
+		UserBean user = UserManager.getInstance().getUser();
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("countryCode",
+				(String) user.getValue(TelUser.countryCode.name()));
+		HttpUtils.postSignatureRequest(getString(R.string.server_url)
+				+ getString(R.string.getRegedUserCountViaShare_url),
+				PostRequestFormat.URLENCODED, params, null,
+				HttpRequestType.ASYNCHRONOUS, onFinishedGetUserCount);
+	}
+
+	private OnHttpRequestListener onFinishedGetUserCount = new OnHttpRequestListener() {
+
+		@Override
+		public void onFinished(HttpResponseResult responseResult) {
+			TextView userCountTV = (TextView) findViewById(R.id.shared_user_count_tv);
+			try {
+				JSONObject data = new JSONObject(
+						responseResult.getResponseText());
+				int count = data.getInt("shared_user_count");
+				if (count > 0) {
+					userCountTV.setText(String.format(
+							getString(R.string.current_user_shared_reg_count),
+							count));
+				} else {
+					userCountTV.setText(R.string.no_user_shared_reg);
+				}
+				userCountTV.setVisibility(View.VISIBLE);
+			} catch (JSONException e) {
+				e.printStackTrace();
+				userCountTV.setVisibility(View.GONE);
+			}
+
+		}
+
+		@Override
+		public void onFailed(HttpResponseResult responseResult) {
+			TextView userCountTV = (TextView) findViewById(R.id.shared_user_count_tv);
+			userCountTV.setVisibility(View.GONE);
+		}
+	};
+
 	public void smsInvite(View v) {
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("inviteLink", inviteLink);
 		pushActivity(ContactLisInviteFriendActivity.class, params);
 	}
-	
+
 	@Override
-	protected void onRestoreInstanceState (Bundle savedInstanceState) {
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);
 		super.onRestoreInstanceState(savedInstanceState);
 	}
-	
+
 	@Override
-	protected void onSaveInstanceState (Bundle outState) {
+	protected void onSaveInstanceState(Bundle outState) {
 		AppDataSaveRestoreUtil.onSaveInstanceState(outState);
 		super.onSaveInstanceState(outState);
 	}

@@ -25,8 +25,21 @@
                 android:gravity="center_vertical|left"
                 android:padding="8dp"
                 android:textColor="@color/red"
-                android:textSize="14dp"
+                android:textSize="18dp"
                 android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/shared_user_count_tv"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:padding="8dp"
+                android:visibility="gone"
+                android:textColor="@color/dodger_blue"
+                android:text="@string/no_user_shared_reg"
+                android:textSize="18dp" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -41,7 +54,7 @@
                     android:layout_marginLeft="10dp"
                     android:gravity="center_vertical"
                     android:text="@string/invite_pattern_title"
-                    android:textColor="@color/dodger_blue"
+                    android:textColor="@color/dark_dim_gray"
                     android:textSize="20dp" />
 
                 <View

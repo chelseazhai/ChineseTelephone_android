@@ -172,6 +172,7 @@
         <View
             android:layout_width="fill_parent"
             android:layout_height="1.0dp"
+            android:visibility="gone"
             android:background="@drawable/setting_line_img" />
 
         <LinearLayout
@@ -247,6 +248,7 @@
         <View
             android:layout_width="fill_parent"
             android:layout_height="1.0dp"
+            android:visibility="gone"
             android:background="@drawable/setting_line_img" />
 
         <LinearLayout
