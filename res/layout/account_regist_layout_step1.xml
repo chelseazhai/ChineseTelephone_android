@@ -30,15 +30,15 @@
             <Button
                 android:id="@+id/regist_choose_country_btn"
                 android:layout_width="fill_parent"
-                android:layout_height="55dp"
-                android:layout_marginTop="5dp"
+                android:layout_height="45dp"
+                android:layout_margin="5dp"
                 android:background="@drawable/select_country_btn_bg"
                 android:drawableRight="@drawable/down_into_icon"
                 android:gravity="left|center_vertical"
                 android:onClick="chooseCountry"
-                android:padding="15dp"
-                android:text="0086(China 中国)"
-                android:textSize="20dp" >
+                android:padding="10dp"
+                android:text="@string/pls_select_country"
+                android:textSize="18sp" >
             </Button>
 
             <RelativeLayout
@@ -47,9 +47,9 @@
                 android:layout_margin="5dp" >
 
                 <TextView
+                    android:id="@+id/step_view"
                     android:layout_width="80dp"
                     android:layout_height="50dp"
-                    android:id="@+id/step_view"
                     android:gravity="center_vertical|left"
                     android:text="@string/step1"
                     android:textSize="25sp" />

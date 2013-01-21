@@ -26,7 +26,11 @@ import android.util.Log;
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.assist.NoticeViewActivity;
 import com.richitec.chinesetelephone.constant.SystemConstants;
+import com.richitec.chinesetelephone.constant.TelUser;
 import com.richitec.chinesetelephone.utils.NoticeDBHelper;
+import com.richitec.commontoolkit.user.User;
+import com.richitec.commontoolkit.user.UserBean;
+import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.DataStorageUtils;
 import com.richitec.commontoolkit.utils.HttpUtils;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
@@ -123,8 +127,12 @@ public class NoticeService extends Service {
 			if (maxId == null || maxId.equals("")) {
 				maxId = "-1";
 			}
+			UserBean user = UserManager.getInstance().getUser();
+			
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("maxId", maxId);
+			params.put(User.username.name(), user.getName());
+			params.put("countryCode", (String) user.getValue(TelUser.countryCode.name()));
 			HttpUtils.getRequest(context.getString(R.string.server_url)
 					+ context.getString(R.string.getNewNotice_url), params,
 					null, HttpRequestType.SYNCHRONOUS, onFinishedGetNotice);

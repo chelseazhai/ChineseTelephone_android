@@ -30,16 +30,15 @@
             <Button
                 android:id="@+id/account_choose_country_btn"
                 android:layout_width="fill_parent"
-                android:layout_height="55dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_height="45dp"
+                android:layout_margin="5dp"
                 android:background="@drawable/select_country_btn_bg"
                 android:drawableRight="@drawable/down_into_icon"
                 android:gravity="left|center_vertical"
                 android:onClick="chooseCountry"
-                android:padding="15dp"
-                android:text="0086(china 中国)"
-                android:textSize="20dp" >
+                android:padding="10dp"
+                android:text="@string/pls_select_country"
+                android:textSize="18sp" >
             </Button>
 
             <LinearLayout
@@ -52,7 +51,7 @@
                 <TextView
                     android:layout_width="80dp"
                     android:layout_height="40dp"
-                    android:gravity="center"
+                    android:gravity="center|right"
                     android:text="@string/account_name"
                     android:textSize="17sp" />
 
@@ -79,7 +78,7 @@
                 <TextView
                     android:layout_width="80dp"
                     android:layout_height="40dp"
-                    android:gravity="center"
+                    android:gravity="center|right"
                     android:text="@string/account_psw"
                     android:textSize="17sp" />
 
@@ -123,7 +122,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:layout_alignParentRight="true"
-                    android:visibility="gone"
                     android:layout_marginLeft="3dp"
                     android:autoLink="web"
                     android:clickable="true"
@@ -131,16 +129,17 @@
                     android:onClick="onForgetPSWBtnClick"
                     android:text="@string/forget_psw"
                     android:textColor="@android:color/black"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:visibility="gone" />
 
                 <ImageView
                     android:layout_width="23dp"
                     android:layout_height="23dp"
-                    android:visibility="gone"
                     android:layout_toLeftOf="@id/account_forget_psw_btn"
                     android:clickable="true"
                     android:onClick="onForgetPSWBtnClick"
-                    android:src="@drawable/r_box_2" />
+                    android:src="@drawable/r_box_2"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <RelativeLayout

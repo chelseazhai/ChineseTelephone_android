@@ -5,10 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.content.Context;
 import android.util.Log;
 
+import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.constant.Country;
 import com.richitec.chinesetelephone.constant.SystemConstants;
+import com.richitec.commontoolkit.CommonToolkitApplication;
 import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
 
@@ -32,14 +35,16 @@ public class CountryCodeManager {
 	}
 
 	private void getCountryCode() {
+		Context context = CommonToolkitApplication.getContext();
 		HashMap<String, String> data = new HashMap<String, String>();
-		data.put(Country.contryname.name(), "0086(China 中国)");
+		data.put(Country.contryname.name(), context.getString(R.string.china));
 		data.put(Country.code.name(), "0086");
 		datas.add(data);
 		HashMap<String, String> data1 = new HashMap<String, String>();
-		data1.put(Country.contryname.name(), "00244(Angola 安哥拉)");
+		data1.put(Country.contryname.name(), context.getString(R.string.angola));
 		data1.put(Country.code.name(), "00244");
 		datas.add(data1);
+
 	}
 
 	public String[] getCountryNameList() {
@@ -72,13 +77,15 @@ public class CountryCodeManager {
 	public int getCountryIndex(String code) {
 		// test
 		UserBean telUser = UserManager.getInstance().getUser();
-		Log.d(SystemConstants.TAG, "getCountryIndex - userbean: " + telUser.toString());
+		Log.d(SystemConstants.TAG,
+				"getCountryIndex - userbean: " + telUser.toString());
 		// end test
-		
+
 		int i = 0;
 		for (Map<String, String> data : datas) {
 			String c = data.get(Country.code.name());
-			Log.d(SystemConstants.TAG, "code: " + code + " data: " + data.toString());
+			Log.d(SystemConstants.TAG,
+					"code: " + code + " data: " + data.toString());
 			if (c.equals(code)) {
 				Log.d(SystemConstants.TAG, "Find:" + i);
 				break;
@@ -89,5 +96,22 @@ public class CountryCodeManager {
 			i = -1;
 		}
 		return i;
+	}
+
+	public boolean hasCountryCodePrefix(String phoneNumber) {
+		Context context = CommonToolkitApplication.getContext();
+		String[] codes = context.getResources().getStringArray(
+				R.array.country_codes);
+		boolean ret = false;
+		if (codes != null) {
+			for (String code : codes) {
+				if (phoneNumber.startsWith(code)) {
+					ret = true;
+					break;
+				}
+			}
+		}
+
+		return ret;
 	}
 }

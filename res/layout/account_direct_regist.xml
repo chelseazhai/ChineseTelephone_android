@@ -30,15 +30,17 @@
             <Button
                 android:id="@+id/regist_choose_country_btn"
                 android:layout_width="fill_parent"
-                android:layout_height="55dp"
-                android:layout_marginTop="5dp"
+                android:layout_height="45dp"
+                android:layout_margin="5dp"
                 android:background="@drawable/select_country_btn_bg"
                 android:drawableRight="@drawable/down_into_icon"
                 android:gravity="left|center_vertical"
                 android:onClick="chooseCountry"
-                android:padding="15dp"
-                android:text="0086(China 中国)"
-                android:textSize="20dp" >
+                android:padding="10dp"
+                android:text="@string/pls_select_country"
+                android:textSize="18sp" >
+
+                <requestFocus />
             </Button>
 
             <LinearLayout
@@ -51,7 +53,7 @@
                 <TextView
                     android:layout_width="80dp"
                     android:layout_height="40dp"
-                    android:gravity="center"
+                    android:gravity="center|right"
                     android:text="@string/getpsw_phone"
                     android:textColor="@color/dark_dim_gray"
                     android:textSize="17sp" />
@@ -64,8 +66,6 @@
                     android:ellipsize="end"
                     android:hint="@string/regist_step1_hint"
                     android:inputType="phone" />
-
-                <requestFocus />
             </LinearLayout>
 
             <LinearLayout
@@ -78,7 +78,7 @@
                 <TextView
                     android:layout_width="80dp"
                     android:layout_height="40dp"
-                    android:gravity="center"
+                    android:gravity="center|right"
                     android:text="@string/account_psw"
                     android:textColor="@color/dark_dim_gray"
                     android:textSize="17sp" />
@@ -103,7 +103,7 @@
                 <TextView
                     android:layout_width="80dp"
                     android:layout_height="40dp"
-                    android:gravity="center"
+                    android:gravity="center|right"
                     android:text="@string/verify_psw"
                     android:textColor="@color/dark_dim_gray"
                     android:textSize="17sp" />

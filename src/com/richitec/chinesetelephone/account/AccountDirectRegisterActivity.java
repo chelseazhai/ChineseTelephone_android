@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
@@ -17,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.richitec.chinesetelephone.R;
+import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
 import com.richitec.chinesetelephone.utils.CountryCodeManager;
 import com.richitec.commontoolkit.utils.HttpUtils;
@@ -39,9 +41,6 @@ public class AccountDirectRegisterActivity extends Activity {
 		setContentView(R.layout.account_direct_regist);
 
 		countryCodeManager = CountryCodeManager.getInstance();
-
-		((Button) findViewById(R.id.regist_choose_country_btn))
-				.setText(countryCodeManager.getCountryName(0));
 
 		EditText phoneNumberET = (EditText) findViewById(R.id.regist_phone_edittext);
 		EditText pwdET = (EditText) findViewById(R.id.regist_pwd_edittext);
@@ -88,16 +87,25 @@ public class AccountDirectRegisterActivity extends Activity {
 		EditText phoneNumberET = (EditText) findViewById(R.id.regist_phone_edittext);
 		EditText pwdET = (EditText) findViewById(R.id.regist_pwd_edittext);
 		EditText pwd1ET = (EditText) findViewById(R.id.regist_pwd1_edittext);
+		Button countryCodeBt = (Button) findViewById(R.id.regist_choose_country_btn);
 
-		String countryCode = countryCodeManager.getCountryCode(
-				((Button) findViewById(R.id.regist_choose_country_btn))
-						.getText().toString()).trim();
+		String country = countryCodeBt.getText().toString().trim();
+		Log.d(SystemConstants.TAG, "country: " + country);
+		String countryCode = countryCodeManager.getCountryCode(country);
+		if (countryCode == null) {
+			MyToast.show(this, R.string.pls_select_country, Toast.LENGTH_SHORT);
+			return;
+		}
 
 		String phoneNumber = phoneNumberET.getText().toString().trim();
 		String pwd = pwdET.getText().toString().trim();
 		String pwd1 = pwd1ET.getText().toString().trim();
 		if (phoneNumber == null || phoneNumber.equals("")) {
 			MyToast.show(this, R.string.number_cannot_be_null,
+					Toast.LENGTH_SHORT);
+			return;
+		} else if (countryCodeManager.hasCountryCodePrefix(phoneNumber)) {
+			MyToast.show(this, R.string.phone_number_cannot_start_with_countrycode,
 					Toast.LENGTH_SHORT);
 			return;
 		}
@@ -207,16 +215,15 @@ public class AccountDirectRegisterActivity extends Activity {
 		}
 
 	}
-	
-	
+
 	@Override
-	protected void onRestoreInstanceState (Bundle savedInstanceState) {
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);
 		super.onRestoreInstanceState(savedInstanceState);
 	}
-	
+
 	@Override
-	protected void onSaveInstanceState (Bundle outState) {
+	protected void onSaveInstanceState(Bundle outState) {
 		AppDataSaveRestoreUtil.onSaveInstanceState(outState);
 		super.onSaveInstanceState(outState);
 	}

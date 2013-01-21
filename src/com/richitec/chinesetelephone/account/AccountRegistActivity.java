@@ -28,38 +28,40 @@ import android.widget.Toast;
 
 public class AccountRegistActivity extends Activity {
 	private AlertDialog chooseCountryDialog;
-	private int lastSelect=0;
+	private int lastSelect = 0;
 	CountryCodeManager countryCodeManager;
 	private ProgressDialog progressDlg;
-	
-	
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-       
-        setContentView(R.layout.account_regist_layout_step1);
-        
-        countryCodeManager = CountryCodeManager.getInstance();
-        
-        ((Button)findViewById(R.id.regist_choose_country_btn)).setText(countryCodeManager.getCountryName(0));
-    }
-    
-    public void chooseCountry(View v){
-    	AlertDialog.Builder chooseCountryDialogBuilder = new AlertDialog.Builder(this);
-    	chooseCountryDialogBuilder.setTitle(R.string.countrycode_list);
-    	chooseCountryDialogBuilder.setSingleChoiceItems(countryCodeManager.getCountryNameList(), lastSelect, new chooseCountryListener());
-    	chooseCountryDialogBuilder.setNegativeButton(R.string.cancel, null);
-    	chooseCountryDialog= chooseCountryDialogBuilder.create();
-    	chooseCountryDialog.show();
-    }
-    
-    public void onFinishRegist(View v){
-    	EditText pwd1ET = (EditText) findViewById(R.id.regist_psw_edittext);
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		setContentView(R.layout.account_regist_layout_step1);
+
+		countryCodeManager = CountryCodeManager.getInstance();
+
+		// ((Button)findViewById(R.id.regist_choose_country_btn)).setText(countryCodeManager.getCountryName(0));
+	}
+
+	public void chooseCountry(View v) {
+		AlertDialog.Builder chooseCountryDialogBuilder = new AlertDialog.Builder(
+				this);
+		chooseCountryDialogBuilder.setTitle(R.string.countrycode_list);
+		chooseCountryDialogBuilder.setSingleChoiceItems(
+				countryCodeManager.getCountryNameList(), lastSelect,
+				new chooseCountryListener());
+		chooseCountryDialogBuilder.setNegativeButton(R.string.cancel, null);
+		chooseCountryDialog = chooseCountryDialogBuilder.create();
+		chooseCountryDialog.show();
+	}
+
+	public void onFinishRegist(View v) {
+		EditText pwd1ET = (EditText) findViewById(R.id.regist_psw_edittext);
 		EditText pwd2ET = (EditText) findViewById(R.id.verify_psw_edittext);
 		String pwd1 = pwd1ET.getText().toString().trim();
 		String pwd2 = pwd2ET.getText().toString().trim();
-		
-		//Log.d("psw", pwd1+":"+pwd2);
+
+		// Log.d("psw", pwd1+":"+pwd2);
 
 		if (pwd1 == null || pwd1.equals("")) {
 			MyToast.show(this, R.string.pls_input_pwd, Toast.LENGTH_SHORT);
@@ -77,7 +79,7 @@ public class AccountRegistActivity extends Activity {
 					Toast.LENGTH_SHORT);
 			return;
 		}
-		
+
 		progressDlg = ProgressDialog.show(this, null,
 				getString(R.string.finishing_register));
 		HashMap<String, String> params = new HashMap<String, String>();
@@ -88,10 +90,10 @@ public class AccountRegistActivity extends Activity {
 				+ getString(R.string.user_register_url),
 				PostRequestFormat.URLENCODED, params, null,
 				HttpRequestType.ASYNCHRONOUS, onFinishedRegister);
-		
-    }
-    
-    private OnHttpRequestListener onFinishedRegister = new OnHttpRequestListener() {
+
+	}
+
+	private OnHttpRequestListener onFinishedRegister = new OnHttpRequestListener() {
 
 		@Override
 		public void onFinished(HttpResponseResult responseResult) {
@@ -137,24 +139,24 @@ public class AccountRegistActivity extends Activity {
 					R.string.error_in_regsiter, Toast.LENGTH_SHORT);
 		}
 	};
-    
-    public void onVerifyAuthCodeAction(View v){
-    	String authcode = ((EditText)(findViewById(R.id.auth_code_edittext)))
-			.getText().toString().trim();
-    	if(authcode==null||authcode.equals("")){
-    		MyToast.show(AccountRegistActivity.this,
-    				R.string.auth_code_cannot_be_null, Toast.LENGTH_SHORT);
-			return;		
-    	}
-    	if(!authcode.matches("(^[0-9]*)")){
+
+	public void onVerifyAuthCodeAction(View v) {
+		String authcode = ((EditText) (findViewById(R.id.auth_code_edittext)))
+				.getText().toString().trim();
+		if (authcode == null || authcode.equals("")) {
 			MyToast.show(AccountRegistActivity.this,
-    				R.string.authcode_wrong_format, Toast.LENGTH_SHORT);
+					R.string.auth_code_cannot_be_null, Toast.LENGTH_SHORT);
 			return;
 		}
-    	
-    	//Log.d("authcode", authcode);
-    
-    	progressDlg = ProgressDialog.show(this, null,
+		if (!authcode.matches("(^[0-9]*)")) {
+			MyToast.show(AccountRegistActivity.this,
+					R.string.authcode_wrong_format, Toast.LENGTH_SHORT);
+			return;
+		}
+
+		// Log.d("authcode", authcode);
+
+		progressDlg = ProgressDialog.show(this, null,
 				getString(R.string.verifying_auth_code));
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("code", authcode);
@@ -162,10 +164,10 @@ public class AccountRegistActivity extends Activity {
 				+ getString(R.string.check_auth_code_url),
 				PostRequestFormat.URLENCODED, params, null,
 				HttpRequestType.ASYNCHRONOUS, onFinishedVerifyAuthCode);
-    	//setBody(R.layout.account_regist_layout_step3);
-    }
-    
-    private OnHttpRequestListener onFinishedVerifyAuthCode = new OnHttpRequestListener() {
+		// setBody(R.layout.account_regist_layout_step3);
+	}
+
+	private OnHttpRequestListener onFinishedVerifyAuthCode = new OnHttpRequestListener() {
 
 		@Override
 		public void onFinished(HttpResponseResult responseResult) {
@@ -204,29 +206,35 @@ public class AccountRegistActivity extends Activity {
 		}
 	};
 
-    
-    public void onGetAuthCode(View v){
-    	String phone = ((EditText)(findViewById(R.id.regist_phone_edittext)))
-    						.getText().toString().trim();
-    	String countrycode = countryCodeManager
-    					.getCountryCode(((Button)findViewById(R.id.regist_choose_country_btn))
-    							.getText().toString()).trim();
-    	
-    	//Log.d("AccountSetting", phone+":"+countrycode);
-    	
-    	if (phone==null||phone.equals("")) {
-    		MyToast.show(AccountRegistActivity.this,
-    				R.string.number_cannot_be_null, Toast.LENGTH_SHORT);
+	public void onGetAuthCode(View v) {
+		String phone = ((EditText) (findViewById(R.id.regist_phone_edittext)))
+				.getText().toString().trim();
+		String countrycode = countryCodeManager
+				.getCountryCode(((Button) findViewById(R.id.regist_choose_country_btn))
+						.getText().toString().trim());
+		if (countrycode == null) {
+			MyToast.show(this, R.string.pls_select_country, Toast.LENGTH_SHORT);
 			return;
-		}		
-		if(!phone.matches("(^[0-9]*)")){
+		}
+
+		if (phone == null || phone.equals("")) {
 			MyToast.show(AccountRegistActivity.this,
-    				R.string.phone_wrong_format, Toast.LENGTH_SHORT);
+					R.string.number_cannot_be_null, Toast.LENGTH_SHORT);
+			return;
+		} else if (countryCodeManager.hasCountryCodePrefix(phone)) {
+			MyToast.show(this,
+					R.string.phone_number_cannot_start_with_countrycode,
+					Toast.LENGTH_SHORT);
+			return;
+		}
+		if (!phone.matches("(^[0-9]*)")) {
+			MyToast.show(AccountRegistActivity.this,
+					R.string.phone_wrong_format, Toast.LENGTH_SHORT);
 			return;
 		}
 		progressDlg = ProgressDialog.show(this, null,
 				getString(R.string.sending_request));
-		
+
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("phone", phone);
 		params.put("countryCode", countrycode);
@@ -234,10 +242,10 @@ public class AccountRegistActivity extends Activity {
 				+ getString(R.string.retrieve_auth_code_url),
 				PostRequestFormat.URLENCODED, params, null,
 				HttpRequestType.ASYNCHRONOUS, onFinishedGetAuthCode);
-		//setBody(R.layout.account_regist_layout_step2);
-    }
-    
-    private OnHttpRequestListener onFinishedGetAuthCode = new OnHttpRequestListener() {
+		// setBody(R.layout.account_regist_layout_step2);
+	}
+
+	private OnHttpRequestListener onFinishedGetAuthCode = new OnHttpRequestListener() {
 
 		@Override
 		public void onFinished(HttpResponseResult responseResult) {
@@ -279,59 +287,63 @@ public class AccountRegistActivity extends Activity {
 					R.string.error_in_retrieve_auth_code, Toast.LENGTH_SHORT);
 		}
 	};
-	
+
 	private void setBody(int resID) {
 		LinearLayout body = (LinearLayout) getBody();
 		body.removeAllViewsInLayout();
 		LayoutInflater.from(this).inflate(resID, body);
 	}
-	
-	public LinearLayout getBody(){
+
+	public LinearLayout getBody() {
 		return (LinearLayout) findViewById(R.id.body);
 	}
-	
-	private void dismissProgressDlg(){
-		if(progressDlg!=null)
+
+	private void dismissProgressDlg() {
+		if (progressDlg != null)
 			progressDlg.dismiss();
 	}
-    
-    class chooseCountryListener implements DialogInterface.OnClickListener{
+
+	class chooseCountryListener implements DialogInterface.OnClickListener {
 
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
 			// TODO Auto-generated method stub
 			lastSelect = which;
-			((Button)(AccountRegistActivity.this.findViewById(R.id.regist_choose_country_btn)))
+			((Button) (AccountRegistActivity.this
+					.findViewById(R.id.regist_choose_country_btn)))
 					.setText(countryCodeManager.getCountryName(which));
 			chooseCountryDialog.dismiss();
 		}
-    	
-    }
-    
-    class OnChangeEditTextBGListener implements OnFocusChangeListener{
+
+	}
+
+	class OnChangeEditTextBGListener implements OnFocusChangeListener {
 
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
 			// TODO Auto-generated method stub
-			if(hasFocus){
-				((LinearLayout)v.getParent()).setBackgroundDrawable(
-						AccountRegistActivity.this.getResources().getDrawable(R.drawable.bg_edit_s));
-			}
-			else{
-				((LinearLayout)v.getParent()).setBackgroundDrawable(
-						AccountRegistActivity.this.getResources().getDrawable(R.drawable.bg_edityzm));
+			if (hasFocus) {
+				((LinearLayout) v.getParent())
+						.setBackgroundDrawable(AccountRegistActivity.this
+								.getResources().getDrawable(
+										R.drawable.bg_edit_s));
+			} else {
+				((LinearLayout) v.getParent())
+						.setBackgroundDrawable(AccountRegistActivity.this
+								.getResources().getDrawable(
+										R.drawable.bg_edityzm));
 			}
 		}
-    }
-    
-    @Override
-	protected void onRestoreInstanceState (Bundle savedInstanceState) {
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);
 		super.onRestoreInstanceState(savedInstanceState);
 	}
-	
+
 	@Override
-	protected void onSaveInstanceState (Bundle outState) {
+	protected void onSaveInstanceState(Bundle outState) {
 		AppDataSaveRestoreUtil.onSaveInstanceState(outState);
 		super.onSaveInstanceState(outState);
 	}

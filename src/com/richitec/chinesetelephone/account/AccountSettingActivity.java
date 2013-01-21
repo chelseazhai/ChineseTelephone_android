@@ -181,7 +181,7 @@ public class AccountSettingActivity extends Activity {
 		String countryCode = (String) user.getValue(TelUser.countryCode.name());
 		if (countryCode == null || countryCode.equals("")) {
 			((Button) findViewById(R.id.account_choose_country_btn))
-					.setText(countryCodeManager.getCountryName(0));
+					.setText(R.string.pls_select_country);
 		} else {
 			lastSelectCountryCode = countryCodeManager
 					.getCountryIndex((String) user.getValue(TelUser.countryCode
@@ -254,12 +254,18 @@ public class AccountSettingActivity extends Activity {
 		String countrycode = countryCodeManager
 				.getCountryCode(((Button) findViewById(R.id.account_choose_country_btn))
 						.getText().toString().trim());
+		
 		boolean isRemember = ((CheckBox) (findViewById(R.id.account_remember_psw_cbtn)))
 				.isChecked();
 
 		// Log.d("AccountSetting",
 		// username+":"+psw+":"+countrycode+":"+isRemember);
-
+		
+		if (countrycode == null) {
+			MyToast.show(this, R.string.pls_select_country, Toast.LENGTH_SHORT);
+			return;
+		}
+		
 		if (username.equals("")) {
 			MyToast.show(this, R.string.number_cannot_be_null,
 					Toast.LENGTH_LONG);

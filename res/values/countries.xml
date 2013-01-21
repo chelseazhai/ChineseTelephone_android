@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="china">0086 (China 中国)</string>
+    <string name="angola">00244 (Angola 安哥拉)</string>
+
+    <string-array name="country_codes">
+        <item>0086</item>
+        <item>086</item>
+        <item>+86</item>
+        <item>86</item>
+        <item>00244</item>
+        <item>0244</item>
+        <item>+244</item>
+        <item>244</item>
+    </string-array>
+
+</resources>

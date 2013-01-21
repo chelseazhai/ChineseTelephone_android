@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:state_pressed="true" android:drawable="@drawable/select_country_btn_pressed"/>
-    <item android:drawable="@drawable/select_country_btn_normal"/>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/notice_item_nor_bg" android:state_pressed="true"/>
+    <item android:drawable="@drawable/notice_item_pressed_bg"/>
+
 </selector>

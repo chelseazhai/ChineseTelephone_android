@@ -271,10 +271,12 @@
     <string name="getpsw">找回密码</string>
     <string name="getpsw_phone">手机号：</string>
     <string name="getpsw_phone_hint">请输入手机号</string>
+    <string name="pls_select_country">请选择您所在的国家</string>
     <string name="cancel">取   消</string>
     <string name="ok">确   定</string>
     <string name="countrycode_list">国家代码列表</string>
     <string name="number_cannot_be_null">请输入手机号</string>
+	<string name="phone_number_cannot_start_with_countrycode">请直接输入手机号码，不要以国家代码开头！</string>
     <string name="psw_cannot_be_null">请输入密码</string>
     <string name="phone_wrong_format">号码格式有误，请检查</string>
     <string name="logining">正在登录</string>

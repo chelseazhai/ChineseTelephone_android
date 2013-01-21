@@ -280,11 +280,23 @@ public class SettingActivity extends NavigationActivity {
 										TelUser.vosphone_pwd.name(), "");
 								DataStorageUtils.putObject(User.userkey.name(),
 										"");
+								DataStorageUtils.putObject(
+										TelUser.countryCode.name(), "");
+								DataStorageUtils.putObject(
+										TelUser.dialCountryCode.name(), "");
+								DataStorageUtils.putObject(
+										TelUser.bindphone.name(), "");
+								DataStorageUtils.putObject(
+										TelUser.bindphone_country_code.name(),
+										"");
+
 								SipUtils.unregisterSipAccount(null);
 
-								SipRegistrationStateListenerImp.cancelVOIPOnlineStatus();
-								
-								UserManager.getInstance().setUser(new UserBean());
+								SipRegistrationStateListenerImp
+										.cancelVOIPOnlineStatus();
+
+								UserManager.getInstance().setUser(
+										new UserBean());
 								System.exit(0);
 							}
 						}).setNegativeButton(R.string.cancel, null).show();
@@ -1237,7 +1249,7 @@ public class SettingActivity extends NavigationActivity {
 	public void onClickFeeQueryAction(View v) {
 		pushActivity(FeeActivity.class);
 	}
-	
+
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);

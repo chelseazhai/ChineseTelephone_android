@@ -14,48 +14,44 @@
         android:layout_marginTop="5dp"
         android:drawableLeft="@drawable/ic_action_search"
         android:hint="@string/contact_search_editText_hint"
-        android:inputType="text" >
-
+        android:inputType="text"
+        android:maxLength="14" >
     </EditText>
-    
-    <LinearLayout 
+
+    <LinearLayout
         android:id="@+id/btn_layout"
         android:layout_width="fill_parent"
         android:layout_height="60dp"
-        android:gravity="center"
-        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:background="@drawable/contact_invite_btn_bg"
-        >
-	   
-    <Button 
-        android:id="@+id/confirm_btn"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:text="@string/ok"
-        android:layout_marginRight="5dp"
-        android:layout_gravity="bottom"
-        android:onClick="onConfirm"
-        />
-    
-    <Button 
-        android:id="@+id/cancel_btn"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:text="@string/cancel"
-        android:layout_gravity="bottom"
-        android:layout_marginLeft="5dp"
-        android:onClick="onCancel"
-        />
-    
-	</LinearLayout>
-	
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/confirm_btn"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom"
+            android:layout_marginRight="5dp"
+            android:onClick="onConfirm"
+            android:text="@string/ok" />
+
+        <Button
+            android:id="@+id/cancel_btn"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="5dp"
+            android:onClick="onCancel"
+            android:text="@string/cancel" />
+    </LinearLayout>
+
     <FrameLayout
         android:id="@+id/contact_list"
-        android:layout_below="@id/contact_search_editText"
-        android:layout_above="@id/btn_layout"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_above="@id/btn_layout"
+        android:layout_below="@id/contact_search_editText" >
 
         <ListView
             android:id="@+id/contactInAB_listView"
@@ -68,6 +64,5 @@
             android:listSelector="@android:color/transparent" >
         </ListView>
     </FrameLayout>
-    
-    
+
 </RelativeLayout>
