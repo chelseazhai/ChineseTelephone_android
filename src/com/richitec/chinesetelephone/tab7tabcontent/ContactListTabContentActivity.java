@@ -510,21 +510,25 @@ public class ContactListTabContentActivity extends NavigationActivity {
 				_mContactSearchStatus = ContactSearchStatus.SEARCHBYNAME;
 			}
 
+			// get address book manager reference
+			AddressBookManager _addressBookManager = AddressBookManager
+					.getInstance();
+
 			// update present contacts in address book detail info list
 			switch (_mContactSearchStatus) {
 			case SEARCHBYNAME:
-				_mPresentContactsInABInfoArray = AddressBookManager
-						.getInstance().getContactsByName(s.toString());
+				_mPresentContactsInABInfoArray = _addressBookManager
+						.getContactsByName(s.toString());
 				break;
 
 			case SEARCHBYCHINESENAME:
-				_mPresentContactsInABInfoArray = AddressBookManager
-						.getInstance().getContactsByChineseName(s.toString());
+				_mPresentContactsInABInfoArray = _addressBookManager
+						.getContactsByChineseName(s.toString());
 				break;
 
 			case SEARCHBYPHONE:
-				_mPresentContactsInABInfoArray = AddressBookManager
-						.getInstance().getContactsByPhone(s.toString());
+				_mPresentContactsInABInfoArray = _addressBookManager
+						.getContactsByPhone(s.toString());
 				break;
 
 			case NONESEARCH:
