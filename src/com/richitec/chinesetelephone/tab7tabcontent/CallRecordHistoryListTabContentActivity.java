@@ -38,6 +38,9 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 	// call record history listView
 	private ListView _mCallRecordHistoryListView;
 
+	// need to saved call log data list
+	private List<Object> _mNeed2SavedCallLogDataList;
+
 	// call log need to reload flag
 	private boolean _mCallLogNeed2Reload;
 
@@ -112,9 +115,70 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 									R.id.record_phone_textView,
 									R.id.record_initiateTime_textView,
 									R.id.recordDetail_imageBtn }));
+		} else {
+			// check and set call record history list item adapter data list
+			if (null != _mNeed2SavedCallLogDataList) {
+				// define call record history listView adapter
+				CallRecordHistoryListItemAdapter _callRecordHistoryListItemAdapter = null;
+
+				// set call record history listView adapter data list
+				try {
+					// get call record history listView adapter
+					_callRecordHistoryListItemAdapter = (CallRecordHistoryListItemAdapter) _mCallRecordHistoryListView
+							.getAdapter();
+
+					_callRecordHistoryListItemAdapter
+							.setData(_mNeed2SavedCallLogDataList);
+				} catch (Exception e) {
+					//
+				}
+			}
 		}
 
 		super.onResume();
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		// get restore call log data list
+		@SuppressWarnings("unchecked")
+		List<Object> _callLogDataList = (List<Object>) savedInstanceState
+				.getSerializable("@@");
+
+		// check call log data list
+		if (null != _callLogDataList) {
+			// restore need to saved call log data list
+			_mNeed2SavedCallLogDataList = _callLogDataList;
+		}
+
+		super.onRestoreInstanceState(savedInstanceState);
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		// define call record history listView adapter
+		CallRecordHistoryListItemAdapter _callRecordHistoryListItemAdapter = null;
+
+		// save call log data list
+		try {
+			// get call record history listView adapter
+			_callRecordHistoryListItemAdapter = (CallRecordHistoryListItemAdapter) _mCallRecordHistoryListView
+					.getAdapter();
+
+			// get call log data list
+			List<Object> _callLogDataList = _callRecordHistoryListItemAdapter
+					.getDataList();
+
+			// check call log data list and saved
+			if (null != _callLogDataList) {
+				outState.putSerializable("@@", (Serializable) _callLogDataList);
+
+				// save UI data
+				super.onSaveInstanceState(outState);
+			}
+		} catch (Exception e) {
+			//
+		}
 	}
 
 	@Override
