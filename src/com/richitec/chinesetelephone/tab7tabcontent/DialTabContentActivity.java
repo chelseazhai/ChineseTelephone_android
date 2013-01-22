@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -31,7 +32,8 @@ import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.call.ContactPhoneDialModeSelectpopupWindow;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
-import com.richitec.commontoolkit.customcomponent.CommonPopupWindow;
+import com.richitec.commontoolkit.customadapter.CTListAdapter;
+import com.richitec.commontoolkit.customcomponent.CTPopupWindow;
 import com.richitec.commontoolkit.utils.CommonUtils;
 import com.richitec.commontoolkit.utils.DpPixUtils;
 import com.richitec.commontoolkit.utils.ToneGeneratorUtils;
@@ -40,12 +42,6 @@ import com.richitec.internationalcode.AreaAbbreviation;
 public class DialTabContentActivity extends NavigationActivity {
 
 	private static final String LOG_TAG = "DialTabContentActivity";
-
-	// dial phone button gridView keys
-	public static final String DIAL_PHONE_BUTTON_CODE = "dial_phone_button_code";
-	public static final String DIAL_PHONE_BUTTON_IMAGE = "dial_phone_button_image";
-	public static final String DIAL_PHONE_BUTTON_ONCLICKLISTENER = "dial_phone_button_onClickListener";
-	public static final String DIAL_PHONE_BUTTON_ONLONGCLICKLISTENER = "dial_phone_button_onLongClickListener";
 
 	// dial phone textView and previous dial phone
 	private TextView _mDialPhoneTextView;
@@ -200,13 +196,15 @@ public class DialTabContentActivity extends NavigationActivity {
 
 			// value map
 			Map<String, Object> _valueMap = new HashMap<String, Object>();
-			_valueMap.put(DIAL_PHONE_BUTTON_CODE, i);
-			_valueMap.put(DIAL_PHONE_BUTTON_IMAGE,
+			_valueMap.put(DialPhoneButtonAdapter.DIAL_PHONE_BUTTON_CODE, i);
+			_valueMap.put(DialPhoneButtonAdapter.DIAL_PHONE_BUTTON_IMAGE,
 					_dialPhoneButtonGridViewImgResourceContentArray[i]);
-			_valueMap.put(DIAL_PHONE_BUTTON_ONCLICKLISTENER,
+			_valueMap.put(
+					DialPhoneButtonAdapter.DIAL_PHONE_BUTTON_ONCLICKLISTENER,
 					new DialPhoneBtnOnClickListener());
-			_valueMap.put(DIAL_PHONE_BUTTON_ONLONGCLICKLISTENER,
-					new DialPhoneBtnOnLongClickListener());
+			_valueMap
+					.put(DialPhoneButtonAdapter.DIAL_PHONE_BUTTON_ONLONGCLICKLISTENER,
+							new DialPhoneBtnOnLongClickListener());
 
 			// put value
 			_dataMap.put(DIAL_PHONE_BUTTON, _valueMap);
@@ -243,6 +241,62 @@ public class DialTabContentActivity extends NavigationActivity {
 	}
 
 	// inner class
+	// dial phone button adapter
+	class DialPhoneButtonAdapter extends CTListAdapter {
+
+		private static final String LOG_TAG = "DialPhoneButtonAdapter";
+
+		// dial phone button gridView keys
+		private static final String DIAL_PHONE_BUTTON_CODE = "dial_phone_button_code";
+		private static final String DIAL_PHONE_BUTTON_IMAGE = "dial_phone_button_image";
+		private static final String DIAL_PHONE_BUTTON_ONCLICKLISTENER = "dial_phone_button_onClickListener";
+		private static final String DIAL_PHONE_BUTTON_ONLONGCLICKLISTENER = "dial_phone_button_onLongClickListener";
+
+		public DialPhoneButtonAdapter(Context context,
+				List<Map<String, ?>> data, int itemsLayoutResId,
+				String[] dataKeys, int[] itemsComponentResIds) {
+			super(context, data, itemsLayoutResId, dataKeys,
+					itemsComponentResIds);
+		}
+
+		@Override
+		protected void bindView(View view, Map<String, ?> dataMap,
+				String dataKey) {
+			// get item data object
+			Object _itemData = dataMap.get(dataKey);
+
+			// check view type
+			// image button
+			if (view instanceof ImageButton) {
+				try {
+					// define item data map and convert item data to map
+					@SuppressWarnings("unchecked")
+					Map<String, Object> _itemDataMap = (Map<String, Object>) _itemData;
+
+					// set image button attributes
+					((ImageButton) view).setTag(_itemDataMap
+							.get(DIAL_PHONE_BUTTON_CODE));
+					((ImageButton) view)
+							.setImageResource((Integer) _itemDataMap
+									.get(DIAL_PHONE_BUTTON_IMAGE));
+					((ImageButton) view)
+							.setOnClickListener((OnClickListener) _itemDataMap
+									.get(DIAL_PHONE_BUTTON_ONCLICKLISTENER));
+					((ImageButton) view)
+							.setOnLongClickListener((OnLongClickListener) _itemDataMap
+									.get(DIAL_PHONE_BUTTON_ONLONGCLICKLISTENER));
+				} catch (Exception e) {
+					e.printStackTrace();
+
+					Log.e(LOG_TAG,
+							"Convert item data to map error, item data = "
+									+ _itemData);
+				}
+			}
+		}
+
+	}
+
 	// dial phone textView text watcher
 	class DialPhoneTextViewTextWatcher implements TextWatcher {
 
@@ -422,7 +476,7 @@ public class DialTabContentActivity extends NavigationActivity {
 	}
 
 	// insert phone to contact mode select popup window
-	class InsertPhone2ContactModeSelectPopupWindow extends CommonPopupWindow {
+	class InsertPhone2ContactModeSelectPopupWindow extends CTPopupWindow {
 
 		// insert phone number
 		private String _mInsertPhone;

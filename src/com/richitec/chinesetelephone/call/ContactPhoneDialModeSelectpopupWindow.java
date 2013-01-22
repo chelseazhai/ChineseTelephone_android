@@ -15,9 +15,9 @@ import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.sip.SipCallMode;
 import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.commontoolkit.CTApplication;
-import com.richitec.commontoolkit.customcomponent.CommonPopupWindow;
+import com.richitec.commontoolkit.customcomponent.CTPopupWindow;
 
-public class ContactPhoneDialModeSelectpopupWindow extends CommonPopupWindow {
+public class ContactPhoneDialModeSelectpopupWindow extends CTPopupWindow {
 
 	private static final String LOG_TAG = "ContactPhoneDialModeSelectpopupWindow";
 
@@ -30,7 +30,7 @@ public class ContactPhoneDialModeSelectpopupWindow extends CommonPopupWindow {
 	private StringBuffer _mPreviousDialPhone;
 
 	// contact phone numbers select popup window and its dependent view
-	private CommonPopupWindow _mContactPhoneNumbersSelectPopupWindow;
+	private CTPopupWindow _mContactPhoneNumbersSelectPopupWindow;
 	private View _mContactPhoneNumbersSelectPopupWindowDependentView;
 
 	public ContactPhoneDialModeSelectpopupWindow(int resource, int width,
@@ -88,7 +88,7 @@ public class ContactPhoneDialModeSelectpopupWindow extends CommonPopupWindow {
 
 	// set contact phone numbers select popup window and its dependent view
 	public void setContactPhoneNumbersSelectPopupWindow7ItsDependentView(
-			CommonPopupWindow contactPhoneNumbersSelectPopupWindow,
+			CTPopupWindow contactPhoneNumbersSelectPopupWindow,
 			View contactPhoneNumbersSelectPopupWindowDependentView) {
 		_mContactPhoneNumbersSelectPopupWindow = contactPhoneNumbersSelectPopupWindow;
 		_mContactPhoneNumbersSelectPopupWindowDependentView = contactPhoneNumbersSelectPopupWindowDependentView;

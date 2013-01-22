@@ -11,9 +11,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.richitec.commontoolkit.customadapter.CommonListAdapter;
+import com.richitec.commontoolkit.customadapter.CTListAdapter;
 
-public class AddressBookContactAdapter extends CommonListAdapter {
+public class AddressBookContactAdapter extends CTListAdapter {
 
 	private static final String LOG_TAG = "AddressBookContactAdapter";
 

@@ -47,6 +47,7 @@ import com.richitec.chinesetelephone.sip.services.BaseSipServices;
 import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity;
 import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity.ContactsInABListViewQuickAlphabetBarOnTouchListener;
 import com.richitec.commontoolkit.CTApplication;
+import com.richitec.commontoolkit.customadapter.CTListAdapter;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar;
 import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
 import com.richitec.commontoolkit.utils.ToneGeneratorUtils;
@@ -55,16 +56,6 @@ public class OutgoingCallActivity extends Activity implements
 		SipInviteStateListener {
 
 	private static final String LOG_TAG = "OutgoingCallActivity";
-
-	// call controller gridView keys
-	public static final String CALL_CONTROLLER_ITEM_BACKGROUND = "call_controller_item_background";
-	public static final String CALL_CONTROLLER_ITEM_ONTOUCHLISTENER = "call_controller_item_onTouchListener";
-
-	// keyboard gridView keys
-	public static final String KEYBOARD_BUTTON_CODE = "keyboard_button_code";
-	public static final String KEYBOARD_BUTTON_IMAGE = "keyboard_button_image";
-	public static final String KEYBOARD_BUTTON_BGRESOURCE = "keyboard_button_background_resource";
-	public static final String KEYBOARD_BUTTON_ONCLICKLISTENER = "keyboard_button_onClickListener";
 
 	// sip services
 	private static final BaseSipServices SIPSERVICES = SipUtils
@@ -389,13 +380,13 @@ public class OutgoingCallActivity extends Activity implements
 			Map<String, Object> _callControllerItemParentRelaviteLayoutData = new HashMap<String, Object>();
 
 			// put call controller item data value
-			_callControllerItemParentRelaviteLayoutData.put(
-					CALL_CONTROLLER_ITEM_BACKGROUND,
-					_callControllerGridViewContentArray[i][0]);
+			_callControllerItemParentRelaviteLayoutData
+					.put(OutgoingCallControllerAdapter.CALL_CONTROLLER_ITEM_BACKGROUND,
+							_callControllerGridViewContentArray[i][0]);
 			if (2 <= i && 3 >= i) {
-				_callControllerItemParentRelaviteLayoutData.put(
-						CALL_CONTROLLER_ITEM_ONTOUCHLISTENER,
-						_callControllerGridViewOnTouchListenerArray[i - 2]);
+				_callControllerItemParentRelaviteLayoutData
+						.put(OutgoingCallControllerAdapter.CALL_CONTROLLER_ITEM_ONTOUCHLISTENER,
+								_callControllerGridViewOnTouchListenerArray[i - 2]);
 			}
 
 			_dataMap.put(CALL_CONTROLLER_ITEM_PARENTRELATIVELAYOUT,
@@ -443,43 +434,48 @@ public class OutgoingCallActivity extends Activity implements
 
 			// value map
 			Map<String, Object> _valueMap = new HashMap<String, Object>();
-			_valueMap.put(KEYBOARD_BUTTON_CODE, i);
-			_valueMap.put(KEYBOARD_BUTTON_IMAGE,
+			_valueMap.put(OutgoingCallKeyboardAdapter.KEYBOARD_BUTTON_CODE, i);
+			_valueMap.put(OutgoingCallKeyboardAdapter.KEYBOARD_BUTTON_IMAGE,
 					_keyboardGridViewImgResourceContentArray[i]);
 			switch (i) {
 			case 0:
 				// set top left keyboard button background
-				_valueMap.put(KEYBOARD_BUTTON_BGRESOURCE,
+				_valueMap.put(
+						OutgoingCallKeyboardAdapter.KEYBOARD_BUTTON_BGRESOURCE,
 						R.drawable.callcontroller_contactitem6keyboard_1btn_bg);
 				break;
 
 			case 2:
 				// set top right keyboard button background
 				_valueMap
-						.put(KEYBOARD_BUTTON_BGRESOURCE,
+						.put(OutgoingCallKeyboardAdapter.KEYBOARD_BUTTON_BGRESOURCE,
 								R.drawable.callcontroller_keyboarditem6keyboard_3btn_bg);
 				break;
 
 			case 9:
 				// set bottom left keyboard button background
-				_valueMap.put(KEYBOARD_BUTTON_BGRESOURCE,
+				_valueMap.put(
+						OutgoingCallKeyboardAdapter.KEYBOARD_BUTTON_BGRESOURCE,
 						R.drawable.callcontroller_keyboard_starbtn_bg);
 				break;
 
 			case 11:
 				// set bottom right keyboard button background
-				_valueMap.put(KEYBOARD_BUTTON_BGRESOURCE,
+				_valueMap.put(
+						OutgoingCallKeyboardAdapter.KEYBOARD_BUTTON_BGRESOURCE,
 						R.drawable.callcontroller_keyboard_poundbtn_bg);
 				break;
 
 			default:
 				// set normal keyboard button background
-				_valueMap.put(KEYBOARD_BUTTON_BGRESOURCE,
+				_valueMap.put(
+						OutgoingCallKeyboardAdapter.KEYBOARD_BUTTON_BGRESOURCE,
 						R.drawable.keyboard_btn_bg);
 				break;
 			}
-			_valueMap.put(KEYBOARD_BUTTON_ONCLICKLISTENER,
-					new KeyboardBtnOnClickListener());
+			_valueMap
+					.put(OutgoingCallKeyboardAdapter.KEYBOARD_BUTTON_ONCLICKLISTENER,
+							new KeyboardBtnOnClickListener());
 
 			// put value
 			_dataMap.put(KEYBOARD_BUTTON, _valueMap);
@@ -621,6 +617,89 @@ public class OutgoingCallActivity extends Activity implements
 	}
 
 	// inner class
+	// outgoing call controller adapter
+	class OutgoingCallControllerAdapter extends CTListAdapter {
+
+		private static final String LOG_TAG = "OutgoingCallControllerAdapter";
+
+		// call controller gridView keys
+		private static final String CALL_CONTROLLER_ITEM_BACKGROUND = "call_controller_item_background";
+		private static final String CALL_CONTROLLER_ITEM_ONTOUCHLISTENER = "call_controller_item_onTouchListener";
+
+		public OutgoingCallControllerAdapter(Context context,
+				List<Map<String, ?>> data, int itemsLayoutResId,
+				String[] dataKeys, int[] itemsComponentResIds) {
+			super(context, data, itemsLayoutResId, dataKeys,
+					itemsComponentResIds);
+		}
+
+		@Override
+		protected void bindView(View view, Map<String, ?> dataMap,
+				String dataKey) {
+			// get item data object
+			Object _itemData = dataMap.get(dataKey);
+
+			// check view type
+			// relativeLayout
+			if (view instanceof RelativeLayout) {
+				try {
+					// define item data map and convert item data to map
+					@SuppressWarnings("unchecked")
+					Map<String, Object> _itemDataMap = (Map<String, Object>) _itemData;
+
+					// get item data map values
+					Integer _itemBackgroundResource = (Integer) _itemDataMap
+							.get(CALL_CONTROLLER_ITEM_BACKGROUND);
+					OnTouchListener _itemOnTouchListener = (OnTouchListener) _itemDataMap
+							.get(CALL_CONTROLLER_ITEM_ONTOUCHLISTENER);
+
+					// set call controller item background resource and on touch
+					// listener
+					((RelativeLayout) view)
+							.setBackgroundResource(_itemBackgroundResource);
+					if (null != _itemOnTouchListener) {
+						((RelativeLayout) view)
+								.setOnTouchListener(_itemOnTouchListener);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+
+					Log.e(LOG_TAG,
+							"Convert item data to map error, item data = "
+									+ _itemData);
+				}
+			}
+			// textView
+			else if (view instanceof TextView) {
+				// set view text
+				if (null == _itemData) {
+					((TextView) view).setText("");
+				} else if (_itemData instanceof Integer) {
+					((TextView) view).setText((Integer) _itemData);
+				} else {
+					((TextView) view).setText(_itemData.toString());
+				}
+			}
+			// imageView
+			else if (view instanceof ImageView) {
+				try {
+					// define item data integer and convert item data to integer
+					Integer _itemDataInteger = (Integer) _itemData;
+
+					// set imageView image resource
+					((ImageView) view).setImageResource(_itemDataInteger);
+				} catch (Exception e) {
+					e.printStackTrace();
+
+					Log.e(LOG_TAG,
+							"Convert item data to integer error, item data = "
+									+ _itemData);
+				}
+			}
+		}
+
+	}
+
 	// call controller gridView on item click listener
 	class CallControllerGridViewOnItemClickListener implements
 			OnItemClickListener {
@@ -735,6 +814,62 @@ public class OutgoingCallActivity extends Activity implements
 			}
 
 			return true;
+		}
+
+	}
+
+	// outgoing call keyboard adapter
+	class OutgoingCallKeyboardAdapter extends CTListAdapter {
+
+		private static final String LOG_TAG = "OutgoingCallKeyboardAdapter";
+
+		// keyboard gridView keys
+		private static final String KEYBOARD_BUTTON_CODE = "keyboard_button_code";
+		private static final String KEYBOARD_BUTTON_IMAGE = "keyboard_button_image";
+		private static final String KEYBOARD_BUTTON_BGRESOURCE = "keyboard_button_background_resource";
+		private static final String KEYBOARD_BUTTON_ONCLICKLISTENER = "keyboard_button_onClickListener";
+
+		public OutgoingCallKeyboardAdapter(Context context,
+				List<Map<String, ?>> data, int itemsLayoutResId,
+				String[] dataKeys, int[] itemsComponentResIds) {
+			super(context, data, itemsLayoutResId, dataKeys,
+					itemsComponentResIds);
+		}
+
+		@Override
+		protected void bindView(View view, Map<String, ?> dataMap,
+				String dataKey) {
+			// get item data object
+			Object _itemData = dataMap.get(dataKey);
+
+			// check view type
+			// image button
+			if (view instanceof ImageButton) {
+				try {
+					// define item data map and convert item data to map
+					@SuppressWarnings("unchecked")
+					Map<String, Object> _itemDataMap = (Map<String, Object>) _itemData;
+
+					// set image button attributes
+					((ImageButton) view).setTag(_itemDataMap
+							.get(KEYBOARD_BUTTON_CODE));
+					((ImageButton) view)
+							.setImageResource((Integer) _itemDataMap
+									.get(KEYBOARD_BUTTON_IMAGE));
+					((ImageButton) view)
+							.setBackgroundResource((Integer) _itemDataMap
+									.get(KEYBOARD_BUTTON_BGRESOURCE));
+					((ImageButton) view)
+							.setOnClickListener((OnClickListener) _itemDataMap
+									.get(KEYBOARD_BUTTON_ONCLICKLISTENER));
+				} catch (Exception e) {
+					e.printStackTrace();
+
+					Log.e(LOG_TAG,
+							"Convert item data to map error, item data = "
+									+ _itemData);
+				}
+			}
 		}
 
 	}

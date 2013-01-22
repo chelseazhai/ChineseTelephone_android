@@ -53,9 +53,9 @@ import com.richitec.commontoolkit.CTApplication;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.addressbook.ContactBean;
-import com.richitec.commontoolkit.customadapter.CommonListAdapter;
+import com.richitec.commontoolkit.customadapter.CTListAdapter;
 import com.richitec.commontoolkit.customcomponent.BarButtonItem.BarButtonItemStyle;
-import com.richitec.commontoolkit.customcomponent.CommonPopupWindow;
+import com.richitec.commontoolkit.customcomponent.CTPopupWindow;
 import com.richitec.commontoolkit.customcomponent.ImageBarButtonItem;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar.OnTouchListener;
@@ -310,7 +310,7 @@ public class ContactListTabContentActivity extends NavigationActivity {
 			}
 
 			// put alphabet index
-			_dataMap.put(CommonListAdapter.ALPHABET_INDEX,
+			_dataMap.put(CTListAdapter.ALPHABET_INDEX,
 					_contact.getNamePhoneticsString());
 
 			// add data to list
@@ -405,16 +405,16 @@ public class ContactListTabContentActivity extends NavigationActivity {
 				ListView dependentListView, MotionEvent event,
 				Character alphabeticalCharacter) {
 			// get scroll position
-			if (dependentListView.getAdapter() instanceof CommonListAdapter) {
+			if (dependentListView.getAdapter() instanceof CTListAdapter) {
 				// get dependent listView adapter
-				CommonListAdapter _commonListAdapter = (CommonListAdapter) dependentListView
+				CTListAdapter _commonListAdapter = (CTListAdapter) dependentListView
 						.getAdapter();
 
 				for (int i = 0; i < _commonListAdapter.getCount(); i++) {
 					// get alphabet index
 					@SuppressWarnings("unchecked")
 					String _alphabetIndex = (String) ((Map<String, ?>) _commonListAdapter
-							.getItem(i)).get(CommonListAdapter.ALPHABET_INDEX);
+							.getItem(i)).get(CTListAdapter.ALPHABET_INDEX);
 
 					// check alphabet index
 					if (null == _alphabetIndex
@@ -556,7 +556,7 @@ public class ContactListTabContentActivity extends NavigationActivity {
 	}
 
 	// contact phone numbers select popup window
-	class ContactPhoneNumbersSelectPopupWindow extends CommonPopupWindow {
+	class ContactPhoneNumbersSelectPopupWindow extends CTPopupWindow {
 
 		// contact display name
 		private String _mContactDisplayName;
