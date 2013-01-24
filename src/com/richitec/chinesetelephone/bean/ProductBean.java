@@ -5,7 +5,7 @@ public class ProductBean {
 	private String body;
 	private String price;
 	private int chargeMoneyId;
-	private final String notify_url = "http://www.uu-talk.com/angola/alipayClientComplete";
+	private final String notify_url = "http://www.00244dh.com/angola/alipayClientComplete";
 
 	public String getSubject() {
 		return subject;

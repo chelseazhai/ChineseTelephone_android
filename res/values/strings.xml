@@ -173,7 +173,7 @@
     <string name="add_new_contact_item">添加新联系人</string>
     <string name="add_exist_contact_item">添加现有联系人</string>
     <string name="no_sms_number">无号码，请重新选择</string>
-    <string name="invite_message">邀请你使用免费电话软件,点击 *** 进行下载</string>
+    <string name="invite_message">使用安中通直拨中国，最低只要3分钱每分钟,点击 *** 下载安装</string>
     <string name="choose_sms_number">请选择号码</string>
     <string name="pls_input_phone">请输入电话号码</string>
     <string name="set_bind_number_title">设置回拨号码</string>

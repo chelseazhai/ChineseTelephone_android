@@ -85,7 +85,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="30dp"
                     android:scaleType="centerInside"
-                    android:src="@drawable/uutalk_charge_card" />
+                    android:src="@drawable/angolacard_charge_card" />
             </RelativeLayout>
 
             <View
