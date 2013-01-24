@@ -22,6 +22,7 @@ import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.customcomponent.CommonTabSpecIndicator;
 import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
+import com.richitec.commontoolkit.customcomponent.CTTabSpecIndicator;
 
 public class ChineseTelephoneTabActivity extends TabActivity {
 
@@ -61,7 +62,7 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 				.newTabSpec(
 						getResources().getString(TAB_WIDGETITEM_CONTENTS[0][0]))
 				.setIndicator(
-						new CommonTabSpecIndicator(this,
+						new CTTabSpecIndicator(this,
 								TAB_WIDGETITEM_CONTENTS[0][0],
 								TAB_WIDGETITEM_CONTENTS[0][1]))
 				.setContent(
@@ -74,7 +75,7 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 				.newTabSpec(
 						getResources().getString(TAB_WIDGETITEM_CONTENTS[1][0]))
 				.setIndicator(
-						new CommonTabSpecIndicator(this,
+						new CTTabSpecIndicator(this,
 								TAB_WIDGETITEM_CONTENTS[1][0],
 								TAB_WIDGETITEM_CONTENTS[1][1]))
 				.setContent(
@@ -87,7 +88,7 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 				.newTabSpec(
 						getResources().getString(TAB_WIDGETITEM_CONTENTS[2][0]))
 				.setIndicator(
-						new CommonTabSpecIndicator(this,
+						new CTTabSpecIndicator(this,
 								TAB_WIDGETITEM_CONTENTS[2][0],
 								TAB_WIDGETITEM_CONTENTS[2][1]))
 				.setContent(
@@ -100,7 +101,7 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 				.newTabSpec(
 						getResources().getString(TAB_WIDGETITEM_CONTENTS[3][0]))
 				.setIndicator(
-						new CommonTabSpecIndicator(this,
+						new CTTabSpecIndicator(this,
 								TAB_WIDGETITEM_CONTENTS[3][0],
 								TAB_WIDGETITEM_CONTENTS[3][1]))
 				.setContent(new Intent().setClass(this, SettingActivity.class));

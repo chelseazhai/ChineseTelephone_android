@@ -1,5 +1,8 @@
 package com.richitec.chinesetelephone.tab7tabcontent;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -8,9 +11,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.SpannableString;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,9 +33,12 @@ import com.richitec.chinesetelephone.sip.SipCallMode;
 import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
+import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.calllog.CallLogBean;
 import com.richitec.commontoolkit.calllog.CallLogBean.CallType;
+import com.richitec.commontoolkit.customadapter.CTListAdapter;
 import com.richitec.commontoolkit.utils.CommonUtils;
+import com.richitec.internationalcode.AreaAbbreviation;
 
 public class CallRecordDetailInfoActivity extends NavigationActivity {
 
@@ -37,10 +48,10 @@ public class CallRecordDetailInfoActivity extends NavigationActivity {
 	public static final String CALL_LOG_PARAM_KEY = "call_log_bean";
 
 	// callee name
-	String _mCalleeName;
+	private String _mCalleeName;
 
 	// callee phone number
-	String _mCalleePhone;
+	private String _mCalleePhone;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -84,6 +95,10 @@ public class CallRecordDetailInfoActivity extends NavigationActivity {
 				// 60 seconds per minute
 				final Integer SECONDS_PER_MINUTE = 60;
 
+				// define callee photo bitmap
+				Bitmap _calleePhotoBitmap = ((BitmapDrawable) getResources()
+						.getDrawable(R.drawable.img_gray_avatar)).getBitmap();
+
 				// reset callee name and phone number
 				_mCalleeName = _callLog.getCalleeName();
 				_mCalleePhone = _callLog.getCalleePhone();
@@ -92,8 +107,53 @@ public class CallRecordDetailInfoActivity extends NavigationActivity {
 				String _calleePhone = _callLog.getCalleePhone();
 				Long _callDuration = _callLog.getCallDuration();
 
-				// update call record contact display name, call type, call day,
-				// call time and call duration textView text
+				// get address book manager reference
+				AddressBookManager _addressBookManager = AddressBookManager
+						.getInstance();
+
+				// is callee in address book
+				@SuppressWarnings("unchecked")
+				Long _calleeContactId = _addressBookManager
+						.isContactWithPhoneInAddressBook(_calleePhone, null,
+								(List<AreaAbbreviation>) CommonUtils
+										.array2List(new AreaAbbreviation[] {
+												AreaAbbreviation.CN,
+												AreaAbbreviation.AO }));
+
+				// check callee contact id
+				if (null != _calleeContactId) {
+					// get callee photo, check it and reset callee photo bitmap
+					byte[] _calleePhoto = _addressBookManager
+							.getContactByAggregatedId(_calleeContactId)
+							.getPhoto();
+					if (null != _calleePhoto) {
+						try {
+							// get photo data stream
+							InputStream _photoDataStream = new ByteArrayInputStream(
+									_calleePhoto);
+
+							// check photo data stream
+							if (null != _photoDataStream) {
+								_calleePhotoBitmap = BitmapFactory
+										.decodeStream(_photoDataStream);
+
+								// close photo data stream
+								_photoDataStream.close();
+							}
+						} catch (IOException e) {
+							e.printStackTrace();
+
+							Log.e(LOG_TAG,
+									"Get callee photo data stream error, error message = "
+											+ e.getMessage());
+						}
+					}
+				}
+
+				// init call record contact photo, display name, call type, call
+				// day, call time and call duration textView text
+				((ImageView) findViewById(R.id.callRecord_detailInfo_contact_avatar_imageView))
+						.setImageBitmap(_calleePhotoBitmap);
 				((TextView) findViewById(R.id.callRecord_detailInfo_contact_displayName_textView))
 						.setText(_mCalleeName);
 				((TextView) findViewById(R.id.callRecord_detailInfo_callType_textView))
@@ -208,6 +268,35 @@ public class CallRecordDetailInfoActivity extends NavigationActivity {
 	}
 
 	// inner class
+	// call record detail info operation adapter
+	class CallRecordDetailInfoOperationAdapter extends CTListAdapter {
+
+		public CallRecordDetailInfoOperationAdapter(Context context,
+				List<Map<String, ?>> data, int itemsLayoutResId,
+				String[] dataKeys, int[] itemsComponentResIds) {
+			super(context, data, itemsLayoutResId, dataKeys,
+					itemsComponentResIds);
+		}
+
+		@Override
+		protected void bindView(View view, Map<String, ?> dataMap,
+				String dataKey) {
+			// get item data object
+			Object _itemData = dataMap.get(dataKey);
+
+			// check view type
+			// textView
+			if (view instanceof TextView) {
+				// set view text
+				((TextView) view)
+						.setText(null == _itemData ? ""
+								: _itemData instanceof SpannableString ? (SpannableString) _itemData
+										: _itemData.toString());
+			}
+		}
+
+	}
+
 	// call record detail info operation listView on item click listener
 	class CallRecordDetailInfoOperationListViewOnItemClickListener implements
 			OnItemClickListener {

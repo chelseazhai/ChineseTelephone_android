@@ -18,8 +18,7 @@
             android:layout_height="60dp"
             android:background="@color/graySmoke"
             android:contentDescription="@string/callRecord_detailInfo_contact_avatar_imageView_content_description"
-            android:scaleType="centerInside"
-            android:src="@drawable/img_gray_avatar" />
+            android:scaleType="centerInside" />
 
         <TextView
             android:id="@+id/callRecord_detailInfo_contact_displayName_textView"

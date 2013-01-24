@@ -55,12 +55,14 @@ import com.richitec.chinesetelephone.sip.SipCallMode;
 import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
 import com.richitec.commontoolkit.CommonToolkitApplication;
+import com.richitec.commontoolkit.CTApplication;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.addressbook.ContactBean;
-import com.richitec.commontoolkit.customadapter.CommonListAdapter;
+import com.richitec.commontoolkit.customadapter.CTListAdapter;
 import com.richitec.commontoolkit.customcomponent.BarButtonItem.BarButtonItemStyle;
-import com.richitec.commontoolkit.customcomponent.CommonPopupWindow;
+import com.richitec.commontoolkit.customcomponent.CTPopupWindow;
+import com.richitec.commontoolkit.customcomponent.CTToast;
 import com.richitec.commontoolkit.customcomponent.ImageBarButtonItem;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar.OnTouchListener;
@@ -169,7 +171,9 @@ public class ContactListTabContentActivity extends NavigationActivity {
 				_mPresentContactsInABInfoArray));
 		// init address book contacts listView quick alphabet bar and add on
 		// touch listener
-		new ListViewQuickAlphabetBar(_mABContactsListView)
+		new ListViewQuickAlphabetBar(_mABContactsListView,
+				new CTContactListViewQuickAlphabetToast(
+						_mABContactsListView.getContext()))
 				.setOnTouchListener(new ContactsInABListViewQuickAlphabetBarOnTouchListener());
 	}
 
@@ -341,7 +345,7 @@ public class ContactListTabContentActivity extends NavigationActivity {
 			}
 
 			// put alphabet index
-			_dataMap.put(CommonListAdapter.ALPHABET_INDEX,
+			_dataMap.put(CTListAdapter.ALPHABET_INDEX,
 					_contact.getNamePhoneticsString());
 
 			// add data to list
@@ -427,6 +431,21 @@ public class ContactListTabContentActivity extends NavigationActivity {
 		NONESEARCH, SEARCHBYNAME, SEARCHBYCHINESENAME, SEARCHBYPHONE
 	}
 
+	// Chinese Telephone contact list quick alphabet toast
+	class CTContactListViewQuickAlphabetToast extends CTToast {
+
+		public CTContactListViewQuickAlphabetToast(Context context) {
+			super(context,
+					R.layout.contactlist_quickalphabet_toast_content_layout);
+
+			// set text, duration and gravity
+			setText("");
+			setDuration(LENGTH_TRANSIENT);
+			setGravity(Gravity.CENTER, 0, 0);
+		}
+
+	}
+
 	// contacts in address book listView quick alphabet bar on touch listener
 	public static class ContactsInABListViewQuickAlphabetBarOnTouchListener
 			extends OnTouchListener {
@@ -436,16 +455,16 @@ public class ContactListTabContentActivity extends NavigationActivity {
 				ListView dependentListView, MotionEvent event,
 				Character alphabeticalCharacter) {
 			// get scroll position
-			if (dependentListView.getAdapter() instanceof CommonListAdapter) {
+			if (dependentListView.getAdapter() instanceof CTListAdapter) {
 				// get dependent listView adapter
-				CommonListAdapter _commonListAdapter = (CommonListAdapter) dependentListView
+				CTListAdapter _commonListAdapter = (CTListAdapter) dependentListView
 						.getAdapter();
 
 				for (int i = 0; i < _commonListAdapter.getCount(); i++) {
 					// get alphabet index
 					@SuppressWarnings("unchecked")
 					String _alphabetIndex = (String) ((Map<String, ?>) _commonListAdapter
-							.getItem(i)).get(CommonListAdapter.ALPHABET_INDEX);
+							.getItem(i)).get(CTListAdapter.ALPHABET_INDEX);
 
 					// check alphabet index
 					if (null == _alphabetIndex
@@ -547,21 +566,25 @@ public class ContactListTabContentActivity extends NavigationActivity {
 				_mContactSearchStatus = ContactSearchStatus.SEARCHBYNAME;
 			}
 
+			// get address book manager reference
+			AddressBookManager _addressBookManager = AddressBookManager
+					.getInstance();
+
 			// update present contacts in address book detail info list
 			switch (_mContactSearchStatus) {
 			case SEARCHBYNAME:
-				_mPresentContactsInABInfoArray = AddressBookManager
-						.getInstance().getContactsByName(s.toString());
+				_mPresentContactsInABInfoArray = _addressBookManager
+						.getContactsByName(s.toString());
 				break;
 
 			case SEARCHBYCHINESENAME:
-				_mPresentContactsInABInfoArray = AddressBookManager
-						.getInstance().getContactsByChineseName(s.toString());
+				_mPresentContactsInABInfoArray = _addressBookManager
+						.getContactsByChineseName(s.toString());
 				break;
 
 			case SEARCHBYPHONE:
-				_mPresentContactsInABInfoArray = AddressBookManager
-						.getInstance().getContactsByPhone(s.toString());
+				_mPresentContactsInABInfoArray = _addressBookManager
+						.getContactsByPhone(s.toString());
 				break;
 
 			case NONESEARCH:
@@ -589,7 +612,7 @@ public class ContactListTabContentActivity extends NavigationActivity {
 	}
 
 	// contact phone numbers select popup window
-	class ContactPhoneNumbersSelectPopupWindow extends CommonPopupWindow {
+	class ContactPhoneNumbersSelectPopupWindow extends CTPopupWindow {
 
 		// contact display name
 		private String _mContactDisplayName;
@@ -701,7 +724,7 @@ public class ContactListTabContentActivity extends NavigationActivity {
 				// set phone list view adapter
 				_phoneListView
 						.setAdapter(new ArrayAdapter<String>(
-								CommonToolkitApplication.getContext(),
+								CTApplication.getContext(),
 								R.layout.contact_phonenumbers_select_phoneslist_item_layout,
 								phoneNumbers));
 
