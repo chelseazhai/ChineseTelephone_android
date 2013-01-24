@@ -36,7 +36,7 @@ public class AppUpdateManager {
 	}
 	
 	private void checkVersion(){
-		VersionUtils.localVersion = VersionUtils.currentVersionName(context);
+		VersionUtils.localVersion = VersionUtils.versionName();
 		VersionUtils.updateURL = context.getString(R.string.appvcenter_url) + context.getString(R.string.app_download_url);
 		HttpUtils.getRequest(context.getString(R.string.appvcenter_url)
 				+ context.getString(R.string.app_version_url), null, null,

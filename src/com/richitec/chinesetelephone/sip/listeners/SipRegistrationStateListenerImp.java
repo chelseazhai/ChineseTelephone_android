@@ -13,7 +13,7 @@ import android.util.Log;
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.tab7tabcontent.ChineseTelephoneTabActivity;
-import com.richitec.commontoolkit.CommonToolkitApplication;
+import com.richitec.commontoolkit.CTApplication;
 import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
 
@@ -24,14 +24,14 @@ public class SipRegistrationStateListenerImp implements
 	private NotificationManager mNotificationManager;
 
 	public SipRegistrationStateListenerImp() {
-		mNotificationManager = (NotificationManager) CommonToolkitApplication
+		mNotificationManager = (NotificationManager) CTApplication
 				.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
 	}
 
 	@Override
 	public void onRegisterSuccess() {
 		Log.d(SystemConstants.TAG, "regist success");
-		Context context = CommonToolkitApplication.getContext();
+		Context context = CTApplication.getContext();
 
 		UserBean user = UserManager.getInstance().getUser();
 		sendNotification(
@@ -44,7 +44,7 @@ public class SipRegistrationStateListenerImp implements
 	@Override
 	public void onRegisterFailed() {
 		Log.d(SystemConstants.TAG, "regist failed");
-		Context context = CommonToolkitApplication.getContext();
+		Context context = CTApplication.getContext();
 
 		UserBean user = UserManager.getInstance().getUser();
 		sendNotification(
@@ -55,7 +55,7 @@ public class SipRegistrationStateListenerImp implements
 	}
 
 	private void sendNotification(int iconResId, String title, String content) {
-		Context context = CommonToolkitApplication.getContext();
+		Context context = CTApplication.getContext();
 		Bitmap icon = BitmapFactory.decodeResource(context.getResources(),
 				R.drawable.ic_launcher);
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(
@@ -90,7 +90,7 @@ public class SipRegistrationStateListenerImp implements
 	@Override
 	public void onRegistering() {
 		Log.d(SystemConstants.TAG, "registering");
-		Context context = CommonToolkitApplication.getContext();
+		Context context = CTApplication.getContext();
 
 		UserBean user = UserManager.getInstance().getUser();
 		sendNotification(
@@ -103,7 +103,7 @@ public class SipRegistrationStateListenerImp implements
 
 	
 	public static void cancelVOIPOnlineStatus() {
-		NotificationManager nm = (NotificationManager) CommonToolkitApplication
+		NotificationManager nm = (NotificationManager) CTApplication
 				.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		nm.cancel(SipRegistrationStateListenerImp.VOIP_ONLINE_NOTIFY_ID);
 	}

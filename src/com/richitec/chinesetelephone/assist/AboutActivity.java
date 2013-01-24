@@ -22,7 +22,7 @@ public class AboutActivity extends NavigationActivity {
 
 		// set product version name
 		((TextView) findViewById(R.id.product_versionName_textView))
-				.setText(VersionUtils.currentVersionName(this));
+				.setText(VersionUtils.versionName());
 	}
 
 	@Override

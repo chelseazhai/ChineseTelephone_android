@@ -48,13 +48,14 @@ import android.widget.Toast;
 
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.constant.SystemConstants;
+import com.richitec.chinesetelephone.tab7tabcontent.CTContactListViewQuickAlphabetToast;
 import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
-import com.richitec.commontoolkit.CommonToolkitApplication;
+import com.richitec.commontoolkit.CTApplication;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.addressbook.ContactBean;
-import com.richitec.commontoolkit.customadapter.CommonListAdapter;
-import com.richitec.commontoolkit.customcomponent.CommonPopupWindow;
+import com.richitec.commontoolkit.customadapter.CTListAdapter;
+import com.richitec.commontoolkit.customcomponent.CTPopupWindow;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar.OnTouchListener;
 import com.richitec.commontoolkit.utils.MyToast;
@@ -86,9 +87,9 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 
 	// contact search status
 	private ContactSearchStatus _mContactSearchStatus = ContactSearchStatus.NONESEARCH;
-	
+
 	private UpdateABListHandler listUpdateHandler;
-	
+
 	// define contact phone numbers select popup window
 	private final ContactPhoneNumbersSelectPopupWindow _mContactPhoneNumbersSelectPopupWindow = new ContactPhoneNumbersSelectPopupWindow(
 			R.layout.contact_phonenumbers_select_popupwindow_layout,
@@ -99,6 +100,8 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 		_mAllNamePhoneticSortedContactsInfoArray = AddressBookManager
 				.getInstance().getAllNamePhoneticSortedContactsInfoArray();
 	}
+
+	private CTContactListViewQuickAlphabetToast ctToast;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -160,7 +163,9 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 				_mPresentContactsInABInfoArray));
 		// init address book contacts listView quick alphabet bar and add on
 		// touch listener
-		new ListViewQuickAlphabetBar(_mABContactsListView)
+		ctToast = new CTContactListViewQuickAlphabetToast(
+				_mABContactsListView.getContext());
+		new ListViewQuickAlphabetBar(_mABContactsListView, ctToast)
 				.setOnTouchListener(new ContactsInABListViewQuickAlphabetBarOnTouchListener());
 	}
 
@@ -299,7 +304,7 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 			}
 
 			// put alphabet index
-			_dataMap.put(CommonListAdapter.ALPHABET_INDEX,
+			_dataMap.put(CTListAdapter.ALPHABET_INDEX,
 					_contact.getNamePhoneticsString());
 
 			Boolean _isSelected = (Boolean) _contact.getExtension().get(
@@ -394,16 +399,16 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 				ListView dependentListView, MotionEvent event,
 				Character alphabeticalCharacter) {
 			// get scroll position
-			if (dependentListView.getAdapter() instanceof CommonListAdapter) {
+			if (dependentListView.getAdapter() instanceof CTListAdapter) {
 				// get dependent listView adapter
-				CommonListAdapter _commonListAdapter = (CommonListAdapter) dependentListView
+				CTListAdapter _commonListAdapter = (CTListAdapter) dependentListView
 						.getAdapter();
 
 				for (int i = 0; i < _commonListAdapter.getCount(); i++) {
 					// get alphabet index
 					@SuppressWarnings("unchecked")
 					String _alphabetIndex = (String) ((Map<String, ?>) _commonListAdapter
-							.getItem(i)).get(CommonListAdapter.ALPHABET_INDEX);
+							.getItem(i)).get(CTListAdapter.ALPHABET_INDEX);
 
 					// check alphabet index
 					if (null == _alphabetIndex
@@ -590,7 +595,7 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 	}
 
 	// contact phone numbers select popup window
-	class ContactPhoneNumbersSelectPopupWindow extends CommonPopupWindow {
+	class ContactPhoneNumbersSelectPopupWindow extends CTPopupWindow {
 
 		// dial contact phone mode
 
@@ -660,8 +665,7 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 			// set contact phones select title textView text
 			((TextView) getContentView().findViewById(
 					R.id.contactPhones_select_titleTextView))
-					.setText(CommonToolkitApplication.getContext()
-							.getResources()
+					.setText(CTApplication.getContext().getResources()
 							.getString(R.string.select_phone_to_invite)
 							.replace("***", displayName));
 
@@ -692,7 +696,7 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 				// set phone list view adapter
 				_phoneListView
 						.setAdapter(new ArrayAdapter<String>(
-								CommonToolkitApplication.getContext(),
+								CTApplication.getContext(),
 								R.layout.contact_phonenumbers_select_phoneslist_item_layout,
 								phoneNumbers));
 
@@ -880,7 +884,8 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);
 		initNamePhoneticSortedContactsInfoArray();
 		initListUI();
-		AddressBookManager.getInstance().addContactObserverhandler(listUpdateHandler);
+		AddressBookManager.getInstance().addContactObserverhandler(
+				listUpdateHandler);
 		super.onRestoreInstanceState(savedInstanceState);
 	}
 
@@ -889,4 +894,13 @@ public class ContactLisInviteFriendActivity extends NavigationActivity {
 		AppDataSaveRestoreUtil.onSaveInstanceState(outState);
 		super.onSaveInstanceState(outState);
 	}
+
+	@Override
+	protected void onPause() {
+		if (ctToast != null) {
+			ctToast.cancel();
+		}
+		super.onPause();
+	}
+
 }

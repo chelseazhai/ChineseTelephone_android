@@ -54,7 +54,6 @@ import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.sip.SipCallMode;
 import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
-import com.richitec.commontoolkit.CommonToolkitApplication;
 import com.richitec.commontoolkit.CTApplication;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
@@ -62,7 +61,6 @@ import com.richitec.commontoolkit.addressbook.ContactBean;
 import com.richitec.commontoolkit.customadapter.CTListAdapter;
 import com.richitec.commontoolkit.customcomponent.BarButtonItem.BarButtonItemStyle;
 import com.richitec.commontoolkit.customcomponent.CTPopupWindow;
-import com.richitec.commontoolkit.customcomponent.CTToast;
 import com.richitec.commontoolkit.customcomponent.ImageBarButtonItem;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar.OnTouchListener;
@@ -86,7 +84,9 @@ public class ContactListTabContentActivity extends NavigationActivity {
 	private ContactSearchStatus _mContactSearchStatus = ContactSearchStatus.NONESEARCH;
 
 	private UpdateABListHandler listUpdateHandler;
-	
+
+	private CTContactListViewQuickAlphabetToast ctToast;
+
 	// init all name phonetic sorted contacts info array
 	public static void initNamePhoneticSortedContactsInfoArray() {
 		_smAllNamePhoneticSortedContactsInfoArray = AddressBookManager
@@ -133,27 +133,28 @@ public class ContactListTabContentActivity extends NavigationActivity {
 		_mABContactsListView
 				.setOnItemClickListener(new ContactsInABListViewOnItemClickListener());
 		_mABContactsListView.setOnScrollListener(new OnScrollListener() {
-			
+
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 				hideSoftKeyboard();
-				
+
 			}
-			
+
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
-				
+
 			}
 		});
 		// bind contact search editText text watcher
 		((EditText) findViewById(R.id.contact_search_editText))
 				.addTextChangedListener(new ContactSearchEditTextTextWatcher());
-		
+
 		listUpdateHandler = new UpdateABListHandler();
-		AddressBookManager.getInstance().addContactObserverhandler(listUpdateHandler);
+		AddressBookManager.getInstance().addContactObserverhandler(
+				listUpdateHandler);
 	}
-	
+
 	private void initListUI() {
 		// check all address book name phonetic sorted contacts detail info list
 		// and init present contacts in address book detail info array
@@ -171,23 +172,23 @@ public class ContactListTabContentActivity extends NavigationActivity {
 				_mPresentContactsInABInfoArray));
 		// init address book contacts listView quick alphabet bar and add on
 		// touch listener
-		new ListViewQuickAlphabetBar(_mABContactsListView,
-				new CTContactListViewQuickAlphabetToast(
-						_mABContactsListView.getContext()))
+		ctToast = new CTContactListViewQuickAlphabetToast(
+				_mABContactsListView.getContext());
+		new ListViewQuickAlphabetBar(_mABContactsListView, ctToast)
 				.setOnTouchListener(new ContactsInABListViewQuickAlphabetBarOnTouchListener());
 	}
 
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		getMenuInflater().inflate(
-//				R.menu.contact_list_tab_content_activity_layout, menu);
-//		return true;
-//	}
-	
+	// @Override
+	// public boolean onCreateOptionsMenu(Menu menu) {
+	// getMenuInflater().inflate(
+	// R.menu.contact_list_tab_content_activity_layout, menu);
+	// return true;
+	// }
+
 	@Override
-    public void onBackPressed(){
-    	this.getParent().onBackPressed();
-    }
+	public void onBackPressed() {
+		this.getParent().onBackPressed();
+	}
 
 	public ContactSearchStatus getContactSearchStatus() {
 		return _mContactSearchStatus;
@@ -431,21 +432,6 @@ public class ContactListTabContentActivity extends NavigationActivity {
 		NONESEARCH, SEARCHBYNAME, SEARCHBYCHINESENAME, SEARCHBYPHONE
 	}
 
-	// Chinese Telephone contact list quick alphabet toast
-	class CTContactListViewQuickAlphabetToast extends CTToast {
-
-		public CTContactListViewQuickAlphabetToast(Context context) {
-			super(context,
-					R.layout.contactlist_quickalphabet_toast_content_layout);
-
-			// set text, duration and gravity
-			setText("");
-			setDuration(LENGTH_TRANSIENT);
-			setGravity(Gravity.CENTER, 0, 0);
-		}
-
-	}
-
 	// contacts in address book listView quick alphabet bar on touch listener
 	public static class ContactsInABListViewQuickAlphabetBarOnTouchListener
 			extends OnTouchListener {
@@ -487,7 +473,7 @@ public class ContactListTabContentActivity extends NavigationActivity {
 		}
 
 	}
-	
+
 	private void hideSoftKeyboard() {
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		if (imm != null) {
@@ -832,26 +818,36 @@ public class ContactListTabContentActivity extends NavigationActivity {
 				break;
 			}
 			// update contacts in address book listView adapter
-			Log.d(SystemConstants.TAG, "_mPresentContactsInABInfoArray: " + _mPresentContactsInABInfoArray);
-			_mABContactsListView
-					.setAdapter(generateInABContactAdapter(ContactListTabContentActivity.this, true,
-							_mPresentContactsInABInfoArray));
+			Log.d(SystemConstants.TAG, "_mPresentContactsInABInfoArray: "
+					+ _mPresentContactsInABInfoArray);
+			_mABContactsListView.setAdapter(generateInABContactAdapter(
+					ContactListTabContentActivity.this, true,
+					_mPresentContactsInABInfoArray));
 
 		}
 	}
-	
+
 	@Override
-	protected void onRestoreInstanceState (Bundle savedInstanceState) {
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);
 		initNamePhoneticSortedContactsInfoArray();
 		initListUI();
-		AddressBookManager.getInstance().addContactObserverhandler(listUpdateHandler);
+		AddressBookManager.getInstance().addContactObserverhandler(
+				listUpdateHandler);
 		super.onRestoreInstanceState(savedInstanceState);
 	}
-	
+
 	@Override
-	protected void onSaveInstanceState (Bundle outState) {
+	protected void onSaveInstanceState(Bundle outState) {
 		AppDataSaveRestoreUtil.onSaveInstanceState(outState);
 		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	protected void onPause() {
+		if (ctToast != null) {
+			ctToast.cancel();
+		}
+		super.onPause();
 	}
 }

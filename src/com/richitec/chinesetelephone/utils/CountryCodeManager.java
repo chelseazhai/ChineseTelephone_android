@@ -11,7 +11,7 @@ import android.util.Log;
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.constant.Country;
 import com.richitec.chinesetelephone.constant.SystemConstants;
-import com.richitec.commontoolkit.CommonToolkitApplication;
+import com.richitec.commontoolkit.CTApplication;
 import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
 
@@ -35,7 +35,7 @@ public class CountryCodeManager {
 	}
 
 	private void getCountryCode() {
-		Context context = CommonToolkitApplication.getContext();
+		Context context = CTApplication.getContext();
 		HashMap<String, String> data = new HashMap<String, String>();
 		data.put(Country.contryname.name(), context.getString(R.string.china));
 		data.put(Country.code.name(), "0086");
@@ -99,7 +99,7 @@ public class CountryCodeManager {
 	}
 
 	public boolean hasCountryCodePrefix(String phoneNumber) {
-		Context context = CommonToolkitApplication.getContext();
+		Context context = CTApplication.getContext();
 		String[] codes = context.getResources().getStringArray(
 				R.array.country_codes);
 		boolean ret = false;

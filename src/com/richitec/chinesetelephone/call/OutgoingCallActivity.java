@@ -50,7 +50,6 @@ import com.richitec.chinesetelephone.sip.services.BaseSipServices;
 import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity;
 import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity.ContactsInABListViewQuickAlphabetBarOnTouchListener;
 import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
-import com.richitec.commontoolkit.CommonToolkitApplication;
 import com.richitec.commontoolkit.CTApplication;
 import com.richitec.commontoolkit.customadapter.CTListAdapter;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar;

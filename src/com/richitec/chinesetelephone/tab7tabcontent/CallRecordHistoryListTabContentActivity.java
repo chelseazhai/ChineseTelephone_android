@@ -16,14 +16,12 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.CallLog;
-import android.util.Log;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -188,48 +186,6 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 		super.onResume();
 	}
 
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		// get restore call log data list
-		@SuppressWarnings("unchecked")
-		List<Object> _callLogDataList = (List<Object>) savedInstanceState
-				.getSerializable("@@");
-
-		// check call log data list
-		if (null != _callLogDataList) {
-			// restore need to saved call log data list
-			_mNeed2SavedCallLogDataList = _callLogDataList;
-		}
-
-		super.onRestoreInstanceState(savedInstanceState);
-	}
-
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		// define call record history listView adapter
-		CallRecordHistoryListItemAdapter _callRecordHistoryListItemAdapter = null;
-
-		// save call log data list
-		try {
-			// get call record history listView adapter
-			_callRecordHistoryListItemAdapter = (CallRecordHistoryListItemAdapter) _mCallRecordHistoryListView
-					.getAdapter();
-
-			// get call log data list
-			List<Object> _callLogDataList = _callRecordHistoryListItemAdapter
-					.getDataList();
-
-			// check call log data list and saved
-			if (null != _callLogDataList) {
-				outState.putSerializable("@@", (Serializable) _callLogDataList);
-
-				// save UI data
-				super.onSaveInstanceState(outState);
-			}
-		} catch (Exception e) {
-			//
-		}
-	}
 
 	@Override
 	protected void onDestroy() {

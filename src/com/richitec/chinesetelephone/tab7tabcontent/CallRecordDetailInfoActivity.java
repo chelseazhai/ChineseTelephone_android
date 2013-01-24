@@ -38,7 +38,6 @@ import com.richitec.commontoolkit.calllog.CallLogBean;
 import com.richitec.commontoolkit.calllog.CallLogBean.CallType;
 import com.richitec.commontoolkit.customadapter.CTListAdapter;
 import com.richitec.commontoolkit.utils.CommonUtils;
-import com.richitec.internationalcode.AreaAbbreviation;
 
 public class CallRecordDetailInfoActivity extends NavigationActivity {
 
@@ -114,11 +113,7 @@ public class CallRecordDetailInfoActivity extends NavigationActivity {
 				// is callee in address book
 				@SuppressWarnings("unchecked")
 				Long _calleeContactId = _addressBookManager
-						.isContactWithPhoneInAddressBook(_calleePhone, null,
-								(List<AreaAbbreviation>) CommonUtils
-										.array2List(new AreaAbbreviation[] {
-												AreaAbbreviation.CN,
-												AreaAbbreviation.AO }));
+						.isContactWithPhoneInAddressBook(_calleePhone);
 
 				// check callee contact id
 				if (null != _calleeContactId) {

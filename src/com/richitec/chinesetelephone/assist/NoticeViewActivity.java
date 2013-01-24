@@ -25,7 +25,7 @@ import com.richitec.chinesetelephone.constant.NoticeStatus;
 import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
 import com.richitec.chinesetelephone.utils.NoticeDBHelper;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
-import com.richitec.commontoolkit.customadapter.CommonListCursorAdapter;
+import com.richitec.commontoolkit.customadapter.CTListCursorAdapter;
 
 public class NoticeViewActivity extends NavigationActivity {
 	private ListView listView;
@@ -122,7 +122,7 @@ public class NoticeViewActivity extends NavigationActivity {
 		super.onDestroy();
 	}
 
-	class NoticeListAdapter extends CommonListCursorAdapter {
+	class NoticeListAdapter extends CTListCursorAdapter {
 
 		public NoticeListAdapter(Context context, int itemsLayoutResId,
 				Cursor c, String[] dataKeys, int[] itemsComponentResIds) {

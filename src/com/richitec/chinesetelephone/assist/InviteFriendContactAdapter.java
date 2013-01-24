@@ -12,9 +12,9 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.richitec.commontoolkit.customadapter.CommonListAdapter;
+import com.richitec.commontoolkit.customadapter.CTListAdapter;
 
-public class InviteFriendContactAdapter extends CommonListAdapter {
+public class InviteFriendContactAdapter extends CTListAdapter {
 
 	private static final String LOG_TAG = "AddressBookContactAdapter";
 

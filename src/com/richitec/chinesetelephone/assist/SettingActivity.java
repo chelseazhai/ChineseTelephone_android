@@ -6,7 +6,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
-import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -38,9 +37,8 @@ import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
 import com.richitec.chinesetelephone.utils.AppUpdateManager;
 import com.richitec.chinesetelephone.utils.CountryCodeManager;
 import com.richitec.chinesetelephone.utils.DialPreferenceManager;
-import com.richitec.commontoolkit.CommonToolkitApplication;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
-import com.richitec.commontoolkit.customcomponent.CommonPopupWindow;
+import com.richitec.commontoolkit.customcomponent.CTPopupWindow;
 import com.richitec.commontoolkit.user.User;
 import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
@@ -685,7 +683,7 @@ public class SettingActivity extends NavigationActivity {
 		return result;
 	}
 
-	class ModifyPSWPopupWindow extends CommonPopupWindow {
+	class ModifyPSWPopupWindow extends CTPopupWindow {
 
 		public ModifyPSWPopupWindow(int resource, int width, int height,
 				boolean focusable, boolean isBindDefListener) {
@@ -760,7 +758,7 @@ public class SettingActivity extends NavigationActivity {
 
 	}
 
-	class GetPSWPopupWindow extends CommonPopupWindow {
+	class GetPSWPopupWindow extends CTPopupWindow {
 
 		public GetPSWPopupWindow(int resource, int width, int height,
 				boolean focusable, boolean isBindDefListener) {
@@ -835,7 +833,7 @@ public class SettingActivity extends NavigationActivity {
 
 	}
 
-	class LaunchSetCodePopupWindow extends CommonPopupWindow {
+	class LaunchSetCodePopupWindow extends CTPopupWindow {
 
 		public LaunchSetCodePopupWindow(int resource, int width, int height,
 				boolean focusable, boolean isBindDefListener) {
@@ -903,7 +901,7 @@ public class SettingActivity extends NavigationActivity {
 
 	}
 
-	class SetDialCountryCodePopupWindow extends CommonPopupWindow {
+	class SetDialCountryCodePopupWindow extends CTPopupWindow {
 		private int lastDialCountryCodeSelect = 0;
 
 		public SetDialCountryCodePopupWindow(int resource, int width,
@@ -1018,7 +1016,7 @@ public class SettingActivity extends NavigationActivity {
 
 	}
 
-	class SetDialPreferencePopupWindow extends CommonPopupWindow {
+	class SetDialPreferencePopupWindow extends CTPopupWindow {
 
 		public SetDialPreferencePopupWindow(int resource, int width,
 				int height, boolean focusable, boolean isBindDefListener) {
@@ -1097,7 +1095,7 @@ public class SettingActivity extends NavigationActivity {
 		}
 	}
 
-	class SetBindNumberPopupWindow extends CommonPopupWindow {
+	class SetBindNumberPopupWindow extends CTPopupWindow {
 		private int lastSelectCountryCode = 0;
 
 		public SetBindNumberPopupWindow(int resource, int width, int height,

@@ -19,10 +19,9 @@ import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
 import com.richitec.chinesetelephone.utils.AppUpdateManager;
 import com.richitec.chinesetelephone.utils.SipRegisterManager;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
-import com.richitec.commontoolkit.customcomponent.CommonTabSpecIndicator;
+import com.richitec.commontoolkit.customcomponent.CTTabSpecIndicator;
 import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
-import com.richitec.commontoolkit.customcomponent.CTTabSpecIndicator;
 
 public class ChineseTelephoneTabActivity extends TabActivity {
 
