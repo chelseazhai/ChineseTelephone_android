@@ -56,6 +56,7 @@ import com.richitec.commontoolkit.addressbook.ContactBean;
 import com.richitec.commontoolkit.customadapter.CTListAdapter;
 import com.richitec.commontoolkit.customcomponent.BarButtonItem.BarButtonItemStyle;
 import com.richitec.commontoolkit.customcomponent.CTPopupWindow;
+import com.richitec.commontoolkit.customcomponent.CTToast;
 import com.richitec.commontoolkit.customcomponent.ImageBarButtonItem;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar.OnTouchListener;
@@ -135,7 +136,9 @@ public class ContactListTabContentActivity extends NavigationActivity {
 				_mPresentContactsInABInfoArray));
 		// init address book contacts listView quick alphabet bar and add on
 		// touch listener
-		new ListViewQuickAlphabetBar(_mABContactsListView)
+		new ListViewQuickAlphabetBar(_mABContactsListView,
+				new CTContactListViewQuickAlphabetToast(
+						_mABContactsListView.getContext()))
 				.setOnTouchListener(new ContactsInABListViewQuickAlphabetBarOnTouchListener());
 
 		// set contacts in address book listView on item click listener
@@ -394,6 +397,21 @@ public class ContactListTabContentActivity extends NavigationActivity {
 	// contact search status
 	enum ContactSearchStatus {
 		NONESEARCH, SEARCHBYNAME, SEARCHBYCHINESENAME, SEARCHBYPHONE
+	}
+
+	// Chinese Telephone contact list quick alphabet toast
+	class CTContactListViewQuickAlphabetToast extends CTToast {
+
+		public CTContactListViewQuickAlphabetToast(Context context) {
+			super(context,
+					R.layout.contactlist_quickalphabet_toast_content_layout);
+
+			// set text, duration and gravity
+			setText("");
+			setDuration(LENGTH_TRANSIENT);
+			setGravity(Gravity.CENTER, 0, 0);
+		}
+
 	}
 
 	// contacts in address book listView quick alphabet bar on touch listener
