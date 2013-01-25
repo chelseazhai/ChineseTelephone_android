@@ -153,8 +153,8 @@ public class ContactPhoneDialModeSelectpopupWindow extends CTPopupWindow {
 
 	// check contact for dial mode select
 	private void checkContact4DialModeSelect(SipCallMode dialMode) {
-		// dismiss contact phone dial mode select popup window
-		dismiss();
+		// dismiss contact phone dial mode select popup window with animation
+		dismissWithAnimation();
 
 		// check select contact phone size
 		if (1 == _mSelectContactPhones.size()) {
@@ -248,8 +248,9 @@ public class ContactPhoneDialModeSelectpopupWindow extends CTPopupWindow {
 
 		@Override
 		public void onClick(View v) {
-			// dismiss contact phone dial mode select popup window
-			dismiss();
+			// dismiss contact phone dial mode select popup window with
+			// animation
+			dismissWithAnimation();
 		}
 
 	}

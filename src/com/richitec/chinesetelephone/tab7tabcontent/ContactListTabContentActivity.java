@@ -743,7 +743,7 @@ public class ContactListTabContentActivity extends NavigationActivity {
 
 			@Override
 			public void onClick(View v) {
-				// dismiss contact phone select popup window
+				// dismiss contact phone select popup window with animation
 				dismiss();
 			}
 
