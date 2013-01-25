@@ -504,9 +504,11 @@ public class ContactListTabContentActivity extends NavigationActivity {
 						_clickItemViewData.getDisplayName(),
 						_clickItemViewData.getPhoneNumbers());
 
-				// show contact phone dial mode select pupupWindow
-				_contactPhoneDialModeSelectPopupWindow.showAtLocation(parent,
-						Gravity.CENTER, 0, 0);
+				// show contact phone dial mode select pupupWindow with
+				// animation
+				_contactPhoneDialModeSelectPopupWindow
+						.showAtLocationWithAnimation(parent, Gravity.CENTER, 0,
+								0);
 			}
 		}
 

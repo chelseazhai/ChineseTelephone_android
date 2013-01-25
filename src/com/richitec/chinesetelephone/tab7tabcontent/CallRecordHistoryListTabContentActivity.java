@@ -511,9 +511,11 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 				_contactPhoneDialModeSelectPopupWindow.setCalleeContactInfo(
 						_calleeName, _calleePhones);
 
-				// show contact phone dial mode select pupupWindow
-				_contactPhoneDialModeSelectPopupWindow.showAtLocation(parent,
-						Gravity.CENTER, 0, 0);
+				// show contact phone dial mode select pupupWindow with
+				// animation
+				_contactPhoneDialModeSelectPopupWindow
+						.showAtLocationWithAnimation(parent, Gravity.CENTER, 0,
+								0);
 			}
 		}
 

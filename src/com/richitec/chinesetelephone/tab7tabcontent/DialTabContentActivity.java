@@ -624,9 +624,10 @@ public class DialTabContentActivity extends NavigationActivity {
 				_contactPhoneDialModeSelectPopupWindow.setCalleeContactInfo(
 						_calleeName, _calleePhones);
 
-				// show contact phone dial mode select pupupWindow
-				_contactPhoneDialModeSelectPopupWindow.showAtLocation(v,
-						Gravity.CENTER, 0, 0);
+				// show contact phone dial mode select pupupWindow with
+				// animation
+				_contactPhoneDialModeSelectPopupWindow
+						.showAtLocationWithAnimation(v, Gravity.CENTER, 0, 0);
 			} else if (null != _mPreviousDialPhone
 					&& !"".equalsIgnoreCase(_mPreviousDialPhone.toString())) {
 				// set dial phone textView text using previous dial phone
