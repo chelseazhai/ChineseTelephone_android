@@ -464,8 +464,10 @@ public class DialTabContentActivity extends NavigationActivity {
 							.setPhone4Insert2Contact(_insertPhone);
 
 					// show insert phone to contact mode select popup window
-					_mInsertPhone2ContactModeSelectPopupWindow.showAtLocation(
-							v, Gravity.CENTER, 0, 0);
+					// with animation
+					_mInsertPhone2ContactModeSelectPopupWindow
+							.showAtLocationWithAnimation(v, Gravity.CENTER, 0,
+									0);
 				}
 			} else {
 				// add new contact
@@ -578,8 +580,9 @@ public class DialTabContentActivity extends NavigationActivity {
 
 			@Override
 			public void onClick(View v) {
-				// dismiss insert phone to contact mode select popup window
-				dismiss();
+				// dismiss insert phone to contact mode select popup window with
+				// animation
+				dismissWithAnimation();
 			}
 
 		}
