@@ -45,6 +45,7 @@ import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.chinesetelephone.sip.listeners.SipInviteStateListener;
 import com.richitec.chinesetelephone.sip.services.BaseSipServices;
 import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity;
+import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity.CTContactListViewQuickAlphabetToast;
 import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity.ContactsInABListViewQuickAlphabetBarOnTouchListener;
 import com.richitec.commontoolkit.CTApplication;
 import com.richitec.commontoolkit.customadapter.CTListAdapter;
@@ -89,6 +90,9 @@ public class OutgoingCallActivity extends Activity implements
 
 	// phone state broadcast receiver
 	private BroadcastReceiver _mPhoneStateBroadcastReceiver;
+
+	// Chinese telephone contact listView quick alphabet toast
+	CTContactListViewQuickAlphabetToast _mContactListViewQuickAlphabetToast;
 
 	// hangup and hide keyboard image button
 	private ImageButton _mHangupBtn;
@@ -177,7 +181,10 @@ public class OutgoingCallActivity extends Activity implements
 				.getInABContactAdapter(this));
 		// init address book contacts listView quick alphabet bar and add on
 		// touch listener
-		new ListViewQuickAlphabetBar(_abContactsListView)
+		new ListViewQuickAlphabetBar(
+				_abContactsListView,
+				_mContactListViewQuickAlphabetToast = new CTContactListViewQuickAlphabetToast(
+						_abContactsListView.getContext()))
 				.setOnTouchListener(new ContactsInABListViewQuickAlphabetBarOnTouchListener());
 
 		// set keyboard gridView adapter
@@ -223,7 +230,20 @@ public class OutgoingCallActivity extends Activity implements
 
 	@Override
 	public void onBackPressed() {
-		// nothing to do
+		// get contacts list sliding drawer
+		SlidingDrawer _contactListSlidingDrawer = (SlidingDrawer) findViewById(R.id.contactslist_slidingDrawer);
+
+		// check and hide contacts list sliding drawer
+		if (_contactListSlidingDrawer.isShown()) {
+			// check contact listView alphabet toast and visibility
+			if (null != _mContactListViewQuickAlphabetToast
+					&& _mContactListViewQuickAlphabetToast.isShowing()) {
+				_mContactListViewQuickAlphabetToast.cancel();
+			}
+
+			// close contacts list sliding drawer
+			_contactListSlidingDrawer.animateClose();
+		}
 	}
 
 	@Override
@@ -744,6 +764,12 @@ public class OutgoingCallActivity extends Activity implements
 		@Override
 		public void onClick(View v) {
 			// hide contacts list
+			// check contact listView alphabet toast and visibility
+			if (null != _mContactListViewQuickAlphabetToast
+					&& _mContactListViewQuickAlphabetToast.isShowing()) {
+				_mContactListViewQuickAlphabetToast.cancel();
+			}
+
 			// close contacts list sliding drawer
 			((SlidingDrawer) findViewById(R.id.contactslist_slidingDrawer))
 					.animateClose();

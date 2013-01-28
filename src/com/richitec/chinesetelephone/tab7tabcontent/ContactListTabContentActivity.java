@@ -70,6 +70,9 @@ public class ContactListTabContentActivity extends NavigationActivity {
 	// address book contacts list view
 	private ListView _mABContactsListView;
 
+	// Chinese telephone contact listView quick alphabet toast
+	CTContactListViewQuickAlphabetToast _mContactListViewQuickAlphabetToast;
+
 	// all address book name phonetic sorted contacts detail info list
 	private static List<ContactBean> _smAllNamePhoneticSortedContactsInfoArray;
 
@@ -136,8 +139,9 @@ public class ContactListTabContentActivity extends NavigationActivity {
 				_mPresentContactsInABInfoArray));
 		// init address book contacts listView quick alphabet bar and add on
 		// touch listener
-		new ListViewQuickAlphabetBar(_mABContactsListView,
-				new CTContactListViewQuickAlphabetToast(
+		new ListViewQuickAlphabetBar(
+				_mABContactsListView,
+				_mContactListViewQuickAlphabetToast = new CTContactListViewQuickAlphabetToast(
 						_mABContactsListView.getContext()))
 				.setOnTouchListener(new ContactsInABListViewQuickAlphabetBarOnTouchListener());
 
@@ -155,6 +159,17 @@ public class ContactListTabContentActivity extends NavigationActivity {
 		getMenuInflater().inflate(
 				R.menu.contact_list_tab_content_activity_layout, menu);
 		return true;
+	}
+
+	@Override
+	protected void onPause() {
+		// check contact listView alphabet toast and visibility
+		if (null != _mContactListViewQuickAlphabetToast
+				&& _mContactListViewQuickAlphabetToast.isShowing()) {
+			_mContactListViewQuickAlphabetToast.cancel();
+		}
+
+		super.onPause();
 	}
 
 	public ContactSearchStatus getContactSearchStatus() {
@@ -400,7 +415,7 @@ public class ContactListTabContentActivity extends NavigationActivity {
 	}
 
 	// Chinese Telephone contact list quick alphabet toast
-	class CTContactListViewQuickAlphabetToast extends CTToast {
+	public static class CTContactListViewQuickAlphabetToast extends CTToast {
 
 		public CTContactListViewQuickAlphabetToast(Context context) {
 			super(context,
