@@ -61,6 +61,7 @@ import com.richitec.commontoolkit.addressbook.ContactBean;
 import com.richitec.commontoolkit.customadapter.CTListAdapter;
 import com.richitec.commontoolkit.customcomponent.BarButtonItem.BarButtonItemStyle;
 import com.richitec.commontoolkit.customcomponent.CTPopupWindow;
+import com.richitec.commontoolkit.customcomponent.CTToast;
 import com.richitec.commontoolkit.customcomponent.ImageBarButtonItem;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar.OnTouchListener;
@@ -73,6 +74,9 @@ public class ContactListTabContentActivity extends NavigationActivity {
 
 	// address book contacts list view
 	private ListView _mABContactsListView;
+
+	// Chinese telephone contact listView quick alphabet toast
+	CTContactListViewQuickAlphabetToast _mContactListViewQuickAlphabetToast;
 
 	// all address book name phonetic sorted contacts detail info list
 	private static List<ContactBean> _smAllNamePhoneticSortedContactsInfoArray;
@@ -432,6 +436,21 @@ public class ContactListTabContentActivity extends NavigationActivity {
 		NONESEARCH, SEARCHBYNAME, SEARCHBYCHINESENAME, SEARCHBYPHONE
 	}
 
+	// Chinese Telephone contact list quick alphabet toast
+	public static class CTContactListViewQuickAlphabetToast extends CTToast {
+
+		public CTContactListViewQuickAlphabetToast(Context context) {
+			super(context,
+					R.layout.contactlist_quickalphabet_toast_content_layout);
+
+			// set text, duration and gravity
+			setText("");
+			setDuration(LENGTH_TRANSIENT);
+			setGravity(Gravity.CENTER, 0, 0);
+		}
+
+	}
+
 	// contacts in address book listView quick alphabet bar on touch listener
 	public static class ContactsInABListViewQuickAlphabetBarOnTouchListener
 			extends OnTouchListener {
@@ -528,9 +547,11 @@ public class ContactListTabContentActivity extends NavigationActivity {
 						_clickItemViewData.getDisplayName(),
 						_clickItemViewData.getPhoneNumbers());
 
-				// show contact phone dial mode select pupupWindow
-				_contactPhoneDialModeSelectPopupWindow.showAtLocation(parent,
-						Gravity.CENTER, 0, 0);
+				// show contact phone dial mode select pupupWindow with
+				// animation
+				_contactPhoneDialModeSelectPopupWindow
+						.showAtLocationWithAnimation(parent, Gravity.CENTER, 0,
+								0);
 			}
 		}
 
@@ -763,8 +784,8 @@ public class ContactListTabContentActivity extends NavigationActivity {
 
 			@Override
 			public void onClick(View v) {
-				// dismiss contact phone select popup window
-				dismiss();
+				// dismiss contact phone select popup window with animation
+				dismissWithAnimation();
 			}
 
 		}
@@ -845,7 +866,7 @@ public class ContactListTabContentActivity extends NavigationActivity {
 
 	@Override
 	protected void onPause() {
-		if (ctToast != null) {
+		if (ctToast != null && ctToast.isShowing()) {
 			ctToast.cancel();
 		}
 		super.onPause();

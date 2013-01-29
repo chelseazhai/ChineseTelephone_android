@@ -2,13 +2,13 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/half_transparent" >
+    android:background="@color/popupwindow_mask_transparent" >
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/popupwindow_transparent"
+        android:background="@drawable/img_popupwindow_contentview_bg"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingBottom="14dp"

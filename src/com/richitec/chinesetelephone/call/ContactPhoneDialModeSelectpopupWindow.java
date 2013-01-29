@@ -3,6 +3,7 @@ package com.richitec.chinesetelephone.call;
 import java.util.List;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -189,11 +190,18 @@ public class ContactPhoneDialModeSelectpopupWindow extends CTPopupWindow {
 									new Object[] { _mSelectContactName,
 											_mSelectContactPhones, dialMode });
 
-					// show contact phone numbers select popup window
-					_mContactPhoneNumbersSelectPopupWindow
-							.showAtLocation(
-									_mContactPhoneNumbersSelectPopupWindowDependentView,
-									Gravity.CENTER, 0, 0);
+					// show contact phone numbers select popup window with
+					// animation
+					new Handler().postDelayed(new Runnable() {
+
+						@Override
+						public void run() {
+							_mContactPhoneNumbersSelectPopupWindow
+									.showAtLocationWithAnimation(
+											_mContactPhoneNumbersSelectPopupWindowDependentView,
+											Gravity.CENTER, 0, 0);
+						}
+					}, DISMISSANIMATION_DURATION);
 				} catch (Exception e) {
 					Log.e(LOG_TAG,
 							"Contact phone numbers select popup window reflection method:'setContactPhones4Selecting' error and exception message = "
@@ -240,8 +248,9 @@ public class ContactPhoneDialModeSelectpopupWindow extends CTPopupWindow {
 
 		@Override
 		public void onClick(View v) {
-			// dismiss contact phone dial mode select popup window
-			dismiss();
+			// dismiss contact phone dial mode select popup window with
+			// animation
+			dismissWithAnimation();
 		}
 
 	}

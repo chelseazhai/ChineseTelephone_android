@@ -504,8 +504,10 @@ public class DialTabContentActivity extends NavigationActivity {
 							.setPhone4Insert2Contact(_insertPhone);
 
 					// show insert phone to contact mode select popup window
-					_mInsertPhone2ContactModeSelectPopupWindow.showAtLocation(
-							v, Gravity.CENTER, 0, 0);
+					// with animation
+					_mInsertPhone2ContactModeSelectPopupWindow
+							.showAtLocationWithAnimation(v, Gravity.CENTER, 0,
+									0);
 				}
 			} else {
 				// add new contact
@@ -618,8 +620,9 @@ public class DialTabContentActivity extends NavigationActivity {
 
 			@Override
 			public void onClick(View v) {
-				// dismiss insert phone to contact mode select popup window
-				dismiss();
+				// dismiss insert phone to contact mode select popup window with
+				// animation
+				dismissWithAnimation();
 			}
 
 		}
@@ -664,9 +667,10 @@ public class DialTabContentActivity extends NavigationActivity {
 				_contactPhoneDialModeSelectPopupWindow.setCalleeContactInfo(
 						_calleeName, _calleePhones);
 
-				// show contact phone dial mode select pupupWindow
-				_contactPhoneDialModeSelectPopupWindow.showAtLocation(v,
-						Gravity.CENTER, 0, 0);
+				// show contact phone dial mode select pupupWindow with
+				// animation
+				_contactPhoneDialModeSelectPopupWindow
+						.showAtLocationWithAnimation(v, Gravity.CENTER, 0, 0);
 			} else if (null != _mPreviousDialPhone
 					&& !"".equalsIgnoreCase(_mPreviousDialPhone.toString())) {
 				// set dial phone textView text using previous dial phone
