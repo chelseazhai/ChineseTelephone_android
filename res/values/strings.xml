@@ -143,7 +143,6 @@
     <string name="account_charge_item">账户充值</string>
     <string name="my_suites_item">我的套餐</string>
     <string name="search">查询</string>
-    <string name="search_remainmoney_item">余额查询</string>
     <string name="fee_query_item">费率查询</string>
     <string name="setting">设置</string>
     <string name="back">返回</string>
@@ -222,7 +221,7 @@
     <string name="cannot_connet_server">无法连接服务器</string>
     <string name="change_psw_success">修改密码成功</string>
     <!-- get remain money -->
-    <string name="get_remain_money_title">查询余额</string>
+    <string name="account_info">余额查询</string>
     <string name="get_balance_error">查询出错，请重试</string>
     <string name="remain_balance_textfield">账户余额：</string>
     <string name="yuan">元</string>
@@ -261,6 +260,7 @@
     <!-- account setting -->
     <string name="forget_psw"><u>忘记密码</u></string>
     <string name="welcome">欢迎登录</string>
+    <string name="country_code">国家代码：</string>
     <string name="account_name">手机号：</string>
     <string name="account_psw">密   码：</string>
     <string name="account_name_hint">请输入手机号</string>
@@ -365,4 +365,17 @@
 	<string name="online">%s(在线)</string>
 	<string name="offline">%s(离线)</string>
 	<string name="registering">%s(正在登录…)</string>
+	
+	<!-- money get -->
+	<string name="email_setting_desc">现在绑定您的电子邮箱，即刻领取%.2f元话费！</string>
+	<string name="wanna_bind_email">现在绑定您的电子邮箱吗？可供日后找回您的密码。</string>
+	<string name="input_ur_email">输入您的电子邮箱地址</string>
+	<string name="u_havent_got_ur_money_yet">您还未领取系统赠送的%.2f元话费！进入您绑定的电子邮箱查看话费领取邮件。</string>
+	<string name="bind_email">绑定邮箱</string>
+	<string name="email_setting_title">邮箱绑定</string>
+	<string name="pls_input_valid_email_address">请输入有效的邮箱地址！</string>
+	<string name="binding_email_address">正在绑定电子邮箱…</string>
+	<string name="bind_email_failed">邮箱绑定失败，请稍后重试！</string>
+	<string name="bind_email_success">邮箱绑定成功！</string>
+	<string name="bind_email_ok_check_ur_mail">话费领取邮件已发送到您的绑定邮箱，现在赶紧去邮箱查收吧！</string>
 </resources>

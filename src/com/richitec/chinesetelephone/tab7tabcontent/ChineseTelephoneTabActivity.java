@@ -1,17 +1,36 @@
 package com.richitec.chinesetelephone.tab7tabcontent;
 
+import java.util.HashMap;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.app.TabActivity;
+import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.IInterface;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TabHost;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.TabHost.TabSpec;
 
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.assist.SettingActivity;
 import com.richitec.chinesetelephone.constant.SystemConstants;
+import com.richitec.chinesetelephone.constant.TelUser;
 import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
 import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListenerImp;
@@ -19,11 +38,20 @@ import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
 import com.richitec.chinesetelephone.utils.AppUpdateManager;
 import com.richitec.chinesetelephone.utils.SipRegisterManager;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
+import com.richitec.commontoolkit.customcomponent.CTPopupWindow;
 import com.richitec.commontoolkit.customcomponent.CTTabSpecIndicator;
 import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
+import com.richitec.commontoolkit.utils.HttpUtils;
+import com.richitec.commontoolkit.utils.MyToast;
+import com.richitec.commontoolkit.utils.ValidatePattern;
+import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
+import com.richitec.commontoolkit.utils.HttpUtils.HttpResponseResult;
+import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
+import com.richitec.commontoolkit.utils.HttpUtils.PostRequestFormat;
 
 public class ChineseTelephoneTabActivity extends TabActivity {
+	private ProgressDialog progressDlg;
 
 	// tab widget item content array
 	private final int[][] TAB_WIDGETITEM_CONTENTS = new int[][] {
@@ -111,6 +139,143 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 
 		AppUpdateManager updateManager = new AppUpdateManager(this);
 		updateManager.checkVersion(false);
+
+		Intent intent = getIntent();
+		String status = intent.getStringExtra("status");
+		String email = intent.getStringExtra("email");
+		Double regGivenMoney = intent.getDoubleExtra("reg_given_money", 0.0);
+		if (status != null) {
+			if (email == null || email.equals("")) {
+				// alert user to set email
+				final View dlgView = LayoutInflater.from(this).inflate(
+						R.layout.email_set_dlg_layout, null);
+				Builder alertBuilder = new AlertDialog.Builder(this).setTitle(
+						R.string.email_setting_title).setView(dlgView);
+				final AlertDialog alertDlg = alertBuilder.create();
+				alertDlg.show();
+				TextView descTv = (TextView) alertDlg
+						.findViewById(R.id.email_setting_desc_tv);
+				if (regGivenMoney > 0) {
+					descTv.setText(String.format(
+							getString(R.string.email_setting_desc),
+							regGivenMoney.floatValue()));
+				} else {
+					descTv.setText(R.string.wanna_bind_email);
+				}
+				Button confirmBt = (Button) alertDlg
+						.findViewById(R.id.bind_email_confirmBtn);
+				confirmBt.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						EditText emailET = (EditText) alertDlg
+								.findViewById(R.id.email_setting_input);
+						String email = emailET.getText().toString().trim();
+						if (!ValidatePattern.isValidEmail(email)) {
+							MyToast.show(ChineseTelephoneTabActivity.this,
+									R.string.pls_input_valid_email_address,
+									Toast.LENGTH_SHORT);
+						} else {
+							progressDlg = ProgressDialog.show(
+									ChineseTelephoneTabActivity.this, null,
+									getString(R.string.binding_email_address));
+
+							HashMap<String, String> params = new HashMap<String, String>();
+							params.put("email", email);
+							UserBean user = UserManager.getInstance().getUser();
+							params.put("countryCode", (String) user
+									.getValue(TelUser.countryCode.name()));
+							HttpUtils.postSignatureRequest(
+									getString(R.string.server_url)
+											+ getString(R.string.setEmail_url),
+									PostRequestFormat.URLENCODED, params, null,
+									HttpRequestType.ASYNCHRONOUS,
+									onFinishedSetEmail);
+						}
+
+					}
+
+					private OnHttpRequestListener onFinishedSetEmail = new OnHttpRequestListener() {
+
+						@Override
+						public void onFinished(HttpResponseResult responseResult) {
+							dismissProgressDlg();
+							try {
+								JSONObject data = new JSONObject(responseResult
+										.getResponseText());
+								String result = data.getString("result");
+								if ("mail send ok".equals(result)) {
+									new AlertDialog.Builder(
+											ChineseTelephoneTabActivity.this)
+											.setTitle(R.string.alert_title)
+											.setMessage(
+													R.string.bind_email_ok_check_ur_mail).setPositiveButton(R.string.Ensure, null)
+											.show();
+
+									alertDlg.dismiss();
+								} else if ("mail send failed".equals(result)) {
+									MyToast.show(
+											ChineseTelephoneTabActivity.this,
+											R.string.bind_email_success,
+											Toast.LENGTH_SHORT);
+									alertDlg.dismiss();
+								} else if ("email set ok".equals(result)) {
+									MyToast.show(
+											ChineseTelephoneTabActivity.this,
+											R.string.bind_email_success,
+											Toast.LENGTH_SHORT);
+									alertDlg.dismiss();
+								} else {
+									bindError();
+								}
+							} catch (JSONException e) {
+								e.printStackTrace();
+								bindError();
+							}
+
+						}
+
+						@Override
+						public void onFailed(HttpResponseResult responseResult) {
+							dismissProgressDlg();
+							bindError();
+						}
+
+						private void bindError() {
+							MyToast.show(ChineseTelephoneTabActivity.this,
+									R.string.bind_email_failed,
+									Toast.LENGTH_SHORT);
+						}
+					};
+				});
+
+				Button cancelBt = (Button) alertDlg
+						.findViewById(R.id.bind_email_cancelBtn);
+				cancelBt.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						alertDlg.dismiss();
+					}
+				});
+			} else {
+				if (!"activated".equals(status)) {
+					new AlertDialog.Builder(this)
+							.setTitle(R.string.alert_title)
+							.setMessage(
+									String.format(
+											getString(R.string.u_havent_got_ur_money_yet),
+											regGivenMoney))
+							.setPositiveButton(R.string.Ensure, null).show();
+				}
+			}
+		}
+	}
+
+	private void dismissProgressDlg() {
+		if (progressDlg != null) {
+			progressDlg.dismiss();
+		}
 	}
 
 	@Override
@@ -132,6 +297,10 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 		SipRegisterManager.registSip(sipRegistrationStateListener,
 				getString(R.string.vos_server));
 		super.onResume();
+
+		// if (espw != null) {
+		// espw.showAtLocation(getTabWidget(), Gravity.CENTER, 0, 0);
+		// }
 	}
 
 	@Override
@@ -167,9 +336,11 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 								SipUtils.destroySipEngine();
 								AddressBookManager.getInstance()
 										.unRegistContactObserver();
-								SipRegistrationStateListenerImp.cancelVOIPOnlineStatus();
-								UserManager.getInstance().setUser(new UserBean());
-					
+								SipRegistrationStateListenerImp
+										.cancelVOIPOnlineStatus();
+								UserManager.getInstance().setUser(
+										new UserBean());
+
 								System.exit(0);
 							}
 						}).setNegativeButton(R.string.cancel, null).show();
@@ -182,8 +353,7 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);
 
 		int currentTabIndex = savedInstanceState.getInt("current_tab");
-		Log.d(SystemConstants.TAG, "restore - current tab: "
-				+ currentTabIndex);
+		Log.d(SystemConstants.TAG, "restore - current tab: " + currentTabIndex);
 		if (currentTabIndex != 0) {
 			super.onRestoreInstanceState(savedInstanceState);
 		} else {
@@ -204,4 +374,5 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 		Log.d(SystemConstants.TAG, "save - current tab: " + currentTabIndex);
 		outState.putInt("current_tab", currentTabIndex);
 	}
+
 }

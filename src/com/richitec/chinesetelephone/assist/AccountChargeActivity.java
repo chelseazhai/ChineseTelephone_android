@@ -143,7 +143,7 @@ public class AccountChargeActivity extends NavigationActivity {
 			JSONObject data;
 			try {
 				data = new JSONObject(responseResult.getResponseText());
-				double balance = RemainMoneyActivity.formatRemainMoney(data
+				double balance = AccountInfoActivity.formatRemainMoney(data
 						.getDouble("balance") + "");
 				String remainBalanceStr = AccountChargeActivity.this
 						.getString(R.string.remain_balance_textfield);

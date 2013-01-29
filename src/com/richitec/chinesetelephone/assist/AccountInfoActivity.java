@@ -28,7 +28,7 @@ import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
 import com.richitec.commontoolkit.utils.HttpUtils.PostRequestFormat;
 import com.richitec.commontoolkit.utils.MyToast;
 
-public class RemainMoneyActivity extends NavigationActivity {
+public class AccountInfoActivity extends NavigationActivity {
 	public static String BALANCE = "balance";
 	private double balance;
 	private ProgressDialog progressDialog;
@@ -36,16 +36,20 @@ public class RemainMoneyActivity extends NavigationActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_remain_money_layout);
+		setContentView(R.layout.activity_account_info_layout);
 
 		this.setRightBarButtonItem(new BarButtonItem(this,
 				R.string.charge_title_popwin, BarButtonItemStyle.RIGHT_GO,
 				chargeBtnListener));
 
-		setTitle(R.string.get_remain_money_title);
+		setTitle(R.string.account_info);
 
-		String username = UserManager.getInstance().getUser().getName();
+		UserBean user = UserManager.getInstance().getUser();
+		String username = user.getName();
 		((TextView) findViewById(R.id.uername)).setText(username);
+		String countryCode = (String) user.getValue(TelUser.countryCode.name());
+		TextView countryCodeTV = (TextView) findViewById(R.id.country_code_tv);
+		countryCodeTV.setText(countryCode);
 	}
 
 	@Override
@@ -88,7 +92,7 @@ public class RemainMoneyActivity extends NavigationActivity {
 
 		@Override
 		public void onClick(View v) {
-			RemainMoneyActivity.this.pushActivity(AccountChargeActivity.class);
+			AccountInfoActivity.this.pushActivity(AccountChargeActivity.class);
 		}
 	};
 	private OnHttpRequestListener onFinishedGetBalance = new OnHttpRequestListener() {
@@ -99,7 +103,7 @@ public class RemainMoneyActivity extends NavigationActivity {
 			JSONObject data;
 			try {
 				data = new JSONObject(responseResult.getResponseText());
-				balance = RemainMoneyActivity.formatRemainMoney(data
+				balance = AccountInfoActivity.formatRemainMoney(data
 						.getDouble("balance") + "");
 
 				((TextView) findViewById(R.id.remain_money)).setText(String
@@ -113,7 +117,7 @@ public class RemainMoneyActivity extends NavigationActivity {
 		@Override
 		public void onFailed(HttpResponseResult responseResult) {
 			dismiss();
-			MyToast.show(RemainMoneyActivity.this, R.string.get_balance_error,
+			MyToast.show(AccountInfoActivity.this, R.string.get_balance_error,
 					Toast.LENGTH_SHORT);
 		}
 	};

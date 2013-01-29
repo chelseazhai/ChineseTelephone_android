@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--  <string name="server_url">http://192.168.1.152:8080/angola</string>-->
+    <!-- <string name="server_url">http://192.168.1.148:8080/angola</string> -->
     <string name="server_url">http://www.00244dh.com/angola</string>
     <string name="retrieve_auth_code_url">/user/getPhoneCode</string>
     <string name="check_auth_code_url">/user/checkPhoneCode</string>
@@ -22,6 +22,7 @@
     <string name="getSuites_url">/profile/getSuites</string>
     <string name="subscribe_suite_url">/profile/subscribeSuite</string>
     <string name="unsubscribe_suite_url">/profile/unsubscribeSuite</string>
+    <string name="setEmail_url">/profile/setEmail</string>
     <string name="callback_url">/callop/callback</string>
     <string name="card_charge_url">/cardCharge</string>
     <string name="app_download_url">/downloadapp/3/android</string>
@@ -29,5 +30,6 @@
     <string name="getNewNotice_url">/getNewNotice</string>
     <string name="appvcenter_url">http://www.00244dh.com/appvcenter</string>
     <string name="vos_server">vos.00244dh.com</string>
-	<string name="fee_query_url">http://www.00244dh.com/a/zifeishuoming/mobile/</string>
+    <string name="fee_query_url">http://www.00244dh.com/a/zifeishuoming/mobile/</string>
+
 </resources>

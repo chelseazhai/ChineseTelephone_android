@@ -338,7 +338,7 @@ public class SettingActivity extends NavigationActivity {
 
 	public void getRemainMoney(View v) {
 		Intent intent = new Intent(SettingActivity.this,
-				RemainMoneyActivity.class);
+				AccountInfoActivity.class);
 		intent.putExtra("nav_back_btn_default_title",
 				getString(R.string.setting));
 		startActivity(intent);

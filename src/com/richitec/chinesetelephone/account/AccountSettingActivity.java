@@ -168,11 +168,11 @@ public class AccountSettingActivity extends Activity {
 		pswEditText.setOnFocusChangeListener(new OnChangeEditTextBGListener());
 
 		initUI();
-		
+
 		AppUpdateManager updateManager = new AppUpdateManager(this);
 		updateManager.checkVersion(false);
 	}
-	
+
 	private void initUI() {
 		UserBean user = UserManager.getInstance().getUser();
 		String countryCode = (String) user.getValue(TelUser.countryCode.name());
@@ -187,13 +187,13 @@ public class AccountSettingActivity extends Activity {
 					.setText(countryCodeManager
 							.getCountryName(lastSelectCountryCode));
 		}
-		
+
 		EditText userEditText = (EditText) findViewById(R.id.account_user_edittext);
 		EditText pswEditText = (EditText) findViewById(R.id.account_psw_edittext);
 		CheckBox remember = (CheckBox) findViewById(R.id.account_remember_psw_cbtn);
-		
+
 		userEditText.setText(user.getName());
-		
+
 		if (user.getPassword() != null && user.getPassword() != "") {
 			pswEditText.setText(PWD_MASK);
 			useSavedPsw = true;
@@ -251,18 +251,18 @@ public class AccountSettingActivity extends Activity {
 		String countrycode = countryCodeManager
 				.getCountryCode(((Button) findViewById(R.id.account_choose_country_btn))
 						.getText().toString().trim());
-		
+
 		boolean isRemember = ((CheckBox) (findViewById(R.id.account_remember_psw_cbtn)))
 				.isChecked();
 
 		// Log.d("AccountSetting",
 		// username+":"+psw+":"+countrycode+":"+isRemember);
-		
+
 		if (countrycode == null) {
 			MyToast.show(this, R.string.pls_select_country, Toast.LENGTH_SHORT);
 			return;
 		}
-		
+
 		if (username.equals("")) {
 			MyToast.show(this, R.string.number_cannot_be_null,
 					Toast.LENGTH_LONG);
@@ -340,7 +340,7 @@ public class AccountSettingActivity extends Activity {
 		MyToast.show(this, R.string.login_failed, Toast.LENGTH_LONG);
 		processError();
 	}
-	
+
 	private void processError() {
 		isFirstLogin = true;
 		SipUtils.unregisterSipAccount(null);
@@ -348,6 +348,7 @@ public class AccountSettingActivity extends Activity {
 	}
 
 	public void loginSuccess(JSONObject data) {
+		closeProgressDialog();
 		try {
 			String userKey = data.getString("userkey");
 			String vosphone = data.getString("vosphone");
@@ -355,7 +356,14 @@ public class AccountSettingActivity extends Activity {
 			String bindPhone = data.getString("bindphone");
 			String bindPhoneCountryCode = data
 					.getString("bindphone_country_code");
-
+			String status = data.getString("status");
+			String email = null;
+			try {
+				email = data.getString("email");
+			} catch (JSONException e) {
+			}
+			Double regGivenMoney = data.getDouble("reg_given_money");
+			
 			UserBean telUser = UserManager.getInstance().getUser();
 			telUser.setUserKey(userKey);
 			telUser.setValue(TelUser.vosphone.name(), vosphone);
@@ -365,16 +373,20 @@ public class AccountSettingActivity extends Activity {
 					bindPhoneCountryCode);
 			saveUserAccount();
 
-			closeProgressDialog();
 			Intent intent = new Intent(AccountSettingActivity.this,
 					ChineseTelephoneTabActivity.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+					| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			intent.putExtra("status", status);
+			intent.putExtra("email", email);
+			intent.putExtra("reg_given_money", regGivenMoney);
 			startActivity(intent);
 			finish();
 
 		} catch (JSONException e) {
 			e.printStackTrace();
+			MyToast.show(this, R.string.login_error, Toast.LENGTH_SHORT);
+			processError();
 		}
 
 	}
@@ -430,15 +442,15 @@ public class AccountSettingActivity extends Activity {
 		}
 
 	}
-	
+
 	@Override
-	protected void onRestoreInstanceState (Bundle savedInstanceState) {
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);
 		super.onRestoreInstanceState(savedInstanceState);
 	}
-	
+
 	@Override
-	protected void onSaveInstanceState (Bundle outState) {
+	protected void onSaveInstanceState(Bundle outState) {
 		AppDataSaveRestoreUtil.onSaveInstanceState(outState);
 		super.onSaveInstanceState(outState);
 	}

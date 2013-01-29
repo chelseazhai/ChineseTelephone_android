@@ -15,6 +15,38 @@
         android:gravity="center"
         android:orientation="vertical" >
 
+         <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp" >
+
+            <TextView
+                android:layout_width="130dp"
+                android:layout_height="30dp"
+                android:gravity="right|center_vertical"
+                android:text="@string/country_code"
+                android:textColor="@color/dark_dim_gray"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/country_code_tv"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:gravity="left|center_vertical"
+                android:text=""
+                android:textColor="@color/dodger_blue"
+                android:textSize="18dp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1.0dp"
+            android:background="@drawable/setting_line_img" />
+        
+        
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -61,7 +93,6 @@
                 android:textColor="@color/dark_dim_gray"
                 android:textSize="20dp" />
 
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -71,11 +102,11 @@
                 android:textSize="18dp" />
 
             <TextView
-                android:singleLine="true"
                 android:id="@+id/remain_money"
                 android:layout_width="fill_parent"
                 android:layout_height="30dp"
                 android:gravity="left|center_vertical"
+                android:singleLine="true"
                 android:text=""
                 android:textColor="@color/dodger_blue"
                 android:textSize="18dp" />
@@ -86,14 +117,5 @@
             android:layout_height="1.0dp"
             android:background="@drawable/setting_line_img" />
     </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/charge_history"
-        android:textSize="20sp"
-        android:visibility="gone" />
 
 </LinearLayout>
