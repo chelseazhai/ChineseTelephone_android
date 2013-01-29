@@ -209,8 +209,9 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 											ChineseTelephoneTabActivity.this)
 											.setTitle(R.string.alert_title)
 											.setMessage(
-													R.string.bind_email_ok_check_ur_mail).setPositiveButton(R.string.Ensure, null)
-											.show();
+													R.string.bind_email_ok_check_ur_mail)
+											.setPositiveButton(R.string.Ensure,
+													null).show();
 
 									alertDlg.dismiss();
 								} else if ("mail send failed".equals(result)) {
@@ -260,13 +261,16 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 				});
 			} else {
 				if (!"activated".equals(status)) {
-					new AlertDialog.Builder(this)
-							.setTitle(R.string.alert_title)
-							.setMessage(
-									String.format(
-											getString(R.string.u_havent_got_ur_money_yet),
-											regGivenMoney))
-							.setPositiveButton(R.string.Ensure, null).show();
+					if (regGivenMoney > 0) {
+						new AlertDialog.Builder(this)
+								.setTitle(R.string.alert_title)
+								.setMessage(
+										String.format(
+												getString(R.string.u_havent_got_ur_money_yet),
+												regGivenMoney))
+								.setPositiveButton(R.string.Ensure, null)
+								.show();
+					}
 				}
 			}
 		}
