@@ -16,6 +16,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Point;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,6 +27,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -52,11 +57,14 @@ import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivit
 import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity.ContactsInABListViewQuickAlphabetBarOnTouchListener;
 import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
 import com.richitec.commontoolkit.CTApplication;
+import com.richitec.commontoolkit.animation.CTRotate3DAnimation;
+import com.richitec.commontoolkit.animation.CTRotate3DAnimation.ThreeDimensionalRotateDirection;
 import com.richitec.commontoolkit.customadapter.CTListAdapter;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar;
 import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpResponseResult;
+import com.richitec.commontoolkit.utils.DisplayScreenUtils;
 import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
 import com.richitec.commontoolkit.utils.ToneGeneratorUtils;
 
@@ -100,6 +108,12 @@ public class OutgoingCallActivity extends Activity implements
 
 	// Chinese telephone contact listView quick alphabet toast
 	CTContactListViewQuickAlphabetToast _mContactListViewQuickAlphabetToast;
+
+	// outgoing call center content relativeLayout
+	private RelativeLayout _mCenterContentRelativeLayout;
+
+	// outgoing call keyboard gridView
+	private GridView _mKeyboardGridView;
 
 	// hangup and hide keyboard image button
 	private ImageButton _mHangupBtn;
@@ -168,6 +182,9 @@ public class OutgoingCallActivity extends Activity implements
 		((ImageView) findViewById(R.id.outgoingcall_background_imageView))
 				.setImageDrawable(getWallpaper());
 
+		// get center content relativeLayout
+		_mCenterContentRelativeLayout = (RelativeLayout) findViewById(R.id.outgoingCall_centerRelativeLayout);
+
 		// get call controller gridView
 		GridView _callControllerGridView = (GridView) findViewById(R.id.callController_gridView);
 
@@ -193,9 +210,27 @@ public class OutgoingCallActivity extends Activity implements
 		new ListViewQuickAlphabetBar(_abContactsListView, _mContactListViewQuickAlphabetToast = new CTContactListViewQuickAlphabetToast(_abContactsListView.getContext()))
 				.setOnTouchListener(new ContactsInABListViewQuickAlphabetBarOnTouchListener());
 
+		// init keyboard gridView
+		_mKeyboardGridView = (GridView) findViewById(R.id.keyboard_gridView);
+
+		// rotate keyboard gridView 180 degree
+		CTRotate3DAnimation
+				.static3DRotate4View(
+						_mKeyboardGridView,
+						ThreeDimensionalRotateDirection.HORIZONTAL_RIGHT,
+						new Point(
+								(DisplayScreenUtils.screenWidth() - DisplayScreenUtils
+										.dp2pix(2 * (16 - 5/* ?? add by ares */+ getResources()
+												.getDimension(
+														R.dimen.keyboard_gridView_marginLeft7Right)))) / 2,
+								(DisplayScreenUtils.screenHeight()
+										- DisplayScreenUtils.statusBarHeight() - DisplayScreenUtils
+										.dp2pix(2 * (16 + getResources()
+												.getDimension(
+														R.dimen.keyboard_gridView_marginTop7Bottom)))) / 2));
+
 		// set keyboard gridView adapter
-		((GridView) findViewById(R.id.keyboard_gridView))
-				.setAdapter(generateKeyboardAdapter());
+		_mKeyboardGridView.setAdapter(generateKeyboardAdapter());
 
 		// get back for waiting callback call button
 		ImageButton _back4waitingCallbackCallImgBtn = (ImageButton) findViewById(R.id.back4waiting_callbackCall_button);
@@ -517,20 +552,27 @@ public class OutgoingCallActivity extends Activity implements
 
 	// show or hide keyboard
 	private void show6hideKeyboard(boolean isShowKeyboard) {
-		// get keyboard gridView, call controller gridView and dtmf textView
-		// text
-		GridView _keyboardGridView = (GridView) findViewById(R.id.keyboard_gridView);
-		GridView _callControllerGridView = (GridView) findViewById(R.id.callController_gridView);
+		// get dtmf textView
 		TextView _dtmfTextView = (TextView) findViewById(R.id.dtmf_textView);
+
+		// define an new 3D rotation is used to trigger the next animation
+		CTRotate3DAnimation _rotate3DAnimation;
 
 		// check is show keyboard
 		if (isShowKeyboard) {
 			// show hide keyboard image button
 			_mHideKeyboardBtn.setVisibility(View.VISIBLE);
 
-			// show keyboard gridView and hide call controller gridView
-			_keyboardGridView.setVisibility(View.VISIBLE);
-			_callControllerGridView.setVisibility(View.GONE);
+			// init the 3D rotation animation with the supplied parameter the
+			// animation listener
+			_rotate3DAnimation = new CTRotate3DAnimation(0.0f, -90.0f,
+					_mCenterContentRelativeLayout.getWidth() / 2.0f,
+					_mCenterContentRelativeLayout.getHeight() / 2.0f,
+					1.4f * _mCenterContentRelativeLayout.getWidth() / 2.0f,
+					true);
+			_rotate3DAnimation
+					.setAnimationListener(new Show7HideKeyboard3DRotationAnimationListener(
+							ThreeDimensionalRotateDirection.HORIZONTAL_LEFT));
 
 			// reset hangup image button source image
 			_mHangupBtn.setImageResource(R.drawable.img_hangup_btn_short);
@@ -541,9 +583,16 @@ public class OutgoingCallActivity extends Activity implements
 			// hide hide keyboard image button
 			_mHideKeyboardBtn.setVisibility(View.GONE);
 
-			// hide keyboard gridView and show call controller gridView
-			_keyboardGridView.setVisibility(View.GONE);
-			_callControllerGridView.setVisibility(View.VISIBLE);
+			// init the 3D rotation animation with the supplied parameter the
+			// animation listener
+			_rotate3DAnimation = new CTRotate3DAnimation(-180.0f, -90.0f,
+					_mCenterContentRelativeLayout.getWidth() / 2.0f,
+					_mCenterContentRelativeLayout.getHeight() / 2.0f,
+					1.4f * _mCenterContentRelativeLayout.getWidth() / 2.0f,
+					true);
+			_rotate3DAnimation
+					.setAnimationListener(new Show7HideKeyboard3DRotationAnimationListener(
+							ThreeDimensionalRotateDirection.HORIZONTAL_RIGHT));
 
 			// reset hangup image button source image
 			_mHangupBtn.setImageResource(R.drawable.img_hangup_btn_long);
@@ -553,6 +602,15 @@ public class OutgoingCallActivity extends Activity implements
 					.setVisibility(View.VISIBLE);
 			_dtmfTextView.setVisibility(View.GONE);
 		}
+
+		// set the 3D rotation animation duration, fill after state and
+		// interpolator
+		_rotate3DAnimation.setDuration(200);
+		_rotate3DAnimation.setFillAfter(true);
+		_rotate3DAnimation.setInterpolator(new AccelerateInterpolator());
+
+		// start the 3D rotation animation of center content ralativeLayout
+		_mCenterContentRelativeLayout.startAnimation(_rotate3DAnimation);
 	}
 
 	// terminate sip voice call
@@ -981,6 +1039,131 @@ public class OutgoingCallActivity extends Activity implements
 		public void onClick(View v) {
 			// hide keyboard gridView and hide keyboard image button
 			show6hideKeyboard(false);
+		}
+
+	}
+
+	// show and hide keyboard gridView rotate 3D animation listener
+	class Show7HideKeyboard3DRotationAnimationListener implements
+			AnimationListener {
+
+		// 3d rotate direction
+		private ThreeDimensionalRotateDirection _m3DRotateDirection;
+
+		public Show7HideKeyboard3DRotationAnimationListener(
+				ThreeDimensionalRotateDirection rotateDirection) {
+			super();
+
+			// set 3d rotate direction
+			_m3DRotateDirection = rotateDirection;
+		}
+
+		@Override
+		public void onAnimationEnd(Animation animation) {
+			// add runnable to message queue to handle views for 3D rotate
+			// swapping
+			_mCenterContentRelativeLayout.post(new Runnable() {
+
+				@Override
+				public void run() {
+					// define an new 3D rotation is used to swap views
+					CTRotate3DAnimation _rotate3DAnimation = null;
+
+					// check 3D rotate direction
+					if (ThreeDimensionalRotateDirection.HORIZONTAL_LEFT == _m3DRotateDirection) {
+						// show keyboard gridView and hide call controller
+						// gridView
+						_mKeyboardGridView.setVisibility(View.VISIBLE);
+						if (null == _mCenterContentRelativeLayout
+								.findViewById(R.id.keyboard_gridView)) {
+							// rotate keyboard gridView 180 degree
+							CTRotate3DAnimation
+									.static3DRotate4View(
+											_mKeyboardGridView,
+											ThreeDimensionalRotateDirection.HORIZONTAL_RIGHT,
+											new Point(
+													(DisplayScreenUtils
+															.screenWidth() - DisplayScreenUtils
+															.dp2pix(2 * (16 - 5/*
+																				 * ?
+																				 * ?
+																				 * add
+																				 * by
+																				 * ares
+																				 */+ getResources()
+																	.getDimension(
+																			R.dimen.keyboard_gridView_marginLeft7Right)))) / 2,
+													(DisplayScreenUtils
+															.screenHeight()
+															- DisplayScreenUtils
+																	.statusBarHeight() - DisplayScreenUtils
+															.dp2pix(2 * (16 + getResources()
+																	.getDimension(
+																			R.dimen.keyboard_gridView_marginTop7Bottom)))) / 2));
+
+							_mCenterContentRelativeLayout
+									.addView(_mKeyboardGridView);
+						}
+						((GridView) findViewById(R.id.callController_gridView))
+								.setVisibility(View.GONE);
+
+						// init the 3D rotation animation
+						_rotate3DAnimation = new CTRotate3DAnimation(
+								-90.0f,
+								-180.0f,
+								_mCenterContentRelativeLayout.getWidth() / 2.0f,
+								_mCenterContentRelativeLayout.getWidth() / 2.0f,
+								1.4f * _mCenterContentRelativeLayout.getWidth() / 2.0f,
+								false);
+					} else if (ThreeDimensionalRotateDirection.HORIZONTAL_RIGHT == _m3DRotateDirection) {
+						// hide keyboard gridView and show call controller
+						// gridView
+						_mCenterContentRelativeLayout
+								.removeView(_mKeyboardGridView);
+						((GridView) findViewById(R.id.callController_gridView))
+								.setVisibility(View.VISIBLE);
+
+						// init the 3D rotation animation
+						_rotate3DAnimation = new CTRotate3DAnimation(
+								-90.0f,
+								0.0f,
+								_mCenterContentRelativeLayout.getWidth() / 2.0f,
+								_mCenterContentRelativeLayout.getWidth() / 2.0f,
+								1.4f * _mCenterContentRelativeLayout.getWidth() / 2.0f,
+								false);
+					} else {
+						Log.e(LOG_TAG,
+								"3D rotate direction vertical up and down not implement, 3D rotate direction = "
+										+ _m3DRotateDirection);
+					}
+
+					// check rotate 3D animation
+					if (null != _rotate3DAnimation) {
+						// set the 3D rotation animation duration, fill after
+						// state and interpolator
+						_rotate3DAnimation.setDuration(200);
+						_rotate3DAnimation.setFillAfter(true);
+						_rotate3DAnimation
+								.setInterpolator(new DecelerateInterpolator());
+
+						// start the 3D rotation animation of center content
+						// ralativeLayout
+						_mCenterContentRelativeLayout
+								.startAnimation(_rotate3DAnimation);
+					}
+				}
+
+			});
+		}
+
+		@Override
+		public void onAnimationRepeat(Animation animation) {
+			// nothing to do
+		}
+
+		@Override
+		public void onAnimationStart(Animation animation) {
+			// nothing to do
 		}
 
 	}
