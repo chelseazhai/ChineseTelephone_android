@@ -219,10 +219,10 @@ public class OutgoingCallActivity extends Activity implements
 						_mKeyboardGridView,
 						ThreeDimensionalRotateDirection.HORIZONTAL_RIGHT,
 						new Point(
-								(DisplayScreenUtils.screenWidth() - DisplayScreenUtils
-										.dp2pix(2 * (16 - 5/* ?? add by ares */+ getResources()
-												.getDimension(
-														R.dimen.keyboard_gridView_marginLeft7Right)))) / 2,
+								(DisplayScreenUtils.screenWidth() - (DisplayScreenUtils
+										.dp2pix(2 * 16) + 2 * (int) getResources()
+										.getDimension(
+												R.dimen.keyboard_gridView_marginLeft7Right))) / 2,
 								(DisplayScreenUtils.screenHeight()
 										- DisplayScreenUtils.statusBarHeight() - DisplayScreenUtils
 										.dp2pix(2 * (16 + getResources()
@@ -1083,16 +1083,10 @@ public class OutgoingCallActivity extends Activity implements
 											ThreeDimensionalRotateDirection.HORIZONTAL_RIGHT,
 											new Point(
 													(DisplayScreenUtils
-															.screenWidth() - DisplayScreenUtils
-															.dp2pix(2 * (16 - 5/*
-																				 * ?
-																				 * ?
-																				 * add
-																				 * by
-																				 * ares
-																				 */+ getResources()
-																	.getDimension(
-																			R.dimen.keyboard_gridView_marginLeft7Right)))) / 2,
+															.screenWidth() - (DisplayScreenUtils
+															.dp2pix(2 * 16) + 2 * (int) getResources()
+															.getDimension(
+																	R.dimen.keyboard_gridView_marginLeft7Right))) / 2,
 													(DisplayScreenUtils
 															.screenHeight()
 															- DisplayScreenUtils
