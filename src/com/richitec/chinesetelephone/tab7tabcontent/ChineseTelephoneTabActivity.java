@@ -141,10 +141,10 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 		updateManager.checkVersion(false);
 
 		Intent intent = getIntent();
-		String status = intent.getStringExtra("status");
+		String emailStatus = intent.getStringExtra("email_status");
 		String email = intent.getStringExtra("email");
 		Double regGivenMoney = intent.getDoubleExtra("reg_given_money", 0.0);
-		if (status != null) {
+		if (emailStatus != null) {
 			if (email == null || email.equals("")) {
 				// alert user to set email
 				final View dlgView = LayoutInflater.from(this).inflate(
@@ -204,28 +204,52 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 								JSONObject data = new JSONObject(responseResult
 										.getResponseText());
 								String result = data.getString("result");
-								if ("mail send ok".equals(result)) {
+								if ("money gain mail send ok".equals(result)) {
 									new AlertDialog.Builder(
 											ChineseTelephoneTabActivity.this)
 											.setTitle(R.string.alert_title)
 											.setMessage(
-													R.string.bind_email_ok_check_ur_mail)
+													R.string.money_get_mail_send_ok_check_ur_mail)
 											.setPositiveButton(R.string.Ensure,
 													null).show();
 
 									alertDlg.dismiss();
-								} else if ("mail send failed".equals(result)) {
+								} else if ("money gain mail send failed"
+										.equals(result)) {
+									new AlertDialog.Builder(
+											ChineseTelephoneTabActivity.this)
+											.setTitle(R.string.alert_title)
+											.setMessage(
+													R.string.bind_email_success)
+											.setPositiveButton(R.string.Ensure,
+													null).show();
+									alertDlg.dismiss();
+								} else if ("address verify mail send ok"
+										.equals(result)) {
+									new AlertDialog.Builder(
+											ChineseTelephoneTabActivity.this)
+											.setTitle(R.string.alert_title)
+											.setMessage(
+													R.string.verify_mail_send_ok)
+											.setPositiveButton(R.string.Ensure,
+													null).show();
+									alertDlg.dismiss();
+								} else if ("address verify mail send failed"
+										.equals(result)) {
+									new AlertDialog.Builder(
+											ChineseTelephoneTabActivity.this)
+											.setTitle(R.string.alert_title)
+											.setMessage(
+													R.string.bind_email_success)
+											.setPositiveButton(R.string.Ensure,
+													null).show();
+									alertDlg.dismiss();
+								} else if ("email is already binded by others"
+										.equals(result)) {
 									MyToast.show(
 											ChineseTelephoneTabActivity.this,
-											R.string.bind_email_success,
+											R.string.email_already_binded,
 											Toast.LENGTH_SHORT);
-									alertDlg.dismiss();
-								} else if ("email set ok".equals(result)) {
-									MyToast.show(
-											ChineseTelephoneTabActivity.this,
-											R.string.bind_email_success,
-											Toast.LENGTH_SHORT);
-									alertDlg.dismiss();
 								} else {
 									bindError();
 								}
@@ -260,17 +284,14 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 					}
 				});
 			} else {
-				if (!"activated".equals(status)) {
-					if (regGivenMoney > 0) {
-						new AlertDialog.Builder(this)
-								.setTitle(R.string.alert_title)
-								.setMessage(
-										String.format(
-												getString(R.string.u_havent_got_ur_money_yet),
-												regGivenMoney))
-								.setPositiveButton(R.string.Ensure, null)
-								.show();
-					}
+				if (regGivenMoney > 0) {
+					new AlertDialog.Builder(this)
+							.setTitle(R.string.alert_title)
+							.setMessage(
+									String.format(
+											getString(R.string.u_havent_got_ur_money_yet),
+											regGivenMoney))
+							.setPositiveButton(R.string.Ensure, null).show();
 				}
 			}
 		}

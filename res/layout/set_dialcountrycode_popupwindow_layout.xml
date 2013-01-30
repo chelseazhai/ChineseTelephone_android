@@ -61,7 +61,7 @@
                     android:layout_height="40dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:background="@drawable/btn_bg"
+                    android:background="@drawable/select_country_btn_bg"
                     android:drawableRight="@drawable/down_into_icon"
                     android:gravity="left|center_vertical"
                     android:paddingLeft="10dp"

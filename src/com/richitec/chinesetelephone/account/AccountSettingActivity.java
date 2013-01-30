@@ -356,7 +356,7 @@ public class AccountSettingActivity extends Activity {
 			String bindPhone = data.getString("bindphone");
 			String bindPhoneCountryCode = data
 					.getString("bindphone_country_code");
-			String status = data.getString("status");
+			String emailStatus = data.getString("email_status");
 			String email = null;
 			try {
 				email = data.getString("email");
@@ -377,7 +377,7 @@ public class AccountSettingActivity extends Activity {
 					ChineseTelephoneTabActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
 					| Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			intent.putExtra("status", status);
+			intent.putExtra("email_status", emailStatus);
 			intent.putExtra("email", email);
 			intent.putExtra("reg_given_money", regGivenMoney);
 			startActivity(intent);

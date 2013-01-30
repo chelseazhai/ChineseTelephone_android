@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- <string name="server_url">http://192.168.1.148:8080/angola</string> -->
-    <string name="server_url">http://www.00244dh.com/angola</string>
+    <string name="server_url">http://192.168.1.138:8080/angola</string>
+    <!-- <string name="server_url">http://www.00244dh.com/angola</string> -->
     <string name="retrieve_auth_code_url">/user/getPhoneCode</string>
     <string name="check_auth_code_url">/user/checkPhoneCode</string>
     <string name="direct_reg_url">/user/clientdirectreg</string>
@@ -23,6 +23,8 @@
     <string name="subscribe_suite_url">/profile/subscribeSuite</string>
     <string name="unsubscribe_suite_url">/profile/unsubscribeSuite</string>
     <string name="setEmail_url">/profile/setEmail</string>
+    <string name="sendActivateFrozenMoneyMail_url">/profile/sendActivateFrozenMoneyMail</string>
+    <string name="getAccountInfo_url">/profile/getAccountInfo</string>
     <string name="callback_url">/callop/callback</string>
     <string name="card_charge_url">/cardCharge</string>
     <string name="app_download_url">/downloadapp/3/android</string>

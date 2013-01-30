@@ -1248,6 +1248,10 @@ public class SettingActivity extends NavigationActivity {
 		pushActivity(FeeActivity.class);
 	}
 
+	public void onEmailSettingButtonClick(View v) {
+		pushActivity(EmailSettingActivity.class);
+	}
+	
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);

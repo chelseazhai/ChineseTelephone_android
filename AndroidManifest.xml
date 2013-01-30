@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest package="com.richitec.chinesetelephone"
     android:versionCode="1"
-    android:versionName="0.9.9" xmlns:android="http://schemas.android.com/apk/res/android">
+    android:versionName="1.0" xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-sdk
         android:minSdkVersion="7"
@@ -144,6 +144,7 @@
         <service android:name=".service.NoticeService"></service>
         <activity android:name=".assist.NoticeViewActivity" android:screenOrientation="portrait"></activity>
         <activity android:screenOrientation="portrait" android:name=".assist.FeeActivity"></activity>
+        <activity android:screenOrientation="portrait" android:name=".assist.EmailSettingActivity" android:windowSoftInputMode="stateHidden"></activity>
     </application>
 
 </manifest>
