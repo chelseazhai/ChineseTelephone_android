@@ -3,8 +3,8 @@
 
     <!-- dial phone textView -->
     <dimen name="dialPhone_textView_parentRelativeLayout_height">80dp</dimen>
-    <dimen name="dialPhone_textView_textMaxFontSize">36dp</dimen>
-    <dimen name="dialPhone_textView_textMinFontSize">22dp</dimen>
+    <dimen name="dialPhone_textView_textMaxFontSize">36sp</dimen>
+    <dimen name="dialPhone_textView_textMinFontSize">22sp</dimen>
 
     <!-- dial phone button -->
     <dimen name="dial_functionBtn_tableRow_height">72dp</dimen>

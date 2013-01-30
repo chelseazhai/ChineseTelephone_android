@@ -35,7 +35,7 @@ import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.customadapter.CTListAdapter;
 import com.richitec.commontoolkit.customcomponent.CTPopupWindow;
 import com.richitec.commontoolkit.utils.CommonUtils;
-import com.richitec.commontoolkit.utils.DpPixUtils;
+import com.richitec.commontoolkit.utils.DisplayScreenUtils;
 import com.richitec.commontoolkit.utils.ToneGeneratorUtils;
 import com.richitec.internationalcode.AreaAbbreviation;
 
@@ -312,8 +312,9 @@ public class DialTabContentActivity extends NavigationActivity {
 			Integer _textFontSize;
 
 			// set its default font size
-			_mDialPhoneTextView.setTextSize(DpPixUtils.pix2dp(getResources()
-					.getDimension(R.dimen.dialPhone_textView_textMaxFontSize)));
+			_mDialPhoneTextView.setTextSize(DisplayScreenUtils
+					.pix2sp(getResources().getDimension(
+							R.dimen.dialPhone_textView_textMaxFontSize)));
 
 			do {
 				// get text bounds
@@ -321,7 +322,7 @@ public class DialTabContentActivity extends NavigationActivity {
 						s.toString().length(), _textBounds);
 
 				// get text font size
-				_textFontSize = DpPixUtils.pix2dp(_mDialPhoneTextView
+				_textFontSize = DisplayScreenUtils.pix2sp(_mDialPhoneTextView
 						.getTextSize());
 
 				// check bounds
@@ -332,7 +333,7 @@ public class DialTabContentActivity extends NavigationActivity {
 				} else {
 					break;
 				}
-			} while (_textFontSize > DpPixUtils.pix2dp(getResources()
+			} while (_textFontSize > DisplayScreenUtils.pix2sp(getResources()
 					.getDimension(R.dimen.dialPhone_textView_textMinFontSize)));
 
 			// get the dial phone ownership
