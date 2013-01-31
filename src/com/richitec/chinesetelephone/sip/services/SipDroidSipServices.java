@@ -164,8 +164,11 @@ public class SipDroidSipServices extends BaseSipServices implements
 
 	@Override
 	public void destroySipEngine() {
-		Sipdroid.on(_appContext, false);
-
+		Editor _edit = PreferenceManager.getDefaultSharedPreferences(
+				_appContext).edit();
+		_edit.putBoolean(Settings.PREF_ON, false);
+		_edit.commit();
+		
 		// process receiver
 		Receiver.pos(true);
 		Receiver.engine(_appContext).halt();

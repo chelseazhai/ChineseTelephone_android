@@ -85,7 +85,11 @@ public class EmailSettingActivity extends NavigationActivity {
 			try {
 				JSONObject data = new JSONObject(
 						responseResult.getResponseText());
-				String email = data.getString("email");
+				String email = null;
+				try { 
+					email = data.getString("email");
+				} catch (Exception e) {
+				}
 				String emailStatus = data.getString("email_status");
 				frozenMoney = data.getDouble("frozen_money");
 

@@ -38,6 +38,7 @@ import com.richitec.chinesetelephone.utils.AppUpdateManager;
 import com.richitec.chinesetelephone.utils.CountryCodeManager;
 import com.richitec.chinesetelephone.utils.DialPreferenceManager;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
+import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.customcomponent.CTPopupWindow;
 import com.richitec.commontoolkit.user.User;
 import com.richitec.commontoolkit.user.UserBean;
@@ -289,7 +290,9 @@ public class SettingActivity extends NavigationActivity {
 										"");
 
 								SipUtils.unregisterSipAccount(null);
-
+								SipUtils.destroySipEngine();
+								AddressBookManager.getInstance()
+										.unRegistContactObserver();
 								SipRegistrationStateListenerImp
 										.cancelVOIPOnlineStatus();
 
