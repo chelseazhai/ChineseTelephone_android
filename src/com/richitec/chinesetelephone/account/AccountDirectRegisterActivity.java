@@ -7,11 +7,13 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -84,6 +86,7 @@ public class AccountDirectRegisterActivity extends Activity {
 	}
 
 	public void onRegisterAction(View v) {
+		hideSoftKeyboard();
 		EditText phoneNumberET = (EditText) findViewById(R.id.regist_phone_edittext);
 		EditText pwdET = (EditText) findViewById(R.id.regist_pwd_edittext);
 		EditText pwd1ET = (EditText) findViewById(R.id.regist_pwd1_edittext);
@@ -105,7 +108,8 @@ public class AccountDirectRegisterActivity extends Activity {
 					Toast.LENGTH_SHORT);
 			return;
 		} else if (countryCodeManager.hasCountryCodePrefix(phoneNumber)) {
-			MyToast.show(this, R.string.phone_number_cannot_start_with_countrycode,
+			MyToast.show(this,
+					R.string.phone_number_cannot_start_with_countrycode,
 					Toast.LENGTH_SHORT);
 			return;
 		}
@@ -214,6 +218,14 @@ public class AccountDirectRegisterActivity extends Activity {
 			}
 		}
 
+	}
+
+	private void hideSoftKeyboard() {
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		if (imm != null) {
+			imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+					InputMethodManager.HIDE_NOT_ALWAYS);
+		}
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -18,6 +19,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -244,6 +246,7 @@ public class AccountSettingActivity extends Activity {
 	}
 
 	public void onLogin(View v) {
+		hideSoftKeyboard();
 		String username = ((EditText) (findViewById(R.id.account_user_edittext)))
 				.getText().toString().trim();
 		String psw = ((EditText) (findViewById(R.id.account_psw_edittext)))
@@ -363,7 +366,7 @@ public class AccountSettingActivity extends Activity {
 			} catch (JSONException e) {
 			}
 			Double regGivenMoney = data.getDouble("reg_given_money");
-			
+
 			UserBean telUser = UserManager.getInstance().getUser();
 			telUser.setUserKey(userKey);
 			telUser.setValue(TelUser.vosphone.name(), vosphone);
@@ -441,6 +444,14 @@ public class AccountSettingActivity extends Activity {
 			}
 		}
 
+	}
+
+	private void hideSoftKeyboard() {
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		if (imm != null) {
+			imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+					InputMethodManager.HIDE_NOT_ALWAYS);
+		}
 	}
 
 	@Override

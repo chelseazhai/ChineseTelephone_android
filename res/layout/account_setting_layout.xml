@@ -37,6 +37,7 @@
                 android:gravity="left|center_vertical"
                 android:onClick="chooseCountry"
                 android:padding="10dp"
+                android:textColor="@drawable/select_country_btn_fg"
                 android:text="@string/pls_select_country"
                 android:textSize="18sp" >
             </Button>

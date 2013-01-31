@@ -66,6 +66,7 @@
                     android:gravity="left|center_vertical"
                     android:paddingLeft="10dp"
                     android:paddingRight="5dp"
+                    android:textColor="@drawable/select_country_btn_fg"
                     android:text=""
                     android:textSize="17dp" />
             </LinearLayout>

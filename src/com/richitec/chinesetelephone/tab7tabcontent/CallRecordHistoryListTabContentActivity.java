@@ -38,6 +38,8 @@ import com.richitec.chinesetelephone.constant.SystemConstants;
 import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
 import com.richitec.commontoolkit.CTApplication;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
+import com.richitec.commontoolkit.addressbook.AddressBookManager;
+import com.richitec.commontoolkit.addressbook.ContactBean;
 import com.richitec.commontoolkit.calllog.CallLogBean;
 import com.richitec.commontoolkit.calllog.CallLogBean.CallType;
 import com.richitec.commontoolkit.calllog.CallLogManager;
@@ -253,7 +255,11 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 					// get call type and callee name
 					CallType _callType = _dataCallLogBean.getCallType();
 					String _calleeName = _dataCallLogBean.getCalleeName();
-
+//					List<ContactBean> tmpContacts =  AddressBookManager.getInstance().getContactsByPhone(_dataCallLogBean.getCalleePhone());
+//					if (tmpContacts.size() > 0) {
+//						_calleeName = tmpContacts.get(0).getDisplayName();
+//					}
+					
 					_dataValue = CallType.MISSED == _callType ? new SpannableString(
 							_calleeName) : _calleeName;
 				} else if (CALL_RECORD_PHONE.equalsIgnoreCase(dataKey)) {
@@ -546,8 +552,8 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 
 		@Override
 		public void onChange(boolean selfChange) {
-			super.onChange(selfChange);
-
+//			super.onChange(selfChange);
+			Log.d(SystemConstants.TAG, "CallLogContentObserver - on change");
 			// call log need to reload
 			_mCallLogNeed2Reload = true;
 		}
