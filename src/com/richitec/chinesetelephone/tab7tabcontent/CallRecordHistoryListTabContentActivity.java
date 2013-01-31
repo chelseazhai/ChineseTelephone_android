@@ -223,6 +223,12 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 		}
 
 		@Override
+		protected void onContentChanged() {
+			// no auto-requery
+			// super.onContentChanged();
+		}
+
+		@Override
 		protected void appendCursorData(List<Object> data, Cursor cursor) {
 			// check call log query cursor
 			if (null != cursor) {
