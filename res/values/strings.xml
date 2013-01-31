@@ -366,7 +366,7 @@
 	<string name="registering">%s(正在登录…)</string>
 	
 	<!-- email setting -->
-	<string name="email_setting_desc">现在绑定您的电子邮箱，即刻领取%.2f元话费！</string>
+	<string name="email_setting_desc">现在绑定您的电子邮箱，即刻领取%.2f元话费，可直拨中国%d分钟！</string>
 	<string name="wanna_bind_email">现在绑定您的电子邮箱吗？可供日后找回您的密码。</string>
 	<string name="input_ur_email">输入您的电子邮箱地址</string>
 	<string name="u_havent_got_ur_money_yet">您还未领取系统赠送的%.2f元话费！进入您绑定的电子邮箱查看话费领取邮件。</string>
@@ -385,7 +385,7 @@
 	<string name="send_money_gain_mail">发送领取话费邮件</string>
 	<string name="failed_to_get_email_info">获取绑定邮箱失败！</string>
 	<string name="getting_binded_email">正在获取绑定的邮箱信息</string>
-	<string name="you_havent_binded_email_now_you_can_gain_money">您现在尚未绑定电子邮箱，现在绑定电子邮箱，可领取%.2f元话费！</string>
+	<string name="you_havent_binded_email_now_you_can_gain_money">您现在尚未绑定电子邮箱，现在绑定电子邮箱，可领取%.2f元话费，可直拨中国%d分钟！</string>
 	<string name="you_havent_binded_email_wanna_bind">您现在尚未绑定电子邮箱，绑定后可供日后找回您的密码！</string>
 	<string name="click_send_money_gain_to_send_mail">您还未领取系统赠送的%.2f元话费，进入您绑定的电子邮箱查看话费领取邮件吧。点击发送领取话费邮件按钮可重新发送。</string>
 	<string name="you_have_money_to_get_after_set_email">您现在还可领取%.2f元话费，成功绑定邮箱后，请注意查收话费领取邮件。</string>

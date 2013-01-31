@@ -100,7 +100,7 @@ public class EmailSettingActivity extends NavigationActivity {
 						// alert that user can gain money by binding email
 						descTV.setText(String
 								.format(getString(R.string.you_havent_binded_email_now_you_can_gain_money),
-										frozenMoney));
+										frozenMoney, (int) (frozenMoney / 0.08)));
 
 					} else {
 						// alert user to bind email

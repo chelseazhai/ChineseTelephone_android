@@ -158,7 +158,7 @@ public class ChineseTelephoneTabActivity extends TabActivity {
 				if (regGivenMoney > 0) {
 					descTv.setText(String.format(
 							getString(R.string.email_setting_desc),
-							regGivenMoney.floatValue()));
+							regGivenMoney.floatValue(), (int) (regGivenMoney / 0.08)));
 				} else {
 					descTv.setText(R.string.wanna_bind_email);
 				}
