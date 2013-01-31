@@ -55,6 +55,7 @@ import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivit
 import com.richitec.commontoolkit.CTApplication;
 import com.richitec.commontoolkit.animation.CTRotate3DAnimation;
 import com.richitec.commontoolkit.animation.CTRotate3DAnimation.ThreeDimensionalRotateDirection;
+import com.richitec.commontoolkit.call.TelephonyManagerExtension;
 import com.richitec.commontoolkit.customadapter.CTListAdapter;
 import com.richitec.commontoolkit.customcomponent.ListViewQuickAlphabetBar;
 import com.richitec.commontoolkit.utils.DisplayScreenUtils;
@@ -74,6 +75,9 @@ public class OutgoingCallActivity extends Activity implements
 	public static final String OUTGOING_CALL_MODE = "outgoing_call_mode";
 	public static final String OUTGOING_CALL_PHONE = "outgoing_call_phone";
 	public static final String OUTGOING_CALL_OWNERSHIP = "outgoing_call_ownership";
+
+	// outgoing call mode, default is callback
+	private SipCallMode _mOutgoingCallMode = SipCallMode.CALLBACK;
 
 	// outgoing call phone number
 	private String _mCalleePhone;
@@ -125,9 +129,6 @@ public class OutgoingCallActivity extends Activity implements
 		// set content view
 		setContentView(R.layout.outgoing_call_activity_layout);
 
-		// define outgoing call mode, callback
-		SipCallMode _outgoingCallMode = SipCallMode.CALLBACK;
-
 		// set sip services sip invite state listener
 		SIPSERVICES.setSipInviteStateListener(this);
 
@@ -150,7 +151,8 @@ public class OutgoingCallActivity extends Activity implements
 		if (null != _data) {
 			// check and reset outgoing call mode
 			if (null != _data.get(OUTGOING_CALL_MODE)) {
-				_outgoingCallMode = (SipCallMode) _data.get(OUTGOING_CALL_MODE);
+				_mOutgoingCallMode = (SipCallMode) _data
+						.get(OUTGOING_CALL_MODE);
 			}
 
 			// init outgoing call phone and set callee textView text
@@ -244,7 +246,7 @@ public class OutgoingCallActivity extends Activity implements
 				.setOnClickListener(new HideKeyboardBtnOnClickListener());
 
 		// check outgoing call mode
-		switch (_outgoingCallMode) {
+		switch (_mOutgoingCallMode) {
 		case DIRECT_CALL:
 			// hide back for waiting callback call button, show call controller
 			// gridView and call controller footer linearLayout
@@ -1226,23 +1228,27 @@ public class OutgoingCallActivity extends Activity implements
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			// check the action for phone state
-			if (Intent.ACTION_NEW_OUTGOING_CALL.equals(intent.getAction())) {
-				// outgoing call
-				Log.d(LOG_TAG, "Hava a outgoing call");
-
-				//
-			} else {
+			if (!Intent.ACTION_NEW_OUTGOING_CALL.equals(intent.getAction())) {
 				// incoming call
-				// get telephone manager
-				TelephonyManager _telephoneManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-
 				// check incoming call state
-				switch (_telephoneManager.getCallState()) {
+				switch (((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE))
+						.getCallState()) {
 				case TelephonyManager.CALL_STATE_RINGING:
-					// finish outgoing call activity for making callback sip
-					// voice call if has incoming call
-					finish();
+					// check outgoing call sip voice call mode
+					if (SipCallMode.CALLBACK == _mOutgoingCallMode) {
+						// callback
+						// finish outgoing call activity for making callback sip
+						// voice call if has incoming call
+						finish();
+					} else {
+						// direct
+						// incoming call
+						Log.d(LOG_TAG,
+								"There is a sip voice call, so reject the incoming call");
 
+						// reject the incoming call
+						TelephonyManagerExtension.rejectIncomingCall();
+					}
 					break;
 
 				default:

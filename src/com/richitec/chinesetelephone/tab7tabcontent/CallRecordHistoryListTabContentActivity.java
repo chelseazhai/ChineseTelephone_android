@@ -37,9 +37,9 @@ import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.call.ContactPhoneDialModeSelectpopupWindow;
 import com.richitec.commontoolkit.CTApplication;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
-import com.richitec.commontoolkit.calllog.CallLogBean;
-import com.richitec.commontoolkit.calllog.CallLogBean.CallType;
-import com.richitec.commontoolkit.calllog.CallLogManager;
+import com.richitec.commontoolkit.call.CallLogBean;
+import com.richitec.commontoolkit.call.CallLogBean.CallType;
+import com.richitec.commontoolkit.call.CallLogManager;
 import com.richitec.commontoolkit.customadapter.CTListCursorAdapter;
 import com.richitec.commontoolkit.utils.CommonUtils;
 
