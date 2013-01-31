@@ -43,6 +43,9 @@ import com.richitec.commontoolkit.addressbook.ContactBean;
 import com.richitec.commontoolkit.calllog.CallLogBean;
 import com.richitec.commontoolkit.calllog.CallLogBean.CallType;
 import com.richitec.commontoolkit.calllog.CallLogManager;
+import com.richitec.commontoolkit.call.CallLogBean;
+import com.richitec.commontoolkit.call.CallLogBean.CallType;
+import com.richitec.commontoolkit.call.CallLogManager;
 import com.richitec.commontoolkit.customadapter.CTListCursorAdapter;
 import com.richitec.commontoolkit.utils.CommonUtils;
 
@@ -214,6 +217,12 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 				int itemsLayoutResId, Cursor c, String[] dataKeys,
 				int[] itemsComponentResIds) {
 			super(context, itemsLayoutResId, c, dataKeys, itemsComponentResIds);
+		}
+
+		@Override
+		protected void onContentChanged() {
+			// no auto-requery
+			// super.onContentChanged();
 		}
 
 		@Override

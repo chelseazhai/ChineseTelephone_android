@@ -34,8 +34,8 @@ import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
-import com.richitec.commontoolkit.calllog.CallLogBean;
-import com.richitec.commontoolkit.calllog.CallLogBean.CallType;
+import com.richitec.commontoolkit.call.CallLogBean;
+import com.richitec.commontoolkit.call.CallLogBean.CallType;
 import com.richitec.commontoolkit.customadapter.CTListAdapter;
 import com.richitec.commontoolkit.utils.CommonUtils;
 

@@ -23,6 +23,7 @@ import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.calllog.CallLogManager;
 import com.richitec.commontoolkit.user.UserBean;
 import com.richitec.commontoolkit.user.UserManager;
+import com.richitec.commontoolkit.call.CallLogManager;
 import com.richitec.commontoolkit.utils.HttpUtils;
 import com.richitec.commontoolkit.utils.HttpUtils.HttpRequestType;
 import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
