@@ -15,7 +15,8 @@ import com.richitec.commontoolkit.customadapter.CTListAdapter;
 
 public class AddressBookContactAdapter extends CTListAdapter {
 
-	private static final String LOG_TAG = "AddressBookContactAdapter";
+	private static final String LOG_TAG = AddressBookContactAdapter.class
+			.getCanonicalName();
 
 	public AddressBookContactAdapter(Context context,
 			List<Map<String, ?>> data, int itemsLayoutResId, String[] dataKeys,

@@ -24,7 +24,8 @@ import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
 public class DoubangoSipServices extends BaseSipServices implements
 		ISipServices {
 
-	private static final String LOG_TAG = "DoubangoSipServices";
+	private static final String LOG_TAG = DoubangoSipServices.class
+			.getCanonicalName();
 
 	// doubango ngn engine instance
 	private final NgnEngine NGN_ENGINE = NgnEngine.getInstance();

@@ -29,7 +29,7 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.richitec.chinesetelephone.R;
-import com.richitec.chinesetelephone.call.ContactPhoneDialModeSelectpopupWindow;
+import com.richitec.chinesetelephone.call.OutgoingCallGenerator;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.addressbook.AddressBookManager;
 import com.richitec.commontoolkit.customadapter.CTListAdapter;
@@ -41,7 +41,8 @@ import com.richitec.internationalcode.AreaAbbreviation;
 
 public class DialTabContentActivity extends NavigationActivity {
 
-	private static final String LOG_TAG = "DialTabContentActivity";
+	private static final String LOG_TAG = DialTabContentActivity.class
+			.getCanonicalName();
 
 	// dial phone textView and previous dial phone
 	private TextView _mDialPhoneTextView;
@@ -601,15 +602,6 @@ public class DialTabContentActivity extends NavigationActivity {
 			// check dial phone string
 			if (null != _dialPhoneString
 					&& !"".equalsIgnoreCase(_dialPhoneString)) {
-				// define contact phone dial mode select popup window
-				ContactPhoneDialModeSelectpopupWindow _contactPhoneDialModeSelectPopupWindow = new ContactPhoneDialModeSelectpopupWindow(
-						R.layout.contact_phone_dialmode_select_popupwindow_layout,
-						LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-
-				// set dial phone textView
-				_contactPhoneDialModeSelectPopupWindow.setDialPhoneTextView(
-						_mDialPhoneTextView, _mPreviousDialPhone);
-
 				// set callee contact info
 				// generate callee display name and phones
 				// get dial phone ownership textView
@@ -624,14 +616,10 @@ public class DialTabContentActivity extends NavigationActivity {
 				List<String> _calleePhones = (List<String>) CommonUtils
 						.array2List(new String[] { _dialPhoneString });
 
-				// set callee contact info
-				_contactPhoneDialModeSelectPopupWindow.setCalleeContactInfo(
-						_calleeName, _calleePhones);
-
-				// show contact phone dial mode select pupupWindow with
-				// animation
-				_contactPhoneDialModeSelectPopupWindow
-						.showAtLocationWithAnimation(v, Gravity.CENTER, 0, 0);
+				// generate an new outgoing call
+				new OutgoingCallGenerator(v).setDialPhoneTextView4Dial(
+						_mDialPhoneTextView, _mPreviousDialPhone)
+						.preGenNewOutgoingCall(_calleeName, _calleePhones);
 			} else if (null != _mPreviousDialPhone
 					&& !"".equalsIgnoreCase(_mPreviousDialPhone.toString())) {
 				// set dial phone textView text using previous dial phone

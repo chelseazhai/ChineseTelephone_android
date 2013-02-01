@@ -21,11 +21,9 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.util.SparseArray;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
@@ -34,7 +32,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.richitec.chinesetelephone.R;
-import com.richitec.chinesetelephone.call.ContactPhoneDialModeSelectpopupWindow;
+import com.richitec.chinesetelephone.call.OutgoingCallGenerator;
 import com.richitec.commontoolkit.CTApplication;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
 import com.richitec.commontoolkit.call.CallLogBean;
@@ -484,11 +482,6 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 			CallLogBean _clickItemViewData = (CallLogBean) ((CallRecordHistoryListItemAdapter) _mCallRecordHistoryListView
 					.getAdapter()).getDataList().get(position);
 
-			// define contact phone dial mode select popup window
-			ContactPhoneDialModeSelectpopupWindow _contactPhoneDialModeSelectPopupWindow = new ContactPhoneDialModeSelectpopupWindow(
-					R.layout.contact_phone_dialmode_select_popupwindow_layout,
-					LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-
 			// get callee phone and name
 			String _calleePhone = _clickItemViewData.getCalleePhone();
 			String _calleeName = _clickItemViewData.getCalleeName();
@@ -513,15 +506,9 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 						.array2List(new String[] { _clickItemViewData
 								.getCalleePhone() });
 
-				// set callee contact info
-				_contactPhoneDialModeSelectPopupWindow.setCalleeContactInfo(
+				// generate an new outgoing call
+				new OutgoingCallGenerator(parent).preGenNewOutgoingCall(
 						_calleeName, _calleePhones);
-
-				// show contact phone dial mode select pupupWindow with
-				// animation
-				_contactPhoneDialModeSelectPopupWindow
-						.showAtLocationWithAnimation(parent, Gravity.CENTER, 0,
-								0);
 			}
 		}
 

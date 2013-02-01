@@ -45,7 +45,6 @@ import android.widget.TextView;
 
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.R.drawable;
-import com.richitec.chinesetelephone.sip.SipCallModeSetting.SipCallMode;
 import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.chinesetelephone.sip.listeners.SipInviteStateListener;
 import com.richitec.chinesetelephone.sip.services.BaseSipServices;
@@ -65,7 +64,8 @@ import com.richitec.commontoolkit.utils.ToneGeneratorUtils;
 public class OutgoingCallActivity extends Activity implements
 		SipInviteStateListener {
 
-	private static final String LOG_TAG = "OutgoingCallActivity";
+	private static final String LOG_TAG = OutgoingCallActivity.class
+			.getCanonicalName();
 
 	// sip services
 	private static final BaseSipServices SIPSERVICES = SipUtils

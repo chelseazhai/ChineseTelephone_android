@@ -105,4 +105,7 @@
     <string name="hideKeyboard_imageView_content_description">hide keyboard image button</string>
     <string name="keyboardBtn_imageButton_content_description">keyboard image button</string>
 
+    <!-- others -->
+    <string name="currentActiveNetworkNotAvailable">There is no active and available network</string>
+
 </resources>

@@ -13,7 +13,7 @@ import android.provider.CallLog;
 import android.util.Log;
 
 import com.richitec.chinesetelephone.call.OutgoingCallActivity;
-import com.richitec.chinesetelephone.sip.SipCallModeSetting.SipCallMode;
+import com.richitec.chinesetelephone.call.SipCallMode;
 import com.richitec.chinesetelephone.sip.listeners.SipInviteStateListener;
 import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
 import com.richitec.commontoolkit.CTApplication;
@@ -24,7 +24,8 @@ import com.richitec.commontoolkit.utils.HttpUtils.OnHttpRequestListener;
 
 public abstract class BaseSipServices implements ISipServices {
 
-	private static final String LOG_TAG = "BaseSipServices";
+	private static final String LOG_TAG = BaseSipServices.class
+			.getCanonicalName();
 
 	// application context
 	protected static Context _appContext;

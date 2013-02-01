@@ -21,7 +21,8 @@ import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
 public class SipDroidSipServices extends BaseSipServices implements
 		ISipServices {
 
-	private static final String LOG_TAG = "SipDroidSipServices";
+	private static final String LOG_TAG = SipDroidSipServices.class
+			.getCanonicalName();
 
 	public SipDroidSipServices() {
 		super();

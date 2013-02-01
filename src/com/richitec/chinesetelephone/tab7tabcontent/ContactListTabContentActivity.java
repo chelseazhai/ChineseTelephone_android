@@ -31,7 +31,6 @@ import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -45,9 +44,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.richitec.chinesetelephone.R;
-import com.richitec.chinesetelephone.call.ContactPhoneDialModeSelectpopupWindow;
 import com.richitec.chinesetelephone.call.OutgoingCallActivity;
-import com.richitec.chinesetelephone.sip.SipCallModeSetting.SipCallMode;
+import com.richitec.chinesetelephone.call.OutgoingCallGenerator;
+import com.richitec.chinesetelephone.call.SipCallMode;
 import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.commontoolkit.CTApplication;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
@@ -65,7 +64,8 @@ import com.richitec.commontoolkit.utils.StringUtils;
 
 public class ContactListTabContentActivity extends NavigationActivity {
 
-	private static final String LOG_TAG = "ContactListTabContentActivity";
+	private static final String LOG_TAG = ContactListTabContentActivity.class
+			.getCanonicalName();
 
 	// address book contacts list view
 	private ListView _mABContactsListView;
@@ -499,31 +499,10 @@ public class ContactListTabContentActivity extends NavigationActivity {
 								R.string.contact_hasNoPhone_alertDialog_reselectBtn_title,
 								null).show();
 			} else {
-				// define contact phone dial mode select popup window
-				ContactPhoneDialModeSelectpopupWindow _contactPhoneDialModeSelectPopupWindow = new ContactPhoneDialModeSelectpopupWindow(
-						R.layout.contact_phone_dialmode_select_popupwindow_layout,
-						LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-
-				// set contact phone number select popup window and its
-				// dependent view
-				_contactPhoneDialModeSelectPopupWindow
-						.setContactPhoneNumbersSelectPopupWindow7ItsDependentView(
-								new ContactPhoneNumbersSelectPopupWindow(
-										R.layout.contact_phonenumbers_select_popupwindow_layout,
-										LayoutParams.FILL_PARENT,
-										LayoutParams.FILL_PARENT),
-								_mABContactsListView);
-
-				// set callee contact info
-				_contactPhoneDialModeSelectPopupWindow.setCalleeContactInfo(
+				// generate an new outgoing call
+				new OutgoingCallGenerator(parent).preGenNewOutgoingCall(
 						_clickItemViewData.getDisplayName(),
 						_clickItemViewData.getPhoneNumbers());
-
-				// show contact phone dial mode select pupupWindow with
-				// animation
-				_contactPhoneDialModeSelectPopupWindow
-						.showAtLocationWithAnimation(parent, Gravity.CENTER, 0,
-								0);
 			}
 		}
 
@@ -591,7 +570,8 @@ public class ContactListTabContentActivity extends NavigationActivity {
 	}
 
 	// contact phone numbers select popup window
-	class ContactPhoneNumbersSelectPopupWindow extends CTPopupWindow {
+	public static class ContactPhoneNumbersSelectPopupWindow extends
+			CTPopupWindow {
 
 		// contact display name
 		private String _mContactDisplayName;
@@ -656,8 +636,9 @@ public class ContactListTabContentActivity extends NavigationActivity {
 		}
 
 		// set contact phone number for selecting
-		public void setContactPhones4Selecting(String displayName,
-				List<String> phoneNumbers, SipCallMode dialContactPhoneMode) {
+		public ContactPhoneNumbersSelectPopupWindow setContactPhones4Selecting(
+				String displayName, List<String> phoneNumbers,
+				SipCallMode dialContactPhoneMode) {
 			// update select contact display name and dial its phone mode
 			_mContactDisplayName = displayName;
 			_mDialContactPhoneMode = dialContactPhoneMode;
@@ -665,13 +646,19 @@ public class ContactListTabContentActivity extends NavigationActivity {
 			// set contact phones select title textView text
 			((TextView) getContentView().findViewById(
 					R.id.contactPhones_select_titleTextView))
-					.setText((getResources()
+					.setText((CTApplication
+							.getContext()
+							.getResources()
 							.getString(
 									R.string.contactPhones_selectPopupWindow_titleTextView_text)
-							+ " " + (SipCallMode.DIRECT_CALL == dialContactPhoneMode ? getResources()
+							+ " " + (SipCallMode.DIRECT_CALL == dialContactPhoneMode ? CTApplication
+							.getContext()
+							.getResources()
 							.getString(
 									R.string.contactPhones_selectPopupWindow_4directdial)
-							: getResources()
+							: CTApplication
+									.getContext()
+									.getResources()
 									.getString(
 											R.string.contactPhones_selectPopupWindow_4callback)))
 							.replace("***", displayName));
@@ -710,6 +697,8 @@ public class ContactListTabContentActivity extends NavigationActivity {
 				// show phone list view
 				_phoneListView.setVisibility(View.VISIBLE);
 			}
+
+			return this;
 		}
 
 		// inner class
