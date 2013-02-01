@@ -456,7 +456,7 @@ public class ContactListTabContentActivity extends NavigationActivity {
 			extends OnTouchListener {
 
 		@Override
-		protected boolean onTouch(RelativeLayout alphabetRelativeLayout,
+		protected boolean onTouch(RelativeLayout alphabetPresentRelativeLayout,
 				ListView dependentListView, MotionEvent event,
 				Character alphabeticalCharacter) {
 			// get scroll position
