@@ -201,7 +201,7 @@ public class ContactPhoneDialModeSelectpopupWindow extends CTPopupWindow {
 											_mContactPhoneNumbersSelectPopupWindowDependentView,
 											Gravity.CENTER, 0, 0);
 						}
-					}, DISMISSANIMATION_DURATION);
+					}, DISMISS7NEXTSHOWNANIMATION_SWITCHDURATION);
 				} catch (Exception e) {
 					Log.e(LOG_TAG,
 							"Contact phone numbers select popup window reflection method:'setContactPhones4Selecting' error and exception message = "
