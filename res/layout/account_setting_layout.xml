@@ -37,8 +37,8 @@
                 android:gravity="left|center_vertical"
                 android:onClick="chooseCountry"
                 android:padding="10dp"
-                android:textColor="@drawable/select_country_btn_fg"
                 android:text="@string/pls_select_country"
+                android:textColor="@drawable/select_country_btn_fg"
                 android:textSize="18sp" >
             </Button>
 
@@ -131,7 +131,7 @@
                     android:text="@string/forget_psw"
                     android:textColor="@android:color/black"
                     android:textSize="15sp"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
 
                 <ImageView
                     android:layout_width="23dp"
@@ -140,7 +140,7 @@
                     android:clickable="true"
                     android:onClick="onForgetPSWBtnClick"
                     android:src="@drawable/r_box_2"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
             </RelativeLayout>
 
             <RelativeLayout

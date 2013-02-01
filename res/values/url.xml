@@ -24,6 +24,7 @@
     <string name="unsubscribe_suite_url">/profile/unsubscribeSuite</string>
     <string name="setEmail_url">/profile/setEmail</string>
     <string name="sendActivateFrozenMoneyMail_url">/profile/sendActivateFrozenMoneyMail</string>
+    <string name="sendResetPwdEmail_url">/profile/sendResetPwdEmail</string>
     <string name="getAccountInfo_url">/profile/getAccountInfo</string>
     <string name="callback_url">/callop/callback</string>
     <string name="card_charge_url">/cardCharge</string>

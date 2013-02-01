@@ -29,23 +29,21 @@
             <Button
                 android:id="@+id/getpsw_choose_country_btn"
                 android:layout_width="fill_parent"
-                android:layout_height="55dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_height="45dp"
+                android:layout_margin="5dp"
                 android:background="@drawable/select_country_btn_bg"
                 android:drawableRight="@drawable/down_into_icon"
                 android:gravity="left|center_vertical"
                 android:onClick="chooseCountry"
-                android:padding="15dp"
-                android:text="0086(china 中国)"
-                android:textSize="20dp" />
+                android:padding="10dp"
+                android:text="@string/pls_select_country"
+                android:textColor="@drawable/select_country_btn_fg"
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="40dp"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:background="@drawable/bg_edit_s"
                 android:orientation="horizontal" >
 
@@ -70,28 +68,25 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_margin="5dp"
                 android:gravity="center_vertical" >
 
                 <Button
                     android:id="@+id/forgetpsw_cancel_btn"
                     android:layout_width="130dp"
-                    android:layout_height="51.5dp"
+                    android:layout_height="50dp"
                     android:layout_alignParentLeft="true"
-                    android:background="@drawable/regist_btn_bg"
+                    android:background="@drawable/gray_btn_bg"
                     android:onClick="onCancelBtnClick"
                     android:text="@string/cancel"
                     android:textColor="@android:color/white"
-                    android:textSize="13sp" />
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/forgetpsw_ok_btn"
                     android:layout_width="130dp"
                     android:layout_height="50dp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginLeft="5dp"
                     android:background="@drawable/green_btn_bg"
                     android:onClick="onGetPSWAction"
                     android:text="@string/ok"

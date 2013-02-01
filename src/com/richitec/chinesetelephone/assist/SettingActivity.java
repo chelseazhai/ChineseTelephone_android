@@ -25,6 +25,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.richitec.chinesetelephone.R;
+import com.richitec.chinesetelephone.account.AccountForgetPSWActivity;
 import com.richitec.chinesetelephone.account.AccountSettingActivity;
 import com.richitec.chinesetelephone.bean.DialPreferenceBean;
 import com.richitec.chinesetelephone.constant.DialPreference;
@@ -394,10 +395,11 @@ public class SettingActivity extends NavigationActivity {
 
 		@Override
 		public void onClick(View v) {
-			getPSWPopupWindow = new GetPSWPopupWindow(
-					R.layout.get_psw_popupwindow_layout,
-					LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-			getPSWPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
+//			getPSWPopupWindow = new GetPSWPopupWindow(
+//					R.layout.get_psw_popupwindow_layout,
+//					LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+//			getPSWPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
+			pushActivity(AccountForgetPSWActivity.class);
 		}
 
 	};
