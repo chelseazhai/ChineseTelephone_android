@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.richitec.chinesetelephone.R;
-import com.richitec.chinesetelephone.sip.SipCallMode;
+import com.richitec.chinesetelephone.sip.SipCallModeSetting.SipCallMode;
 import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.commontoolkit.CTApplication;
 import com.richitec.commontoolkit.customcomponent.CTPopupWindow;

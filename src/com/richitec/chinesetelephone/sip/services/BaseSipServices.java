@@ -13,7 +13,7 @@ import android.provider.CallLog;
 import android.util.Log;
 
 import com.richitec.chinesetelephone.call.OutgoingCallActivity;
-import com.richitec.chinesetelephone.sip.SipCallMode;
+import com.richitec.chinesetelephone.sip.SipCallModeSetting.SipCallMode;
 import com.richitec.chinesetelephone.sip.listeners.SipInviteStateListener;
 import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
 import com.richitec.commontoolkit.CTApplication;

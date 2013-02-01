@@ -45,7 +45,7 @@ import android.widget.TextView;
 
 import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.R.drawable;
-import com.richitec.chinesetelephone.sip.SipCallMode;
+import com.richitec.chinesetelephone.sip.SipCallModeSetting.SipCallMode;
 import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.chinesetelephone.sip.listeners.SipInviteStateListener;
 import com.richitec.chinesetelephone.sip.services.BaseSipServices;

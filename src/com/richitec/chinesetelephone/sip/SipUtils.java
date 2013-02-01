@@ -1,5 +1,6 @@
 package com.richitec.chinesetelephone.sip;
 
+import com.richitec.chinesetelephone.sip.SipCallModeSetting.SipCallMode;
 import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
 import com.richitec.chinesetelephone.sip.services.BaseSipServices;
 import com.richitec.chinesetelephone.sip.services.ISipServices;
