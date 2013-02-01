@@ -1066,10 +1066,11 @@ public class SettingActivity extends NavigationActivity {
 			// bind contact phone select cancel button click listener
 			((Button) getContentView().findViewById(
 					R.id.dial_preference_confirmBtn))
-					.setOnClickListener(new SetAreaCodeConfirmBtnOnClickListener());
+					.setOnClickListener(new SetConfirmBtnOnClickListener());
+			
 			((Button) getContentView().findViewById(
 					R.id.dial_preference_cancelBtn))
-					.setOnClickListener(new SetAreaCodeCancelBtnOnClickListener());
+					.setOnClickListener(new SetCancelBtnOnClickListener());
 		}
 
 		@Override
@@ -1079,7 +1080,7 @@ public class SettingActivity extends NavigationActivity {
 
 		// inner class
 		// contact phone select phone button on click listener
-		class SetAreaCodeConfirmBtnOnClickListener implements OnClickListener {
+		class SetConfirmBtnOnClickListener implements OnClickListener {
 
 			@Override
 			public void onClick(View v) {
@@ -1091,7 +1092,7 @@ public class SettingActivity extends NavigationActivity {
 		}
 
 		// contact phone select cancel button on click listener
-		class SetAreaCodeCancelBtnOnClickListener implements OnClickListener {
+		class SetCancelBtnOnClickListener implements OnClickListener {
 			@Override
 			public void onClick(View v) {
 				// dismiss contact phone select popup window

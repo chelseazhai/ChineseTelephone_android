@@ -9,6 +9,7 @@
     <string name="user_register_url">/user/regUser</string>
     <string name="login_url">/user/login</string>
     <string name="getpsw_url">/user/getUserPwd</string>
+    <string name="sendResetPwdEmail_url">/user/sendResetPwdEmail</string>
     <string name="modify_psw_url">/profile/changePwd</string>
     <string name="account_balance_url">/accountBalance</string>
     <string name="get_seller_partner_key">/profile/alipayinfo</string>
@@ -24,7 +25,6 @@
     <string name="unsubscribe_suite_url">/profile/unsubscribeSuite</string>
     <string name="setEmail_url">/profile/setEmail</string>
     <string name="sendActivateFrozenMoneyMail_url">/profile/sendActivateFrozenMoneyMail</string>
-    <string name="sendResetPwdEmail_url">/profile/sendResetPwdEmail</string>
     <string name="getAccountInfo_url">/profile/getAccountInfo</string>
     <string name="callback_url">/callop/callback</string>
     <string name="card_charge_url">/cardCharge</string>

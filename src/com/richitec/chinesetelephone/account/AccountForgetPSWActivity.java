@@ -117,7 +117,7 @@ public class AccountForgetPSWActivity extends Activity {
 		params.put("username", phone);
 		params.put("countryCode", countryCode);
 
-		HttpUtils.postSignatureRequest(getString(R.string.server_url)
+		HttpUtils.postRequest(getString(R.string.server_url)
 				+ getString(R.string.sendResetPwdEmail_url),
 				PostRequestFormat.URLENCODED, params, null,
 				HttpRequestType.ASYNCHRONOUS, onFinishSendResetPwdMail);
@@ -162,6 +162,9 @@ public class AccountForgetPSWActivity extends Activity {
 									getString(R.string.you_havnt_verify_email),
 									email))
 					.setPositiveButton(R.string.Ensure, null).show();
+				} else if ("user_not_found".equals(result)) {
+					MyToast.show(AccountForgetPSWActivity.this,
+							R.string.user_not_found, Toast.LENGTH_SHORT);
 				}
 
 			} catch (JSONException e) {

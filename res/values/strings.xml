@@ -403,4 +403,5 @@
 	<string name="pwd_reset_mail_send_ok">密码重置邮件已经成功发送到您绑定的邮箱%s，赶紧查收邮件来重置密码吧！</string>
 	<string name="you_havnt_bind_email">您没有绑定电子邮箱，无法发送密码重置邮件。</string>
 	<string name="you_havnt_verify_email">您绑定的邮箱%s还没有通过验证，无法发送密码重置邮件。您可以去您的邮箱找到最新的话费领取邮件或邮箱验证邮件，点击链接完成验证。</string>
+	<string name="user_not_found">:( 用户不存在！</string>
 </resources>
