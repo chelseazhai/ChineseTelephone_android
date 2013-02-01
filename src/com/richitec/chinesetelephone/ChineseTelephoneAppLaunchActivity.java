@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
+import com.richitec.chinesetelephone.call.SipCallModeSelector;
+import com.richitec.chinesetelephone.call.SipCallModeSelector.SipCallModeSelectPattern;
 import com.richitec.chinesetelephone.sip.SipRegisterBean;
 import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
@@ -34,6 +36,10 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 		ContactListTabContentActivity.initNamePhoneticSortedContactsInfoArray();
 
 		// test by ares
+		// set sip call mode select pattern
+		SipCallModeSelector
+				.setSipCallModeSelectPattern(SipCallModeSelectPattern.AUTO);
+
 		// generate sip register account
 		SipRegisterBean _sipAccount = new SipRegisterBean();
 
