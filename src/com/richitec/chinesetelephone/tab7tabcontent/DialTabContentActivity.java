@@ -617,9 +617,10 @@ public class DialTabContentActivity extends NavigationActivity {
 						.array2List(new String[] { _dialPhoneString });
 
 				// generate an new outgoing call
-				new OutgoingCallGenerator(v).setDialPhoneTextView4Dial(
-						_mDialPhoneTextView, _mPreviousDialPhone)
-						.preGenNewOutgoingCall(_calleeName, _calleePhones);
+				new OutgoingCallGenerator(v)
+						.setDialPhoneTextView4ClearingText7PreviousDialPhone4Saving(
+								_mDialPhoneTextView, _mPreviousDialPhone)
+						.generateNewOutgoingCall(_calleeName, _calleePhones);
 			} else if (null != _mPreviousDialPhone
 					&& !"".equalsIgnoreCase(_mPreviousDialPhone.toString())) {
 				// set dial phone textView text using previous dial phone

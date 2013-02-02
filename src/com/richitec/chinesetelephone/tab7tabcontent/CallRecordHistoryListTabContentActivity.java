@@ -507,7 +507,7 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 								.getCalleePhone() });
 
 				// generate an new outgoing call
-				new OutgoingCallGenerator(parent).preGenNewOutgoingCall(
+				new OutgoingCallGenerator(parent).generateNewOutgoingCall(
 						_calleeName, _calleePhones);
 			}
 		}

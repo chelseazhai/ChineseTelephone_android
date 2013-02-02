@@ -49,8 +49,9 @@ public class OutgoingCallGenerator {
 		_mContactPhoneDialModeSelectPopupWindowDependentView = contactDialModeSelectPopupWindowDependentView;
 	}
 
-	// set dial phone textView and previous dial phone for dial
-	public OutgoingCallGenerator setDialPhoneTextView4Dial(
+	// set dial phone textView for clearing dial phone textView text and
+	// previous dial phone for saving previous dial phone
+	public OutgoingCallGenerator setDialPhoneTextView4ClearingText7PreviousDialPhone4Saving(
 			TextView dialPhoneTextView, StringBuffer previousDialPhone) {
 		_mDialPhoneTextView = dialPhoneTextView;
 		_mPreviousDialPhone = previousDialPhone;
@@ -58,8 +59,8 @@ public class OutgoingCallGenerator {
 		return this;
 	}
 
-	// pre-generate an new outgoing call
-	public void preGenNewOutgoingCall(String contactName,
+	// generate an new outgoing call
+	public void generateNewOutgoingCall(String contactName,
 			List<String> contactPhones) {
 		// set contact info: display name and phone numbers
 		_mContactName = contactName;
@@ -151,42 +152,27 @@ public class OutgoingCallGenerator {
 						"Get dial phone textView for clear its text error, dial phone textView is null");
 			}
 		} else {
-			// define contact phone numbers select popup window and set contact
-			// phones for select
-			// check dial mode select pattern and show contact phone number
-			// select popup window
-			if (SipCallModeSelectPattern.MANUAL == dialModeSelectPattern) {
-				// show contact phone number select popup window with animation
-				// delayed popup window switch duration
-				new Handler().postDelayed(
-						new Runnable() {
+			// define contact phone numbers select popup window, set contact
+			// phones for select and show it using handle to delay popup window
+			// switch duration if needed
+			new Handler().postDelayed(
+					new Runnable() {
 
-							@Override
-							public void run() {
-								(new ContactPhoneNumbersSelectPopupWindow(
-										R.layout.contact_phonenumbers_select_popupwindow_layout,
-										LayoutParams.FILL_PARENT,
-										LayoutParams.FILL_PARENT)
-										.setContactPhones4Selecting(
-												_mContactName, _mContactPhones,
-												dialMode))
-										.showAtLocationWithAnimation(
-												_mContactPhoneDialModeSelectPopupWindowDependentView,
-												Gravity.CENTER, 0, 0);
-							}
-						},
-						_mContactPhoneDialModeSelectPopupWindow.DISMISS7NEXTSHOWNANIMATION_SWITCHDURATION);
-			} else {
-				// show contact phone number select popup window
-				(new ContactPhoneNumbersSelectPopupWindow(
-						R.layout.contact_phonenumbers_select_popupwindow_layout,
-						LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT)
-						.setContactPhones4Selecting(_mContactName,
-								_mContactPhones, dialMode))
-						.showAtLocationWithAnimation(
-								_mContactPhoneDialModeSelectPopupWindowDependentView,
-								Gravity.CENTER, 0, 0);
-			}
+						@Override
+						public void run() {
+							(new ContactPhoneNumbersSelectPopupWindow(
+									R.layout.contact_phonenumbers_select_popupwindow_layout,
+									LayoutParams.FILL_PARENT,
+									LayoutParams.FILL_PARENT)
+									.setContactPhones4Selecting(_mContactName,
+											_mContactPhones, dialMode))
+									.showAtLocationWithAnimation(
+											_mContactPhoneDialModeSelectPopupWindowDependentView,
+											Gravity.CENTER, 0, 0);
+						}
+					},
+					SipCallModeSelectPattern.MANUAL == dialModeSelectPattern ? _mContactPhoneDialModeSelectPopupWindow.DISMISS7NEXTSHOWNANIMATION_SWITCHDURATION
+							: 0);
 		}
 	}
 

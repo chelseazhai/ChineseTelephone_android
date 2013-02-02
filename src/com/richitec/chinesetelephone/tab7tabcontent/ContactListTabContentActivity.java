@@ -500,7 +500,7 @@ public class ContactListTabContentActivity extends NavigationActivity {
 								null).show();
 			} else {
 				// generate an new outgoing call
-				new OutgoingCallGenerator(parent).preGenNewOutgoingCall(
+				new OutgoingCallGenerator(parent).generateNewOutgoingCall(
 						_clickItemViewData.getDisplayName(),
 						_clickItemViewData.getPhoneNumbers());
 			}
