@@ -106,6 +106,10 @@
     <string name="keyboardBtn_imageButton_content_description">keyboard image button</string>
 
     <!-- others -->
-    <string name="currentActiveNetworkNotAvailable">There is no active and available network</string>
+    <!-- there is no active and available network currently -->
+    <string name="noActiveAvailableNetwork_alertDialog_title">Network unavailable</string>
+    <string name="noActiveAvailableNetwork_alertDialog_message">There is no active and available network, set immediately?</string>
+    <string name="noActiveAvailableNetwork_alertDialog_setNowBtn_title">Setting</string>
+    <string name="noActiveAvailableNetwork_alertDialog_setLaterBtn_title">Set later</string>
 
 </resources>

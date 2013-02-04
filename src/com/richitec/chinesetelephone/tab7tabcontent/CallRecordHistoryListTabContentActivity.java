@@ -489,7 +489,7 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 			// check callee phone
 			if (null == _calleePhone
 					|| _calleePhone.trim().equalsIgnoreCase("")) {
-				// show unknown callee phoneo alert dialog
+				// show unknown callee phone alert dialog
 				new AlertDialog.Builder(
 						CallRecordHistoryListTabContentActivity.this)
 						.setTitle(_calleeName)
