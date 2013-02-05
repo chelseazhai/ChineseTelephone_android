@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
@@ -19,6 +17,7 @@ import android.graphics.Point;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -33,6 +32,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -85,17 +85,14 @@ public class OutgoingCallActivity extends Activity implements
 	// audio manager
 	private AudioManager _mAudioManager;
 
-	// call duration timer
-	private final Timer CALLDURATION_TIMER = new Timer();
+	// call duration chronometer
+	private Chronometer _mCallDurationChronometer;
 
-	// call duration timer task
-	private TimerTask _mCallDutationTimerTask;
+	// call state textView
+	private TextView _mCallStateTextView;
 
-	// call duration time and set default value is 0
-	private Long _mCallDutation = 0L;
-
-	// update call duration time handle
-	private final Handler UPDATE_CALLDURATIONTIME_HANDLE = new Handler();
+	// is outgoing call established
+	private boolean _mIsOutgoingCallEstablished;
 
 	// send callback sip voice call http request listener
 	private final SendCallbackSipVoiceCallHttpRequestListener SEND_CALLBACKSIPVOICECALL_HTTPREQUESTLISTENER = new SendCallbackSipVoiceCallHttpRequestListener();
@@ -174,6 +171,12 @@ public class OutgoingCallActivity extends Activity implements
 		// set wallpaper as outgoing call background
 		((ImageView) findViewById(R.id.outgoingcall_background_imageView))
 				.setImageDrawable(getWallpaper());
+
+		// get call duration chronometer
+		_mCallDurationChronometer = (Chronometer) findViewById(R.id.callDuration_chronometer);
+
+		// get call state textView
+		_mCallStateTextView = (TextView) findViewById(R.id.callState_textView);
 
 		// get center content relativeLayout
 		_mCenterContentRelativeLayout = (RelativeLayout) findViewById(R.id.outgoingCall_centerRelativeLayout);
@@ -294,21 +297,20 @@ public class OutgoingCallActivity extends Activity implements
 	@Override
 	public void onCallInitializing() {
 		// update call state textView text
-		((TextView) findViewById(R.id.callState_textView))
-				.setText(R.string.outgoing_call_trying);
+		_mCallStateTextView.setText(R.string.outgoing_call_trying);
 	}
 
 	@Override
 	public void onCallEarlyMedia() {
 		// update call state textView text
-		((TextView) findViewById(R.id.callState_textView))
+		_mCallStateTextView
 				.setText(R.string.outgoing_call_earlyMedia7RemoteRing);
 	}
 
 	@Override
 	public void onCallRemoteRinging() {
 		// update call state textView text
-		((TextView) findViewById(R.id.callState_textView))
+		_mCallStateTextView
 				.setText(R.string.outgoing_call_earlyMedia7RemoteRing);
 	}
 
@@ -324,53 +326,24 @@ public class OutgoingCallActivity extends Activity implements
 			_mAudioManager.setSpeakerphoneOn(true);
 		}
 
-		// increase call duration time per second using timer task
-		CALLDURATION_TIMER.schedule(new TimerTask() {
+		// set outgoing call has been established
+		_mIsOutgoingCallEstablished = true;
 
-			@Override
-			public void run() {
-				// reset call duration timer task
-				_mCallDutationTimerTask = this;
+		// hide call state textView
+		_mCallStateTextView.setVisibility(View.GONE);
 
-				// increase call duration time
-				_mCallDutation++;
+		// set call duration chronometer base and start it
+		_mCallDurationChronometer.setBase(SystemClock.elapsedRealtime());
+		_mCallDurationChronometer.start();
 
-				// update call duration time
-				UPDATE_CALLDURATIONTIME_HANDLE.post(new Runnable() {
-
-					// 60 seconds per minute
-					final Integer SECONDS_PER_MINUTE = 60;
-
-					@Override
-					public void run() {
-						// get call duration minutes and seconds
-						Long _durationMinutes = _mCallDutation
-								/ SECONDS_PER_MINUTE;
-						Integer _durationSeconds = (int) (_mCallDutation % SECONDS_PER_MINUTE);
-
-						// format call duration
-						StringBuilder _callDurationTimeFormat = new StringBuilder();
-						_callDurationTimeFormat
-								.append(_durationMinutes <= 9 ? "0"
-										+ _durationMinutes : _durationMinutes)
-								.append(":")
-								.append(_durationSeconds <= 9 ? "0"
-										+ _durationSeconds : _durationSeconds);
-
-						// update call state textView text using call duration
-						((TextView) findViewById(R.id.callState_textView))
-								.setText(_callDurationTimeFormat);
-					}
-				});
-			}
-		}, 0, 1000);
+		// show call duration chronometer
+		_mCallDurationChronometer.setVisibility(View.VISIBLE);
 	}
 
 	@Override
 	public void onCallFailed() {
 		// update call state textView text
-		((TextView) findViewById(R.id.callState_textView))
-				.setText(R.string.outgoing_call_failed);
+		_mCallStateTextView.setText(R.string.outgoing_call_failed);
 
 		// sip voice call terminated
 		onCallTerminated();
@@ -379,8 +352,7 @@ public class OutgoingCallActivity extends Activity implements
 	@Override
 	public void onCallTerminating() {
 		// update call state textView text
-		((TextView) findViewById(R.id.callState_textView))
-				.setText(R.string.end_outgoing_call);
+		_mCallStateTextView.setText(R.string.end_outgoing_call);
 
 		onCallTerminated();
 	}
@@ -636,16 +608,19 @@ public class OutgoingCallActivity extends Activity implements
 			SIPSERVICES.setAVSessionStateBroadcastReceiver(null);
 		}
 
+		// get call duration: seconds, chronomater getBase method return
+		// milliseconds
+		long _callDuration = _mIsOutgoingCallEstablished ? (SystemClock
+				.elapsedRealtime() - _mCallDurationChronometer.getBase()) / 1000
+				: 0L;
+
 		// check sip voice call terminated type
 		switch (terminatedType) {
 		case INITIATIVE:
 			// hangup current sip voice call
-			if (!SIPSERVICES.hangupSipVoiceCall(_mCallDutation)) {
-				// cancel call duration timer task
-				if (null != _mCallDutationTimerTask) {
-					_mCallDutationTimerTask.cancel();
-				}
-				// CALLDURATION_TIMER.cancel();
+			if (!SIPSERVICES.hangupSipVoiceCall(_callDuration)) {
+				// stop call duration chronometer
+				_mCallDurationChronometer.stop();
 
 				// force finish outgoing call activity
 				finish();
@@ -654,8 +629,7 @@ public class OutgoingCallActivity extends Activity implements
 				return;
 			} else {
 				// update call state textView text
-				((TextView) findViewById(R.id.callState_textView))
-						.setText(R.string.end_outgoing_call);
+				_mCallStateTextView.setText(R.string.end_outgoing_call);
 			}
 
 			break;
@@ -663,16 +637,13 @@ public class OutgoingCallActivity extends Activity implements
 		case PASSIVE:
 		default:
 			// update call log call duration time
-			SIPSERVICES.updateSipVoiceCallLog(_mCallDutation);
+			SIPSERVICES.updateSipVoiceCallLog(_callDuration);
 
 			break;
 		}
 
-		// cancel call duration timer task
-		if (null != _mCallDutationTimerTask) {
-			_mCallDutationTimerTask.cancel();
-		}
-		// CALLDURATION_TIMER.cancel();
+		// stop call duration chronometer
+		_mCallDurationChronometer.stop();
 
 		// delayed 0.5 second to terminating
 		new Handler().postDelayed(new Runnable() {
@@ -680,8 +651,7 @@ public class OutgoingCallActivity extends Activity implements
 			@Override
 			public void run() {
 				// update call state textView text
-				((TextView) findViewById(R.id.callState_textView))
-						.setText(R.string.outgoing_call_ended);
+				_mCallStateTextView.setText(R.string.outgoing_call_ended);
 
 				// delayed 0.6 second to back
 				new Handler().postDelayed(new Runnable() {
@@ -1204,7 +1174,7 @@ public class OutgoingCallActivity extends Activity implements
 			}
 
 			// update call state textView text
-			((TextView) findViewById(R.id.callState_textView))
+			_mCallStateTextView
 					.setText(_sendCallbackSipVoiceCallStateTipTextId);
 
 			// update callback waiting imageView image resource
