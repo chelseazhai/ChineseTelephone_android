@@ -6,6 +6,11 @@ import android.os.Bundle;
 
 import com.richitec.chinesetelephone.account.AccountSettingActivity;
 import com.richitec.chinesetelephone.service.NoticeService;
+import com.richitec.chinesetelephone.call.SipCallModeSelector;
+import com.richitec.chinesetelephone.call.SipCallModeSelector.SipCallModeSelectPattern;
+import com.richitec.chinesetelephone.sip.SipRegisterBean;
+import com.richitec.chinesetelephone.sip.SipUtils;
+import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
 import com.richitec.chinesetelephone.tab7tabcontent.ChineseTelephoneTabActivity;
 import com.richitec.chinesetelephone.tab7tabcontent.ContactListTabContentActivity;
 import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;

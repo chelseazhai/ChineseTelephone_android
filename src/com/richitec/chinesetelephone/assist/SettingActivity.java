@@ -28,6 +28,8 @@ import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.account.AccountForgetPSWActivity;
 import com.richitec.chinesetelephone.account.AccountSettingActivity;
 import com.richitec.chinesetelephone.bean.DialPreferenceBean;
+import com.richitec.chinesetelephone.call.SipCallModeSelector;
+import com.richitec.chinesetelephone.call.SipCallModeSelector.SipCallModeSelectPattern;
 import com.richitec.chinesetelephone.constant.DialPreference;
 import com.richitec.chinesetelephone.constant.LaunchSetting;
 import com.richitec.chinesetelephone.constant.SystemConstants;
@@ -395,10 +397,10 @@ public class SettingActivity extends NavigationActivity {
 
 		@Override
 		public void onClick(View v) {
-//			getPSWPopupWindow = new GetPSWPopupWindow(
-//					R.layout.get_psw_popupwindow_layout,
-//					LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-//			getPSWPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
+			// getPSWPopupWindow = new GetPSWPopupWindow(
+			// R.layout.get_psw_popupwindow_layout,
+			// LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+			// getPSWPopupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
 			pushActivity(AccountForgetPSWActivity.class);
 		}
 
@@ -645,32 +647,33 @@ public class SettingActivity extends NavigationActivity {
 		int dialPatternId = this.dialGroup.getCheckedRadioButtonId();
 		int answerPatternId = this.answerGroup.getCheckedRadioButtonId();
 
-		String dialPattern = getDialPattern(dialPatternId);
-		String answerPattern = getAnswerPattern(answerPatternId);
+		SipCallModeSelectPattern dialPattern = getDialPattern(dialPatternId);
+		SipCallModeSelector.setSipCallModeSelectPattern(dialPattern);
 
+		String answerPattern = getAnswerPattern(answerPatternId);
+		
 		DialPreferenceBean dialBean = DialPreferenceManager.getInstance()
 				.getDialPreferenceBean();
 		dialBean.setAnswerPattern(answerPattern);
-		dialBean.setDialPattern(dialPattern);
-
-		DataStorageUtils.putObject(
-				DialPreference.DialSetting.dialPattern.name(), dialPattern);
+		
 		DataStorageUtils.putObject(
 				DialPreference.DialSetting.answerPattern.name(), answerPattern);
 	}
 
-	private String getDialPattern(int id) {
-		String result = "";
+	private SipCallModeSelectPattern getDialPattern(int id) {
+		SipCallModeSelectPattern result = SipCallModeSelectPattern.MANUAL;
 		switch (id) {
 		case R.id.radio_direct_btn:
-			result = DialPreference.DIRECT_DIAL;
+			result = SipCallModeSelectPattern.DIRECT_CALL;
 			break;
 		case R.id.radio_back_btn:
-			result = DialPreference.BACK_DIAL;
+			result = SipCallModeSelectPattern.CALLBACK;
 			break;
 		case R.id.radio_manual_btn:
-			result = DialPreference.MANUAL_DIAL;
+			result = SipCallModeSelectPattern.MANUAL;
 			break;
+		case R.id.radio_auto_select_call_mode_btn:
+			result = SipCallModeSelectPattern.AUTO;
 		}
 		return result;
 	}
@@ -1030,34 +1033,52 @@ public class SettingActivity extends NavigationActivity {
 
 		public SetDialPreferencePopupWindow(int resource, int width, int height) {
 			super(resource, width, height);
-			DialPreferenceBean dialBean = DialPreferenceManager.getInstance()
-					.getDialPreferenceBean();
-			String dialPattern = dialBean.getDialPattern();
-			String answerPattern = dialBean.getAnswerPattern();
+			// DialPreferenceBean dialBean = DialPreferenceManager.getInstance()
+			// .getDialPreferenceBean();
+			// String dialPattern = dialBean.getDialPattern();
+			// String answerPattern = dialBean.getAnswerPattern();
 
 			// Log.d("Setting Dial Preference", dialPattern+":"+answerPattern);
 
-			if (dialPattern != null) {
-				if (dialPattern.equals(DialPreference.DIRECT_DIAL)) {
-					((RadioButton) getContentView().findViewById(
-							R.id.radio_direct_btn)).setChecked(true);
-				} else if (dialPattern.equals(DialPreference.BACK_DIAL)) {
-					((RadioButton) getContentView().findViewById(
-							R.id.radio_back_btn)).setChecked(true);
-				} else if (dialPattern.equals(DialPreference.MANUAL_DIAL)) {
-					((RadioButton) getContentView().findViewById(
-							R.id.radio_manual_btn)).setChecked(true);
-				}
+			initUI();
+
+			// if (answerPattern != null) {
+			// if (answerPattern.equals(DialPreference.AUTO_ANSWER)) {
+			// ((RadioButton) getContentView().findViewById(
+			// R.id.answer_auto_btn)).setChecked(true);
+			// } else if (answerPattern.equals(DialPreference.MANUAL_ANSWER)) {
+			// ((RadioButton) getContentView().findViewById(
+			// R.id.answer_manual_btn)).setChecked(true);
+			// }
+			// }
+		}
+		
+		private void initUI() {
+			SipCallModeSelectPattern callMode = SipCallModeSelector
+					.getSipCallModeSelectPattern();
+
+			switch (callMode) {
+			case DIRECT_CALL:
+				((RadioButton) getContentView().findViewById(
+						R.id.radio_direct_btn)).setChecked(true);
+				break;
+			case CALLBACK:
+				((RadioButton) getContentView().findViewById(
+						R.id.radio_back_btn)).setChecked(true);
+				break;
+
+			case AUTO:
+				((RadioButton) getContentView().findViewById(
+						R.id.radio_auto_select_call_mode_btn)).setChecked(true);
+				break;
+
+			case MANUAL:
+			default:
+				((RadioButton) getContentView().findViewById(
+						R.id.radio_manual_btn)).setChecked(true);
+				break;
 			}
-			if (answerPattern != null) {
-				if (answerPattern.equals(DialPreference.AUTO_ANSWER)) {
-					((RadioButton) getContentView().findViewById(
-							R.id.answer_auto_btn)).setChecked(true);
-				} else if (answerPattern.equals(DialPreference.MANUAL_ANSWER)) {
-					((RadioButton) getContentView().findViewById(
-							R.id.answer_manual_btn)).setChecked(true);
-				}
-			}
+
 		}
 
 		@Override
@@ -1067,7 +1088,7 @@ public class SettingActivity extends NavigationActivity {
 			((Button) getContentView().findViewById(
 					R.id.dial_preference_confirmBtn))
 					.setOnClickListener(new SetConfirmBtnOnClickListener());
-			
+
 			((Button) getContentView().findViewById(
 					R.id.dial_preference_cancelBtn))
 					.setOnClickListener(new SetCancelBtnOnClickListener());
@@ -1075,7 +1096,7 @@ public class SettingActivity extends NavigationActivity {
 
 		@Override
 		protected void resetPopupWindow() {
-			// hide contact phones select phone list view
+			initUI();
 		}
 
 		// inner class
@@ -1257,7 +1278,7 @@ public class SettingActivity extends NavigationActivity {
 	public void onEmailSettingButtonClick(View v) {
 		pushActivity(EmailSettingActivity.class);
 	}
-	
+
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		AppDataSaveRestoreUtil.onRestoreInstanceState(savedInstanceState);

@@ -29,7 +29,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.richitec.chinesetelephone.R;
-import com.richitec.chinesetelephone.sip.SipCallMode;
+import com.richitec.chinesetelephone.call.SipCallMode;
 import com.richitec.chinesetelephone.sip.SipUtils;
 import com.richitec.chinesetelephone.utils.AppDataSaveRestoreUtil;
 import com.richitec.commontoolkit.activityextension.NavigationActivity;
@@ -41,7 +41,8 @@ import com.richitec.commontoolkit.utils.CommonUtils;
 
 public class CallRecordDetailInfoActivity extends NavigationActivity {
 
-	private static final String LOG_TAG = "CallRecordDetailInfoActivity";
+	private static final String LOG_TAG = CallRecordDetailInfoActivity.class
+			.getCanonicalName();
 
 	// call record detail info param key
 	public static final String CALL_LOG_PARAM_KEY = "call_log_bean";

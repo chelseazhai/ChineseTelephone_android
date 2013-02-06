@@ -1,4 +1,4 @@
-package com.richitec.chinesetelephone.sip;
+package com.richitec.chinesetelephone.call;
 
 public enum SipCallMode {
 

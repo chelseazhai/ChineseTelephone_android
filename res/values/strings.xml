@@ -205,6 +205,7 @@
     <string name="choose_direct_dial">固定选择直拨</string>
     <string name="choose_back_dial">固定选择回拨</string>
     <string name="manual_choose_dial">手动选择直拨或回拨</string>
+    <string name="auto_select_call_mode">3G默认为回拨，WIFI时默认直拨</string>
     <string name="back_call_preference">回拨自动接听设置</string>
     <string name="back_call_auto">自动接听</string>
     <string name="back_call_manual">手动接听</string>
@@ -404,4 +405,11 @@
 	<string name="you_havnt_bind_email">您没有绑定电子邮箱，无法发送密码重置邮件。</string>
 	<string name="you_havnt_verify_email">您绑定的邮箱%s还没有通过验证，无法发送密码重置邮件。您可以去您的邮箱找到最新的话费领取邮件或邮箱验证邮件，点击链接完成验证。</string>
 	<string name="user_not_found">:( 用户不存在！</string>
+    <!-- others -->
+    <!-- there is no active and available network currently -->
+    <string name="noActiveAvailableNetwork_alertDialog_title">无可用网络</string>
+    <string name="noActiveAvailableNetwork_alertDialog_message">当前没有可用网络，是否设置？</string>
+    <string name="noActiveAvailableNetwork_alertDialog_setNowBtn_title">设置</string>
+    <string name="noActiveAvailableNetwork_alertDialog_setLaterBtn_title">以后再说</string>
+
 </resources>

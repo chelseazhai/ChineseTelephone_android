@@ -76,10 +76,10 @@ public class AppDataSaveRestoreUtil {
 		// 保存拨打设置属性
 		DialPreferenceBean dialBean = DialPreferenceManager.getInstance()
 				.getDialPreferenceBean();
-		String dialPattern = DataStorageUtils
-				.getString(DialPreference.DialSetting.dialPattern.name());
-		if (dialPattern != null)
-			dialBean.setDialPattern(dialPattern);
+//		String dialPattern = DataStorageUtils
+//				.getString(DialPreference.DialSetting.dialPattern.name());
+//		if (dialPattern != null)
+//			dialBean.setDialPattern(dialPattern);
 		String answerPattern = DataStorageUtils
 				.getString(DialPreference.DialSetting.answerPattern.name());
 		if (answerPattern != null)
