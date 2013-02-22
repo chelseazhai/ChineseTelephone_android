@@ -5,14 +5,14 @@
     <string name="app_name">ChineseTelephone</string>
 
     <!-- Chinese telephone tab activity -->
-    <string name="menu_settings">Settings</string>
-    <string name="title_activity_chinese_telephone_tab">ChineseTelephoneTabActivity</string>
+    <string name="title_activity_chinese_telephone_tab" translatable="false">ChineseTelephoneTabActivity</string>
 
     <!-- call record history list activity -->
-    <string name="title_activity_call_record_history_list_tab_content">CallRecordHistoryListActivity</string>
+    <string name="title_activity_call_record_history_list_tab_content" translatable="false">CallRecordHistoryListActivity</string>
     <string name="call_record_history_list_tab_title">Recent</string>
     <string name="call_record_history_list_nav_title">Call Record</string>
-    <string name="callRecord_callType_imageView_content_description">call type image view</string>
+    <string name="edit_call_record_history_list_barbtnitem_title">Edit</string>
+    <string name="callRecord_callType_imageView_content_description" translatable="false">call type image view</string>
     <string name="yesterdayCallRecord_callDate">Yesterday</string>
 
     <string-array name="callRecord_callDate_daysOfWeek">
@@ -25,14 +25,14 @@
         <item>Saturday</item>
     </string-array>
 
-    <string name="callRecord_detailInfo_imageButton_content_description">call record detail info image button</string>
+    <string name="callRecord_detailInfo_imageButton_content_description" translatable="false">call record detail info image button</string>
     <string name="callRecord_unknownCalleePhone_alertDialog_message">Unknown phone, can\'t dial</string>
     <string name="callRecord_unknownCalleePhone_alertDialog_reselectBtn_title">Reselect</string>
 
     <!-- call record detail info activity -->
-    <string name="title_activity_call_record_detail_info">CallRecordDetailInfoActivity</string>
+    <string name="title_activity_call_record_detail_info" translatable="false">CallRecordDetailInfoActivity</string>
     <string name="call_record_detailinfo_title">Call Record DetailInfo</string>
-    <string name="callRecord_detailInfo_contact_avatar_imageView_content_description">call record contact avatar image view</string>
+    <string name="callRecord_detailInfo_contact_avatar_imageView_content_description" translatable="false">call record contact avatar image view</string>
     <string name="callRecord_detailInfo_outgoingCall_callType">Outgoing call</string>
     <string name="callRecord_detailInfo_incomingCall_callType">Incoming call</string>
     <string name="callRecord_detailInfo_initiateTime_year">-</string>
@@ -49,9 +49,9 @@
     <string name="callRecord_detailInfo_operation4sms">SMS</string>
 
     <!-- dial tab content activity -->
-    <string name="title_activity_dial_tab_content">DialTabContentActivity</string>
+    <string name="title_activity_dial_tab_content" translatable="false">DialTabContentActivity</string>
     <string name="dial_tab_title">Dial</string>
-    <string name="dialBtn_imageButton_content_description">dial button image button</string>
+    <string name="dialBtn_imageButton_content_description" translatable="false">dial button image button</string>
     <string name="dial_phone_callee_unknown">Unknown</string>
     <string name="insertPhone2Contact_modeSelectPopupWindow_titleTextView_text">Select added to contact mode for phone ***</string>
     <string name="insertPhone2Contact_modeSelectPopupWindow_insert2NewContact">Add to new contact</string>
@@ -59,10 +59,10 @@
     <string name="insertPhone2Contact_modeSelectPopupWindow_cancelBtn_title">Cancel</string>
 
     <!-- contact list tab content activity -->
-    <string name="title_activity_contact_list_tab_content">ContactListTabContentActivity</string>
-    <string name="contact_search_editText_hint">Search contacts</string>
+    <string name="title_activity_contact_list_tab_content" translatable="false">ContactListTabContentActivity</string>
+    <string name="contact_search_editText_hint">Search contacts with phone number, character and short character</string>
     <string name="contact_list_tab7nav_title">Contacts</string>
-    <string name="addressBook_contact_avatar_imageView_content_description">contact avatar image view</string>
+    <string name="addressBook_contact_avatar_imageView_content_description" translatable="false">contact avatar image view</string>
     <string name="contact_hasNoPhone_alertDialog_title">Contact has no phone</string>
     <string name="contact_hasNoPhone_alertDialog_reselectBtn_title">Reselect</string>
     <string name="contactPhone_dialMode_selectPopupWindow_titleTextView_text">Select dial mode of connect ***</string>
@@ -76,34 +76,34 @@
     <string name="contactPhones_selectPopupWindow_cancelBtn_title">Cancel</string>
 
     <!-- more activity -->
-    <string name="title_activity_more_tab_content">MoreTabContentActivity</string>
+    <string name="title_activity_more_tab_content" translatable="false">MoreTabContentActivity</string>
     <string name="more_tab7nav_title">More</string>
 
     <!-- outgoing call activity -->
-    <string name="title_activity_outgoing_call">OutgoingCallActivity</string>
-    <string name="outgoingCallBG_imageView_content_description">outgoing call background image view</string>
+    <string name="title_activity_outgoing_call" translatable="false">OutgoingCallActivity</string>
+    <string name="outgoingCallBG_imageView_content_description" translatable="false">outgoing call background image view</string>
     <string name="outgoing_call_unknownState">Unknown</string>
     <string name="outgoing_call_trying">Calling, please wait &#8230;</string>
     <string name="outgoing_call_earlyMedia7RemoteRing">Ringing &#8230;</string>
     <string name="outgoing_call_failed">Call failed</string>
     <string name="end_outgoing_call">Call ending</string>
     <string name="outgoing_call_ended">Call ended</string>
-    <string name="callControllerItem_imageView_content_description">call controller image view</string>
+    <string name="callControllerItem_imageView_content_description" translatable="false">call controller image view</string>
     <string name="callController_contactItem_text">Contact</string>
     <string name="callController_handfreeItem_text">Handfree</string>
     <string name="callController_muteItem_text">Mute</string>
     <string name="callController_keyboardItem_text">Keyboard</string>
-    <string name="callbackWaiting_imageView_content_description">callback waiting image view</string>
-    <string name="send_callbackCallRequest_succeed">Call submit</string>
-    <string name="send_callbackCallRequest_failed">Call failed</string>
+    <string name="callbackWaiting_imageView_content_description" translatable="false">callback waiting image view</string>
+    <string name="send_callbackCallRequest_succeed">Callback request submit</string>
+    <string name="send_callbackCallRequest_failed">Callback failed</string>
     <string name="callbackWaiting_textView_succeed">Call Request submit succeed, your telephone number(***) will be ring later, please accept first and then system will connect phone *** for you</string>
-    <string name="callbackWaiting_textView_failed">Call Request submit failed, please make your network keeping alive</string>
-    <string name="back4waitingCallbackCall_imageButton_content_description">back for waiting callback call image button</string>
-    <string name="endCall_imageButton_content_description">end call image button</string>
-    <string name="contactslist_slidingDrawer_handleBtn_text">contacts list sliding drawer handle button text</string>
+    <string name="callbackWaiting_textView_failed">Call Request submit failed, please try again later</string>
+    <string name="back4waitingCallbackCall_imageButton_content_description" translatable="false">back for waiting callback call image button</string>
+    <string name="endCall_imageButton_content_description" translatable="false">end call image button</string>
+    <string name="contactslist_slidingDrawer_handleBtn_text" translatable="false">contacts list sliding drawer handle button text</string>
     <string name="hidecontactslist_button_text">Back</string>
-    <string name="hideKeyboard_imageView_content_description">hide keyboard image button</string>
-    <string name="keyboardBtn_imageButton_content_description">keyboard image button</string>
+    <string name="hideKeyboard_imageView_content_description" translatable="false">hide keyboard image button</string>
+    <string name="keyboardBtn_imageButton_content_description" translatable="false">keyboard image button</string>
 
     <!-- others -->
     <!-- there is no active and available network currently -->

@@ -22,7 +22,7 @@ public class MoreTabContentActivity extends NavigationActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater()
-				.inflate(R.menu.more_tab_content_activity_layout, menu);
+				.inflate(R.menu.more_tab_content_activity_menu, menu);
 		return true;
 	}
 

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Chinese telephone project -->
+    <string name="app_name">中国话</string>
+
+    <!-- call record history list activity -->
+    <string name="call_record_history_list_tab_title">最近通话</string>
+    <string name="call_record_history_list_nav_title">通话记录</string>
+    <string name="edit_call_record_history_list_barbtnitem_title">编辑</string>
+    <string name="yesterdayCallRecord_callDate">昨天</string>
+
+    <string-array name="callRecord_callDate_daysOfWeek">
+        <item>星期天</item>
+        <item>星期一</item>
+        <item>星期二</item>
+        <item>星期三</item>
+        <item>星期四</item>
+        <item>星期五</item>
+        <item>星期六</item>
+    </string-array>
+
+    <string name="callRecord_unknownCalleePhone_alertDialog_message">未知号码，无法拨打</string>
+    <string name="callRecord_unknownCalleePhone_alertDialog_reselectBtn_title">重新选择</string>
+
+    <!-- call record detail info activity -->
+    <string name="call_record_detailinfo_title">通话详情</string>
+    <string name="callRecord_detailInfo_outgoingCall_callType">呼出电话</string>
+    <string name="callRecord_detailInfo_incomingCall_callType">呼入电话</string>
+    <string name="callRecord_detailInfo_initiateTime_year">年</string>
+    <string name="callRecord_detailInfo_initiateTime_month">月</string>
+    <string name="callRecord_detailInfo_initiateTime_day">日</string>
+    <string name="callRecord_detailInfo_duration_seconds">秒</string>
+    <string name="callRecord_detailInfo_duration_minutes">分</string>
+    <string name="callRecord_detailInfo_missed_incomingCall">未接来电</string>
+    <string name="callRecord_detailInfo_cancel_outgoingCall">呼叫已取消</string>
+    <string name="callRecord_detailInfo_failed_outgoingCall">呼叫失败</string>
+    <string name="callRecord_detailInfo_callbackRequest_outgoingCall">回拨请求</string>
+    <string name="callRecord_detailInfo_operation4directdial">直拨</string>
+    <string name="callRecord_detailInfo_operation4callback">回拨</string>
+    <string name="callRecord_detailInfo_operation4sms">短信</string>
+
+    <!-- dial tab content activity -->
+    <string name="dial_tab_title">拨号键盘</string>
+    <string name="dial_phone_callee_unknown">未知联系人</string>
+    <string name="insertPhone2Contact_modeSelectPopupWindow_titleTextView_text">选择添加号码 *** 到联系人的方式</string>
+    <string name="insertPhone2Contact_modeSelectPopupWindow_insert2NewContact">添加到新建联系人</string>
+    <string name="insertPhone2Contact_modeSelectPopupWindow_insert2ExistedContact">添加到现有联系人</string>
+    <string name="insertPhone2Contact_modeSelectPopupWindow_cancelBtn_title">取消</string>
+
+    <!-- contact list tab content activity -->
+    <string name="contact_search_editText_hint">可按数字、拼音和拼音首字母查找联系人</string>
+    <string name="contact_list_tab7nav_title">通讯录</string>
+    <string name="contact_hasNoPhone_alertDialog_title">此联系人没有号码</string>
+    <string name="contact_hasNoPhone_alertDialog_reselectBtn_title">重新选择</string>
+    <string name="contactPhone_dialMode_selectPopupWindow_titleTextView_text">选择联系 *** 的呼叫方式</string>
+    <string name="contactPhone_dialMode_selectPopupWindow_directdialBtn_title">直拨</string>
+    <string name="contactPhone_dialMode_selectPopupWindow_callbackBtn_title">回拨</string>
+    <string name="contactPhone_dialMode_selectPopupWindow_cancelBtn_title">取消</string>
+    <string name="contactPhone_dialMode_selectPopupWindow_contactPhones_4select">个号码可供选择</string>
+    <string name="contactPhones_selectPopupWindow_titleTextView_text">选择 *** 的号码进行</string>
+    <string name="contactPhones_selectPopupWindow_4directdial">直拨</string>
+    <string name="contactPhones_selectPopupWindow_4callback">回拨</string>
+    <string name="contactPhones_selectPopupWindow_cancelBtn_title">取消</string>
+
+    <!-- more activity -->
+    <string name="more_tab7nav_title">更多</string>
+
+    <!-- outgoing call activity -->
+    <string name="outgoing_call_unknownState">未知</string>
+    <string name="outgoing_call_trying">正在呼叫，请稍等 &#8230;</string>
+    <string name="outgoing_call_earlyMedia7RemoteRing">响铃 &#8230;</string>
+    <string name="outgoing_call_failed">呼叫失败</string>
+    <string name="end_outgoing_call">通话即将结束</string>
+    <string name="outgoing_call_ended">通话结束</string>
+    <string name="callController_contactItem_text">通讯录</string>
+    <string name="callController_handfreeItem_text">免提</string>
+    <string name="callController_muteItem_text">静音</string>
+    <string name="callController_keyboardItem_text">拨号键盘</string>
+    <string name="send_callbackCallRequest_succeed">回拨请求已提交</string>
+    <string name="send_callbackCallRequest_failed">回拨失败</string>
+    <string name="callbackWaiting_textView_succeed">回拨请求提交成功，您的号码(***)稍后将接到回拨电话，接听后系统将为您呼叫 ***</string>
+    <string name="callbackWaiting_textView_failed">回拨请求提交失败，请稍后重试</string>
+    <string name="hidecontactslist_button_text">返回</string>
+
+    <!-- others -->
+    <!-- there is no active and available network currently -->
+    <string name="noActiveAvailableNetwork_alertDialog_title">网络不可达</string>
+    <string name="noActiveAvailableNetwork_alertDialog_message">当前没有可用的网络，是否立即设置？</string>
+    <string name="noActiveAvailableNetwork_alertDialog_setNowBtn_title">设置</string>
+    <string name="noActiveAvailableNetwork_alertDialog_setLaterBtn_title">以后再说</string>
+
+</resources>

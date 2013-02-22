@@ -21,7 +21,6 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.util.SparseArray;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -39,9 +38,14 @@ import com.richitec.commontoolkit.call.CallLogBean;
 import com.richitec.commontoolkit.call.CallLogBean.CallType;
 import com.richitec.commontoolkit.call.CallLogManager;
 import com.richitec.commontoolkit.customadapter.CTListCursorAdapter;
+import com.richitec.commontoolkit.customcomponent.BarButtonItem;
+import com.richitec.commontoolkit.customcomponent.BarButtonItem.BarButtonItemStyle;
 import com.richitec.commontoolkit.utils.CommonUtils;
 
 public class CallRecordHistoryListTabContentActivity extends NavigationActivity {
+
+	private static final String LOG_TAG = CallRecordHistoryListTabContentActivity.class
+			.getCanonicalName();
 
 	// call record history listView
 	private ListView _mCallRecordHistoryListView;
@@ -64,6 +68,12 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 
 		// set title
 		setTitle(R.string.call_record_history_list_nav_title);
+
+		// set edit call record history list button as right bar button item
+		setRightBarButtonItem(new BarButtonItem(this,
+				R.string.edit_call_record_history_list_barbtnitem_title,
+				BarButtonItemStyle.RIGHT_GO,
+				new EditCallRecordHistoryListBtnOnClickListener()));
 
 		// get call record history listView
 		_mCallRecordHistoryListView = (ListView) findViewById(R.id.callRecordHistoryList_listView);
@@ -93,14 +103,6 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 		// add call log changed ContentObserver
 		getContentResolver().registerContentObserver(CallLog.Calls.CONTENT_URI,
 				false, CALLLOG_CONTENTOBSERVER);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(
-				R.menu.call_record_history_list_tab_content_activity_layout,
-				menu);
-		return true;
 	}
 
 	@Override
@@ -202,6 +204,20 @@ public class CallRecordHistoryListTabContentActivity extends NavigationActivity 
 	}
 
 	// inner class
+	// edit call record history list button on click listener
+	class EditCallRecordHistoryListBtnOnClickListener implements
+			OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			// edit call record history list
+			Log.d(LOG_TAG, "Edit call record hisroty list not implement");
+
+			//
+		}
+
+	}
+
 	// call record history list item adapter
 	class CallRecordHistoryListItemAdapter extends CTListCursorAdapter {
 

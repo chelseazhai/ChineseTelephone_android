@@ -27,7 +27,6 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -152,13 +151,6 @@ public class ContactListTabContentActivity extends NavigationActivity {
 		// bind contact search editText text watcher
 		((EditText) findViewById(R.id.contact_search_editText))
 				.addTextChangedListener(new ContactSearchEditTextTextWatcher());
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(
-				R.menu.contact_list_tab_content_activity_layout, menu);
-		return true;
 	}
 
 	@Override
