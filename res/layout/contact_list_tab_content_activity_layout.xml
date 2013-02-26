@@ -13,8 +13,10 @@
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
         android:drawableLeft="@drawable/ic_action_search"
+        android:ellipsize="end"
         android:hint="@string/contact_search_editText_hint"
-        android:inputType="text" >
+        android:inputType="text"
+        android:singleLine="true" >
 
         <requestFocus />
     </EditText>
