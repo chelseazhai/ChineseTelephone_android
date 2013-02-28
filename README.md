@@ -1,2 +1,0 @@
-ChineseTelephone_android
-========================

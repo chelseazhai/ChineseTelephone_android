@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:drawable="@drawable/img_hide_contactslist_slidingdrawer_handlebtn_touchdown_bg" android:state_pressed="true"/>
-    <item android:drawable="@drawable/img_hide_contactslist_slidingdrawer_handlebtn_normal_bg"/>
-
-</selector>
