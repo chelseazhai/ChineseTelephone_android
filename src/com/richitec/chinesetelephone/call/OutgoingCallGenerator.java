@@ -147,9 +147,17 @@ public class OutgoingCallGenerator {
 	// check contact for generating an new outgoing call
 	private void checkContact4GenNewOutgongCall(final SipCallMode dialMode,
 			SipCallModeSelectPattern dialModeSelectPattern) {
-		// check dial mode select pattern
+		// check dial mode select pattern and dismiss contact call mode select
+		// popup window
 		if (SipCallModeSelectPattern.MANUAL == dialModeSelectPattern) {
-			_mContactPhoneDialModeSelectPopupWindow.dismiss();
+			// check contact phone size
+			if (1 == _mContactPhones.size()) {
+				// normal dismiss
+				_mContactPhoneDialModeSelectPopupWindow.dismiss();
+			} else {
+				// dismiss with animation
+				_mContactPhoneDialModeSelectPopupWindow.dismissWithAnimation();
+			}
 		}
 
 		// check contact phone size
