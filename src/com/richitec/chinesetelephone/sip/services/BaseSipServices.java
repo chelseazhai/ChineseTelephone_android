@@ -195,13 +195,16 @@ public abstract class BaseSipServices implements ISipServices {
 
 	// update current sip voice call call log
 	public void updateSipVoiceCallLog(Long sipVoiceCallDuration) {
-		// generate for updating call log values
-		Map<String, String> _updateValues = new HashMap<String, String>();
-		_updateValues.put(CallLog.Calls.DURATION,
-				sipVoiceCallDuration.toString());
+		// check current sip voice call log id
+		if (null != _mSipVoiceCallLogId) {
+			// generate for updating call log values
+			Map<String, String> _updateValues = new HashMap<String, String>();
+			_updateValues.put(CallLog.Calls.DURATION,
+					sipVoiceCallDuration.toString());
 
-		// sip voice call log: sip voice call duration
-		CallLogManager.updateCallLog(_mSipVoiceCallLogId, _updateValues);
+			// sip voice call log: sip voice call duration
+			CallLogManager.updateCallLog(_mSipVoiceCallLogId, _updateValues);
+		}
 	}
 
 	// before make sip voice call
