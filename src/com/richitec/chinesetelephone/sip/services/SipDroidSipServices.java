@@ -1,5 +1,8 @@
 package com.richitec.chinesetelephone.sip.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.sipdroid.sipua.SipdroidEngine;
 import org.sipdroid.sipua.ui.Receiver;
 import org.sipdroid.sipua.ui.RegisterService;
@@ -13,7 +16,9 @@ import android.content.SharedPreferences.Editor;
 import android.media.AudioManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.richitec.chinesetelephone.R;
 import com.richitec.chinesetelephone.sip.SipRegisterBean;
 import com.richitec.chinesetelephone.sip.listeners.SipInviteStateListener;
 import com.richitec.chinesetelephone.sip.listeners.SipRegistrationStateListener;
@@ -89,7 +94,7 @@ public class SipDroidSipServices extends BaseSipServices implements
 
 	@Override
 	public boolean makeDirectDialSipVoiceCall(String calleeName,
-			String calleePhone) {
+			final String calleePhone) {
 		// define return result
 		boolean _ret = false;
 
@@ -106,8 +111,66 @@ public class SipDroidSipServices extends BaseSipServices implements
 			// sipdroid make an new sip voice call
 			_ret = Receiver.engine(_appContext).call(calleePhone, true);
 		} else {
+			// add register sip account again sip registration state listener to
+			// handle list
+			((RegistrationStateBroadcastReceiver) _mRegistrationStateBroadcastReceiver)
+					.addSipRegistrationStateListener(new SipRegistrationStateListener() {
+
+						@Override
+						public void onUnRegisterSuccess() {
+							Log.d(LOG_TAG,
+									"Before make an new sip voice call, unregister sip account again success");
+						}
+
+						@Override
+						public void onUnRegisterFailed() {
+							Log.d(LOG_TAG,
+									"Before make an new sip voice call, unregister sip account again failed");
+						}
+
+						@Override
+						public void onRegistering() {
+							Log.d(LOG_TAG,
+									"Before make an new sip voice call, registering sip account again");
+						}
+
+						@Override
+						public void onRegisterSuccess() {
+							// remove register sip account again sip
+							// registration state listener from handle list
+							((RegistrationStateBroadcastReceiver) _mRegistrationStateBroadcastReceiver)
+									.removeSipRegistrationStateListener(this);
+
+							// sipdroid make an new sip voice call
+							if (!Receiver.engine(_appContext).call(calleePhone,
+									true)) {
+								// call failed
+								getSipInviteStateListener().onCallFailed();
+							}
+						}
+
+						@Override
+						public void onRegisterFailed() {
+							// remove register sip account again sip
+							// registration state listener from handle list
+							((RegistrationStateBroadcastReceiver) _mRegistrationStateBroadcastReceiver)
+									.removeSipRegistrationStateListener(this);
+
+							// call failed and show reason
+							getSipInviteStateListener().onCallFailed();
+							Toast.makeText(
+									_appContext,
+									R.string.outgoing_call_failed4SipRegistering,
+									Toast.LENGTH_LONG).show();
+						}
+
+					});
+
 			// register again
 			Receiver.engine(_appContext).registerMore();
+
+			// flag return result first
+			_ret = true;
 		}
 
 		return _ret;
@@ -192,6 +255,31 @@ public class SipDroidSipServices extends BaseSipServices implements
 	// sipdroid registration state broadcast receiver
 	class RegistrationStateBroadcastReceiver extends BroadcastReceiver {
 
+		// sip registration state listener handle list
+		private List<SipRegistrationStateListener> _mSipRegistrationStateListenerList;
+
+		public RegistrationStateBroadcastReceiver(
+				SipRegistrationStateListener sipRegistrationStateListener) {
+			super();
+
+			// init sip registration state listener handle list
+			_mSipRegistrationStateListenerList = new ArrayList<SipRegistrationStateListener>();
+
+			// first add base sip registration state listener to handle list
+			_mSipRegistrationStateListenerList
+					.add(_mSipRegistrationStateListener);
+
+			// check sip registration state listener and add to handle list
+			if (null != sipRegistrationStateListener) {
+				_mSipRegistrationStateListenerList
+						.add(sipRegistrationStateListener);
+			}
+		}
+
+		public RegistrationStateBroadcastReceiver() {
+			this(null);
+		}
+
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			// check the action for sipdroid registration Event
@@ -207,18 +295,68 @@ public class SipDroidSipServices extends BaseSipServices implements
 							"Sipdroid registration event arguments is null");
 				} else {
 					// check registration event type
-					if (_registrationEventArgs.equalsIgnoreCase("succeed")) {
+					if (_registrationEventArgs.equalsIgnoreCase("registering")) {
+						Log.d(LOG_TAG, "You are now registering ...");
+
+						// handle each sip registration state listener
+						for (SipRegistrationStateListener sipRegistrationStateListener : _mSipRegistrationStateListenerList) {
+							sipRegistrationStateListener.onRegistering();
+						}
+					} else if (_registrationEventArgs
+							.equalsIgnoreCase("succeed")) {
 						Log.d(LOG_TAG, "You are now registered :)");
 
-						_mSipRegistrationStateListener.onRegisterSuccess();
+						// handle each sip registration state listener
+						for (SipRegistrationStateListener sipRegistrationStateListener : _mSipRegistrationStateListenerList) {
+							sipRegistrationStateListener.onRegisterSuccess();
+						}
 					} else if (_registrationEventArgs
 							.equalsIgnoreCase("failed")) {
 						Log.d(LOG_TAG, "Failed to register :(");
 
-						_mSipRegistrationStateListener.onRegisterFailed();
+						// handle each sip registration state listener
+						for (SipRegistrationStateListener sipRegistrationStateListener : _mSipRegistrationStateListenerList) {
+							sipRegistrationStateListener.onRegisterFailed();
+						}
 					}
 				}
 			}
+		}
+
+		// add sip registration state listener to handle list
+		public List<SipRegistrationStateListener> addSipRegistrationStateListener(
+				SipRegistrationStateListener sipRegistrationStateListener) {
+			// add sip registration state listener to handle list
+			_mSipRegistrationStateListenerList
+					.add(sipRegistrationStateListener);
+
+			return _mSipRegistrationStateListenerList;
+		}
+
+		// remove sip registration state listener from handle list if existed
+		public boolean removeSipRegistrationStateListener(
+				SipRegistrationStateListener sipRegistrationStateListener) {
+			// define return result, default value is true
+			boolean _ret = true;
+
+			// check sip registration state listener existed in handle list
+			if (_mSipRegistrationStateListenerList
+					.contains(sipRegistrationStateListener)) {
+				// remove sip registration state listener from handle list
+				_mSipRegistrationStateListenerList
+						.remove(_mSipRegistrationStateListenerList
+								.indexOf(sipRegistrationStateListener));
+			} else {
+				Log.w(LOG_TAG, "Sip registration state listener = "
+						+ sipRegistrationStateListener
+						+ " not existed in handle list = "
+						+ _mSipRegistrationStateListenerList);
+
+				// flag return result
+				_ret = false;
+			}
+
+			return _ret;
 		}
 
 	}

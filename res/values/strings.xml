@@ -86,6 +86,7 @@
     <string name="outgoing_call_trying">calling, please waiting &#8230;</string>
     <string name="outgoing_call_earlyMedia7RemoteRing">ringing &#8230;</string>
     <string name="outgoing_call_failed">call failed</string>
+    <string name="outgoing_call_failed4SipRegistering">Your network is busy, please retry it later or use callback</string>
     <string name="end_outgoing_call">call ending</string>
     <string name="outgoing_call_ended">call ended</string>
     <string name="callControllerItem_imageView_content_description" translatable="false">call controller image view</string>

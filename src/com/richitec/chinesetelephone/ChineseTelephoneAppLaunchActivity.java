@@ -56,6 +56,11 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 				new SipRegistrationStateListener() {
 
 					@Override
+					public void onRegistering() {
+						Log.d("TestRegisterSipAccount", "onRegistering");
+					}
+
+					@Override
 					public void onUnRegisterSuccess() {
 						Log.d("TestRegisterSipAccount", "onUnRegisterSuccess");
 					}
@@ -74,6 +79,7 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 					public void onRegisterFailed() {
 						Log.d("TestRegisterSipAccount", "onRegisterFailed");
 					}
+
 				});
 	}
 

@@ -2,6 +2,9 @@ package com.richitec.chinesetelephone.sip.listeners;
 
 public interface SipRegistrationStateListener {
 
+	// registering
+	public void onRegistering();
+
 	// register success
 	public void onRegisterSuccess();
 

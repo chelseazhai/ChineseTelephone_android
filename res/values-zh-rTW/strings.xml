@@ -71,6 +71,7 @@
     <string name="outgoing_call_trying">正在撥號，請稍等 &#8230;</string>
     <string name="outgoing_call_earlyMedia7RemoteRing">響鈴 &#8230;</string>
     <string name="outgoing_call_failed">通話失敗</string>
+    <string name="outgoing_call_failed4SipRegistering">網絡繁忙，請稍後重識或改用回撥</string>
     <string name="end_outgoing_call">通話即將結束</string>
     <string name="outgoing_call_ended">通話結束</string>
     <string name="callController_contactItem_text">聯絡資訊</string>
