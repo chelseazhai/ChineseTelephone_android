@@ -28,7 +28,7 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 	}
 
 	@Override
-	public void didFinishLaunching() {
+	public boolean didFinishLaunching() {
 		// traversal address book
 		AddressBookManager.getInstance().traversalAddressBook();
 
@@ -81,6 +81,8 @@ public class ChineseTelephoneAppLaunchActivity extends AppLaunchActivity {
 					}
 
 				});
+
+		return false;
 	}
 
 }
